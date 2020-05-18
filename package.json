@@ -1,0 +1,91 @@
+{
+  "name": "next-rewrites",
+  "version": "0.0.1",
+  "description": "Next.js utility to generate i18n pages according to custom rewrites rules.",
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "next",
+    "nextjs",
+    "next.js",
+    "rewrites",
+    "routes",
+    "localization",
+    "localized",
+    "locale",
+    "static"
+  ],
+  "author": {
+    "name": "Jirka Svoboda",
+    "email": "svobik7@gmail.com"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "browser": "dist/index.bundle.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "prepublish": "yarn test && yarn build",
+    "build": "rollup -c",
+    "clean": "rm -r dist",
+    "format": "pretty-quick",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch"
+  },
+  "bin": {
+    "next-rewrites": "./bin/builder.js"
+  },
+  "devDependencies": {
+    "@types/jest": "25.2.2",
+    "husky": "^4.2.5",
+    "jest": "^26.0.1",
+    "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1",
+    "rollup": "^2.10.2",
+    "rollup-plugin-terser": "^5.3.0",
+    "rollup-plugin-typescript2": "^0.27.1",
+    "ts-jest": "^26.0.0",
+    "typescript": "^3.9.2"
+  },
+  "peerDependencies": {
+    "next": "^9.3.6",
+    "react": "^16.13.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged && yarn test"
+    }
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true
+  },
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "isolatedModules": true
+      }
+    },
+    "modulePaths": [
+      "<rootDir>"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "roots": [
+      "<rootDir>/tests",
+      "<rootDir>/src"
+    ],
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    }
+  }
+}

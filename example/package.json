@@ -1,0 +1,18 @@
+{
+  "name": "next-rewrites-example",
+  "version": "1.0.0",
+  "description": "Example of using next-rewrites package",
+  "author": "Jirka Svoboda",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "yarn rewrite && next dev",
+    "rewrite": "node ../bin/builder.js"
+  },
+  "dependencies": {
+    "next": "^9.3.6",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "next-rewrites": "link:../"
+  }
+}

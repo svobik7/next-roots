@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "module": "es6",
+    "noImplicitAny": true,
+    "outDir": "./dist",
+    "target": "es5",
+    "strict": true,
+    "esModuleInterop": true
+  },
+  "include": ["src", "bin"],
+  "exclude": ["**/node_modules", "dist", "tests"]
+}
