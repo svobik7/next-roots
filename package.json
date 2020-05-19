@@ -41,8 +41,10 @@
   },
   "devDependencies": {
     "@types/jest": "25.2.2",
+    "colors": "^1.4.0",
     "husky": "^4.2.5",
     "jest": "^26.0.1",
+    "next": "^9.4.1",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
     "rollup": "^2.10.2",

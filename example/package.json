@@ -11,8 +11,11 @@
   },
   "dependencies": {
     "next": "^9.3.6",
+    "next-rewrites": "link:../",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "next-rewrites": "link:../"
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.35"
   }
 }

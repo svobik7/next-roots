@@ -1,13 +1,14 @@
 #!/usr/bin/env node
-const FS = require('fs')
-const PATH = require('path')
-const ENGINE = require('../dist')
+const fs = require('fs')
+const path = require('path')
+const colors = require('colors')
+const engine = require('../dist')
 
 // load CLI args
 const [, , configPath = 'rewrites.config.js', configParams = {}] = process.argv
 
 // load runtime config
-const cfgRuntime = require(PATH.join(process.cwd(), configPath)) || configParams
+const cfgRuntime = require(path.join(process.cwd(), configPath)) || configParams
 
 // create final config
 const cfgDefault = {
@@ -16,7 +17,7 @@ const cfgDefault = {
   defaultSuffix: '',
   dirRoots: 'roots',
   dirPages: 'pages',
-  staticRoots: ['api', '_app', '_document', '_error', 'index'],
+  staticRoots: ['api', '_app', '_document', '_error', '404', 'index'],
   extRoots: '.tsx',
   rewrites: [],
 }
@@ -26,8 +27,8 @@ const cfgDefault = {
  * @param string filePath
  */
 function getFilePath(filePath) {
-  const dirPath = PATH.dirname(PATH.join(process.cwd(), configPath))
-  return PATH.join(dirPath, filePath)
+  const dirPath = path.dirname(path.join(process.cwd(), configPath))
+  return path.join(dirPath, filePath)
 }
 
 /**
@@ -37,7 +38,7 @@ function getFilePath(filePath) {
  */
 function saveFile(filePath, content) {
   makeDirectory(filePath)
-  FS.writeFileSync(filePath, content)
+  fs.writeFileSync(filePath, content)
 }
 
 /**
@@ -47,7 +48,7 @@ function saveFile(filePath, content) {
  * @returns string
  */
 function readFile(path, encoding = 'UTF-8') {
-  return FS.readFileSync(path).toString(encoding)
+  return fs.readFileSync(path).toString(encoding)
 }
 
 /**
@@ -57,7 +58,7 @@ function readFile(path, encoding = 'UTF-8') {
  */
 function copyFile(from, to) {
   makeDirectory(to)
-  FS.copyFileSync(from, to)
+  fs.copyFileSync(from, to)
 }
 
 /**
@@ -65,8 +66,8 @@ function copyFile(from, to) {
  * @param string path
  */
 function isFile(path) {
-  if (!FS.existsSync(path)) return false
-  return FS.statSync(path).isFile()
+  if (!fs.existsSync(path)) return false
+  return fs.statSync(path).isFile()
 }
 
 /**
@@ -79,11 +80,11 @@ function copyDirectory(from, to) {
 
   makeDirectory(to)
 
-  const files = FS.readdirSync(from)
+  const files = fs.readdirSync(from)
 
   files.forEach((currentPath) => {
-    const currentFrom = PATH.join(from, currentPath)
-    const currentTo = PATH.join(to, currentPath)
+    const currentFrom = path.join(from, currentPath)
+    const currentTo = path.join(to, currentPath)
 
     isDirectory(currentFrom)
       ? copyDirectory(currentFrom, currentTo)
@@ -95,11 +96,11 @@ function copyDirectory(from, to) {
  * Create directory in given path recursively
  * @param string path
  */
-function makeDirectory(path) {
-  const dirPath = PATH.dirname(path)
+function makeDirectory(dirPath) {
+  dirPath = path.dirname(dirPath)
 
-  if (FS.existsSync(dirPath)) return
-  FS.mkdirSync(dirPath, { recursive: true })
+  if (fs.existsSync(dirPath)) return
+  fs.mkdirSync(dirPath, { recursive: true })
 }
 
 /**
@@ -107,8 +108,8 @@ function makeDirectory(path) {
  * @param string path
  */
 function removeDirectory(dir) {
-  if (!FS.existsSync(dir)) return
-  FS.rmdirSync(dir, { recursive: true })
+  if (!fs.existsSync(dir)) return
+  fs.rmdirSync(dir, { recursive: true })
 }
 
 /**
@@ -116,8 +117,8 @@ function removeDirectory(dir) {
  * @param string path
  */
 function isDirectory(path) {
-  if (!FS.existsSync(path)) return false
-  return FS.statSync(path).isDirectory()
+  if (!fs.existsSync(path)) return false
+  return fs.statSync(path).isDirectory()
 }
 
 /**
@@ -183,7 +184,7 @@ function run() {
     staticRoots = cfgDefault.staticRoots,
   } = cfgRuntime
 
-  console.log('generating next-rewrites pages')
+  console.log('[', colors.yellow('rewrite'), '] generating next-rewrites ...')
 
   // ensure pages directory is clean before build
   removeDirectory(dirPages)
@@ -194,7 +195,7 @@ function run() {
   // create pages for each rewrite
   rewrites.forEach((r) => {
     const rootPath = getFilePath(
-      PATH.format({
+      path.format({
         dir: dirRoots,
         name: r.root,
         ext: extRoots,
@@ -207,23 +208,21 @@ function run() {
     // create page file for each root's rewrite
     r.params.forEach((p) => {
       const pagePath = getFilePath(
-        PATH.format({
+        path.format({
           dir: dirPages,
-          name: ENGINE.createRewritePath(p, r.token),
+          name: engine.createRewritePath(p, r.token),
           ext: extRoots,
         })
       )
 
       saveFile(pagePath, pageTemplate(p.locale))
-
-      console.log('Linked: ', pagePath, '\n')
     })
 
     // keep next.js specific files / dirs as they are
     // and just copy them to pages directory
     staticRoots.forEach((staticPath) => {
       const dir = getFilePath(
-        PATH.format({
+        path.format({
           dir: dirRoots,
           name: staticPath,
         })
@@ -235,7 +234,7 @@ function run() {
       }
 
       file = getFilePath(
-        PATH.format({
+        path.format({
           dir: dirRoots,
           name: staticPath,
           ext: extRoots,
@@ -246,9 +245,6 @@ function run() {
         copyFile(file, file.replace(dirRoots, dirPages))
         return
       }
-
-      // console.log('Ignored File:', file, '\n')
-      // console.log('Ignored Dir:', dir, '\n')
     })
   })
 }

@@ -1,10 +1,10 @@
-import SettingsView from '../../components/SettingsView'
+import { SettingsPage } from 'components/settings'
+import { LayoutMain } from 'components/layout'
 
-export default function () {
+export default function AccountSettingsRoot() {
   return (
-    <div>
-      I AM <code>ACCOUNT / SETTINGS</code> PAGE
-      <SettingsView />
-    </div>
+    <LayoutMain>
+      <SettingsPage />
+    </LayoutMain>
   )
 }

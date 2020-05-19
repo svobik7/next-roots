@@ -33,66 +33,108 @@ describe('next-rewrites:cli-builder', () => {
     execSync('rm -rf example/pages')
   })
 
-  test('should build all internationalized pages', () => {
-    // tests that all roots files exists
-    expect(fs.existsSync('example/roots/_app.tsx')).toBe(true)
-    expect(fs.existsSync('example/roots/_document.tsx')).toBe(true)
-    expect(fs.existsSync('example/roots/_error.tsx')).toBe(true)
-    expect(fs.existsSync('example/roots/index.tsx')).toBe(true)
-    expect(fs.existsSync('example/roots/api/get-version.ts')).toBe(true)
-    expect(fs.existsSync('example/roots/api/users/get-users.ts')).toBe(true)
+  describe('files structure', () => {
+    test('should build all internationalized pages', () => {
+      // tests that all roots files exists
+      expect(fs.existsSync('example/roots/_app.tsx')).toBe(true)
+      expect(fs.existsSync('example/roots/_document.tsx')).toBe(true)
+      expect(fs.existsSync('example/roots/_error.tsx')).toBe(true)
+      expect(fs.existsSync('example/roots/index.tsx')).toBe(true)
+      expect(fs.existsSync('example/roots/api/get-version.ts')).toBe(true)
+      expect(fs.existsSync('example/roots/api/users/get-users.ts')).toBe(true)
 
-    expect(fs.existsSync('example/roots/account/profile.tsx')).toBe(true)
-    expect(fs.existsSync('example/roots/account/settings.tsx')).toBe(true)
+      expect(fs.existsSync('example/roots/account/profile.tsx')).toBe(true)
+      expect(fs.existsSync('example/roots/account/settings.tsx')).toBe(true)
 
-    expect(fs.existsSync('example/roots/auth/login.tsx')).toBe(true)
-    expect(fs.existsSync('example/roots/auth/signup.tsx')).toBe(true)
+      expect(fs.existsSync('example/roots/auth/login.tsx')).toBe(true)
+      expect(fs.existsSync('example/roots/auth/signup.tsx')).toBe(true)
 
-    // tests that all pages has been generated
-    expect(fs.existsSync('example/pages/_app.tsx')).toBe(true)
-    expect(fs.existsSync('example/pages/_document.tsx')).toBe(true)
-    expect(fs.existsSync('example/pages/_error.tsx')).toBe(true)
-    expect(fs.existsSync('example/pages/index.tsx')).toBe(true)
-    expect(fs.existsSync('example/pages/api/get-version.ts')).toBe(true)
-    expect(fs.existsSync('example/pages/api/users/get-users.ts')).toBe(true)
+      // tests that all pages has been generated
+      expect(fs.existsSync('example/pages/_app.tsx')).toBe(true)
+      expect(fs.existsSync('example/pages/_document.tsx')).toBe(true)
+      expect(fs.existsSync('example/pages/_error.tsx')).toBe(true)
+      expect(fs.existsSync('example/pages/index.tsx')).toBe(true)
+      expect(fs.existsSync('example/pages/api/get-version.ts')).toBe(true)
+      expect(fs.existsSync('example/pages/api/users/get-users.ts')).toBe(true)
 
-    expect(fs.existsSync('example/pages/en/auth/signup-a1.page.tsx')).toBe(true)
-    expect(fs.existsSync('example/pages/cs/auth/registrace-a1.page.tsx')).toBe(
-      true
-    )
+      expect(fs.existsSync('example/pages/en/auth/signup-a1.page.tsx')).toBe(
+        true
+      )
+      expect(
+        fs.existsSync('example/pages/cs/auth/registrace-a1.page.tsx')
+      ).toBe(true)
 
-    expect(fs.existsSync('example/pages/en/auth/login-a2.htm.tsx')).toBe(true)
-    expect(fs.existsSync('example/pages/cs/auth/prihlaseni-a2.htm.tsx')).toBe(
-      true
-    )
-    expect(
-      fs.existsSync('example/pages/es/auth/iniciar-sesion-a2.htm.tsx')
-    ).toBe(true)
+      expect(fs.existsSync('example/pages/en/auth/login-a2.htm.tsx')).toBe(true)
+      expect(fs.existsSync('example/pages/cs/auth/prihlaseni-a2.htm.tsx')).toBe(
+        true
+      )
+      expect(
+        fs.existsSync('example/pages/es/auth/iniciar-sesion-a2.htm.tsx')
+      ).toBe(true)
 
-    expect(fs.existsSync('example/pages/en/account/profile-b1.htm.tsx')).toBe(
-      true
-    )
-    expect(fs.existsSync('example/pages/cs/ucet/profil-b1.htm.tsx')).toBe(true)
-    expect(fs.existsSync('example/pages/es/cuenta/perfil-b1.htm.tsx')).toBe(
-      true
-    )
+      expect(fs.existsSync('example/pages/en/account/profile-b1.htm.tsx')).toBe(
+        true
+      )
+      expect(fs.existsSync('example/pages/cs/ucet/profil-b1.htm.tsx')).toBe(
+        true
+      )
+      expect(fs.existsSync('example/pages/es/cuenta/perfil-b1.htm.tsx')).toBe(
+        true
+      )
 
-    expect(fs.existsSync('example/pages/en/account/settings-b2.htm.tsx')).toBe(
-      true
-    )
-    expect(fs.existsSync('example/pages/cs/ucet/nastaveni-b2.htm.tsx')).toBe(
-      true
-    )
-    expect(fs.existsSync('example/pages/es/cuenta/ajustes-b2.htm.tsx')).toBe(
-      true
-    )
+      expect(
+        fs.existsSync('example/pages/en/account/settings-b2.htm.tsx')
+      ).toBe(true)
+      expect(fs.existsSync('example/pages/cs/ucet/nastaveni-b2.htm.tsx')).toBe(
+        true
+      )
+      expect(fs.existsSync('example/pages/es/cuenta/ajustes-b2.htm.tsx')).toBe(
+        true
+      )
+    })
   })
 
-  // test('should build all the pages files', () => {
-  //   expect(fs.existsSync('example/roots/_app.js')).toBe(true)
-  //   expect(fs.existsSync('example/roots/index.tsx')).toBe(true)
+  describe('all static files should have the same content', () => {
+    test('_app content', () => {
+      const root = fs.readFileSync('example/roots/_app.tsx')
+      const page = fs.readFileSync('example/pages/_app.tsx')
 
-  //   expect(fs.existsSync('example/pages/_app.js')).toBe(true)
-  //   expect(fs.existsSync('example/pages/index.tsx')).toBe(true)
-  // })
+      expect(root.equals(page)).toBe(true)
+    })
+
+    test('_document content', () => {
+      const root = fs.readFileSync('example/roots/_document.tsx')
+      const page = fs.readFileSync('example/pages/_document.tsx')
+
+      expect(root.equals(page)).toBe(true)
+    })
+
+    test('_error content', () => {
+      const root = fs.readFileSync('example/roots/_error.tsx')
+      const page = fs.readFileSync('example/pages/_error.tsx')
+
+      expect(root.equals(page)).toBe(true)
+    })
+
+    test('api/get-version content', () => {
+      const root = fs.readFileSync('example/roots/api/get-version.ts')
+      const page = fs.readFileSync('example/pages/api/get-version.ts')
+
+      expect(root.equals(page)).toBe(true)
+    })
+
+    test('api/users/get-users content', () => {
+      const root = fs.readFileSync('example/roots/api/users/get-users.ts')
+      const page = fs.readFileSync('example/pages/api/users/get-users.ts')
+
+      expect(root.equals(page)).toBe(true)
+    })
+
+    test('index content', () => {
+      const root = fs.readFileSync('example/roots/index.tsx')
+      const page = fs.readFileSync('example/pages/index.tsx')
+
+      expect(root.equals(page)).toBe(true)
+    })
+  })
 })

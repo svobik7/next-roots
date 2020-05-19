@@ -1,10 +1,10 @@
-import ProfileView from '../../components/ProfileView'
+import { LayoutMain } from 'components/layout'
+import { ProfilePage } from 'components/profile'
 
-export default function () {
+export default function AccountProfileRoot() {
   return (
-    <div>
-      I AM <code>ACCOUNT / PROFILE</code> PAGE
-      <ProfileView />
-    </div>
+    <LayoutMain>
+      <ProfilePage />
+    </LayoutMain>
   )
 }

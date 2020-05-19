@@ -1,7 +1,10 @@
-export default function () {
+import { LayoutMain } from 'components/layout'
+import { LoginPage } from 'components/login'
+
+export default function AuthLoginRoot() {
   return (
-    <div>
-      I AM <code>AUTH / LOGIN</code> PAGE
-    </div>
+    <LayoutMain>
+      <LoginPage />
+    </LayoutMain>
   )
 }
