@@ -9,5 +9,5 @@
     "esModuleInterop": true
   },
   "include": ["src", "bin"],
-  "exclude": ["**/node_modules", "dist", "tests"]
+  "exclude": ["**/node_modules", "dist", "__tests__"]
 }
