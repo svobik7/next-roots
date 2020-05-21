@@ -1,7 +1,11 @@
 // import rewire from 'rewire';
-import { createRewritePath, suffixizePath, tokenizePath } from '../src/utils'
+import {
+  rewritePath,
+  suffixizePath,
+  tokenizePath,
+} from '../src/utils/path.utils'
 
-describe('next-rewrites:utils', () => {
+describe('next-i18n-rewrites:path.utils', () => {
   // rewire whole lib
   // const Utils = rewire('./../utils');
 
@@ -55,13 +59,13 @@ describe('next-rewrites:utils', () => {
   })
 
   /**
-   * Test `createRewritePath` method
+   * Test `rewritePath` method
    * ---
    * It should creates static paths for pages based on given rewrites params
    */
-  describe('createRewritePath', () => {
+  describe('rewritePath', () => {
     test('create paths from minimal config params', () => {
-      const result = createRewritePath(
+      const result = rewritePath(
         { locale: 'en', path: 'homepage-:token' },
         'p1'
       )
@@ -69,12 +73,25 @@ describe('next-rewrites:utils', () => {
     })
 
     test('create paths with custom suffixes', () => {
-      const result = createRewritePath(
+      const result = rewritePath(
         { locale: 'en', path: 'homepage-:token', suffix: '.htm' },
         'p1'
       )
       expect(result).toEqual('en/homepage-p1.htm')
     })
+  })
+
+  test('create paths with no token', () => {
+    const result = rewritePath(
+      { locale: 'en', path: 'homepage' },
+      'token-to-be-ignored'
+    )
+    expect(result).toEqual('en/homepage')
+  })
+
+  test('create empty paths', () => {
+    const result = rewritePath({ locale: 'en', path: '' }, 'any-token-you-want')
+    expect(result).toEqual('en')
   })
 
   /**

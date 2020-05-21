@@ -1,7 +1,7 @@
 {
-  "name": "next-rewrites-example",
+  "name": "next-i18n-rewrites-example",
   "version": "1.0.0",
-  "description": "Example of using next-rewrites package",
+  "description": "Example of using next-i18n-rewrites package",
   "author": "Jirka Svoboda",
   "license": "MIT",
   "private": true,
@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "next": "^9.3.6",
-    "next-rewrites": "link:../",
+    "next-i18n-rewrites": "link:../",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },

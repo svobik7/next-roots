@@ -1,10 +1,10 @@
-import { SettingsPage } from 'components/settings'
 import { LayoutMain } from 'components/layout'
+import AccountSettings from 'domain/account-settings'
 
 export default function AccountSettingsRoot() {
   return (
     <LayoutMain>
-      <SettingsPage />
+      <AccountSettings />
     </LayoutMain>
   )
 }

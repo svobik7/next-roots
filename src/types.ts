@@ -9,3 +9,9 @@ export type RewriteParams = {
   path: string
   suffix?: string
 }
+
+export type LinkRewriteOptions = {
+  locale: string
+  rewrites: Rewrite[]
+  as?: string
+}

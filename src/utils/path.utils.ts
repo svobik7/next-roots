@@ -1,4 +1,4 @@
-import { Rewrite, RewriteParams } from './types'
+import { RewriteParams } from '../types'
 
 /**
  * Creates suffixed path
@@ -60,10 +60,9 @@ export function tokenizePath(path: string, token: string) {
  *
  * @param params
  */
-export function createRewritePath(
-  params: RewriteParams,
-  token: string = ''
-): string {
+export function rewritePath(params: RewriteParams, token: string = ''): string {
+  if (!params.path) return params.locale
+
   return `${params.locale}/${suffixizePath(
     tokenizePath(params.path, token),
     params.suffix || ''

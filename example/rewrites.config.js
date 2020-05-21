@@ -6,6 +6,11 @@ module.exports = {
   dirPages: 'pages',
   rewrites: [
     {
+      root: 'index',
+      token: 'z1',
+      params: [{ locale: '*', path: '', suffix: '', page: 'index' }],
+    },
+    {
       root: 'auth/signup',
       token: 'a1',
       params: [
@@ -41,21 +46,16 @@ module.exports = {
       ],
     },
 
-    // 'detail/article': [
-    //   {
-    //     locale: '*',
-    //     path: '(.*)-:root(ART)',
-    //     suffix: '.htm',
-    //     page: 'detail/article-:root',
-    //   },
-    // ],
-    // 'detail/order': [
-    //   {
-    //     locale: '*',
-    //     path: '(.*)-:root',
-    //     suffix: '.htm',
-    //     page: 'detail/article-:root',
-    //   },
-    // ],
+    // {
+    //   root: 'detail/article',
+    //   token: 'ART',
+    //   params: [
+    //     {
+    //       locale: '*',
+    //       path: ':slug(.*):token:key([A-Z]{3,})',
+    //       page: 'detail/article',
+    //     },
+    //   ],
+    // },
   ],
 }

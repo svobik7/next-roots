@@ -1,10 +1,18 @@
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, useContext } from 'react'
 import Link from 'next/link'
+import { useRewrites } from 'next-i18n-rewrites'
 
 export type LayoutMainProps = PropsWithChildren<{}>
 
 export default function LayoutMain(props: LayoutMainProps) {
   const { children } = props
+
+  const rewrites = useRewrites()
+
+  rewrites.href('/auth/login', { locale: 'cs' })
+  rewrites.href('/auth/login', { locale: 'en' })
+  rewrites.href('/auth/login')
+
   return (
     <div>
       <ol>
@@ -36,7 +44,7 @@ export default function LayoutMain(props: LayoutMainProps) {
       </ol>
 
       <hr />
-      
+
       {children}
     </div>
   )

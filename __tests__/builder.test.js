@@ -19,13 +19,13 @@ function cli(args, cwd) {
   })
 }
 
-describe('next-rewrites:cli-builder', () => {
+describe('next-i18n-rewrites:cli-builder', () => {
   beforeAll(() => {
     // ensure that package is build to latest version
     execSync('yarn build')
     // remove example pages directory (this dir will be use in tests)
     execSync('rm -rf example/pages')
-    // run next-rewrites in example folder and then get back
+    // run next-i18n-rewrites in example folder and then get back
     execSync('cd example && yarn rewrite && cd ..')
   })
 
@@ -53,9 +53,12 @@ describe('next-rewrites:cli-builder', () => {
       expect(fs.existsSync('example/pages/_app.tsx')).toBe(true)
       expect(fs.existsSync('example/pages/_document.tsx')).toBe(true)
       expect(fs.existsSync('example/pages/_error.tsx')).toBe(true)
-      expect(fs.existsSync('example/pages/index.tsx')).toBe(true)
       expect(fs.existsSync('example/pages/api/get-version.ts')).toBe(true)
       expect(fs.existsSync('example/pages/api/users/get-users.ts')).toBe(true)
+
+      expect(fs.existsSync('example/pages/en/index.tsx')).toBe(true)
+      expect(fs.existsSync('example/pages/cs/index.tsx')).toBe(true)
+      expect(fs.existsSync('example/pages/es/index.tsx')).toBe(true)
 
       expect(fs.existsSync('example/pages/en/auth/signup-a1.page.tsx')).toBe(
         true
@@ -63,6 +66,7 @@ describe('next-rewrites:cli-builder', () => {
       expect(
         fs.existsSync('example/pages/cs/auth/registrace-a1.page.tsx')
       ).toBe(true)
+      expect(fs.existsSync('example/pages/es/auth/signup.htm.tsx')).toBe(true)
 
       expect(fs.existsSync('example/pages/en/auth/login-a2.htm.tsx')).toBe(true)
       expect(fs.existsSync('example/pages/cs/auth/prihlaseni-a2.htm.tsx')).toBe(
@@ -129,12 +133,65 @@ describe('next-rewrites:cli-builder', () => {
 
       expect(root.equals(page)).toBe(true)
     })
+  })
 
-    test('index content', () => {
-      const root = fs.readFileSync('example/roots/index.tsx')
-      const page = fs.readFileSync('example/pages/index.tsx')
+  describe('all i18n files should have proper content', () => {
+    test('account/profile content', () => {
+      const root = fs.readFileSync('example/roots/account/profile.tsx')
+      const csPage = fs.readFileSync('example/pages/cs/ucet/profil-b1.htm.tsx')
+      const enPage = fs.readFileSync(
+        'example/pages/en/account/profile-b1.htm.tsx'
+      )
+      const esPage = fs.readFileSync(
+        'example/pages/es/cuenta/perfil-b1.htm.tsx'
+      )
 
-      expect(root.equals(page)).toBe(true)
+      expect(root.equals(csPage)).toBe(true)
+      expect(root.equals(enPage)).toBe(true)
+      expect(root.equals(esPage)).toBe(true)
+    })
+
+    test('account/settings content', () => {
+      const root = fs.readFileSync('example/roots/account/settings.tsx')
+      const csPage = fs.readFileSync(
+        'example/pages/cs/ucet/nastaveni-b2.htm.tsx'
+      )
+      const enPage = fs.readFileSync(
+        'example/pages/en/account/settings-b2.htm.tsx'
+      )
+      const esPage = fs.readFileSync(
+        'example/pages/es/cuenta/ajustes-b2.htm.tsx'
+      )
+
+      expect(root.equals(csPage)).toBe(true)
+      expect(root.equals(enPage)).toBe(true)
+      expect(root.equals(esPage)).toBe(true)
+    })
+
+    test('auth/login content', () => {
+      const root = fs.readFileSync('example/roots/auth/login.tsx')
+      const csPage = fs.readFileSync(
+        'example/pages/cs/auth/prihlaseni-a2.htm.tsx'
+      )
+      const enPage = fs.readFileSync('example/pages/en/auth/login-a2.htm.tsx')
+      const esPage = fs.readFileSync(
+        'example/pages/es/auth/iniciar-sesion-a2.htm.tsx'
+      )
+
+      expect(root.equals(csPage)).toBe(true)
+      expect(root.equals(enPage)).toBe(true)
+      expect(root.equals(esPage)).toBe(true)
+    })
+
+    test('auth/signup content', () => {
+      const root = fs.readFileSync('example/roots/auth/signup.tsx')
+      const csPage = fs.readFileSync(
+        'example/pages/cs/auth/registrace-a1.page.tsx'
+      )
+      const enPage = fs.readFileSync('example/pages/en/auth/signup-a1.page.tsx')
+
+      expect(root.equals(csPage)).toBe(true)
+      expect(root.equals(enPage)).toBe(true)
     })
   })
 })

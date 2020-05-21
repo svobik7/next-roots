@@ -1,10 +1,10 @@
 import { LayoutMain } from 'components/layout'
-import { ProfilePage } from 'components/profile'
+import AccountProfile from 'domain/account-profile'
 
 export default function AccountProfileRoot() {
   return (
     <LayoutMain>
-      <ProfilePage />
+      <AccountProfile />
     </LayoutMain>
   )
 }

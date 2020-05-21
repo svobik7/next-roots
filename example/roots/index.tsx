@@ -1,10 +1,10 @@
 import { LayoutMain } from 'components/layout'
-import { HomePage } from 'components/home'
+import Home from 'domain/home'
 
 export default function IndexPage() {
   return (
     <LayoutMain>
-      <HomePage />
+      <Home />
     </LayoutMain>
   )
 }

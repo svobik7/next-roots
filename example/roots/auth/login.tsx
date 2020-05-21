@@ -1,10 +1,10 @@
 import { LayoutMain } from 'components/layout'
-import { LoginPage } from 'components/login'
+import AuthLogin from 'domain/auth-login'
 
 export default function AuthLoginRoot() {
   return (
     <LayoutMain>
-      <LoginPage />
+      <AuthLogin />
     </LayoutMain>
   )
 }

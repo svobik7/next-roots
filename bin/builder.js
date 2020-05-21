@@ -17,7 +17,7 @@ const cfgDefault = {
   defaultSuffix: '',
   dirRoots: 'roots',
   dirPages: 'pages',
-  staticRoots: ['api', '_app', '_document', '_error', '404', 'index'],
+  staticRoots: ['api', '_app', '_document', '_error', '404'],
   extRoots: '.tsx',
   rewrites: [],
 }
@@ -122,6 +122,14 @@ function isDirectory(path) {
 }
 
 /**
+ * Indicates if given value is either `null` or `undefined`
+ * @param any value
+ */
+function isNullish(value) {
+  return value === undefined || value === null
+}
+
+/**
  * Parses configuration rewrites & ensure all required params are set
  * @param object cfg
  */
@@ -136,13 +144,24 @@ function parseRewrites(cfg) {
     ...r,
     params: locales.map((l) => {
       // find rewrite param based on locale
-      const p = r.params.find((p) => p.locale === l || p.locale === '*') || {}
+      let params = r.params.find((p) => p.locale === l || p.locale === '*')
+
+      // create no rewrite for current locale when params are undefined
+      if (!params) {
+        params = {}
+
+        console.log(
+          colors.red('warn'),
+          `- rewrite rule for`,
+          colors.red(`${l}:${r.root}`),
+          'is missing!'
+        )
+      }
 
       return {
         locale: l,
-        path: r.root,
-        suffix: defaultSuffix,
-        ...p,
+        path: params.page || params.path || r.root,
+        suffix: !isNullish(params.suffix) ? params.suffix : defaultSuffix,
       }
     }),
   }))
@@ -164,16 +183,16 @@ function hasMethod(data, name) {
  * @param string rootPath
  */
 function createPageTemplate(rootPath) {
-  const rootData = readFile(rootPath).replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '')
+  // const rootData = readFile(rootPath).replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '')
 
-  const hasGetStaticProps = hasMethod(rootData, 'getStaticProps')
-  const hasGetStaticPaths = hasMethod(rootData, 'getStaticPaths')
-  const hasGetServerSideProps = hasMethod(rootData, 'getServerSideProps')
+  // const hasGetStaticProps = hasMethod(rootData, 'getStaticProps')
+  // const hasGetStaticPaths = hasMethod(rootData, 'getStaticPaths')
+  // const hasGetServerSideProps = hasMethod(rootData, 'getServerSideProps')
 
-  const hasSomeSpecialMethod =
-    hasGetStaticProps || hasGetStaticPaths || hasGetServerSideProps
+  // const hasSomeSpecialMethod =
+  //   hasGetStaticProps || hasGetStaticPaths || hasGetServerSideProps
 
-  return () => 'TEST CONTENT'
+  return () => readFile(rootPath)
 }
 
 function run() {
@@ -184,7 +203,7 @@ function run() {
     staticRoots = cfgDefault.staticRoots,
   } = cfgRuntime
 
-  console.log('[', colors.yellow('rewrite'), '] generating next-rewrites ...')
+  console.log(colors.yellow('rewrite'), '- generating next-i18n-rewrites ...')
 
   // ensure pages directory is clean before build
   removeDirectory(dirPages)
@@ -210,7 +229,7 @@ function run() {
       const pagePath = getFilePath(
         path.format({
           dir: dirPages,
-          name: engine.createRewritePath(p, r.token),
+          name: engine.rewritePath(p, r.token),
           ext: extRoots,
         })
       )
