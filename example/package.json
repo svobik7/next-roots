@@ -10,12 +10,12 @@
     "rewrite": "node ../bin/builder.js"
   },
   "dependencies": {
-    "next": "^9.3.6",
+    "next": "^9.4.2",
     "next-i18n-rewrites": "link:../",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react": "link:../node_modules/react",
+    "react-dom": "link:../node_modules/react-dom"
   },
   "devDependencies": {
-    "@types/react": "^16.9.35"
+    "@types/react": "link:../node_modules/@types/react"
   }
 }

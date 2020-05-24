@@ -1,4 +1,4 @@
-import { RewriteParams } from '../types'
+import { RewritePage } from 'types'
 
 /**
  * Creates suffixed path
@@ -28,43 +28,48 @@ export function suffixizePath(path: string, suffix: string): string {
 }
 
 /**
- * Creates tokenized path
+ * Creates suffixed path
  *
  * Input:
- * - path: 'some-path-:token'
- * - token: 10
+ * - path: 'some-path'
+ * - locale: 'en'
  *
  * Expected output:
- * - 'some-path-10'
+ * - 'en/some-path'
  *
- * @param path
- * @param params
+ * @path path
+ * @param suffix
  */
-export function tokenizePath(path: string, token: string) {
-  return path.replace(':token', token)
+export function localizePath(path: string, locale: string): string {
+  // prevent any action when suffix is not defined
+  if (!locale) {
+    return path
+  }
+
+  // throw an error when given path is not a string
+  if (typeof path !== 'string') {
+    throw new Error('Path must be type of string')
+  }
+
+  return !path.startsWith(`${locale}/`) ? `${locale}/${path}` : path
 }
 
 /**
  * Creates rewrite paths
  *
  * Input:
- * - token: 'p1',
- * - params: {
+ * - {
  *    locale: 'en',
  *    path: 'some-path-:id'
  *    suffix: '.htm'
  * }
  *
  * Expected output:
- * - '/en/some-path-p1.htm'
+ * - '/en/some-path-:id.htm'
  *
  * @param params
  */
-export function rewritePath(params: RewriteParams, token: string = ''): string {
-  if (!params.path) return params.locale
-
-  return `${params.locale}/${suffixizePath(
-    tokenizePath(params.path, token),
-    params.suffix || ''
-  )}`
+export function createPagePath(page: RewritePage): string {
+  const { path, locale, suffix = '' } = page
+  return `/${suffixizePath(localizePath(path, locale), suffix)}`
 }

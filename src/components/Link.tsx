@@ -1,7 +1,8 @@
+import useRewrites from 'hooks/use-rewrites'
 import NextLink, { LinkProps as NextLinkProps } from 'next/link'
-import { useRewrites } from '../hooks/useRewrites'
+import { PropsWithChildren } from 'react'
 
-export type LinkProps = NextLinkProps & {}
+export type LinkProps = PropsWithChildren<NextLinkProps>
 
 export default function Link(props: LinkProps) {
   const { children, href, as, ...otherProps } = props
@@ -11,7 +12,7 @@ export default function Link(props: LinkProps) {
   return (
     <NextLink
       href={rewrites.href(href)}
-      as={rewrites.as(href, as)}
+      as={rewrites.as(href)}
       {...otherProps}
     >
       {children}

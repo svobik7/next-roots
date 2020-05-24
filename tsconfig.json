@@ -1,12 +1,15 @@
 {
   "compilerOptions": {
+    "target": "es5",
+    "allowJs": true,
+    "noEmit": true,
     "declaration": true,
-    "module": "es6",
     "noImplicitAny": true,
     "outDir": "./dist",
-    "target": "es5",
     "strict": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "baseUrl": "src"
   },
   "include": ["src", "bin"],
   "exclude": ["**/node_modules", "dist", "__tests__"]

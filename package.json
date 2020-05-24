@@ -2,23 +2,6 @@
   "name": "next-i18n-rewrites",
   "version": "0.0.1",
   "description": "Next.js utility to generate i18n pages according to custom rewrites rules.",
-  "license": "MIT",
-  "keywords": [
-    "react",
-    "next",
-    "nextjs",
-    "next.js",
-    "rewrites",
-    "routes",
-    "localization",
-    "localized",
-    "locale",
-    "static"
-  ],
-  "author": {
-    "name": "Jirka Svoboda",
-    "email": "svobik7@gmail.com"
-  },
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "browser": "dist/index.bundle.js",
@@ -38,6 +21,9 @@
   },
   "bin": {
     "next-i18n-rewrites": "./bin/builder.js"
+  },
+  "dependencies": {
+    "path-to-regexp": "^6.1.0"
   },
   "devDependencies": {
     "@types/jest": "25.2.3",
@@ -59,6 +45,23 @@
   "peerDependencies": {
     "next": "^9.3.6",
     "react": "^16.13.1"
+  },
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "next",
+    "nextjs",
+    "next.js",
+    "rewrites",
+    "routes",
+    "localization",
+    "localized",
+    "locale",
+    "static"
+  ],
+  "author": {
+    "name": "Jirka Svoboda",
+    "email": "svobik7@gmail.com"
   },
   "husky": {
     "hooks": {

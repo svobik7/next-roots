@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 const fs = require('fs')
 const path = require('path')
-const colors = require('colors')
-const engine = require('../dist')
+const pathToRegexp = require('path-to-regexp')
+
+const engine = require('../dist/index')
+const utils = require('../dist/utils')
 
 // load CLI args
 const [, , configPath = 'rewrites.config.js', configParams = {}] = process.argv
@@ -122,52 +124,6 @@ function isDirectory(path) {
 }
 
 /**
- * Indicates if given value is either `null` or `undefined`
- * @param any value
- */
-function isNullish(value) {
-  return value === undefined || value === null
-}
-
-/**
- * Parses configuration rewrites & ensure all required params are set
- * @param object cfg
- */
-function parseRewrites(cfg) {
-  const {
-    locales = cfgDefault.locales,
-    rewrites = cfgDefault.rewrites,
-    defaultSuffix = cfgDefault.defaultSuffix,
-  } = cfg
-
-  return rewrites.map((r) => ({
-    ...r,
-    params: locales.map((l) => {
-      // find rewrite param based on locale
-      let params = r.params.find((p) => p.locale === l || p.locale === '*')
-
-      // create no rewrite for current locale when params are undefined
-      if (!params) {
-        params = {}
-
-        console.log(
-          colors.red('warn'),
-          `- rewrite rule for`,
-          colors.red(`${l}:${r.root}`),
-          'is missing!'
-        )
-      }
-
-      return {
-        locale: l,
-        path: params.page || params.path || r.root,
-        suffix: !isNullish(params.suffix) ? params.suffix : defaultSuffix,
-      }
-    }),
-  }))
-}
-
-/**
  * Indicates if given data (file content) has given method
  * @param string data
  * @param string name
@@ -209,7 +165,7 @@ function run() {
   removeDirectory(dirPages)
 
   // ensure all rewrites are valid before build
-  const rewrites = parseRewrites(cfgRuntime)
+  const rewrites = utils.parseRewrites({ ...cfgDefault, ...cfgRuntime }, true)
 
   // create pages for each rewrite
   rewrites.forEach((r) => {
@@ -225,11 +181,13 @@ function run() {
     const pageTemplate = createPageTemplate(rootPath)
 
     // create page file for each root's rewrite
-    r.params.forEach((p) => {
+    r.pages.forEach((p) => {
+      const compileName = pathToRegexp.compile(engine.createPagePath(p))
+
       const pagePath = getFilePath(
         path.format({
           dir: dirPages,
-          name: engine.rewritePath(p, r.token),
+          name: compileName(r.params),
           ext: extRoots,
         })
       )

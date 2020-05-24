@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { Rewrite } from './types'
+import { Rewrite } from 'types'
 
 const initialContext: RewriteContext = {
   currentLocale: '',
