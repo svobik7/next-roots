@@ -15,18 +15,14 @@ export type Config = {
 export type Rewrite = {
   root: string
   pages: RewritePage[]
-  params: RewriteParam[]
+  params: Record<string, string>
 }
 
 export type RewritePage = {
   locale: string
   path: string
+  alias?: string
   suffix?: string
-}
-
-export type RewriteParam = {
-  name: string
-  value: string
 }
 
 /**

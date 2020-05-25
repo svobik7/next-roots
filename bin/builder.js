@@ -2,8 +2,8 @@
 const fs = require('fs')
 const path = require('path')
 const pathToRegexp = require('path-to-regexp')
+const colors = require('colors')
 
-const engine = require('../dist/index')
 const utils = require('../dist/utils')
 
 // load CLI args
@@ -24,13 +24,15 @@ const cfgDefault = {
   rewrites: [],
 }
 
+// create main dir path
+const mainDir = path.dirname(path.join(process.cwd(), configPath))
+
 /**
  * Creates file path relatively to configuration file directory
  * @param string filePath
  */
 function getFilePath(filePath) {
-  const dirPath = path.dirname(path.join(process.cwd(), configPath))
-  return path.join(dirPath, filePath)
+  return path.join(mainDir, filePath)
 }
 
 /**
@@ -124,15 +126,23 @@ function isDirectory(path) {
 }
 
 /**
+ * Indicates if given value is either `null` or `undefined`
+ * @param any value
+ */
+function isNullish(value) {
+  return value === undefined || value === null
+}
+
+/**
  * Indicates if given data (file content) has given method
  * @param string data
  * @param string name
  */
-function hasMethod(data, name) {
-  return data.match(
-    new RegExp(`export (const|var|let|async function|function) ${name}`)
-  )
-}
+// function hasMethod(data, name) {
+//   return data.match(
+//     new RegExp(`export (const|var|let|async function|function) ${name}`)
+//   )
+// }
 
 /**
  * Creates page template which can be used to generate internationalized page content
@@ -151,6 +161,40 @@ function createPageTemplate(rootPath) {
   return () => readFile(rootPath)
 }
 
+/**
+ * Parses configuration rewrites & ensure all required params are set
+ * @param object cfg
+ */
+function parseRewrites(cfg, debug = true) {
+  const { locales, rewrites, defaultSuffix } = cfg
+
+  return rewrites.map((r) => ({
+    ...r,
+    pages: locales.map((l) => {
+      // find rewrite param based on locale
+      let page = r.pages.find((p) => p.locale === l || p.locale === '*')
+
+      // create no rewrite for current locale when page is undefined
+      if (!page && debug) {
+        console.log(
+          colors.red('warn'),
+          `- rewrite rule for`,
+          colors.red(`${l}:${r.root}`),
+          'is missing!'
+        )
+      }
+
+      const suffix = page && page.suffix
+
+      return {
+        locale: l,
+        path: page ? page.path : r.root,
+        suffix: !isNullish(suffix) ? suffix : defaultSuffix,
+      }
+    }),
+  }))
+}
+
 function run() {
   const {
     dirPages = cfgDefault.dirPages,
@@ -165,7 +209,10 @@ function run() {
   removeDirectory(dirPages)
 
   // ensure all rewrites are valid before build
-  const rewrites = utils.parseRewrites({ ...cfgDefault, ...cfgRuntime }, true)
+  const rewrites = parseRewrites({ ...cfgDefault, ...cfgRuntime }, true)
+
+  // create rewrites table
+  const table = []
 
   // create pages for each rewrite
   rewrites.forEach((r) => {
@@ -182,47 +229,58 @@ function run() {
 
     // create page file for each root's rewrite
     r.pages.forEach((p) => {
-      const compileName = pathToRegexp.compile(engine.createPagePath(p))
+      const compileHref = pathToRegexp.compile(utils.createPagePath(p))
+
+      const href = compileHref(r.params)
+      
+      table.push({
+        key: `${p.locale}/${r.root}`,
+        href: `${href}`,
+        // alias: `${alias}`,
+      })
 
       const pagePath = getFilePath(
         path.format({
           dir: dirPages,
-          name: compileName(r.params),
+          name: href,
           ext: extRoots,
         })
       )
 
       saveFile(pagePath, pageTemplate(p.locale))
     })
+  })
 
-    // keep next.js specific files / dirs as they are
-    // and just copy them to pages directory
-    staticRoots.forEach((staticPath) => {
-      const dir = getFilePath(
-        path.format({
-          dir: dirRoots,
-          name: staticPath,
-        })
-      )
+  const tablePath = `${mainDir}/rewrites.table.js`
+  saveFile(tablePath, `module.exports = ${JSON.stringify(table)}`)
 
-      if (isDirectory(dir)) {
-        copyDirectory(dir, dir.replace(dirRoots, dirPages))
-        return
-      }
+  // keep next.js specific files / dirs as they are
+  // and just copy them to pages directory
+  staticRoots.forEach((staticPath) => {
+    const dir = getFilePath(
+      path.format({
+        dir: dirRoots,
+        name: staticPath,
+      })
+    )
 
-      file = getFilePath(
-        path.format({
-          dir: dirRoots,
-          name: staticPath,
-          ext: extRoots,
-        })
-      )
+    if (isDirectory(dir)) {
+      copyDirectory(dir, dir.replace(dirRoots, dirPages))
+      return
+    }
 
-      if (isFile(file)) {
-        copyFile(file, file.replace(dirRoots, dirPages))
-        return
-      }
-    })
+    file = getFilePath(
+      path.format({
+        dir: dirRoots,
+        name: staticPath,
+        ext: extRoots,
+      })
+    )
+
+    if (isFile(file)) {
+      copyFile(file, file.replace(dirRoots, dirPages))
+      return
+    }
   })
 }
 

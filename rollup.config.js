@@ -41,6 +41,10 @@ export default [
         file: 'dist/utils.js',
         format: 'cjs',
       },
+      // {
+      //   file: pkg.module,
+      //   format: 'es',
+      // },
     ],
     plugins: [
       typescript({

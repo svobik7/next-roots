@@ -1,71 +1,66 @@
-// import rewire from 'rewire';
-import {
-  localizePath,
-  createPagePath,
-  suffixizePath,
-} from '../src/utils/path-utils'
+import { localize, createPagePath, suffixize } from '../src/utils'
 
-describe('next-i18n-rewrites:path-utils', () => {
+describe('next-i18n-rewrites:utils', () => {
   /**
-   * Test `suffixizePath` method
+   * Test `suffixize` method
    * ---
-   * It should enriches given path with suffix
+   * It should enriches given input with suffix
    * - does not modify the path when suffix is not given
    * - does not modify the path when suffix is already occurred
    * - throw an error when path is not string
    */
-  describe('suffixizePath', () => {
-    test('adds suffix to the end of path', () => {
-      const result = suffixizePath('path', '.suffix')
+  describe('suffixize', () => {
+    test('adds suffix to the end of input', () => {
+      const result = suffixize('path', '.suffix')
       expect(result).toEqual('path.suffix')
     })
 
     test('do not modify path when suffix is empty', () => {
-      const result = suffixizePath('path', '')
+      const result = suffixize('path', '')
       expect(result).toEqual('path')
     })
 
     test('do not modify path when suffix already exists', () => {
-      const result = suffixizePath('path.suffix', '.suffix')
+      const result = suffixize('path.suffix', '.suffix')
       expect(result).toEqual('path.suffix')
     })
 
     test('throw an error when path is not string', () => {
       // @ts-ignore
-      const method = () => suffixizePath({}, '.suffix')
+      const method = () => suffixize({}, '.suffix')
       expect(method).toThrowError('Path must be type of string')
     })
   })
 
   /**
-   * Test `localizePath` method
+   * Test `localize` method
    * ---
-   * It should localize given path with rewrite locale
-   * - does not modify the path when no locale is given
+   * It should localize given input with rewrite locale prefix
+   * - does not modify the input when no locale is given
    */
-  describe('localizePath', () => {
+  describe('localize', () => {
     test('adds locale to the path', () => {
-      const result = localizePath('some-path-:id', 'en')
+      const result = localize('some-path-:id', 'en')
       expect(result).toEqual('en/some-path-:id')
     })
 
     test('do not modify path when no locale is given', () => {
-      const result = localizePath('path', '')
+      const result = localize('path', '')
       expect(result).toEqual('path')
     })
 
     test('do not modify path when locale already exists', () => {
-      const result = localizePath('en/path', 'en')
+      const result = localize('en/path', 'en')
       expect(result).toEqual('en/path')
     })
   })
 
   /**
-   * Test `rewritePath` method
+   * Test `createPagePath` method
    * ---
-   * It should creates static paths for pages based on given params
+   * It should creates page paths based on given params
    */
-  describe('rewritePath', () => {
+  describe('createPagePath', () => {
     test('create paths from minimal config params', () => {
       const result = createPagePath({
         path: 'homepage-:token',

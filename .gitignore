@@ -33,5 +33,6 @@ yarn-error.log*
 # Local History for Visual Studio Code
 .history/
 
-# automatically generated folders 
+# automatically generated files & folders 
 /example/pages
+/example/rewrites.table.js
