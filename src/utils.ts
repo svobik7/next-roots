@@ -1,4 +1,4 @@
-import { RewriteLinkOptions } from 'types'
+import { RewriteLinkOptions } from './types'
 
 /**
  * Creates suffixed input

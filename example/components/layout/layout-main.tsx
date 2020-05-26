@@ -7,6 +7,7 @@ export default function LayoutMain(props: LayoutMainProps) {
   const { children } = props
 
   const rewrites = useRewrites()
+
   return (
     <div>
       <ol>

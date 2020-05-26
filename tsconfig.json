@@ -2,16 +2,13 @@
   "compilerOptions": {
     "target": "es5",
     "noEmit": true,
-    "declaration": true,
-    "declarationDir": "./dist/@types",
-    "outDir": "./dist",
-    "baseUrl": "src",
     "strict": true,
     "allowJs": true,
     "noImplicitAny": true,
     "esModuleInterop": true,
+    "skipLibCheck": true,
     "jsx": "react"
   },
-  "include": ["src"],
+  "include": ["src", "bin"],
   "exclude": ["**/node_modules", "dist", "__tests__"]
 }

@@ -4,23 +4,22 @@
   "description": "Next.js utility to generate i18n pages according to custom rewrites rules.",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
-  "browser": "dist/index.bundle.js",
-  "types": "dist/@types/index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
     "dist",
     "README.md"
   ],
   "scripts": {
-    "prepublish": "yarn test && yarn build",
+    "prepublish": "yarn clean && yarn build && yarn test",
     "build": "rollup -c",
-    "clean": "rm -r dist",
+    "clean": "rm -rf dist > /dev/null",
     "format": "pretty-quick",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch"
   },
   "bin": {
-    "next-i18n-rewrites": "./bin/builder.js"
+    "next-i18n-rewrites": "./dist/bin/builder.js"
   },
   "dependencies": {
     "path-to-regexp": "^6.1.0"
@@ -38,7 +37,7 @@
     "react-dom": "^16.13.1",
     "rollup": "^2.10.4",
     "rollup-plugin-terser": "^6.1.0",
-    "rollup-plugin-typescript2": "^0.27.1",
+    "rollup-plugin-ts": "^1.2.24",
     "ts-jest": "^26.0.0",
     "typescript": "^3.9.2"
   },

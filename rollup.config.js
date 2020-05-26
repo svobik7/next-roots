@@ -1,5 +1,5 @@
 import { terser } from 'rollup-plugin-terser'
-import typescript from 'rollup-plugin-typescript2'
+import typescript from 'rollup-plugin-ts'
 import pkg from './package.json'
 
 export default [
@@ -18,7 +18,10 @@ export default [
     plugins: [
       typescript({
         typescript: require('typescript'),
-        useTsconfigDeclarationDir: true,
+        tsconfig: (resolvedConfig) => ({
+          ...resolvedConfig,
+          declaration: true,
+        }),
       }),
       terser(), // minifies generated bundles
     ],
@@ -40,11 +43,7 @@ export default [
     plugins: [
       typescript({
         typescript: require('typescript'),
-        tsconfigOverride: {
-          compilerOptions: {
-            declaration: false,
-          },
-        },
+        declaration: false,
       }),
       terser(), // minifies generated bundles
     ],

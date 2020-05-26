@@ -1,9 +1,10 @@
-import useRewrites from 'hooks/use-rewrites'
 import NextLink, { LinkProps as NextLinkProps } from 'next/link'
 import React from 'react'
+import { RewriteLinkOptions } from '../types'
+import useRewrites from './../hooks/use-rewrites'
 
 export type LinkProps = React.PropsWithChildren<
-  NextLinkProps & { locale?: string }
+  NextLinkProps & Partial<RewriteLinkOptions>
 >
 
 export default function Link(props: LinkProps) {

@@ -1,7 +1,7 @@
-import Context from 'context'
 import { useContext } from 'react'
-import { RewriteLinkOptions } from 'types'
-import { rewriteAs, rewriteHref } from 'utils'
+import Context from './../context'
+import { RewriteLinkOptions } from './../types'
+import { rewriteAs, rewriteHref } from './../utils'
 
 export default function useRewrites() {
   // use rewrite context for current locale and rules
