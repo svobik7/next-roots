@@ -1,4 +1,4 @@
-import { RewritePage } from 'types'
+import { RewriteLinkOptions } from 'types'
 
 /**
  * Creates suffixed input
@@ -51,25 +51,87 @@ export function localize(input: string, locale: string): string {
     throw new Error('Path must be type of string')
   }
 
+  // return locale only when input is `/`
+  if (input === '/') {
+    return locale
+  }
+
+  // do not double slash between input and locale
+  if (input.startsWith('/')) {
+    return `${locale}${input}`
+  }
+
   return !input.startsWith(`${locale}/`) ? `${locale}/${input}` : input
 }
 
 /**
- * Creates rewrite paths
+ * Creates unique rewrite key
  *
  * Input:
- * - {
- *    locale: 'en',
- *    path: 'some-path-:id'
- *    suffix: '.htm'
- * }
+ * - root: account/profile
+ * - locale: en
  *
  * Expected output:
- * - '/en/some-path-:id.htm'
+ * - en/account/profile
  *
- * @param params
+ * @param input
+ * @param locale
  */
-export function createPagePath(page: RewritePage): string {
-  const { locale, path, suffix = '' } = page
-  return `/${suffixize(localize(path, locale), suffix)}`
+export function createRewriteKey(root: string, locale: string) {
+  return localize(root, locale)
+}
+
+/**
+ * Creates unique rewrite path
+ *
+ * Input:
+ * - input: account/profile-:token
+ * - locale: en
+ * - suffix: .htm
+ *
+ * Expected output:
+ * - /en/account/profile-:token.htm
+ *
+ * @param input
+ * @param locale
+ */
+export function createRewritePath(
+  input: string,
+  locale: string,
+  suffix: string = ''
+) {
+  if (!input) return input
+  return `/${suffixize(localize(input, locale), suffix)}`
+}
+
+/**
+ * Finds and retrieves `as` for given root and options
+ * @param root
+ * @param options
+ */
+export function rewriteAs(root: string, options: RewriteLinkOptions) {
+  // rename invalid root name
+  root = root === '/' ? 'index' : root
+
+  const rule = options.__table.find(
+    (r) => r.key === createRewriteKey(root, options.locale)
+  )
+
+  return rule?.as || rule?.href || ''
+}
+
+/**
+ * Finds and retrieves `href` for given root and options
+ * @param root
+ * @param options
+ */
+export function rewriteHref(root: string, options: RewriteLinkOptions) {
+  // rename invalid root name
+  root = root === '/' ? 'index' : root
+
+  const rule = options.__table.find(
+    (r) => r.key === createRewriteKey(root, options.locale)
+  )
+
+  return rule?.href || ''
 }

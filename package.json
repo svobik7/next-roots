@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "browser": "dist/index.bundle.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/@types/index.d.ts",
   "files": [
     "dist",
     "README.md"
@@ -37,7 +37,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "rollup": "^2.10.4",
-    "rollup-plugin-terser": "^5.3.0",
+    "rollup-plugin-terser": "^6.1.0",
     "rollup-plugin-typescript2": "^0.27.1",
     "ts-jest": "^26.0.0",
     "typescript": "^3.9.2"

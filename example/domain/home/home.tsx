@@ -7,9 +7,7 @@ export default function Home() {
     <div className={styles.root}>
       HOME Domain
       <hr />
-      SIGNUP: {rewrites.as('auth/signup')}
-      <hr />
-      <pre>{JSON.stringify(rewrites.rules, null, 2)}</pre>
+      {/* SIGNUP: {rewrites.as('auth/signup', { locale: 'en' })} */}
     </div>
   )
 }

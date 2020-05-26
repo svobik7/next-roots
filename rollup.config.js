@@ -14,41 +14,37 @@ export default [
         file: pkg.module,
         format: 'es',
       },
-      // {
-      //   file: pkg.browser,
-      //   format: 'iife',
-      //   name: 'NextRewrites', // the global which can be used in a browser
-      //   globals: {
-      //     react: 'React',
-      //   },
-      // },
     ],
     plugins: [
       typescript({
         typescript: require('typescript'),
+        useTsconfigDeclarationDir: true,
       }),
       terser(), // minifies generated bundles
     ],
     external: [
       ...Object.keys(pkg.dependencies || {}),
       ...Object.keys(pkg.peerDependencies || {}),
+      'next/link',
     ],
   },
   {
-    input: 'src/utils/index.ts',
+    input: 'bin/builder.ts',
     output: [
       {
-        file: 'dist/utils.js',
+        file: 'dist/bin/builder.js',
         format: 'cjs',
+        banner: '#!/usr/bin/env node',
       },
-      // {
-      //   file: pkg.module,
-      //   format: 'es',
-      // },
     ],
     plugins: [
       typescript({
         typescript: require('typescript'),
+        tsconfigOverride: {
+          compilerOptions: {
+            declaration: false,
+          },
+        },
       }),
       terser(), // minifies generated bundles
     ],

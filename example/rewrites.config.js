@@ -7,7 +7,7 @@ module.exports = {
   rewrites: [
     {
       root: 'index',
-      pages: [{ locale: '*', path: 'index', alias: '/:locale', suffix: '' }],
+      pages: [{ locale: '*', path: 'index', alias: '/', suffix: '' }],
     },
     {
       root: 'auth/signup',

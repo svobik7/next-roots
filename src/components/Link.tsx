@@ -1,20 +1,26 @@
 import useRewrites from 'hooks/use-rewrites'
 import NextLink, { LinkProps as NextLinkProps } from 'next/link'
-import { PropsWithChildren } from 'react'
+import React from 'react'
 
-export type LinkProps = PropsWithChildren<NextLinkProps>
+export type LinkProps = React.PropsWithChildren<
+  NextLinkProps & { locale?: string }
+>
 
 export default function Link(props: LinkProps) {
-  const { children, href, as, ...otherProps } = props
+  const { children, href, as, locale, ...otherProps } = props
 
   const rewrites = useRewrites()
 
+  const linkHref =
+    typeof href === 'string' ? rewrites.href(href, { locale }) : href
+
+  const linkAs =
+    typeof href === 'string' && !Boolean(as)
+      ? rewrites.as(href, { locale })
+      : as
+
   return (
-    <NextLink
-      href={rewrites.href(href)}
-      as={rewrites.as(href)}
-      {...otherProps}
-    >
+    <NextLink href={linkHref} as={linkAs} {...otherProps}>
       {children}
     </NextLink>
   )

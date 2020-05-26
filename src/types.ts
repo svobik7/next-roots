@@ -5,6 +5,8 @@ export type Config = {
   dirRoots: string
   dirPages: string
   rewrites: Rewrite[]
+  extRoots: string
+  staticRoots: string[]
 }
 
 /**
@@ -21,8 +23,8 @@ export type Rewrite = {
 export type RewritePage = {
   locale: string
   path: string
-  alias?: string
-  suffix?: string
+  alias: string
+  suffix: string
 }
 
 /**
@@ -30,14 +32,12 @@ export type RewritePage = {
  * REWRITE TABLE
  * ---
  */
-export type RewriteTableOptions = { defaultSuffix?: string }
-
 export type RewriteTable = RewriteTableRule[]
 
 export type RewriteTableRule = {
-  ID: string
+  key: string
   href: string
-  as: string
+  as?: string
 }
 
 /**
@@ -46,6 +46,6 @@ export type RewriteTableRule = {
  * ---
  */
 export type RewriteLinkOptions = {
-  __rewriteTable: RewriteTable
+  __table: RewriteTable
   locale: string
 }

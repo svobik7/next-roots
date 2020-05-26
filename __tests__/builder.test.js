@@ -6,7 +6,7 @@ describe('next-i18n-rewrites:cli-builder', () => {
     // ensure that package is build to latest version
     execSync('yarn build')
     // remove examples rewrites.table.js
-    execSync('rm example/rewrites.table.js')
+    execSync('rm -f example/rewrites.table.js')
     // remove example pages directory (this dir will be use in tests)
     execSync('rm -rf example/pages')
     // run next-i18n-rewrites in example folder and then get back
@@ -14,6 +14,7 @@ describe('next-i18n-rewrites:cli-builder', () => {
   })
 
   afterAll(() => {
+    execSync('rm -f example/rewrites.table.js')
     execSync('rm -rf example/pages')
   })
 
@@ -244,38 +245,7 @@ describe('next-i18n-rewrites:cli-builder', () => {
       ]
 
       const table = await require('example/rewrites.table.js')
-      expect(table).toBe(expectedTable)
+      expect(table).toStrictEqual(expectedTable)
     })
   })
 })
-//   expect(result).toBe([
-//     {
-//       root: 'index',
-//       rules: [
-//         { key: 'cs/index', href: 'cs/index', as: 'cs' },
-//         { key: 'en/index', href: 'en/index', as: 'en' },
-//         { key: 'es/index', href: 'es/index', as: 'es' },
-//       ],
-//     },
-//     {
-//       root: 'auth/signup',
-//       rules: [
-//         {
-//           key: 'cs/auth/signup',
-//           href: 'cs/auth/registrace-p1.page',
-//           // as: 'cs/auth/registrace-p1.page',
-//         },
-//         {
-//           key: 'en/auth/signup',
-//           href: 'en/auth/signup-p1.page',
-//           // as: 'en/auth/signup-p1.page',
-//         },
-//         {
-//           key: 'es/auth/signup',
-//           href: 'es/auth/signup.htm',
-//           // as: 'es/auth/signup.htm',
-//         },
-//       ],
-//     },
-//   ])
-// })
