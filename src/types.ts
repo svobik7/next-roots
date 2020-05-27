@@ -18,6 +18,7 @@ export type Rewrite = {
   root: string
   pages: RewritePage[]
   params: Record<string, string>
+  metaData?: RewriteMeta['data']
 }
 
 export type RewritePage = {
@@ -25,19 +26,33 @@ export type RewritePage = {
   path: string
   alias: string
   suffix: string
+  metaData?: RewriteMeta['data']
 }
 
 /**
  * ---
- * REWRITE TABLE
+ * REWRITE RULE
  * ---
  */
-export type RewriteTable = RewriteTableRule[]
-
-export type RewriteTableRule = {
+export type RewriteRule = {
   key: string
   href: string
   as?: string
+}
+
+/**
+ * ---
+ * REWRITE META
+ * ---
+ */
+export type RewriteMeta = {
+  key: string
+  data: Record<string, any>
+}
+
+export type RewriteMetaDataOptions = {
+  __meta: RewriteMeta[]
+  strict?: boolean
 }
 
 /**
@@ -46,6 +61,7 @@ export type RewriteTableRule = {
  * ---
  */
 export type RewriteLinkOptions = {
-  __table: RewriteTable
+  __rules: RewriteRule[]
   locale: string
+  strict?: boolean
 }

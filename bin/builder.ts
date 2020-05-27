@@ -1,5 +1,5 @@
-import { Config, RewritePage, RewriteTable } from './../src/types'
-import { createRewriteKey, createRewritePath } from './../src/utils'
+import { Config, RewriteMeta, RewritePage, RewriteRule } from './../src/types'
+import { encodeRewriteKey, createRewritePath } from './../src/utils'
 
 const colors = require('colors')
 const fs = require('fs')
@@ -52,6 +52,7 @@ function saveFile(filePath: string, content: string) {
  * @returns string
  */
 function readFile(path: string, encoding: BufferEncoding = 'utf8') {
+  if (!isFile(path)) return ''
   return fs.readFileSync(path).toString(encoding)
 }
 
@@ -161,7 +162,8 @@ function run() {
   removeDirectory(cfg.dirPages)
 
   // create rewrites table
-  const table: RewriteTable = []
+  const rules: RewriteRule[] = []
+  const meta: RewriteMeta[] = []
 
   // create pages for each rewrite
   cfg.rewrites.forEach((r) => {
@@ -176,53 +178,80 @@ function run() {
     // create page template for each root
     const pageContent = readFile(rootPath)
 
-    // create page file for each root's rewrite
-    cfg.locales.forEach((l) => {
-      // find rewrite param based on locale
-      let page = r.pages.find((p) => p.locale === l || p.locale === '*')
-
-      // warn about missing rewrite rule
-      if (!page) {
-        console.log(
-          colors.red('warn'),
-          `- rewrite rule for`,
-          colors.red(`${l}:${r.root}`),
-          'is missing!'
-        )
-      }
-
-      // make sure all page rewrite params are set
-      const pageRewrite: RewritePage = {
-        locale: l,
-        path: page?.path || r.root,
-        alias: page?.alias || '',
-        suffix: page?.suffix ?? cfg.defaultSuffix,
-      }
-
-      // create page rewrite
-      const [href, as] = rewrite(pageRewrite, r.params)
-
-      // push new rewrite rule to rewrites table
-      table.push({
-        key: createRewriteKey(r.root, l),
-        href,
-        as,
+    // push rewrite meta data to meta table
+    r.metaData &&
+      Object.keys(r.metaData).length &&
+      meta.push({
+        key: r.root,
+        data: r.metaData,
       })
 
-      const pagePath = getFilePath(
-        path.format({
-          dir: cfg.dirPages,
-          name: href,
-          ext: cfg.extRoots,
-        })
-      )
+    // create page file for each root's rewrite
+    pageContent &&
+      cfg.locales.forEach((l) => {
+        // find rewrite param based on locale
+        let page = r.pages.find((p) => p.locale === l || p.locale === '*')
 
-      saveFile(pagePath, pageContent)
-    })
+        // warn about missing rewrite rule
+        if (!page) {
+          console.log(
+            colors.red('warn'),
+            `- rewrite rule for`,
+            colors.red(`${l}:${r.root}`),
+            'is missing!'
+          )
+        }
+
+        // make sure all page rewrite params are set
+        const pageRewrite: RewritePage = {
+          locale: l,
+          path: page?.path || r.root,
+          alias: page?.alias || '',
+          suffix: page?.suffix ?? cfg.defaultSuffix,
+        }
+
+        const ruleKey = encodeRewriteKey(r.root, l)
+
+        // create page rewrite
+        const [href, as] = rewrite(pageRewrite, r.params)
+
+        // push new rewrite rule to rewrites table
+        rules.push({
+          key: ruleKey,
+          href,
+          as,
+        })
+
+        // push rewrite meta data to meta table
+        page?.metaData &&
+          Object.keys(page.metaData).length &&
+          meta.push({
+            key: ruleKey,
+            data: page?.metaData,
+          })
+
+        const pagePath = getFilePath(
+          path.format({
+            dir: cfg.dirPages,
+            name: href,
+            ext: cfg.extRoots,
+          })
+        )
+
+        saveFile(pagePath, pageContent)
+      })
   })
 
-  const tablePath = `${mainDir}/rewrites.table.js`
-  saveFile(tablePath, `module.exports = ${JSON.stringify(table)}`)
+  let rewritesContent = ''
+
+  rewritesContent += `module.exports.defaultLocale = "${cfg.defaultLocale}" \n`
+  rewritesContent += `module.exports.locales = ${JSON.stringify(
+    cfg.locales
+  )} \n`
+  rewritesContent += `module.exports.rules = ${JSON.stringify(rules)} \n`
+  rewritesContent += `module.exports.meta = ${JSON.stringify(meta)} \n`
+
+  saveFile(`${mainDir}/rewrites.js`, rewritesContent)
 
   // keep next.js specific files / dirs as they are
   // and just copy them to pages directory

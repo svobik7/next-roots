@@ -8,16 +8,16 @@ export type LinkProps = React.PropsWithChildren<
 >
 
 export default function Link(props: LinkProps) {
-  const { children, href, as, locale, ...otherProps } = props
+  const { children, href, as, locale, strict = true, ...otherProps } = props
 
   const rewrites = useRewrites()
 
   const linkHref =
-    typeof href === 'string' ? rewrites.href(href, { locale }) : href
+    typeof href === 'string' ? rewrites.href(href, { locale, strict }) : href
 
   const linkAs =
     typeof href === 'string' && !Boolean(as)
-      ? rewrites.as(href, { locale })
+      ? rewrites.as(href, { locale, strict })
       : as
 
   return (

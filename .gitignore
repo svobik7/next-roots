@@ -35,4 +35,5 @@ yarn-error.log*
 
 # automatically generated files & folders 
 /example/pages
-/example/rewrites.table.js
+/example/rewrites.*.js
+/example/rewrites.js
