@@ -1,20 +1,25 @@
 import { createContext } from 'react'
-import { RewriteTable } from './types'
+import { RewriteMeta, RewriteRule } from './types'
 
 const initialContext: RewriteContext = {
+  currentRule: undefined,
   currentLocale: '',
   defaultLocale: '',
-  defaultSuffix: '',
   locales: [],
-  __table: [],
+  rules: [],
+  meta: [],
 }
 
 export type RewriteContext = {
+  currentRule: RewriteRule | undefined
   currentLocale: string
   defaultLocale: string
-  defaultSuffix: string
   locales: string[]
-  __table: RewriteTable
+  rules: RewriteRule[]
+  meta: RewriteMeta[]
 }
 
-export default createContext(initialContext)
+const context = createContext(initialContext)
+context.displayName = 'RewritesContext'
+
+export default context

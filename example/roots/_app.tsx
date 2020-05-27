@@ -1,20 +1,23 @@
 import { Context as RewritesContext } from 'next-i18n-rewrites'
 import { AppProps } from 'next/app'
-import cfgRewrites from 'rewrites.config'
-import tblRewrites from 'rewrites.table'
+import rewrites from 'rewrites'
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   // detect current locale from page pathname
-  const [, locale] = router.pathname.split('/')
+  const [, currentLocale] = router.pathname.split('/')
+  const currentRewrite = rewrites.rules.find(
+    (r) => r.as === router.pathname || r.href === router.pathname
+  )
 
   return (
     <RewritesContext.Provider
       value={{
-        currentLocale: locale || cfgRewrites.defaultLocale,
-        defaultLocale: cfgRewrites.defaultLocale,
-        defaultSuffix: cfgRewrites.defaultSuffix,
-        locales: cfgRewrites.locales,
-        __table: tblRewrites,
+        currentRule: currentRewrite,
+        currentLocale: currentLocale || rewrites.defaultLocale,
+        defaultLocale: rewrites.defaultLocale,
+        locales: rewrites.locales,
+        rules: rewrites.rules,
+        meta: rewrites.meta,
       }}
     >
       <Component {...pageProps} />

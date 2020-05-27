@@ -5,8 +5,8 @@ describe('next-i18n-rewrites:cli-builder', () => {
   beforeAll(() => {
     // ensure that package is build to latest version
     execSync('yarn build')
-    // remove examples rewrites.table.js
-    execSync('rm -f example/rewrites.table.js')
+    // remove examples rewrites.js
+    execSync('rm -f example/rewrites.js')
     // remove example pages directory (this dir will be use in tests)
     execSync('rm -rf example/pages')
     // run next-i18n-rewrites in example folder and then get back
@@ -14,7 +14,7 @@ describe('next-i18n-rewrites:cli-builder', () => {
   })
 
   afterAll(() => {
-    execSync('rm -f example/rewrites.table.js')
+    execSync('rm -f example/rewrites.js')
     execSync('rm -rf example/pages')
   })
 
@@ -180,72 +180,134 @@ describe('next-i18n-rewrites:cli-builder', () => {
     })
   })
 
-  describe('rewrites.table.js file is properly created', () => {
+  describe('rewrites.js file is properly created', () => {
     test('file exists', () => {
-      expect(fs.existsSync('example/rewrites.table.js')).toBe(true)
+      expect(fs.existsSync('example/rewrites.js')).toBe(true)
     })
 
-    test('file content', async () => {
+    test('exports.defaultLocale', async () => {
+      const content = await require('example/rewrites.js')
+      expect(content.defaultLocale).toStrictEqual('en')
+    })
+
+    test('exports.locales', async () => {
+      const content = await require('example/rewrites.js')
+      expect(content.locales).toStrictEqual(['en', 'cs', 'es'])
+    })
+
+    test('exports.rules', async () => {
       const expectedTable = [
-        { key: 'en/index', href: '/en/index', as: '/en' },
-        { key: 'cs/index', href: '/cs/index', as: '/cs' },
-        { key: 'es/index', href: '/es/index', as: '/es' },
+        { key: 'en:index', href: '/en/index', as: '/en' },
+        { key: 'cs:index', href: '/cs/index', as: '/cs' },
+        { key: 'es:index', href: '/es/index', as: '/es' },
         // SIGNUP
         {
-          key: 'en/auth/signup',
+          key: 'en:auth/signup',
           href: '/en/auth/signup-a1.page',
         },
         {
-          key: 'cs/auth/signup',
+          key: 'cs:auth/signup',
           href: '/cs/auth/registrace-a1.page',
         },
         {
-          key: 'es/auth/signup',
+          key: 'es:auth/signup',
           href: '/es/auth/signup.htm',
         },
         // LOGIN
         {
-          key: 'en/auth/login',
+          key: 'en:auth/login',
           href: '/en/auth/login-a2.htm',
         },
         {
-          key: 'cs/auth/login',
+          key: 'cs:auth/login',
           href: '/cs/auth/prihlaseni-a2.htm',
         },
         {
-          key: 'es/auth/login',
+          key: 'es:auth/login',
           href: '/es/auth/iniciar-sesion-a2.htm',
         },
         // PROFILE
         {
-          key: 'en/account/profile',
+          key: 'en:account/profile',
           href: '/en/account/profile-b1.htm',
         },
         {
-          key: 'cs/account/profile',
+          key: 'cs:account/profile',
           href: '/cs/ucet/profil-b1.htm',
         },
         {
-          key: 'es/account/profile',
+          key: 'es:account/profile',
           href: '/es/cuenta/perfil-b1.htm',
         },
         // SETTINGS
         {
-          key: 'en/account/settings',
+          key: 'en:account/settings',
           href: '/en/account/settings-b2.htm',
         },
         {
-          key: 'cs/account/settings',
+          key: 'cs:account/settings',
           href: '/cs/ucet/nastaveni-b2.htm',
         },
         {
-          key: 'es/account/settings',
+          key: 'es:account/settings',
           href: '/es/cuenta/ajustes-b2.htm',
         },
       ]
 
-      const table = await require('example/rewrites.table.js')
-      expect(table).toStrictEqual(expectedTable)
+      const content = await require('example/rewrites.js')
+      expect(content.rules).toStrictEqual(expectedTable)
+    })
+
+    test('exports.meta', async () => {
+      const expectedMeta = [
+        {
+          key: '*',
+          data: { title: 'YeahCoach', background: 'grey' },
+        },
+        // SIGNUP
+        {
+          key: 'auth/signup',
+          data: { background: 'red' },
+        },
+        {
+          key: 'en:auth/signup',
+          data: { title: 'Signup' },
+        },
+        {
+          key: 'cs:auth/signup',
+          data: { title: 'Registrace' },
+        },
+        // LOGIN
+        {
+          key: 'auth/login',
+          data: { background: 'green' },
+        },
+        {
+          key: 'en:auth/login',
+          data: { title: 'Login' },
+        },
+        {
+          key: 'cs:auth/login',
+          data: { title: 'Přihlášení' },
+        },
+        {
+          key: 'es:auth/login',
+          data: { title: 'Iniciar Sesión' },
+        },
+        // PROFILE
+        {
+          key: 'account/profile',
+          data: { background: 'orange' },
+        },
+        // SETTINGS
+        {
+          key: 'account/settings',
+          data: { background: 'blue' },
+        },
+      ]
+
+      const content = await require('example/rewrites.js')
+      expect(content.meta).toStrictEqual(expectedMeta)
     })
   })
 })
