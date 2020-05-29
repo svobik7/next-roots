@@ -1,10 +1,22 @@
 {
   "name": "next-i18n-rewrites",
-  "private": true,
+  "version": "0.0.6-canary.1",
+  "description": "Next.js utility to generate i18n pages according to custom rewrites rules.",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "next-i18n-rewrites": "./dist/bin/builder.js"
+  },
+  "exports": {
+    "./context": "./dist/context",
+    "./link": "./dist/link",
+    "./meta": "./dist/meta"
+  },
   "scripts": {
-    "prepare": "mkdir -p dist && cp package.dist.json dist/package.json && cp README.md dist/README.md && cp LICENSE dist/LICENSE && cp CHANGELOG.md dist/CHANGELOG.md",
-    "dist": "yarn clean && yarn prepare && yarn build && cd dist && yarn publish -f && cp package.json ./..package.dist.json",
+    "prepublish": "yarn test",
     "build": "rollup -c",
     "clean": "rm -rf dist > /dev/null",
     "format": "pretty-quick",
@@ -33,6 +45,10 @@
     "rollup-plugin-typescript2": "^0.27.1",
     "ts-jest": "^26.0.0",
     "typescript": "^3.9.2"
+  },
+  "peerDependencies": {
+    "next": "^9.4.4",
+    "react": "^16.13.1"
   },
   "husky": {
     "hooks": {
@@ -66,5 +82,26 @@
     "transform": {
       "^.+\\.ts$": "ts-jest"
     }
+  },
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "next",
+    "nextjs",
+    "next.js",
+    "rewrites",
+    "routes",
+    "localization",
+    "localized",
+    "locale",
+    "static"
+  ],
+  "author": {
+    "name": "Jirka Svoboda",
+    "email": "svobik7@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/svobik7/next-i18n-rewrites"
   }
 }
