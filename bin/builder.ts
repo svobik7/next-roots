@@ -1,10 +1,13 @@
 import { Config, RewriteMeta, RewritePage, RewriteRule } from './../src/types'
-import { encodeRewriteKey, createRewritePath } from './../src/utils'
+import { createRewritePath, encodeRewriteKey } from './../src/utils'
 
 const colors = require('colors')
 const fs = require('fs')
 const path = require('path')
 const pathToRegexp = require('path-to-regexp')
+
+const minify = require('@node-minify/core')
+const terser = require('@node-minify/terser')
 
 // load CLI args
 const [, , configPath = 'rewrites.config.js', configParams = {}] = process.argv
@@ -127,6 +130,25 @@ function isDirectory(path: string) {
 }
 
 /**
+ * Creates context file content
+ * @param rules
+ * @param meta
+ */
+function createContext(rules: RewriteRule[], meta: RewriteMeta[]) {
+  // create builder config
+  const cfg: Config = { ...cfgDefault, ...cfgRuntime }
+
+  let content = ''
+
+  content += `module.exports.defaultLocale = "${cfg.defaultLocale}" \n`
+  content += `module.exports.locales = ${JSON.stringify(cfg.locales)} \n`
+  content += `module.exports.rules = ${JSON.stringify(rules)} \n`
+  content += `module.exports.meta = ${JSON.stringify(meta)} \n`
+
+  return content
+}
+
+/**
  * Create rewrite for given page
  *
  * Input:
@@ -242,16 +264,18 @@ function run() {
       })
   })
 
-  let rewritesContent = ''
+  // create context file with rules and meta data
+  // keep it as small as possible
+  const contextPath = `${mainDir}/rewrites.js`
+  const context = createContext(rules, meta)
 
-  rewritesContent += `module.exports.defaultLocale = "${cfg.defaultLocale}" \n`
-  rewritesContent += `module.exports.locales = ${JSON.stringify(
-    cfg.locales
-  )} \n`
-  rewritesContent += `module.exports.rules = ${JSON.stringify(rules)} \n`
-  rewritesContent += `module.exports.meta = ${JSON.stringify(meta)} \n`
-
-  saveFile(`${mainDir}/rewrites.js`, rewritesContent)
+  minify({
+    compressor: terser,
+    content: context,
+    callback: (_: any, min: string) => {
+      saveFile(contextPath, min)
+    },
+  })
 
   // keep next.js specific files / dirs as they are
   // and just copy them to pages directory

@@ -1,16 +1,10 @@
 {
   "name": "next-i18n-rewrites",
-  "version": "0.0.3",
-  "description": "Next.js utility to generate i18n pages according to custom rewrites rules.",
+  "private": true,
   "main": "dist/index.js",
-  "module": "dist/index.es.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "README.md"
-  ],
   "scripts": {
-    "prepublish": "yarn clean && yarn build && yarn test",
+    "prepare": "mkdir -p dist && cp package.dist.json dist/package.json && cp README.md dist/README.md && cp LICENSE dist/LICENSE && cp CHANGELOG.md dist/CHANGELOG.md",
+    "dist": "yarn clean && yarn prepare && yarn build && cd dist && yarn publish -f && cp package.json ./..package.dist.json",
     "build": "rollup -c",
     "clean": "rm -rf dist > /dev/null",
     "format": "pretty-quick",
@@ -18,49 +12,27 @@
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch"
   },
-  "bin": {
-    "next-i18n-rewrites": "./dist/bin/builder.js"
-  },
-  "dependencies": {
-    "path-to-regexp": "^6.1.0"
-  },
   "devDependencies": {
+    "@node-minify/core": "^5.3.0",
+    "@node-minify/terser": "^5.3.0",
     "@types/jest": "25.2.3",
     "@types/react": "^16.9.35",
     "colors": "^1.4.0",
     "husky": "^4.2.5",
     "jest": "^26.0.1",
-    "next": "^9.4.1",
+    "next": "^9.4.4",
+    "path-to-regexp": "^6.1.0",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
+    "publish-flat": "^1.4.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "rollup": "^2.10.4",
+    "rollup": "^2.11.2",
     "rollup-plugin-terser": "^6.1.0",
     "rollup-plugin-ts": "^1.2.24",
+    "rollup-plugin-typescript2": "^0.27.1",
     "ts-jest": "^26.0.0",
     "typescript": "^3.9.2"
-  },
-  "peerDependencies": {
-    "next": "^9.3.6",
-    "react": "^16.13.1"
-  },
-  "license": "MIT",
-  "keywords": [
-    "react",
-    "next",
-    "nextjs",
-    "next.js",
-    "rewrites",
-    "routes",
-    "localization",
-    "localized",
-    "locale",
-    "static"
-  ],
-  "author": {
-    "name": "Jirka Svoboda",
-    "email": "svobik7@gmail.com"
   },
   "husky": {
     "hooks": {

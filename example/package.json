@@ -6,16 +6,23 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "rewrite": "node ../dist/bin/builder.js",
     "dev": "yarn rewrite && next dev",
-    "rewrite": "node ../dist/bin/builder.js"
+    "build": "yarn rewrite && next build",
+    "start": "next start",
+    "analyze": "yarn rewrite && cross-env ANALYZE=true next build",
+    "analyze:server": "yarn rewrite && cross-env BUNDLE_ANALYZE=server next build",
+    "analyze:browser": "yarn rewrite && cross-env BUNDLE_ANALYZE=browser next build"
   },
   "dependencies": {
-    "next": "^9.4.2",
+    "next": "^9.4.4",
     "next-i18n-rewrites": "link:../",
     "react": "link:../node_modules/react",
     "react-dom": "link:../node_modules/react-dom"
   },
   "devDependencies": {
-    "@types/react": "link:../node_modules/@types/react"
+    "@next/bundle-analyzer": "^9.4.4",
+    "@types/react": "link:../node_modules/@types/react",
+    "cross-env": "^7.0.2"
   }
 }

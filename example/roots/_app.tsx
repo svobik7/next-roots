@@ -1,9 +1,9 @@
-import { Context as RewritesContext } from 'next-i18n-rewrites'
+import RewritesContext from 'next-i18n-rewrites/context'
 import { AppProps } from 'next/app'
 import rewrites from 'rewrites'
 
 function MyApp({ Component, pageProps, router }: AppProps) {
-  // detect current locale from page pathname
+  // detect current locale & rewrite from page pathname
   const [, currentLocale] = router.pathname.split('/')
   const currentRewrite = rewrites.rules.find(
     (r) => r.as === router.pathname || r.href === router.pathname

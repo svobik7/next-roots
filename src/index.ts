@@ -1,3 +1,3 @@
-export { default as Link } from './components/link'
-export { default as Context } from './context'
-export { default as useRewrites } from './hooks/use-rewrites'
+export { default as RewritesContext, useRewrites } from './packages/context'
+export { default as Link, useLinkRewrites } from './packages/link'
+export { useMetaRewrites } from './packages/meta'
