@@ -1,19 +1,20 @@
 {
   "name": "next-i18n-rewrites",
-  "version": "0.0.6-canary.1",
+  "version": "0.0.6",
   "description": "Next.js utility to generate i18n pages according to custom rewrites rules.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "context.d.ts",
+    "context.js",
+    "link.js",
+    "link.d.js",
+    "meta.js",
+    "meta.d.js"
   ],
   "bin": {
     "next-i18n-rewrites": "./dist/bin/builder.js"
-  },
-  "exports": {
-    "./context": "./dist/context",
-    "./link": "./dist/link",
-    "./meta": "./dist/meta"
   },
   "scripts": {
     "prepublish": "yarn test",
