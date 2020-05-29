@@ -1,18 +1,28 @@
-import { PropsWithChildren } from 'react'
+import Context, { useRewrites } from 'next-i18n-rewrites/context'
+import Link from 'next-i18n-rewrites/link'
+import { useMetaRewrites } from 'next-i18n-rewrites/meta'
+import { PropsWithChildren, useContext } from 'react'
+import styles from './layout-main.module.css'
 
 export type LayoutMainProps = PropsWithChildren<{}>
 
 export default function LayoutMain(props: LayoutMainProps) {
   const { children } = props
 
-  // const rewrites = useRewrites()
+  const ctx = useContext(Context);
+
+  // use rewrites context
+  const rewrites = useRewrites()
+
+  // use meta rewrites
+  const meta = useMetaRewrites()
 
   return (
     <div>
       <h1>NEXT I18N REWRITES</h1>
       <div>Example project</div>
       <h2>Navigation</h2>
-      {/* <ol>
+      <ol>
         <li>
           <Link href="/">
             <a>Home</a>
@@ -38,9 +48,8 @@ export default function LayoutMain(props: LayoutMainProps) {
             <a>Account - Settings</a>
           </Link>
         </li>
-      </ol> */}
+      </ol>
 
-      {/* 
       <h2>Available Locales</h2>
       <ol>
         {rewrites.currentRule &&
@@ -51,9 +60,8 @@ export default function LayoutMain(props: LayoutMainProps) {
               </Link>
             </li>
           ))}
-      </ol> */}
+      </ol>
 
-      {/* 
       <h2>Current Locale</h2>
       <code>{rewrites.currentLocale}</code>
 
@@ -64,13 +72,12 @@ export default function LayoutMain(props: LayoutMainProps) {
       <code>{JSON.stringify(rewrites.currentRule)}</code>
 
       <h2>Meta Data</h2>
-      <code>{JSON.stringify(rewrites.metaData('*'))}</code>
-      */}
+      <code>{JSON.stringify(meta.data('*'))}</code>
 
       <h2>Content</h2>
       <div
-        // className={styles.body}
-        // style={{ background: rewrites.metaData('background') }}
+        className={styles.body}
+        style={{ background: meta.data('background') }}
       >
         {children}
       </div>

@@ -7,7 +7,8 @@
     "noImplicitAny": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "jsx": "react"
+    "jsx": "react",
+    "baseUrl": "src"
   },
   "include": ["src", "bin"],
   "exclude": ["**/node_modules", "dist", "__tests__"]

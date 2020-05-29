@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "next": "^9.4.4",
-    "next-i18n-rewrites": "link:../",
+    "next-i18n-rewrites": "^0.0.6",
     "react": "link:../node_modules/react",
     "react-dom": "link:../node_modules/react-dom"
   },

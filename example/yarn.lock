@@ -3865,9 +3865,10 @@ neo-async@2.6.1, neo-async@^2.5.0, neo-async@^2.6.1:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
 
-"next-i18n-rewrites@link:..":
-  version "0.0.0"
-  uid ""
+next-i18n-rewrites@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/next-i18n-rewrites/-/next-i18n-rewrites-0.0.6.tgz#20a90134fe0ed3ea79afcd9835ff18f15dc53e41"
+  integrity sha512-RNwNj7/7Azfskqi6OmusIWyPgkONqY8nc/r3P6KgMLlUOD0Bscrq2inmql/gNUJCKvVvcfFD6dnI25Bi/zhhLw==
 
 next-tick@~1.0.0:
   version "1.0.0"

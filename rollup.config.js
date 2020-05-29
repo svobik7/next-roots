@@ -1,51 +1,34 @@
 import { terser } from 'rollup-plugin-terser'
 import typescript from 'rollup-plugin-ts'
-
 import pkg from './package.json'
-import pkgDist from './package.dist.json'
 
 // external dependencies will not be included in bundle
 const external = [
-  ...Object.keys(pkgDist.dependencies || {}),
-  ...Object.keys(pkgDist.peerDependencies || {}),
+  ...Object.keys(pkg.dependencies || {}),
+  ...Object.keys(pkg.peerDependencies || {}),
   'next/link',
+  './context',
 ]
 
 // separated bundles to be generated
 const bundles = [
   {
-    input: 'src/index.ts',
-    output: [
-      // { file: pkg.main, format: 'cjs', exports: 'named' },
-      { file: pkg.main, format: 'es' },
-    ],
-  },
-  {
     input: 'src/packages/context.ts',
-    output: [
-      // { file: 'dist/context.js', format: 'cjs', exports: 'named' },
-      { file: 'dist/context.js', format: 'es' },
-    ],
+    output: [{ file: 'dist/context.js', format: 'cjs', exports: 'named' }],
   },
   {
     input: 'src/packages/link.tsx',
-    output: [
-      // { file: 'dist/link.js', format: 'cjs', exports: 'named' },
-      { file: 'dist/link.js', format: 'es' },
-    ],
+    output: [{ file: 'dist/link.js', format: 'cjs', exports: 'named' }],
   },
   {
     input: 'src/packages/meta.ts',
-    output: [
-      // { file: 'dist/meta.js', format: 'cjs', exports: 'named' },
-      { file: 'dist/meta.js', format: 'es' },
-    ],
+    output: [{ file: 'dist/meta.js', format: 'cjs', exports: 'named' }],
   },
 ]
 
 export default [
   {
-    input: 'bin/builder.ts',
+    input: 'src/bin/builder.ts',
     output: [
       {
         file: 'dist/bin/builder.js',

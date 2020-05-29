@@ -10,14 +10,17 @@ export type RewriteContext = {
   meta: RewriteMeta[]
 }
 
-const RewritesContext = createContext<RewriteContext>({
+const initialContext = {
   currentRule: undefined,
   currentLocale: '',
   defaultLocale: '',
   locales: [],
   rules: [],
   meta: [],
-})
+}
+
+const RewritesContext = createContext<RewriteContext>(initialContext)
+RewritesContext.displayName = 'RewritesContext'
 
 function useRewrites() {
   // use rewrite context for current locale and rules
@@ -31,5 +34,5 @@ function useRewrites() {
   }
 }
 
-export { useRewrites }
 export default RewritesContext
+export { useRewrites }

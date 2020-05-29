@@ -1,5 +1,5 @@
-import { Config, RewriteMeta, RewritePage, RewriteRule } from './../src/types'
-import { createRewritePath, encodeRewriteKey } from './../src/utils'
+import { Config, RewriteMeta, RewritePage, RewriteRule } from '../types'
+import { createRewritePath, encodeRewriteKey } from '../utils'
 
 const colors = require('colors')
 const fs = require('fs')

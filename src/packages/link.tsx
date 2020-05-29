@@ -4,11 +4,11 @@ import { RewriteLinkOptions } from '../types'
 import { rewriteAs, rewriteHref } from '../utils'
 import RewritesContext from './context'
 
-export type LinkProps = React.PropsWithChildren<
+export type LinkRewriteProps = React.PropsWithChildren<
   NextLinkProps & Partial<RewriteLinkOptions>
 >
 
-function Link(props: LinkProps) {
+function LinkRewrite(props: LinkRewriteProps) {
   const { children, href, as, locale, strict = true, ...otherProps } = props
 
   const link = useLinkRewrites()
@@ -50,4 +50,4 @@ function useLinkRewrites() {
 }
 
 export { useLinkRewrites }
-export default Link
+export default LinkRewrite
