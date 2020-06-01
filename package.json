@@ -37,14 +37,12 @@
     "path-to-regexp": "^6.1.0",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
-    "publish-flat": "^1.4.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "rollup": "^2.11.2",
+    "rollup": "^2.12.0",
     "rollup-plugin-terser": "^6.1.0",
     "rollup-plugin-ts": "^1.2.24",
-    "rollup-plugin-typescript2": "^0.27.1",
-    "ts-jest": "^26.0.0",
+    "ts-jest": "^26.1.0",
     "typescript": "^3.9.2"
   },
   "peerDependencies": {

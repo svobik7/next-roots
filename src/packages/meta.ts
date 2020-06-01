@@ -1,6 +1,6 @@
 import { useContext } from 'react'
-import { rewriteMetaData } from '../utils'
 import RewritesContext from './context'
+import { rewriteMetaData } from '../utils'
 
 function useMetaRewrites() {
   // use rewrite context for current locale and rules

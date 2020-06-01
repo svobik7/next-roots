@@ -1,8 +1,8 @@
 import NextLink, { LinkProps as NextLinkProps } from 'next/link'
 import React, { useContext } from 'react'
+import RewritesContext from './context'
 import { RewriteLinkOptions } from '../types'
 import { rewriteAs, rewriteHref } from '../utils'
-import RewritesContext from './context'
 
 export type LinkRewriteProps = React.PropsWithChildren<
   NextLinkProps & Partial<RewriteLinkOptions>

@@ -6,9 +6,9 @@
     "allowJs": true,
     "noImplicitAny": true,
     "esModuleInterop": true,
+    "declaration": true,
     "skipLibCheck": true,
-    "jsx": "react",
-    "baseUrl": "src"
+    "jsx": "react"
   },
   "include": ["src", "bin"],
   "exclude": ["**/node_modules", "dist", "__tests__"]
