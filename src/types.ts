@@ -1,3 +1,5 @@
+import { ReactText } from 'react'
+
 export type Config = {
   locales: string[]
   defaultLocale: string
@@ -47,7 +49,7 @@ export type RewriteRule = {
  */
 export type RewriteMeta = {
   key: string
-  data: Record<string, any>
+  data: Record<string, ReactText>
 }
 
 export type RewriteMetaDataOptions = {

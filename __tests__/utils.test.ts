@@ -307,6 +307,47 @@ describe('next-i18n-rewrites:utils', () => {
       })
       expect(result).toBe('/cs/ucet/profil.htm')
     })
+
+    test('ignore leading `root` slash', () => {
+      const result = rewriteAs('/account/profile', {
+        __rules: [
+          {
+            key: 'en:account/profile',
+            href: '',
+            as: '/en/account/profile.htm',
+          },
+        ],
+        locale: 'en',
+      })
+      expect(result).toBe('/en/account/profile.htm')
+    })
+
+    test('keep `root` query`', () => {
+      const result = rewriteAs('/account/profile?param=value', {
+        __rules: [
+          {
+            key: 'en:account/profile',
+            href: '',
+            as: '/en/account/profile.htm',
+          },
+        ],
+        locale: 'en',
+      })
+      expect(result).toBe('/en/account/profile.htm?param=value')
+    })
+
+    test('keep `root` query` when alias is missing', () => {
+      const result = rewriteAs('/account/profile?param=value', {
+        __rules: [
+          {
+            key: 'en:account/profile',
+            href: '/en/account/profile.htm',
+          },
+        ],
+        locale: 'en',
+      })
+      expect(result).toBe('/en/account/profile.htm?param=value')
+    })
   })
 
   /**
@@ -364,6 +405,26 @@ describe('next-i18n-rewrites:utils', () => {
       })
       expect(result).toBe('/cs/ucet/profil.htm')
     })
+
+    test('ignore leading `root` slash`', () => {
+      const result = rewriteHref('/account/profile', {
+        __rules: [
+          { key: 'en:account/profile', href: '/en/account/profile.htm' },
+        ],
+        locale: 'en',
+      })
+      expect(result).toBe('/en/account/profile.htm')
+    })
+
+    test('keep `root` query`', () => {
+      const result = rewriteHref('/account/profile?param=value', {
+        __rules: [
+          { key: 'en:account/profile', href: '/en/account/profile.htm' },
+        ],
+        locale: 'en',
+      })
+      expect(result).toBe('/en/account/profile.htm?param=value')
+    })
   })
 
   /**
@@ -387,7 +448,7 @@ describe('next-i18n-rewrites:utils', () => {
       expect(result).toBeUndefined()
     })
 
-    test('get empty object for `*` and non existing page', () => {
+    test('get empty array for `*` and non existing page', () => {
       const result = rewriteMetaData('invalid-page', '*', {
         __meta: [
           {

@@ -1,6 +1,5 @@
 import { terser } from 'rollup-plugin-terser'
 import typescript from 'rollup-plugin-ts'
-// import typescript from 'rollup-plugin-typescript2'
 import pkg from './package.json'
 
 // external dependencies will not be included in bundle
@@ -8,6 +7,7 @@ const external = [
   ...Object.keys(pkg.dependencies || {}),
   ...Object.keys(pkg.peerDependencies || {}),
   'next/link',
+  'next/router',
 ]
 
 export default [
@@ -16,6 +16,7 @@ export default [
       'src/packages/context.ts',
       'src/packages/link.tsx',
       'src/packages/meta.ts',
+      'src/packages/router.ts',
       'src/index.ts',
     ],
     output: {
@@ -26,7 +27,6 @@ export default [
     plugins: [
       typescript({
         typescript: require('typescript'),
-        // declaration: true,
       }),
       terser(), // minifies generated bundles
     ],
@@ -44,7 +44,6 @@ export default [
     plugins: [
       typescript({
         typescript: require('typescript'),
-        // declaration: false,
       }),
       terser(), // minifies generated bundles
     ],
