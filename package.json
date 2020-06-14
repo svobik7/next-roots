@@ -1,6 +1,6 @@
 {
   "name": "next-i18n-rewrites",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Next.js utility to generate i18n pages according to custom rewrites rules.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
