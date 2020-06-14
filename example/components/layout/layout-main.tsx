@@ -11,6 +11,20 @@ export type LayoutMainProps = PropsWithChildren<{}>
 export default function LayoutMain(props: LayoutMainProps) {
   const { children } = props
 
+  // const roots = useRoots()
+  // roots.defaultLocale
+  // roots.currentLocale
+  // roots.defaultRule
+  // roots.currentRule
+
+  // const links = useLinkRoots()
+  // links.href('/account/profile')
+  // links.as('/account/profile')
+
+  // const meta = useMetaRoots()
+  // meta.data('title')
+  // meta.data('*')
+
   // use rewrites context
   const rewrites = useRewrites()
 
@@ -49,7 +63,7 @@ export default function LayoutMain(props: LayoutMainProps) {
           {
             name: 'asPath',
             value: router.asPath,
-            note: 'Query string is not printed during SSR!',
+            note: 'Query string is empty during SSR',
           },
           { name: 'pathname', value: router.pathname },
         ]}
@@ -69,6 +83,12 @@ export default function LayoutMain(props: LayoutMainProps) {
       />
 
       <h2>Locale</h2>
+      <p>
+        Locales are manipulated by hook{' '}
+        <code>const rewrites = useRewrites()</code>. Current locale then by{' '}
+        <code>rewrites.currentLocale</code>. Default locale by{' '}
+        <code>rewrites.defaultLocale</code>.
+      </p>
 
       <Table
         columns={[
@@ -82,6 +102,12 @@ export default function LayoutMain(props: LayoutMainProps) {
       />
 
       <h2>Meta Data</h2>
+      <p>
+        Meta data are manipulated by hook{' '}
+        <code>const meta = useMetaRewrites()</code>. Single data can be obtained
+        using <code>meta.data('title')</code>. All data can be obtained using{' '}
+        <code>meta.data('*')</code>.
+      </p>
 
       <Table
         columns={[
@@ -96,8 +122,9 @@ export default function LayoutMain(props: LayoutMainProps) {
 
       <h2>Mutations</h2>
       <p>
-        Following links are generated using <code>Rule.key</code> therefore mode
-        must be set to non-strict using <code>strict=false</code>.
+        Following links can be generated using `Rule.key`{' '}
+        <code>en:account/profile</code> or `root` and `locale`
+        <code>/account/profile</code> therefore must be used.
       </p>
 
       <Table
@@ -108,22 +135,15 @@ export default function LayoutMain(props: LayoutMainProps) {
         ]}
         data={rewrites.locales.map((l) => ({
           locale: (
-            <Link
-              key={l}
-              href={rewrites.currentRule.key}
-              locale={l}
-              strict={false}
-            >
+            <Link key={l} href={rewrites.currentRule.key} locale={l}>
               <a>{l}</a>
             </Link>
           ),
           href: links.href(rewrites.currentRule.key, {
             locale: l,
-            strict: false,
           }),
           as: links.as(rewrites.currentRule.key, {
             locale: l,
-            strict: false,
           }),
         }))}
       />

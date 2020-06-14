@@ -236,84 +236,89 @@ describe('next-i18n-rewrites:utils', () => {
    * It should find and retrieve link alias from given rewrites table
    */
   describe('rewriteAs', () => {
-    test('create for `root` and existing `rule.as`', () => {
+    test('rewrite for existing `rule.as`', () => {
+      const __rules = [
+        {
+          key: 'en:account/profile',
+          href: '/some-href-path',
+          as: '/en/account/profile.htm',
+        },
+      ]
+
       const result = rewriteAs('account/profile', {
-        __rules: [
-          {
-            key: 'en:account/profile',
-            href: '',
-            as: '/en/account/profile.htm',
-          },
-        ],
+        __rules,
         locale: 'en',
       })
       expect(result).toBe('/en/account/profile.htm')
     })
 
-    test('create for `root` and non-existing `rule.as`', () => {
+    test('rewrite for non-existing `rule.as`', () => {
+      const __rules = [
+        {
+          key: 'en:account/profile',
+          href: '/en/account/profile.htm',
+          as: undefined,
+        },
+      ]
+
       const result = rewriteAs('account/profile', {
-        __rules: [
-          { key: 'en:account/profile', href: '/en/account/profile.htm' },
-        ],
+        __rules,
         locale: 'en',
       })
       expect(result).toBe('/en/account/profile.htm')
     })
 
-    test('do not modify input for not existing table rule', () => {
+    test('rewrite for non-existing rule', () => {
       const result = rewriteAs('account/profile', {
         __rules: [],
         locale: 'en',
       })
-      expect(result).toBe('account/profile')
+      expect(result).toBe('/en/account/profile')
     })
 
-    test('rename root from `/` to `index`', () => {
+    test('rewrite `/` with `index` rule', () => {
+      const __rules = [
+        {
+          key: 'en:index',
+          href: '/some-href-path',
+          as: '/en/account/profile.htm',
+        },
+      ]
+
       const result = rewriteAs('/', {
-        __rules: [{ key: 'en:index', href: '', as: '/en/account/profile.htm' }],
+        __rules,
         locale: 'en',
       })
       expect(result).toBe('/en/account/profile.htm')
     })
 
-    test('do not modify input for `key` with different `locale` in strict mode', () => {
-      const result = rewriteAs('en:account/profile', {
-        __rules: [
-          {
-            key: 'en:account/profile',
-            href: '',
-            as: '/en/account/profile.htm',
-          },
-          { key: 'cs:account/profile', href: '', as: '/cs/ucet/profil.htm' },
-        ],
-        locale: 'cs',
-        strict: true,
-      })
-      expect(result).toBe('en:account/profile')
-    })
+    test('rewrite for `rule.key` and different `locale`', () => {
+      const __rules = [
+        {
+          key: 'en:account/profile',
+          href: '/some-href-path',
+          as: '/en/account/profile.htm',
+        },
+        {
+          key: 'cs:account/profile',
+          href: '/some-href-path',
+          as: '/cs/ucet/profil.htm',
+        },
+      ]
 
-    test('create for `key` with different `locale` in non-strict mode', () => {
       const result = rewriteAs('en:account/profile', {
-        __rules: [
-          {
-            key: 'en:account/profile',
-            href: '',
-            as: '/en/account/profile.htm',
-          },
-          { key: 'cs:account/profile', href: '', as: '/cs/ucet/profil.htm' },
-        ],
+        __rules,
         locale: 'cs',
-        strict: false,
       })
       expect(result).toBe('/cs/ucet/profil.htm')
     })
 
-    test('ignore leading `root` slash', () => {
+    test('ignore leading slash', () => {
       const result = rewriteAs('/account/profile', {
         __rules: [
           {
             key: 'en:account/profile',
-            href: '',
+            href: '/some-href-path',
             as: '/en/account/profile.htm',
           },
         ],
@@ -322,12 +327,12 @@ describe('next-i18n-rewrites:utils', () => {
       expect(result).toBe('/en/account/profile.htm')
     })
 
-    test('keep `root` query`', () => {
+    test('keep query string', () => {
       const result = rewriteAs('/account/profile?param=value', {
         __rules: [
           {
             key: 'en:account/profile',
-            href: '',
+            href: '/some-href-path',
             as: '/en/account/profile.htm',
           },
         ],
@@ -336,7 +341,7 @@ describe('next-i18n-rewrites:utils', () => {
       expect(result).toBe('/en/account/profile.htm?param=value')
     })
 
-    test('keep `root` query` when alias is missing', () => {
+    test('keep query string when `rule.as` is missing', () => {
       const result = rewriteAs('/account/profile?param=value', {
         __rules: [
           {
@@ -356,7 +361,7 @@ describe('next-i18n-rewrites:utils', () => {
    * It should find and retrieve link href from given rewrites table
    */
   describe('rewriteHref', () => {
-    test('create for `root` and existing `rule`', () => {
+    test('rewrite for existing `rule`', () => {
       const result = rewriteHref('account/profile', {
         __rules: [
           { key: 'en:account/profile', href: '/en/account/profile.htm' },
@@ -366,15 +371,15 @@ describe('next-i18n-rewrites:utils', () => {
       expect(result).toBe('/en/account/profile.htm')
     })
 
-    test('do modify input for not existing table rule', () => {
+    test('rewrite for non-existing rule', () => {
       const result = rewriteHref('account/profile', {
         __rules: [],
         locale: 'en',
       })
-      expect(result).toBe('account/profile')
+      expect(result).toBe('/en/account/profile')
     })
 
-    test('rename root from `/` to `index`', () => {
+    test('rewrite `/` with `index` rule', () => {
       const result = rewriteHref('/', {
         __rules: [{ key: 'en:index', href: '/en/account/profile.htm' }],
         locale: 'en',
@@ -382,31 +387,18 @@ describe('next-i18n-rewrites:utils', () => {
       expect(result).toBe('/en/account/profile.htm')
     })
 
-    test('do not modify input for `key` with different `locale` in strict mode', () => {
+    test('rewrite for `rulekey` and different `locale`', () => {
       const result = rewriteHref('en:account/profile', {
         __rules: [
           { key: 'en:account/profile', href: '/en/account/profile.htm' },
           { key: 'cs:account/profile', href: '/cs/ucet/profil.htm' },
         ],
         locale: 'cs',
-        strict: true,
-      })
-      expect(result).toBe('en:account/profile')
-    })
-
-    test('create for `key` with different `locale` in non-strict mode', () => {
-      const result = rewriteHref('en:account/profile', {
-        __rules: [
-          { key: 'en:account/profile', href: '/en/account/profile.htm' },
-          { key: 'cs:account/profile', href: '/cs/ucet/profil.htm' },
-        ],
-        locale: 'cs',
-        strict: false,
       })
       expect(result).toBe('/cs/ucet/profil.htm')
     })
 
-    test('ignore leading `root` slash`', () => {
+    test('ignore leading slash`', () => {
       const result = rewriteHref('/account/profile', {
         __rules: [
           { key: 'en:account/profile', href: '/en/account/profile.htm' },
@@ -416,7 +408,7 @@ describe('next-i18n-rewrites:utils', () => {
       expect(result).toBe('/en/account/profile.htm')
     })
 
-    test('keep `root` query`', () => {
+    test('keep query string', () => {
       const result = rewriteHref('/account/profile?param=value', {
         __rules: [
           { key: 'en:account/profile', href: '/en/account/profile.htm' },

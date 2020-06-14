@@ -196,21 +196,27 @@ export function findRewriteRule(
 export function rewrite(
   input: string,
   options: RewriteLinkOptions
-): RewriteRule | undefined {
+): RewriteRule {
   // rename invalid root name
   input = input === '/' ? 'index' : input
 
   // remove leading slash
   input = input.replace(/^\/+/, '')
 
-  let rule = findRewriteRule(options.__rules, [input, options.locale])
+  // decode input to root and locale
+  const [root, inputLocale] = decodeRewriteKey(input)
 
-  if (!rule && options.strict === false) {
-    const decoded = decodeRewriteKey(input)
-    rule = findRewriteRule(options.__rules, [decoded[0], options.locale])
+  // choose proper locale
+  const locale = options.locale || inputLocale
+
+  // find rewrite rule in table of rules
+  const rule = findRewriteRule(options.__rules, [root, locale])
+
+  return {
+    key: input,
+    href: `/${locale}/${input}`,
+    ...rule,
   }
-
-  return rule
 }
 
 /**
@@ -226,12 +232,7 @@ export function rewriteAs(input: string, options: RewriteLinkOptions): string {
   const rule = rewrite(inputParts[0], options)
 
   // use `rule.href` as fallback to alias
-  const alias = rule?.as || rule?.href
-
-  // use `input` when no rule as is found
-  if (!alias) {
-    return input
-  }
+  const alias = rule.as || rule.href
 
   // use `rule.as` when no query is given in `input`
   if (!inputParts[1]) {
@@ -257,18 +258,13 @@ export function rewriteHref(
   // create rewrite rule
   const rule = rewrite(inputParts[0], options)
 
-  // use `input` when no rule href is found
-  if (!rule?.href) {
-    return input
-  }
-
   // use `rule.href` when no query is given in `input`
   if (!inputParts[1]) {
     return rule.href
   }
 
   // use `rule.href` with `input` query
-  return [rule?.href, inputParts[1]].join('?')
+  return [rule.href, inputParts[1]].join('?')
 }
 
 /**

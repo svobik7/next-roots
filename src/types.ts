@@ -65,5 +65,4 @@ export type RewriteMetaDataOptions = {
 export type RewriteLinkOptions = {
   __rules: RewriteRule[]
   locale: string
-  strict?: boolean
 }

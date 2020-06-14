@@ -16,7 +16,6 @@ export default [
       'src/packages/context.ts',
       'src/packages/link.tsx',
       'src/packages/meta.ts',
-      'src/packages/router.ts',
       'src/index.ts',
     ],
     output: {
