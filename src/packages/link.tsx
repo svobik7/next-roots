@@ -9,21 +9,29 @@ export type LinkRewriteProps = React.PropsWithChildren<
 >
 
 function LinkRewrite(props: LinkRewriteProps) {
-  const { children, href, as, locale, strict = true, ...otherProps } = props
+  const { children, href, as, locale, ...otherProps } = props
 
   const link = useLinkRewrites()
 
-  // TODO: refactor to rewrite UrlObject too
-  const nextHref =
-    typeof href === 'string' ? link.href(href, { locale, strict }) : href
+  // create href rewrite
+  const hrefRewrite: LinkRewriteProps['href'] =
+    typeof href === 'string'
+      ? link.href(href, { locale })
+      : { ...href, pathname: link.href(href.pathname || '', { locale }) }
 
-  const nextAs =
-    typeof href === 'string' && !Boolean(as)
-      ? link.as(href, { locale, strict })
-      : as
+  // use given alias at first
+  let asRewrite: LinkRewriteProps['as'] = as
+
+  // rewrite as when no alias is given
+  if (!asRewrite) {
+    asRewrite =
+      typeof href === 'string'
+        ? link.as(href, { locale })
+        : { ...href, pathname: link.as(href.pathname || '', { locale }) }
+  }
 
   return (
-    <NextLink href={nextHref} as={nextAs} {...otherProps}>
+    <NextLink href={hrefRewrite} as={asRewrite} {...otherProps}>
       {children}
     </NextLink>
   )
@@ -37,13 +45,11 @@ function useLinkRewrites() {
     as: (root: string, options: Partial<RewriteLinkOptions> = {}) =>
       rewriteAs(root, {
         locale: options.locale || context.currentLocale,
-        strict: options.strict ?? true,
         __rules: context.rules,
       }),
     href: (root: string, options: Partial<RewriteLinkOptions> = {}) =>
       rewriteHref(root, {
         locale: options.locale || context.currentLocale,
-        strict: options.strict ?? true,
         __rules: context.rules,
       }),
   }

@@ -1,3 +1,4 @@
+import { ReactText } from 'react'
 import {
   RewriteLinkOptions,
   RewriteMeta,
@@ -188,22 +189,58 @@ export function findRewriteRule(
 }
 
 /**
+ * Finds and retrieves rewrite rule for given root and options
+ * @param input
+ * @param options
+ */
+export function rewrite(
+  input: string,
+  options: RewriteLinkOptions
+): RewriteRule {
+  // rename invalid root name
+  input = input === '/' ? 'index' : input
+
+  // remove leading slash
+  input = input.replace(/^\/+/, '')
+
+  // decode input to root and locale
+  const [root, inputLocale] = decodeRewriteKey(input)
+
+  // choose proper locale
+  const locale = options.locale || inputLocale
+
+  // find rewrite rule in table of rules
+  const rule = findRewriteRule(options.__rules, [root, locale])
+
+  return {
+    key: input,
+    href: `/${locale}/${input}`,
+    ...rule,
+  }
+}
+
+/**
  * Finds and retrieves `as` for given root and options
  * @param input
  * @param options
  */
 export function rewriteAs(input: string, options: RewriteLinkOptions): string {
-  // rename invalid root name
-  input = input === '/' ? 'index' : input
+  // split input to root and query parts
+  const inputParts = input.split('?')
 
-  let rule = findRewriteRule(options.__rules, [input, options.locale])
+  // create rewrite rule
+  const rule = rewrite(inputParts[0], options)
 
-  if (!rule && options.strict === false) {
-    const decoded = decodeRewriteKey(input)
-    rule = findRewriteRule(options.__rules, [decoded[0], options.locale])
+  // use `rule.href` as fallback to alias
+  const alias = rule.as || rule.href
+
+  // use `rule.as` when no query is given in `input`
+  if (!inputParts[1]) {
+    return alias
   }
 
-  return rule?.as || rule?.href || input
+  // use `rule.as` with `input` query
+  return [alias, inputParts[1]].join('?')
 }
 
 /**
@@ -215,17 +252,19 @@ export function rewriteHref(
   input: string,
   options: RewriteLinkOptions
 ): string {
-  // rename invalid root name
-  input = input === '/' ? 'index' : input
+  // split input to root and query parts
+  const inputParts = input.split('?')
 
-  let rule = findRewriteRule(options.__rules, [input, options.locale])
+  // create rewrite rule
+  const rule = rewrite(inputParts[0], options)
 
-  if (!rule && options.strict === false) {
-    const decoded = decodeRewriteKey(input)
-    rule = findRewriteRule(options.__rules, [decoded[0], options.locale])
+  // use `rule.href` when no query is given in `input`
+  if (!inputParts[1]) {
+    return rule.href
   }
 
-  return rule?.href || input
+  // use `rule.href` with `input` query
+  return [rule.href, inputParts[1]].join('?')
 }
 
 /**
@@ -238,7 +277,7 @@ export function rewriteMetaData(
   key: string,
   query: string,
   options: RewriteMetaDataOptions
-) {
+): ReactText | Record<string, ReactText> | undefined {
   const { __meta = [], strict = false } = options
 
   let data: RewriteMeta['data'] = {}
@@ -265,5 +304,5 @@ export function rewriteMetaData(
   }
 
   // retrieve specific param otherwise
-  return data[query] || undefined
+  return data[query] ? String(data[query]) : undefined
 }
