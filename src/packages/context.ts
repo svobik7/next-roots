@@ -1,13 +1,13 @@
 import { createContext, useContext } from 'react'
-import { RewriteMeta, RewriteRule } from '../types'
+import { Roots } from '../types'
 
-export type RewriteContext = {
-  currentRule: RewriteRule | undefined
+export type RootsContext = {
+  currentRule: Roots.SchemaRule | undefined
   currentLocale: string
   defaultLocale: string
   locales: string[]
-  rules: RewriteRule[]
-  meta: RewriteMeta[]
+  rules: Roots.SchemaRule[]
+  meta: Roots.SchemaMeta[]
 }
 
 const initialContext = {
@@ -19,12 +19,12 @@ const initialContext = {
   meta: [],
 }
 
-const RewritesContext = createContext<RewriteContext>(initialContext)
-RewritesContext.displayName = 'RewritesContext'
+const RootsContext = createContext<RootsContext>(initialContext)
+RootsContext.displayName = 'RootsContext'
 
-function useRewrites() {
+function useRoots() {
   // use rewrite context for current locale and rules
-  const context = useContext(RewritesContext)
+  const context = useContext(RootsContext)
 
   return {
     locales: context.locales,
@@ -34,5 +34,5 @@ function useRewrites() {
   }
 }
 
-export default RewritesContext
-export { useRewrites }
+export default RootsContext
+export { useRoots }

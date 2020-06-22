@@ -1,22 +1,22 @@
 {
-  "name": "next-i18n-rewrites-example",
+  "name": "next-roots-example",
   "version": "1.0.0",
-  "description": "Example of using next-i18n-rewrites package",
+  "description": "Example of using next-roots package",
   "author": "Jirka Svoboda",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "rewrite": "node ../dist/bin/builder.js",
-    "dev": "yarn rewrite && next dev",
-    "build": "yarn rewrite && next build",
+    "root": "node ../dist/bin/builder.js",
+    "dev": "yarn root && next dev",
+    "build": "yarn root && next build",
     "start": "next start",
-    "analyze": "yarn rewrite && cross-env ANALYZE=true next build",
-    "analyze:server": "yarn rewrite && cross-env BUNDLE_ANALYZE=server next build",
-    "analyze:browser": "yarn rewrite && cross-env BUNDLE_ANALYZE=browser next build"
+    "analyze": "yarn root && cross-env ANALYZE=true next build",
+    "analyze:server": "yarn root && cross-env BUNDLE_ANALYZE=server next build",
+    "analyze:browser": "yarn root && cross-env BUNDLE_ANALYZE=browser next build"
   },
   "dependencies": {
     "next": "^9.4.4",
-    "next-i18n-rewrites": "link:../",
+    "next-roots": "link:../",
     "react": "link:../node_modules/react",
     "react-dom": "link:../node_modules/react-dom"
   },

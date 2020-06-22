@@ -2,12 +2,13 @@
 # yarn lockfile v1
 
 
-"@ampproject/toolbox-core@^2.4.0-alpha.1":
-  version "2.4.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/@ampproject/toolbox-core/-/toolbox-core-2.4.0-alpha.1.tgz#2e073fafedf46ef4f85326162e5b6c0080076142"
-  integrity sha512-QEIIXBdpevMJSan5JWJ5qLy3/R+V1cngWchKdenmkRzvoDhWWcZyCnUz5+xKhetD9ilPaM71bSJ0dF78OrYBIQ==
+"@ampproject/toolbox-core@^2.4.0-alpha.1", "@ampproject/toolbox-core@^2.5.1":
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/@ampproject/toolbox-core/-/toolbox-core-2.5.1.tgz#f01895995a722254807106a3e1422cf1c6c25c13"
+  integrity sha512-XMt7Y7/Ga5HskqILTNwAmkrQSXM6KJ4Xf3fiEMy/yTldVg51SebAeTSzjKH+oisKhSw00Ogo4VL7AB6a2IrT3g==
   dependencies:
     cross-fetch "3.0.4"
+    lru-cache "5.1.1"
 
 "@ampproject/toolbox-optimizer@2.4.0":
   version "2.4.0"
@@ -28,11 +29,11 @@
     terser "4.6.13"
 
 "@ampproject/toolbox-runtime-version@^2.4.0-alpha.1":
-  version "2.4.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/@ampproject/toolbox-runtime-version/-/toolbox-runtime-version-2.4.0-alpha.1.tgz#448c7206d9136e242ac99810141b6bbae6b1674f"
-  integrity sha512-iPOlATHFcaLyiuVdzCKiM4DamTvPpysHc5eW2oYoSMXsxOsAdp4LNyt05biFRJA/7za5+b9P15blPtOucj2WyQ==
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/@ampproject/toolbox-runtime-version/-/toolbox-runtime-version-2.5.1.tgz#904280984a75925ff1d7a851ab15645efaa5cd90"
+  integrity sha512-udkXpuJX+f0ogd/GFlpifXg5K+BSyWpou9gg53uxoSpPTlPO4ZPepJ4PLfgdq0oxMq7f/IDN1YN5ZFFNJHbrzw==
   dependencies:
-    "@ampproject/toolbox-core" "^2.4.0-alpha.1"
+    "@ampproject/toolbox-core" "^2.5.1"
 
 "@ampproject/toolbox-script-csp@^2.3.0":
   version "2.3.0"
@@ -3870,7 +3871,7 @@ neo-async@2.6.1, neo-async@^2.5.0, neo-async@^2.6.1:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
 
-"next-i18n-rewrites@link:..":
+"next-roots@link:..":
   version "0.0.0"
   uid ""
 

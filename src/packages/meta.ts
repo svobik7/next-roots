@@ -1,10 +1,10 @@
 import { ReactText, useContext } from 'react'
 import { rewriteMetaData } from '../utils'
-import RewritesContext from './context'
+import RootsContext from './context'
 
-function useMetaRewrites() {
+function useRootMeta() {
   // use rewrite context for current locale and rules
-  const context = useContext(RewritesContext)
+  const context = useContext(RootsContext)
 
   return {
     data: (
@@ -17,4 +17,4 @@ function useMetaRewrites() {
   }
 }
 
-export { useMetaRewrites }
+export { useRootMeta }

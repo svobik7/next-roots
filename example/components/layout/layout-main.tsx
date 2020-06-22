@@ -1,7 +1,7 @@
 import { Table } from 'components/table'
-import { useRewrites } from 'next-i18n-rewrites/context'
-import Link, { useLinkRewrites } from 'next-i18n-rewrites/link'
-import { useMetaRewrites } from 'next-i18n-rewrites/meta'
+import { useRoots } from 'next-roots/context'
+import RootLink, { useRootLink } from 'next-roots/link'
+import { useRootMeta } from 'next-roots/meta'
 import { useRouter } from 'next/router'
 import React, { PropsWithChildren } from 'react'
 import styles from './layout-main.module.css'
@@ -25,16 +25,16 @@ export default function LayoutMain(props: LayoutMainProps) {
   // meta.data('title')
   // meta.data('*')
 
-  // use rewrites context
-  const rewrites = useRewrites()
+  // use roots context
+  const roots = useRoots()
 
-  // use meta rewrites
-  const meta = useMetaRewrites()
+  // use root meta
+  const meta = useRootMeta()
 
-  // use link rewrites
-  const links = useLinkRewrites()
+  // use root link
+  const links = useRootLink()
 
-  // use router rewrites
+  // use router
   const router = useRouter()
 
   // parsed data
@@ -42,7 +42,7 @@ export default function LayoutMain(props: LayoutMainProps) {
 
   return (
     <div className={styles.root}>
-      <h1>NEXT I18N REWRITES</h1>
+      <h1>NEXT ROOTS</h1>
 
       <div
         className={styles.body}
@@ -63,9 +63,13 @@ export default function LayoutMain(props: LayoutMainProps) {
           {
             name: 'asPath',
             value: router.asPath,
-            note: 'Query string is empty during SSR',
           },
           { name: 'pathname', value: router.pathname },
+          {
+            name: 'query',
+            value: JSON.stringify(router.query),
+            note: 'Query can be empty during SSR',
+          },
         ]}
       />
 
@@ -76,18 +80,18 @@ export default function LayoutMain(props: LayoutMainProps) {
           { key: 'name', label: 'Name' },
           { key: 'value', label: 'Value', tag: 'code' },
         ]}
-        data={Object.keys(rewrites.currentRule).map((k) => ({
+        data={Object.keys(roots.currentRule).map((k) => ({
           name: k,
-          value: rewrites.currentRule[k],
+          value: roots.currentRule[k],
         }))}
       />
 
       <h2>Locale</h2>
       <p>
         Locales are manipulated by hook{' '}
-        <code>const rewrites = useRewrites()</code>. Current locale then by{' '}
-        <code>rewrites.currentLocale</code>. Default locale by{' '}
-        <code>rewrites.defaultLocale</code>.
+        <code>const roots = useRoots()</code>. Current locale then by{' '}
+        <code>roots.currentLocale</code>. Default locale by{' '}
+        <code>roots.defaultLocale</code>.
       </p>
 
       <Table
@@ -96,15 +100,15 @@ export default function LayoutMain(props: LayoutMainProps) {
           { key: 'value', label: 'Value', tag: 'code' },
         ]}
         data={[
-          { name: 'Current', value: rewrites.currentLocale },
-          { name: 'Default', value: rewrites.defaultLocale },
+          { name: 'Current', value: roots.currentLocale },
+          { name: 'Default', value: roots.defaultLocale },
         ]}
       />
 
       <h2>Meta Data</h2>
       <p>
         Meta data are manipulated by hook{' '}
-        <code>const meta = useMetaRewrites()</code>. Single data can be obtained
+        <code>const meta = useRootMeta()</code>. Single data can be obtained
         using <code>meta.data('title')</code>. All data can be obtained using{' '}
         <code>meta.data('*')</code>.
       </p>
@@ -133,16 +137,16 @@ export default function LayoutMain(props: LayoutMainProps) {
           { key: 'href', label: 'Href', tag: 'code' },
           { key: 'as', label: 'As', tag: 'code' },
         ]}
-        data={rewrites.locales.map((l) => ({
+        data={roots.locales.map((l) => ({
           locale: (
-            <Link key={l} href={rewrites.currentRule.key} locale={l}>
+            <RootLink key={l} href={roots.currentRule.key} locale={l}>
               <a>{l}</a>
-            </Link>
+            </RootLink>
           ),
-          href: links.href(rewrites.currentRule.key, {
+          href: links.href(roots.currentRule.key, {
             locale: l,
           }),
-          as: links.as(rewrites.currentRule.key, {
+          as: links.as(roots.currentRule.key, {
             locale: l,
           }),
         }))}
@@ -151,29 +155,29 @@ export default function LayoutMain(props: LayoutMainProps) {
       <h2>Navigation</h2>
       <ol>
         <li>
-          <Link href="/">
+          <RootLink href="/">
             <a>Home</a>
-          </Link>
+          </RootLink>
         </li>
         <li>
-          <Link href="/auth/login">
+          <RootLink href="/auth/login">
             <a>Auth - Login</a>
-          </Link>
+          </RootLink>
         </li>
         <li>
-          <Link href="auth/signup">
+          <RootLink href="auth/signup">
             <a>Auth - Signup</a>
-          </Link>
+          </RootLink>
         </li>
         <li>
-          <Link href="account/profile">
+          <RootLink href="account/profile">
             <a>Account - Profile</a>
-          </Link>
+          </RootLink>
         </li>
         <li>
-          <Link href="account/settings">
+          <RootLink href="account/settings">
             <a>Account - Settings</a>
-          </Link>
+          </RootLink>
         </li>
       </ol>
     </div>

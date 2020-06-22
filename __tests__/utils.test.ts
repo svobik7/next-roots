@@ -1,9 +1,9 @@
 import {
-  createRewritePath,
-  decodeRewriteKey,
+  createSchemaRulePath,
+  decodeSchemaRuleKey,
   delocalize,
-  encodeRewriteKey,
-  findRewriteRule,
+  encodeSchemaRuleKey,
+  findSchemaRule,
   localize,
   rewriteAs,
   rewriteHref,
@@ -11,9 +11,9 @@ import {
   suffixize,
 } from '../src/utils'
 
-describe('next-i18n-rewrites:utils', () => {
+describe('next-roots:utils', () => {
   /**
-   * Test `suffixize` method
+   * Test 'suffixize' method
    * ---
    * It should enriches given input with suffix
    * - does not modify the path when suffix is not given
@@ -44,7 +44,7 @@ describe('next-i18n-rewrites:utils', () => {
   })
 
   /**
-   * Test `localize` method
+   * Test 'localize' method
    * ---
    * It should localize given input with rewrite locale prefix
    * - does not modify the input when no locale is given
@@ -78,7 +78,7 @@ describe('next-i18n-rewrites:utils', () => {
   })
 
   /**
-   * Test `de-localize` method
+   * Test 'delocalize' method
    * ---
    * It should de-localize given input with rewrite locale prefix
    * - de-localize also when locale is `*`
@@ -117,80 +117,75 @@ describe('next-i18n-rewrites:utils', () => {
   })
 
   /**
-   * Test `encodeRewriteKey` method
+   * Test 'encodeSchemaRuleKey' method
    * ---
    * It should encode given input with rewrite locale prefix
    */
-  describe('encodeRewriteKey', () => {
+  describe('encodeSchemaRuleKey', () => {
     test('create for root and locale', () => {
-      const result = encodeRewriteKey('account/profile', 'en')
+      const result = encodeSchemaRuleKey('account/profile', 'en')
       expect(result).toBe('en:account/profile')
     })
 
     test('create for root and empty locale', () => {
-      const result = encodeRewriteKey('account/profile', '')
+      const result = encodeSchemaRuleKey('account/profile', '')
       expect(result).toBe('account/profile')
     })
   })
 
   /**
-   * Test `decodeRewriteKey` method
+   * Test 'decodeSchemaRuleKey' method
    * ---
    * It should decode given input to [locale, root]
    * - use `undefined` when no locale is decoded
    */
-  describe('decodeRewriteKey', () => {
+  describe('decodeSchemaRuleKey', () => {
     test('decode full key', () => {
-      const result = decodeRewriteKey('en:account/profile')
+      const result = decodeSchemaRuleKey('en:account/profile')
       expect(result).toEqual(['account/profile', 'en'])
     })
 
     test('decode partial key', () => {
-      const result = decodeRewriteKey('account/profile')
+      const result = decodeSchemaRuleKey('account/profile')
       expect(result).toEqual(['account/profile', ''])
     })
-
-    // test('create for root and empty locale', () => {
-    //   const result = encodeRewriteKey('account/profile', '')
-    //   expect(result).toBe('*:account/profile')
-    // })
   })
 
   /**
-   * Test `createRewritePath` method
+   * Test 'createSchemaRulePath' method
    * ---
    * It should localize and suffixize given input
    * - does not modify the input when given input is empty
    */
-  describe('createRewritePath', () => {
+  describe('createSchemaRulePath', () => {
     test('create for locale and suffix', () => {
-      const result = createRewritePath('account/profile', 'en', '.htm')
+      const result = createSchemaRulePath('account/profile', 'en', '.htm')
       expect(result).toBe('/en/account/profile.htm')
     })
 
     test('create for locale', () => {
-      const result = createRewritePath('account/profile', 'en')
+      const result = createSchemaRulePath('account/profile', 'en')
       expect(result).toBe('/en/account/profile')
     })
 
     test('do not modify empty input', () => {
-      const result = createRewritePath('', 'en')
+      const result = createSchemaRulePath('', 'en')
       expect(result).toBe('')
     })
   })
 
   /**
-   * Test `findRewriteRule` method
+   * Test 'findSchemaRule' method
    * ---
-   * It should find and retrieve link alias from given rewrites table
+   * It should find and retrieve link alias from given schema table
    */
-  describe('findRewriteRule', () => {
+  describe('findSchemaRule', () => {
     test('find existing by string', () => {
       const expectedRule = {
         key: 'en:account/profile',
         href: '/en/account/profile.htm',
       }
-      const result = findRewriteRule([expectedRule], 'en:account/profile')
+      const result = findSchemaRule([expectedRule], 'en:account/profile')
       expect(result).toEqual(expectedRule)
     })
 
@@ -199,12 +194,12 @@ describe('next-i18n-rewrites:utils', () => {
         key: 'en:account/profile',
         href: '/en/account/profile.htm',
       }
-      const result = findRewriteRule([expectedRule], ['account/profile', 'en'])
+      const result = findSchemaRule([expectedRule], ['account/profile', 'en'])
       expect(result).toEqual(expectedRule)
     })
 
     test('find non-existing by string', () => {
-      const result = findRewriteRule(
+      const result = findSchemaRule(
         [
           {
             key: 'cs:account/profile',
@@ -217,7 +212,7 @@ describe('next-i18n-rewrites:utils', () => {
     })
 
     test('find non-existing by array', () => {
-      const result = findRewriteRule(
+      const result = findSchemaRule(
         [
           {
             key: 'cs:account/profile',
@@ -231,9 +226,9 @@ describe('next-i18n-rewrites:utils', () => {
   })
 
   /**
-   * Test `rewriteAs` method
+   * Test 'rewriteAs' method
    * ---
-   * It should find and retrieve link alias from given rewrites table
+   * It should find and retrieve link alias from given schema table
    */
   describe('rewriteAs', () => {
     test('rewrite for existing `rule.as`', () => {
@@ -356,9 +351,9 @@ describe('next-i18n-rewrites:utils', () => {
   })
 
   /**
-   * Test `rewriteHref` method
+   * Test 'rewriteHref' method
    * ---
-   * It should find and retrieve link href from given rewrites table
+   * It should find and retrieve link href from given schema table
    */
   describe('rewriteHref', () => {
     test('rewrite for existing `rule`', () => {
@@ -420,7 +415,7 @@ describe('next-i18n-rewrites:utils', () => {
   })
 
   /**
-   * Test `rewriteMeta` method
+   * Test 'rewriteMeta' method
    * ---
    * It should find and retrieve meta data for given rewrite key
    */

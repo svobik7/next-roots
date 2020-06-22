@@ -1,26 +1,26 @@
 import NextLink, { LinkProps as NextLinkProps } from 'next/link'
 import React, { useContext } from 'react'
-import { RewriteLinkOptions } from '../types'
+import { Roots } from '../types'
 import { rewriteAs, rewriteHref } from '../utils'
-import RewritesContext from './context'
+import RootsContext from './context'
 
-export type LinkRewriteProps = React.PropsWithChildren<
-  NextLinkProps & Partial<RewriteLinkOptions>
+export type RootLinkProps = React.PropsWithChildren<
+  NextLinkProps & Partial<Roots.RewriteLinkOptions>
 >
 
-function LinkRewrite(props: LinkRewriteProps) {
+function RootLink(props: RootLinkProps) {
   const { children, href, as, locale, ...otherProps } = props
 
-  const link = useLinkRewrites()
+  const link = useRootLink()
 
   // create href rewrite
-  const hrefRewrite: LinkRewriteProps['href'] =
+  const hrefRewrite: RootLinkProps['href'] =
     typeof href === 'string'
       ? link.href(href, { locale })
       : { ...href, pathname: link.href(href.pathname || '', { locale }) }
 
   // use given alias at first
-  let asRewrite: LinkRewriteProps['as'] = as
+  let asRewrite: RootLinkProps['as'] = as
 
   // rewrite as when no alias is given
   if (!asRewrite) {
@@ -37,17 +37,17 @@ function LinkRewrite(props: LinkRewriteProps) {
   )
 }
 
-function useLinkRewrites() {
+function useRootLink() {
   // use rewrite context for current locale and rules
-  const context = useContext(RewritesContext)
+  const context = useContext(RootsContext)
 
   return {
-    as: (root: string, options: Partial<RewriteLinkOptions> = {}) =>
+    as: (root: string, options: Partial<Roots.RewriteLinkOptions> = {}) =>
       rewriteAs(root, {
         locale: options.locale || context.currentLocale,
         __rules: context.rules,
       }),
-    href: (root: string, options: Partial<RewriteLinkOptions> = {}) =>
+    href: (root: string, options: Partial<Roots.RewriteLinkOptions> = {}) =>
       rewriteHref(root, {
         locale: options.locale || context.currentLocale,
         __rules: context.rules,
@@ -55,5 +55,5 @@ function useLinkRewrites() {
   }
 }
 
-export { useLinkRewrites }
-export default LinkRewrite
+export { useRootLink }
+export default RootLink
