@@ -86,5 +86,16 @@ module.exports = {
       ],
       metaData: { background: 'magenta' },
     },
+
+    {
+      root: 'blog',
+      pages: [
+        {
+          locale: '*',
+          path: 'blog',
+          suffix: '',
+        },
+      ],
+    },
   ],
 }

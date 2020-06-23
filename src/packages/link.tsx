@@ -5,7 +5,10 @@ import { rewriteAs, rewriteHref } from '../utils'
 import RootsContext from './context'
 
 export type RootLinkProps = React.PropsWithChildren<
-  NextLinkProps & Partial<Roots.RewriteLinkOptions>
+  NextLinkProps & {
+    locale?: Roots.RewriteHrefOptions['locale']
+    params?: Roots.RewriteAsOptions['params']
+  }
 >
 
 function RootLink(props: RootLinkProps) {
@@ -45,12 +48,13 @@ function useRootLink() {
   const context = useContext(RootsContext)
 
   return {
-    as: (root: string, options: Partial<Roots.RewriteLinkOptions> = {}) =>
+    as: (root: string, options: Partial<Roots.RewriteAsOptions> = {}) =>
       rewriteAs(root, {
         locale: options.locale || context.currentLocale,
+        params: options.params,
         __rules: context.rules,
       }),
-    href: (root: string, options: Partial<Roots.RewriteLinkOptions> = {}) =>
+    href: (root: string, options: Partial<Roots.RewriteHrefOptions> = {}) =>
       rewriteHref(root, {
         locale: options.locale || context.currentLocale,
         __rules: context.rules,

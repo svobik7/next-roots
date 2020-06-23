@@ -54,10 +54,13 @@ export namespace Roots {
   /**
    * REWRITE
    */
-  export type RewriteLinkOptions = {
+  export type RewriteHrefOptions = {
     __rules: SchemaRule[]
     locale: string
-    params?: Record<string, string | number>
+  }
+
+  export type RewriteAsOptions = RewriteHrefOptions & {
+    params?: Record<string, string | string[]>
   }
 
   export type RewriteMetaDataOptions = {

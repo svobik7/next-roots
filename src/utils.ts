@@ -16,12 +16,14 @@ import { Roots } from './types'
  */
 export function parametrize(
   input: string,
-  params: Record<string, string | number>
+  params: Record<string, string | string[]>
 ): string {
   for (let [name, value] of Object.entries(params)) {
     input = input.replace(
+      // match '[paramName]' or '[...paramName]' patterns
       new RegExp(`\\[(\\.\\.\\.)?${name}\\]`, 'g'),
-      String(value)
+      // replace with 'value[0]/value[1]/...' or 'value'
+      Array.isArray(value) ? value.join('/') : value
     )
   }
 
@@ -217,7 +219,7 @@ export function findSchemaRule(
  */
 export function rewrite(
   input: string,
-  options: Roots.RewriteLinkOptions
+  options: Roots.RewriteHrefOptions
 ): Roots.SchemaRule {
   // rename invalid root name
   input = input === '/' ? 'index' : input
@@ -248,7 +250,7 @@ export function rewrite(
  */
 export function rewriteAs(
   input: string,
-  options: Roots.RewriteLinkOptions
+  options: Roots.RewriteAsOptions
 ): string {
   // split input to root and query parts
   const inputParts = input.split('?')
@@ -280,7 +282,7 @@ export function rewriteAs(
  */
 export function rewriteHref(
   input: string,
-  options: Roots.RewriteLinkOptions
+  options: Roots.RewriteHrefOptions
 ): string {
   // split input to root and query parts
   const inputParts = input.split('?')

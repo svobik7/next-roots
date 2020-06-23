@@ -24,6 +24,7 @@
     "@next/bundle-analyzer": "^9.4.4",
     "@types/react": "link:../node_modules/@types/react",
     "cross-env": "^7.0.2",
-    "react-highlight.js": "^1.0.7"
+    "react-highlight.js": "^1.0.7",
+    "watch": "^1.0.2"
   }
 }

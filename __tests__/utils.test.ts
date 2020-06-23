@@ -29,6 +29,13 @@ describe('next-roots:utils', () => {
       expect(result).toEqual('path/slug-1/slug-2')
     })
 
+    test('expand array parma', () => {
+      const result = parametrize('path/[param]', {
+        param: ['slug-1', 'slug-2'],
+      })
+      expect(result).toEqual('path/slug-1/slug-2')
+    })
+
     test('do not modify when params not given', () => {
       const result = parametrize('path/[param1]/[...param2]', {})
       expect(result).toEqual('path/[param1]/[...param2]')

@@ -12,19 +12,8 @@ export type LayoutMainProps = PropsWithChildren<{}>
 export default function LayoutMain(props: LayoutMainProps) {
   const { children } = props
 
-  // const roots = useRoots()
-  // roots.defaultLocale
-  // roots.currentLocale
-  // roots.defaultRule
-  // roots.currentRule
-
-  // const links = useLinkRoots()
-  // links.href('/account/profile')
-  // links.as('/account/profile')
-
-  // const meta = useMetaRoots()
-  // meta.data('title')
-  // meta.data('*')
+  // use router context
+  const router = useRouter()
 
   // use roots context
   const roots = useRoots()
@@ -33,10 +22,7 @@ export default function LayoutMain(props: LayoutMainProps) {
   const meta = useRootMeta()
 
   // use root link
-  const links = useRootLink()
-
-  // use router
-  const router = useRouter()
+  const link = useRootLink()
 
   // parsed data
   const dataMeta = meta.data('*')
@@ -143,11 +129,12 @@ export default function LayoutMain(props: LayoutMainProps) {
               <a>{l}</a>
             </RootLink>
           ),
-          href: links.href(roots.currentRule.key, {
+          href: link.href(roots.currentRule.key, {
             locale: l,
           }),
-          as: links.as(roots.currentRule.key, {
+          as: link.as(roots.currentRule.key, {
             locale: l,
+            params: { ...router.query },
           }),
         }))}
       />
