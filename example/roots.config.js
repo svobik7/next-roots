@@ -7,7 +7,7 @@ module.exports = {
   schemas: [
     {
       root: '*',
-      metaData: { title: 'YeahCoach', background: 'grey' },
+      metaData: { title: 'Awesome Next Roots', background: 'grey' },
     },
     {
       root: 'index',

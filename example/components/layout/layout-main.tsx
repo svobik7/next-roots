@@ -5,7 +5,6 @@ import { useRootMeta } from 'next-roots/meta'
 import { useRouter } from 'next/router'
 import React, { PropsWithChildren } from 'react'
 import styles from './layout-main.module.css'
-import NextLink from 'next/link'
 
 export type LayoutMainProps = PropsWithChildren<{}>
 
