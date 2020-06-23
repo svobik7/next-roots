@@ -26,7 +26,7 @@ describe('next-roots:cli-builder', () => {
       expect(fs.existsSync('example/roots/_error.tsx')).toBe(true)
       expect(fs.existsSync('example/roots/index.tsx')).toBe(true)
       expect(fs.existsSync('example/roots/api/get-version.ts')).toBe(true)
-      expect(fs.existsSync('example/roots/api/users/get-users.ts')).toBe(true)
+      expect(fs.existsSync('example/roots/api/users/index.ts')).toBe(true)
 
       expect(fs.existsSync('example/roots/account/profile.tsx')).toBe(true)
       expect(fs.existsSync('example/roots/account/settings.tsx')).toBe(true)
@@ -39,7 +39,7 @@ describe('next-roots:cli-builder', () => {
       expect(fs.existsSync('example/pages/_document.tsx')).toBe(true)
       expect(fs.existsSync('example/pages/_error.tsx')).toBe(true)
       expect(fs.existsSync('example/pages/api/get-version.ts')).toBe(true)
-      expect(fs.existsSync('example/pages/api/users/get-users.ts')).toBe(true)
+      expect(fs.existsSync('example/pages/api/users/index.ts')).toBe(true)
 
       expect(fs.existsSync('example/pages/en/index.tsx')).toBe(true)
       expect(fs.existsSync('example/pages/cs/index.tsx')).toBe(true)
@@ -112,9 +112,9 @@ describe('next-roots:cli-builder', () => {
       expect(root.equals(page)).toBe(true)
     })
 
-    test('api/users/get-users content', () => {
-      const root = fs.readFileSync('example/roots/api/users/get-users.ts')
-      const page = fs.readFileSync('example/pages/api/users/get-users.ts')
+    test('api/users/index content', () => {
+      const root = fs.readFileSync('example/roots/api/users/index.ts')
+      const page = fs.readFileSync('example/pages/api/users/index.ts')
 
       expect(root.equals(page)).toBe(true)
     })
