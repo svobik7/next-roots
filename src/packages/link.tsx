@@ -9,7 +9,7 @@ export type RootLinkProps = React.PropsWithChildren<
 >
 
 function RootLink(props: RootLinkProps) {
-  const { children, href, as, locale, ...otherProps } = props
+  const { children, href, as, locale, params, ...otherProps } = props
 
   const link = useRootLink()
 
@@ -26,8 +26,11 @@ function RootLink(props: RootLinkProps) {
   if (!asRewrite) {
     asRewrite =
       typeof href === 'string'
-        ? link.as(href, { locale })
-        : { ...href, pathname: link.as(href.pathname || '', { locale }) }
+        ? link.as(href, { locale, params })
+        : {
+            ...href,
+            pathname: link.as(href.pathname || '', { locale, params }),
+          }
   }
 
   return (

@@ -252,6 +252,19 @@ describe('next-roots:cli-builder', () => {
           key: 'es:account/settings',
           href: '/es/cuenta/ajustes-b2.htm',
         },
+        // DYNAMIC
+        {
+          key: 'en:dynamic',
+          href: '/en/[...slug]',
+        },
+        {
+          key: 'cs:dynamic',
+          href: '/cs/[...slug]',
+        },
+        {
+          key: 'es:dynamic',
+          href: '/es/[...slug]',
+        },
       ]
 
       const content = await require('example/roots.schema.js')
@@ -303,6 +316,11 @@ describe('next-roots:cli-builder', () => {
         {
           key: 'account/settings',
           data: { background: 'blue' },
+        },
+        // DYNAMIC
+        {
+          key: 'dynamic',
+          data: { background: 'magenta' },
         },
       ]
 

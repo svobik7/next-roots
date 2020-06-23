@@ -57,6 +57,7 @@ export namespace Roots {
   export type RewriteLinkOptions = {
     __rules: SchemaRule[]
     locale: string
+    params?: Record<string, string | number>
   }
 
   export type RewriteMetaDataOptions = {

@@ -84,31 +84,7 @@ module.exports = {
           suffix: '',
         },
       ],
-      // metaData: { background: 'magenta' },
+      metaData: { background: 'magenta' },
     },
-
-    // {
-    //   root: 'user/index',
-    //   pages: [
-    //     {
-    //       locale: '*',
-    //       path: '[user]/index',
-    //       suffix: ''
-    //     },
-    //   ],
-    //   metaData: { background: 'lime' },
-    // },
-
-    // {
-    //   root: 'fallback',
-    //   pages: [
-    //     {
-    //       locale: false,
-    //       path: '[...fallback]',
-    //       suffix: ''
-    //     },
-    //   ],
-    //   metaData: { background: 'gold' },
-    // },
   ],
 }

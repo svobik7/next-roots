@@ -5,6 +5,7 @@ import {
   encodeSchemaRuleKey,
   findSchemaRule,
   localize,
+  parametrize,
   rewriteAs,
   rewriteHref,
   rewriteMetaData,
@@ -12,6 +13,36 @@ import {
 } from '../src/utils'
 
 describe('next-roots:utils', () => {
+  /**
+   * Test 'perametrize' method
+   * ---
+   * It should enriches given input with given params
+   * - does not modify the path when params are not given
+   * - does not modify the path when params are not occurred in path
+   */
+  describe('parametrize', () => {
+    test('adds params to input', () => {
+      const result = parametrize('path/[param1]/[...param2]', {
+        param1: 'slug-1',
+        param2: 'slug-2',
+      })
+      expect(result).toEqual('path/slug-1/slug-2')
+    })
+
+    test('do not modify when params not given', () => {
+      const result = parametrize('path/[param1]/[...param2]', {})
+      expect(result).toEqual('path/[param1]/[...param2]')
+    })
+
+    test('do not modify when params not occured', () => {
+      const result = parametrize('path/[p1]/[...p2]', {
+        param1: 'slug-1',
+        param2: 'slug-2',
+      })
+      expect(result).toEqual('path/[p1]/[...p2]')
+    })
+  })
+
   /**
    * Test 'suffixize' method
    * ---
@@ -347,6 +378,20 @@ describe('next-roots:utils', () => {
         locale: 'en',
       })
       expect(result).toBe('/en/account/profile.htm?param=value')
+    })
+
+    test('push params to dynamic path', () => {
+      const result = rewriteAs('dynamic', {
+        __rules: [
+          {
+            key: 'en:dynamic',
+            href: '/en/[...slug]',
+          },
+        ],
+        locale: 'en',
+        params: { slug: 'some-slug' },
+      })
+      expect(result).toBe('/en/some-slug')
     })
   })
 

@@ -2,6 +2,33 @@ import { ReactText } from 'react'
 import { Roots } from './types'
 
 /**
+ * Parametrizes input based on tags
+ *
+ * Input:
+ * - input: 'some-path/[param1]/[...param2]'
+ * - params: {param1: 'slug-1', param2: 'slug-2'}
+ *
+ * Expected output:
+ * - 'some-path/slug-1/slug-2'
+ *
+ * @param input
+ * @param params
+ */
+export function parametrize(
+  input: string,
+  params: Record<string, string | number>
+): string {
+  for (let [name, value] of Object.entries(params)) {
+    input = input.replace(
+      new RegExp(`\\[(\\.\\.\\.)?${name}\\]`, 'g'),
+      String(value)
+    )
+  }
+
+  return input
+}
+
+/**
  * Creates suffixed input
  *
  * Input:
@@ -229,8 +256,13 @@ export function rewriteAs(
   // create rewrite rule
   const rule = rewrite(inputParts[0], options)
 
-  // use `rule.href` as fallback to alias
-  const alias = rule.as || rule.href
+  // use `rule.href` as fallback to raw alias
+  const rawAlias = rule.as || rule.href
+
+  // use parametrized alias when params are given
+  const alias = options.params
+    ? parametrize(rawAlias, options.params)
+    : rawAlias
 
   // use `rule.as` when no query is given in `input`
   if (!inputParts[1]) {

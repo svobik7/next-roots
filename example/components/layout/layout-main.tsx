@@ -5,6 +5,7 @@ import { useRootMeta } from 'next-roots/meta'
 import { useRouter } from 'next/router'
 import React, { PropsWithChildren } from 'react'
 import styles from './layout-main.module.css'
+import NextLink from 'next/link'
 
 export type LayoutMainProps = PropsWithChildren<{}>
 
@@ -88,10 +89,9 @@ export default function LayoutMain(props: LayoutMainProps) {
 
       <h2>Locale</h2>
       <p>
-        Locales are manipulated by hook{' '}
-        <code>const roots = useRoots()</code>. Current locale then by{' '}
-        <code>roots.currentLocale</code>. Default locale by{' '}
-        <code>roots.defaultLocale</code>.
+        Locales are manipulated by hook <code>const roots = useRoots()</code>.
+        Current locale then by <code>roots.currentLocale</code>. Default locale
+        by <code>roots.defaultLocale</code>.
       </p>
 
       <Table
@@ -177,6 +177,19 @@ export default function LayoutMain(props: LayoutMainProps) {
         <li>
           <RootLink href="account/settings">
             <a>Account - Settings</a>
+          </RootLink>
+        </li>
+        <li>
+          <RootLink href="dynamic" params={{ slug: 'jirka.svoboda' }}>
+            <a>Dynamic - Author</a>
+          </RootLink>
+        </li>
+        <li>
+          <RootLink
+            href="dynamic"
+            params={{ slug: 'jirka.svoboda/nazev-clanku' }}
+          >
+            <a>Dynamic - Article</a>
           </RootLink>
         </li>
       </ol>
