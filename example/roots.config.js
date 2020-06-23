@@ -4,10 +4,9 @@ module.exports = {
   defaultSuffix: '.htm',
   dirRoots: 'roots',
   dirPages: 'pages',
-  rewrites: [
+  schemas: [
     {
       root: '*',
-      pages: [],
       metaData: { title: 'YeahCoach', background: 'grey' },
     },
     {
@@ -76,16 +75,27 @@ module.exports = {
       metaData: { background: 'blue' },
     },
 
-    // {
-    //   root: 'detail/article',
-    //   pages: [
-    //     {
-    //       locale: '*',
-    //       path: 'detail/article/[key]',
-    //       alias: ':slug(.*)-:token:key([A-Z]{3,})',
-    //     },
-    //   ],
-    //   params: [{ name: 'token', value: 'dART' }],
-    // },
+    {
+      root: 'dynamic',
+      pages: [
+        {
+          locale: '*',
+          path: '[...slug]',
+          suffix: '',
+        },
+      ],
+      metaData: { background: 'magenta' },
+    },
+
+    {
+      root: 'blog',
+      pages: [
+        {
+          locale: '*',
+          path: 'blog',
+          suffix: '',
+        },
+      ],
+    },
   ],
 }

@@ -1,5 +1,5 @@
-import { Config, RewriteMeta, RewritePage, RewriteRule } from '../types'
-import { createRewritePath, encodeRewriteKey } from '../utils'
+import { Roots } from '../types'
+import { createSchemaRulePath, encodeSchemaRuleKey } from '../utils'
 
 const colors = require('colors')
 const fs = require('fs')
@@ -10,13 +10,14 @@ const minify = require('@node-minify/core')
 const terser = require('@node-minify/terser')
 
 // load CLI args
-const [, , configPath = 'rewrites.config.js', configParams = {}] = process.argv
+const [, , configPath = 'roots.config.js', configParams = {}] = process.argv
 
 // load runtime config
 const cfgRuntime = require(path.join(process.cwd(), configPath)) || configParams
 
 // create final config
 const cfgDefault = {
+  schemas: [],
   locales: [],
   defaultLocale: '',
   defaultSuffix: '',
@@ -24,7 +25,6 @@ const cfgDefault = {
   dirPages: 'pages',
   staticRoots: ['api', '_app', '_document', '_error', '404'],
   extRoots: '.tsx',
-  rewrites: [],
 }
 
 // create main dir path
@@ -34,7 +34,7 @@ const mainDir = path.dirname(path.join(process.cwd(), configPath))
  * Creates file path relatively to configuration file directory
  * @param string filePath
  */
-function getFilePath(filePath: string) {
+function getFilePath(filePath: string): string {
   return path.join(mainDir, filePath)
 }
 
@@ -43,7 +43,7 @@ function getFilePath(filePath: string) {
  * @param string path
  * @param string content
  */
-function saveFile(filePath: string, content: string) {
+function saveFile(filePath: string, content: string): void {
   makeDirectory(filePath)
   fs.writeFileSync(filePath, content)
 }
@@ -54,7 +54,7 @@ function saveFile(filePath: string, content: string) {
  * @param string encoding
  * @returns string
  */
-function readFile(path: string, encoding: BufferEncoding = 'utf8') {
+function readFile(path: string, encoding: BufferEncoding = 'utf8'): string {
   if (!isFile(path)) return ''
   return fs.readFileSync(path).toString(encoding)
 }
@@ -64,7 +64,7 @@ function readFile(path: string, encoding: BufferEncoding = 'utf8') {
  * @param string from
  * @param string to
  */
-function copyFile(from: string, to: string) {
+function copyFile(from: string, to: string): void {
   makeDirectory(to)
   fs.copyFileSync(from, to)
 }
@@ -73,7 +73,7 @@ function copyFile(from: string, to: string) {
  * Indicates if path is file
  * @param string path
  */
-function isFile(path: string) {
+function isFile(path: string): boolean {
   if (!fs.existsSync(path)) return false
   return fs.statSync(path).isFile()
 }
@@ -83,7 +83,7 @@ function isFile(path: string) {
  * @param string from
  * @param string to
  */
-function copyDirectory(from: string, to: string) {
+function copyDirectory(from: string, to: string): void {
   if (!isDirectory(from)) return
 
   makeDirectory(to)
@@ -104,7 +104,7 @@ function copyDirectory(from: string, to: string) {
  * Create directory in given path recursively
  * @param string path
  */
-function makeDirectory(dirPath: string) {
+function makeDirectory(dirPath: string): void {
   dirPath = path.dirname(dirPath)
 
   if (fs.existsSync(dirPath)) return
@@ -115,7 +115,7 @@ function makeDirectory(dirPath: string) {
  * Removes given directory recursively
  * @param string path
  */
-function removeDirectory(dir: string) {
+function removeDirectory(dir: string): void {
   if (!fs.existsSync(dir)) return
   fs.rmdirSync(dir, { recursive: true })
 }
@@ -124,32 +124,41 @@ function removeDirectory(dir: string) {
  * Indicates if path is directory
  * @param string path
  */
-function isDirectory(path: string) {
+function isDirectory(path: string): boolean {
   if (!fs.existsSync(path)) return false
   return fs.statSync(path).isDirectory()
 }
 
 /**
- * Creates context file content
+ * Creates schema file content
  * @param rules
  * @param meta
  */
-function createContext(rules: RewriteRule[], meta: RewriteMeta[]) {
+function createSchema(
+  rules: Roots.SchemaRule[],
+  meta: Roots.SchemaMeta[]
+): Roots.Schema {
   // create builder config
-  const cfg: Config = { ...cfgDefault, ...cfgRuntime }
+  const cfg: Roots.Config = { ...cfgDefault, ...cfgRuntime }
 
-  let content = ''
+  return {
+    defaultLocale: cfg.defaultLocale,
+    locales: cfg.locales,
+    rules,
+    meta,
+  }
+  // let content = ''
 
-  content += `module.exports.defaultLocale = "${cfg.defaultLocale}" \n`
-  content += `module.exports.locales = ${JSON.stringify(cfg.locales)} \n`
-  content += `module.exports.rules = ${JSON.stringify(rules)} \n`
-  content += `module.exports.meta = ${JSON.stringify(meta)} \n`
+  // content += `module.exports.defaultLocale = "${cfg.defaultLocale}" \n`
+  // content += `module.exports.locales = ${JSON.stringify(cfg.locales)} \n`
+  // content += `module.exports.rules = ${JSON.stringify(rules)} \n`
+  // content += `module.exports.meta = ${JSON.stringify(meta)} \n`
 
-  return content
+  // return content
 }
 
 /**
- * Create rewrite for given page
+ * Create route rule for given page
  *
  * Input:
  * - page: { path: some-path-:token, locale: en, suffix: .htm }
@@ -160,10 +169,13 @@ function createContext(rules: RewriteRule[], meta: RewriteMeta[]) {
  *
  * @param params
  */
-function rewrite(page: RewritePage, params = {}): [string, string | undefined] {
-  const pageHref = createRewritePath(page.path, page.locale, page.suffix)
+function createRouteRule(
+  page: Roots.BuilderPage,
+  params = {}
+): [string, string | undefined] {
+  const pageHref = createSchemaRulePath(page.path, page.locale, page.suffix)
   const pageAs =
-    page.alias && createRewritePath(page.alias, page.locale, page.suffix)
+    page.alias && createSchemaRulePath(page.alias, page.locale, page.suffix)
 
   const compileHref = pathToRegexp.compile(pageHref)
   const compileAs = pageAs && pathToRegexp.compile(pageAs)
@@ -175,20 +187,19 @@ function rewrite(page: RewritePage, params = {}): [string, string | undefined] {
 }
 
 function run() {
-  console.log(colors.yellow('rewrite'), '- generating next-i18n-rewrites ...')
+  console.log(colors.yellow('rewrite'), '- generating next-roots ...')
 
   // create builder config
-  const cfg: Config = { ...cfgDefault, ...cfgRuntime }
+  const cfg: Roots.Config = { ...cfgDefault, ...cfgRuntime }
 
   // ensure pages directory is clean before build
   removeDirectory(cfg.dirPages)
 
-  // create rewrites table
-  const rules: RewriteRule[] = []
-  const meta: RewriteMeta[] = []
+  const schemaRules: Roots.SchemaRule[] = []
+  const schemaMeta: Roots.SchemaMeta[] = []
 
   // create pages for each rewrite
-  cfg.rewrites.forEach((r) => {
+  cfg.schemas.forEach((r) => {
     const rootPath = getFilePath(
       path.format({
         dir: cfg.dirRoots,
@@ -198,12 +209,12 @@ function run() {
     )
 
     // create page template for each root
-    const pageContent = readFile(rootPath)
+    const pageContent = rootPath !== '*' && readFile(rootPath)
 
     // push rewrite meta data to meta table
     r.metaData &&
       Object.keys(r.metaData).length &&
-      meta.push({
+      schemaMeta.push({
         key: r.root,
         data: r.metaData,
       })
@@ -225,20 +236,20 @@ function run() {
         }
 
         // make sure all page rewrite params are set
-        const pageRewrite: RewritePage = {
+        const pageSchema: Roots.BuilderPage = {
           locale: l,
           path: page?.path || r.root,
           alias: page?.alias || '',
           suffix: page?.suffix ?? cfg.defaultSuffix,
         }
 
-        const ruleKey = encodeRewriteKey(r.root, l)
+        const ruleKey = encodeSchemaRuleKey(r.root, l)
 
         // create page rewrite
-        const [href, as] = rewrite(pageRewrite, r.params)
+        const [href, as] = createRouteRule(pageSchema, r.params)
 
-        // push new rewrite rule to rewrites table
-        rules.push({
+        // push new rule to schema
+        schemaRules.push({
           key: ruleKey,
           href,
           as,
@@ -247,7 +258,7 @@ function run() {
         // push rewrite meta data to meta table
         page?.metaData &&
           Object.keys(page.metaData).length &&
-          meta.push({
+          schemaMeta.push({
             key: ruleKey,
             data: page?.metaData,
           })
@@ -266,33 +277,40 @@ function run() {
 
   // create context file with rules and meta data
   // keep it as small as possible
-  const contextPath = `${mainDir}/rewrites.js`
-  const context = createContext(rules, meta)
+  const schemaPath = `${mainDir}/roots.schema.js`
+  const schema = createSchema(schemaRules, schemaMeta)
 
   minify({
     compressor: terser,
-    content: context,
+    content: `module.exports = ${JSON.stringify(schema)}`,
     callback: (_: any, min: string) => {
-      saveFile(contextPath, min)
+      saveFile(schemaPath, min)
     },
   })
 
   // keep next.js specific files / dirs as they are
   // and just copy them to pages directory
   cfg.staticRoots.forEach((staticPath) => {
-    const dir = getFilePath(
+    const sourceDir = getFilePath(
       path.format({
         dir: cfg.dirRoots,
         name: staticPath,
       })
     )
 
-    if (isDirectory(dir)) {
-      copyDirectory(dir, dir.replace(cfg.dirRoots, cfg.dirPages))
+    if (isDirectory(sourceDir)) {
+      const targetDir = getFilePath(
+        path.format({
+          dir: cfg.dirPages,
+          name: staticPath,
+        })
+      )
+
+      copyDirectory(sourceDir, targetDir)
       return
     }
 
-    const file = getFilePath(
+    const sourceFile = getFilePath(
       path.format({
         dir: cfg.dirRoots,
         name: staticPath,
@@ -300,8 +318,16 @@ function run() {
       })
     )
 
-    if (isFile(file)) {
-      copyFile(file, file.replace(cfg.dirRoots, cfg.dirPages))
+    if (isFile(sourceFile)) {
+      const targetFile = getFilePath(
+        path.format({
+          dir: cfg.dirPages,
+          name: staticPath,
+          ext: cfg.extRoots,
+        })
+      )
+
+      copyFile(sourceFile, targetFile)
       return
     }
   })

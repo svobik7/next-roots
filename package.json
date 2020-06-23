@@ -1,7 +1,7 @@
 {
-  "name": "next-i18n-rewrites",
-  "version": "0.0.6",
-  "description": "Next.js utility to generate i18n pages according to custom rewrites rules.",
+  "name": "next-roots",
+  "version": "0.0.7",
+  "description": "Next.js utility to generate internationalized pages with metadata according to custom roots rules.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -14,7 +14,7 @@
     "meta.d.js"
   ],
   "bin": {
-    "next-i18n-rewrites": "./dist/bin/builder.js"
+    "next-roots": "./dist/bin/builder.js"
   },
   "scripts": {
     "prepublish": "yarn test",
@@ -88,7 +88,7 @@
     "next",
     "nextjs",
     "next.js",
-    "rewrites",
+    "roots",
     "routes",
     "localization",
     "localized",
@@ -101,6 +101,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/svobik7/next-i18n-rewrites"
+    "url": "https://github.com/svobik7/next-roots"
   }
 }

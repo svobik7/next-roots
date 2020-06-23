@@ -1,5 +1,5 @@
 import { LayoutMain } from 'components/layout'
-import AuthSignup from 'domain/auth-signup'
+import AuthSignup from 'domains/auth-signup'
 
 export default function AuthSignupRoot() {
   return (

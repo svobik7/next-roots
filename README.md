@@ -1,6 +1,6 @@
-# next-i18n-rewrites
+# next-roots
 
-Next.js utility to generate i18n pages according to custom rewrites rules.
+Next.js utility to generate i18n pages according to custom roots rules.
 
 ## ABOUT
 
@@ -18,25 +18,25 @@ Complete example can be seen in `example` directory.
 
 1. Add package to your project dependencies
 
-   `yarn add next-i18n-rewrites`
+   `yarn add next-roots`
 
 2. Hook rewrite builder script in your `package.json`
 
    ```json
    {
      "scripts": {
-       "dev": "yarn next-i18n-rewrites && next dev",
-       "build": "yarn next-i18n-rewrites && next build"
+       "dev": "yarn next-roots && next dev",
+       "build": "yarn next-roots && next build"
      }
    }
    ```
 
-3. Define your custom rewrites (see [Configuration](#configuration))
+3. Define your custom roots (see [Configuration](#configuration))
 4. Run `yarn dev`
 
 ### BASIC USAGE
 
-Default behavior is to have `rewrites.config.js` file placed in your project root folder (next to your package.json file).
+Default behavior is to have `roots.config.js` file placed in your project root folder (next to your package.json file).
 
 This file defines rewrite rules for your pages and config params for rewrite builder.
 
@@ -49,7 +49,7 @@ module.exports = {
   defaultSuffix: '.htm',
   dirRoots: 'roots',
   dirPages: 'pages',
-  rewrites: [
+  schemas: [
     {
       root: 'index',
       pages: [{ locale: '*', path: 'index', alias: '/', suffix: '' }],
@@ -95,7 +95,7 @@ After rewrite job is done _(for configuration like above)_ your project structur
 │         └── registrace-p1.htm.tsx
 ```
 
-Also rewrite table file `rewrites.table.js` will be generated and placed to project root folder. This file contains routing map for each page in your rewrites configuration.
+Also rewrite table file `roots.schema.js` will be generated and placed to project root folder. This file contains routing map for each page in your roots configuration.
 
 ```js
 module.exports = [

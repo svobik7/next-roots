@@ -1,27 +1,27 @@
-import RewritesContext from 'next-i18n-rewrites/context'
+import RootsContext from 'next-roots/context'
 import { AppProps } from 'next/app'
-import rewrites from 'rewrites'
+import schemaRoots from 'roots.schema'
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   // detect current locale & rewrite from page pathname
   const [, currentLocale] = router.pathname.split('/')
-  const currentRewrite = rewrites.rules.find(
+  const currentRewrite = schemaRoots.rules.find(
     (r) => r.as === router.pathname || r.href === router.pathname
   )
 
   return (
-    <RewritesContext.Provider
+    <RootsContext.Provider
       value={{
         currentRule: currentRewrite,
-        currentLocale: currentLocale || rewrites.defaultLocale,
-        defaultLocale: rewrites.defaultLocale,
-        locales: rewrites.locales,
-        rules: rewrites.rules,
-        meta: rewrites.meta,
+        currentLocale: currentLocale || schemaRoots.defaultLocale,
+        defaultLocale: schemaRoots.defaultLocale,
+        locales: schemaRoots.locales,
+        rules: schemaRoots.rules,
+        meta: schemaRoots.meta,
       }}
     >
       <Component {...pageProps} />
-    </RewritesContext.Provider>
+    </RootsContext.Provider>
   )
 }
 

@@ -1,68 +1,70 @@
 import { ReactText } from 'react'
 
-export type Config = {
-  locales: string[]
-  defaultLocale: string
-  defaultSuffix: string
-  dirRoots: string
-  dirPages: string
-  rewrites: Rewrite[]
-  extRoots: string
-  staticRoots: string[]
-}
+export namespace Roots {
+  export type Config = {
+    schemas: Builder[]
+    locales: string[]
+    defaultLocale: string
+    defaultSuffix: string
+    dirRoots: string
+    dirPages: string
+    extRoots: string
+    staticRoots: string[]
+  }
 
-/**
- * ---
- * REWRITE
- * ---
- */
-export type Rewrite = {
-  root: string
-  pages: RewritePage[]
-  params: Record<string, string>
-  metaData?: RewriteMeta['data']
-}
+  /**
+   * BUILDER
+   */
+  export type Builder = {
+    root: string
+    pages: BuilderPage[]
+    params: Record<string, string>
+    metaData?: SchemaMeta['data']
+  }
 
-export type RewritePage = {
-  locale: string
-  path: string
-  alias: string
-  suffix: string
-  metaData?: RewriteMeta['data']
-}
+  export type BuilderPage = {
+    locale: string
+    path: string
+    alias: string
+    suffix: string
+    metaData?: SchemaMeta['data']
+  }
 
-/**
- * ---
- * REWRITE RULE
- * ---
- */
-export type RewriteRule = {
-  key: string
-  href: string
-  as?: string
-}
+  /**
+   * SCHEMA
+   */
+  export type Schema = {
+    defaultLocale: string
+    locales: string[]
+    rules: SchemaRule[]
+    meta: SchemaMeta[]
+  }
 
-/**
- * ---
- * REWRITE META
- * ---
- */
-export type RewriteMeta = {
-  key: string
-  data: Record<string, ReactText>
-}
+  export type SchemaRule = {
+    key: string
+    href: string
+    as?: string
+  }
 
-export type RewriteMetaDataOptions = {
-  __meta: RewriteMeta[]
-  strict?: boolean
-}
+  export type SchemaMeta = {
+    key: string
+    data: Record<string, ReactText>
+  }
 
-/**
- * ---
- * REWRITE LINK
- * ---
- */
-export type RewriteLinkOptions = {
-  __rules: RewriteRule[]
-  locale: string
+  /**
+   * REWRITE
+   */
+  export type RewriteHrefOptions = {
+    __rules: SchemaRule[]
+    locale: string
+  }
+
+  export type RewriteAsOptions = RewriteHrefOptions & {
+    params?: Record<string, string | string[]>
+  }
+
+  export type RewriteMetaDataOptions = {
+    __meta: SchemaMeta[]
+    strict?: boolean
+  }
 }

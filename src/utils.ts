@@ -1,10 +1,34 @@
 import { ReactText } from 'react'
-import {
-  RewriteLinkOptions,
-  RewriteMeta,
-  RewriteMetaDataOptions,
-  RewriteRule,
-} from './types'
+import { Roots } from './types'
+
+/**
+ * Parametrizes input based on tags
+ *
+ * Input:
+ * - input: 'some-path/[param1]/[...param2]'
+ * - params: {param1: 'slug-1', param2: 'slug-2'}
+ *
+ * Expected output:
+ * - 'some-path/slug-1/slug-2'
+ *
+ * @param input
+ * @param params
+ */
+export function parametrize(
+  input: string,
+  params: Record<string, string | string[]>
+): string {
+  for (let [name, value] of Object.entries(params)) {
+    input = input.replace(
+      // match '[paramName]' or '[...paramName]' patterns
+      new RegExp(`\\[(\\.\\.\\.)?${name}\\]`, 'g'),
+      // replace with 'value[0]/value[1]/...' or 'value'
+      Array.isArray(value) ? value.join('/') : value
+    )
+  }
+
+  return input
+}
 
 /**
  * Creates suffixed input
@@ -101,7 +125,7 @@ export function delocalize(input: string, locale: string): string {
 }
 
 /**
- * Creates unique rewrite key
+ * Creates unique schema rule key
  *
  * Input:
  * - root: account/profile
@@ -113,13 +137,13 @@ export function delocalize(input: string, locale: string): string {
  * @param root
  * @param locale
  */
-export function encodeRewriteKey(root: string, locale: string): string {
+export function encodeSchemaRuleKey(root: string, locale: string): string {
   if (!locale) return root
   return `${locale}:${root}`
 }
 
 /**
- * Decodes rewrite key
+ * Decodes schema rule key
  *
  * Input:
  * - en:account/profile
@@ -130,7 +154,7 @@ export function encodeRewriteKey(root: string, locale: string): string {
  * @param root
  * @param locale
  */
-export function decodeRewriteKey(input: string): [string, string] {
+export function decodeSchemaRuleKey(input: string): [string, string] {
   const parts = input.split(':')
 
   if (parts.length < 2) {
@@ -141,7 +165,7 @@ export function decodeRewriteKey(input: string): [string, string] {
 }
 
 /**
- * Creates unique rewrite path
+ * Creates unique schema rule path
  *
  * Input:
  * - input: account/profile-:token
@@ -155,7 +179,7 @@ export function decodeRewriteKey(input: string): [string, string] {
  * @param locale
  * @param suffix
  */
-export function createRewritePath(
+export function createSchemaRulePath(
   input: string,
   locale: string,
   suffix: string = ''
@@ -165,18 +189,18 @@ export function createRewritePath(
 }
 
 /**
- * Finds rewrite rule based on given search options
+ * Finds schema rule based on given search options
  * @param rules
  * @param options
  */
-export function findRewriteRule(
-  rules: RewriteRule[],
+export function findSchemaRule(
+  rules: Roots.SchemaRule[],
   search: string | [string, string]
-): RewriteRule | undefined {
+): Roots.SchemaRule | undefined {
   // find only based on array `key`
   if (Array.isArray(search)) {
     return rules.find(
-      (r) => r.key === encodeRewriteKey(search[0], search[1] || '')
+      (r) => r.key === encodeSchemaRuleKey(search[0], search[1] || '')
     )
   }
 
@@ -195,8 +219,8 @@ export function findRewriteRule(
  */
 export function rewrite(
   input: string,
-  options: RewriteLinkOptions
-): RewriteRule {
+  options: Roots.RewriteHrefOptions
+): Roots.SchemaRule {
   // rename invalid root name
   input = input === '/' ? 'index' : input
 
@@ -204,13 +228,13 @@ export function rewrite(
   input = input.replace(/^\/+/, '')
 
   // decode input to root and locale
-  const [root, inputLocale] = decodeRewriteKey(input)
+  const [root, inputLocale] = decodeSchemaRuleKey(input)
 
   // choose proper locale
   const locale = options.locale || inputLocale
 
   // find rewrite rule in table of rules
-  const rule = findRewriteRule(options.__rules, [root, locale])
+  const rule = findSchemaRule(options.__rules, [root, locale])
 
   return {
     key: input,
@@ -224,15 +248,23 @@ export function rewrite(
  * @param input
  * @param options
  */
-export function rewriteAs(input: string, options: RewriteLinkOptions): string {
+export function rewriteAs(
+  input: string,
+  options: Roots.RewriteAsOptions
+): string {
   // split input to root and query parts
   const inputParts = input.split('?')
 
   // create rewrite rule
   const rule = rewrite(inputParts[0], options)
 
-  // use `rule.href` as fallback to alias
-  const alias = rule.as || rule.href
+  // use `rule.href` as fallback to raw alias
+  const rawAlias = rule.as || rule.href
+
+  // use parametrized alias when params are given
+  const alias = options.params
+    ? parametrize(rawAlias, options.params)
+    : rawAlias
 
   // use `rule.as` when no query is given in `input`
   if (!inputParts[1]) {
@@ -250,7 +282,7 @@ export function rewriteAs(input: string, options: RewriteLinkOptions): string {
  */
 export function rewriteHref(
   input: string,
-  options: RewriteLinkOptions
+  options: Roots.RewriteHrefOptions
 ): string {
   // split input to root and query parts
   const inputParts = input.split('?')
@@ -276,18 +308,18 @@ export function rewriteHref(
 export function rewriteMetaData(
   key: string,
   query: string,
-  options: RewriteMetaDataOptions
+  options: Roots.RewriteMetaDataOptions
 ): ReactText | Record<string, ReactText> | undefined {
   const { __meta = [], strict = false } = options
 
-  let data: RewriteMeta['data'] = {}
+  let data: Roots.SchemaMeta['data'] = {}
 
   if (strict === false) {
     // merge general non-strict data
     const generalMeta = __meta.find((m) => m.key === '*')
     generalMeta && (data = { ...data, ...generalMeta.data })
 
-    const decoded = decodeRewriteKey(key)
+    const decoded = decodeSchemaRuleKey(key)
 
     // merge rewrite non-strict data
     const rewriteMeta = __meta.find((m) => m.key === decoded[0])

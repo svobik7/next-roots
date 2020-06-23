@@ -1,20 +1,20 @@
 const fs = require('fs')
 const execSync = require('child_process').execSync
 
-describe('next-i18n-rewrites:cli-builder', () => {
+describe('next-roots:cli-builder', () => {
   beforeAll(() => {
     // ensure that package is build to latest version
     execSync('yarn build')
-    // remove examples rewrites.js
-    execSync('rm -f example/rewrites.js')
+    // remove examples roots.schema.js
+    execSync('rm -f example/roots.schema.js')
     // remove example pages directory (this dir will be use in tests)
     execSync('rm -rf example/pages')
-    // run next-i18n-rewrites in example folder and then get back
-    execSync('cd example && yarn rewrite && cd ..')
+    // run next-roots in example folder and then get back
+    execSync('cd example && yarn root && cd ..')
   })
 
   afterAll(() => {
-    execSync('rm -f example/rewrites.js')
+    execSync('rm -f example/roots.schema.js')
     execSync('rm -rf example/pages')
   })
 
@@ -180,18 +180,18 @@ describe('next-i18n-rewrites:cli-builder', () => {
     })
   })
 
-  describe('rewrites.js file is properly created', () => {
+  describe('roots.schema.js file is properly created', () => {
     test('file exists', () => {
-      expect(fs.existsSync('example/rewrites.js')).toBe(true)
+      expect(fs.existsSync('example/roots.schema.js')).toBe(true)
     })
 
     test('exports.defaultLocale', async () => {
-      const content = await require('example/rewrites.js')
+      const content = await require('example/roots.schema.js')
       expect(content.defaultLocale).toStrictEqual('en')
     })
 
     test('exports.locales', async () => {
-      const content = await require('example/rewrites.js')
+      const content = await require('example/roots.schema.js')
       expect(content.locales).toStrictEqual(['en', 'cs', 'es'])
     })
 
@@ -252,9 +252,22 @@ describe('next-i18n-rewrites:cli-builder', () => {
           key: 'es:account/settings',
           href: '/es/cuenta/ajustes-b2.htm',
         },
+        // DYNAMIC
+        {
+          key: 'en:dynamic',
+          href: '/en/[...slug]',
+        },
+        {
+          key: 'cs:dynamic',
+          href: '/cs/[...slug]',
+        },
+        {
+          key: 'es:dynamic',
+          href: '/es/[...slug]',
+        },
       ]
 
-      const content = await require('example/rewrites.js')
+      const content = await require('example/roots.schema.js')
       expect(content.rules).toStrictEqual(expectedTable)
     })
 
@@ -304,9 +317,14 @@ describe('next-i18n-rewrites:cli-builder', () => {
           key: 'account/settings',
           data: { background: 'blue' },
         },
+        // DYNAMIC
+        {
+          key: 'dynamic',
+          data: { background: 'magenta' },
+        },
       ]
 
-      const content = await require('example/rewrites.js')
+      const content = await require('example/roots.schema.js')
       expect(content.meta).toStrictEqual(expectedMeta)
     })
   })
