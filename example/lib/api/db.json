@@ -1,0 +1,61 @@
+{
+  "authors": [
+    {
+      "id": 1,
+      "name": "Joe Black",
+      "username": "joe-black"
+    },
+    {
+      "id": 2,
+      "name": "Linda Dinda",
+      "username": "linda-dinda"
+    },
+    {
+      "id": 3,
+      "name": "Tony Bony",
+      "username": "martin-pemel"
+    },
+    {
+      "id": 4,
+      "name": "Lucy Pucy",
+      "username": "lucy-pucy"
+    },
+    {
+      "id": 5,
+      "name": "Mark Fark",
+      "username": "mark-fark"
+    }
+  ],
+  "articles": [
+    {
+      "id": 1,
+      "title": "How to find your first gold treasure?",
+      "slug": "how-to-find-your-first-gold-treasure",
+      "authorId": 1
+    },
+    {
+      "id": 2,
+      "title": "How to be a better human?",
+      "slug": "how-to-be-a-better-human",
+      "authorId": 2
+    },
+    {
+      "id": 3,
+      "title": "The most dangerous places to live in 2020",
+      "slug": "the-most-dangerous-places-to-live-in-2020",
+      "authorId": 3
+    },
+    {
+      "id": 4,
+      "title": "Top 5 colors which make your day better",
+      "slug": "top-5-colors-which-make-your-day-better",
+      "authorId": 4
+    },
+    {
+      "id": 5,
+      "title": "Do not read this article at all!",
+      "slug": "do-not-read-this-article-at-all",
+      "authorId": 5
+    }
+  ]
+}

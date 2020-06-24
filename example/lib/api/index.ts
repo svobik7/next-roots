@@ -1,26 +1,36 @@
-import articles from './data/articles.json'
-import authors from './data/authors.json'
+const { promises: fs } = require('fs')
+
+async function loadDB() {
+  const rawData = await fs.readFile(process.cwd() + '/lib/api//db.json')
+  return JSON.parse(rawData)
+}
 
 export async function fetchOneAuthor(username: string) {
-  return authors.find((a) => a.username === username) || {}
+  const db = await loadDB()
+  return db.authors.find((a) => a.username === username) || {}
 }
 
 export async function fetchAllAuthors(limit: number) {
+  const db = await loadDB()
+
   if (limit) {
-    return authors.slice(0, limit)
+    return db.authors.slice(0, limit)
   }
 
-  return authors
+  return db.authors
 }
 
 export async function fetchOneArticle(slug: string) {
-  return articles.find((a) => a.slug === slug) || {}
+  const db = await loadDB()
+  return db.articles.find((a) => a.slug === slug) || {}
 }
 
 export async function fetchAllArticles(limit: number = 0) {
+  const db = await loadDB()
+
   if (limit) {
-    return articles.slice(0, limit)
+    return db.articles.slice(0, limit)
   }
 
-  return articles
+  return db.articles
 }
