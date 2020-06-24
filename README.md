@@ -2,18 +2,18 @@
 
 Next.js utility to generate internationalized (i18n) pages according to custom roots rules and with **no need to use Vercel dev server, Rewrites neither Routes**
 
-## ABOUT
+## 1. About next-roots
 
 This package is highly inspired by [next-translate](https://github.com/vinissimus/next-translate#readme).
 It solves some additional features like `static routing schema`, `url tokenizing`, `page meta` and more ... and is completely **TypeScript friendly!**
 
 Similar as `next-translate` this package holds all pages implementation in separate directory. We call it `roots`. Required `pages` directory is then created during `build` time.
 
-## GETTING STARTED
+## 2. Getting started
 
 Complete example can be seen in `example` directory.
 
-### INSTALLATION
+### Installation
 
 1. Add package to your project dependencies
 
@@ -34,7 +34,7 @@ Complete example can be seen in `example` directory.
 4. Add [RootsContext](#rootscontext) to your `_app`
 5. Run `yarn dev`
 
-### BASIC USAGE
+### How to use it
 
 Default behavior is to have `roots.config.js` file placed in your project root folder (next to your package.json file).
 
@@ -143,7 +143,7 @@ module.exports = {
 
 > NOTE: If some rule does not contain `as` it means that it is same as `href`.
 
-## CONFIG OPTIONS
+## 3. Configuration
 
 | Name          | Default                                         | Description                                                     |
 | ------------- | ----------------------------------------------- | --------------------------------------------------------------- |
@@ -156,7 +156,7 @@ module.exports = {
 | staticRoots   | `['api', '_app', '_document', '_error', '404']` | static roots which will be generated outside locales folders    |
 | extRoots      | `['.tsx']`                                      | suffix of all roots files                                       |
 
-## SCHEMAS
+## 4. Schemas
 
 Each schema rule represent one root - page combination. Here you defines routing map for your localized pages.
 
@@ -176,7 +176,7 @@ Each schema rule represent one root - page combination. Here you defines routing
 - `params` - params which will be used as replace value in page `path` or `alias` during build
 - `metaData` - custom params which can be used during runtime based on router path and `useRootMeta` hook
 
-### SCHEMAS PAGES
+### Pages
 
 Each schema rule must define pages array. Otherwise it must be defined as [catch all rule](#schemas-catch-all-rule).
 
@@ -194,7 +194,7 @@ pages: [{
 - `alias` - page alias which will be used for routing as link `as`
 - `suffix` - custom suffix which will be appended to `path` param
 
-### SCHEMAS META DATA
+### Meta data
 
 Each schema rule can define custom meta data. Type of `metaData` param must be `Record<string, ReactText>`
 
@@ -204,7 +204,7 @@ metaData: { background: 'magenta' },
 
 This data can be used to change layout, css, background images and more based on current router path.
 
-### SCHEMAS CATCH ALL RULE
+### Catch All Rule
 
 Catch all rule is used only for setting default meta data values which will be then merged with router path specific meta data.
 
@@ -222,25 +222,7 @@ Catch all rule is used only for setting default meta data values which will be t
 
 Router meta data for `index` will be `{ title: 'Index Page', background: 'grey' }`
 
-### SCHEMAS CATCH ALL RULE
-
-Catch all rule is used only for setting default meta data values which will be then merged with router path specific meta data.
-
-```js
-{
-  root: '*',
-  metaData: { title: 'Next Roots', background: 'grey' },
-},
-{
-  root: 'index',
-  metaData: { title: 'Index Page' },
-  // ...
-},
-```
-
-Router meta data for `index` will be `{ title: 'Index Page', background: 'grey' }`
-
-## HOOKS
+## 5. Hooks
 
 Next-roots package provides handy hooks to read and manipulate its context values.
 
@@ -335,7 +317,7 @@ meta.data('background')
 // result: 'magenta'
 ```
 
-## COMPONENTS
+## 6. Components
 
 Next-roots package provides ready-to-use components with injected roots context.
 
@@ -426,7 +408,7 @@ import RootLink from 'next-roots/link'
 
 > COMMING SOON
 
-## UTILS
+## 7. Utils
 
 ### parsePathname
 
@@ -449,3 +431,11 @@ const { currentLocale, currentRoot, currentRule } = parsePathname(
   router.pathname
 )
 ```
+
+## 8. Example
+
+Example usage with lightweight schema can be found in example folder
+
+- `cd example`
+- `yarn install`
+- `yarn dev`
