@@ -1,23 +1,24 @@
-import RootsContext from 'next-roots/context'
+import RootsContext, { parsePathname } from 'next-roots/context'
 import { AppProps } from 'next/app'
-import schemaRoots from 'roots.schema'
+import schema from 'roots.schema'
 
 function MyApp({ Component, pageProps, router }: AppProps) {
-  // detect current locale & rewrite from page pathname
-  const [, currentLocale] = router.pathname.split('/')
-  const currentRewrite = schemaRoots.rules.find(
-    (r) => r.as === router.pathname || r.href === router.pathname
+  // parse current roots values from router pathname
+  const { currentLocale, currentRoot, currentRule } = parsePathname(
+    router.pathname,
+    schema
   )
 
   return (
     <RootsContext.Provider
       value={{
-        currentRule: currentRewrite,
-        currentLocale: currentLocale || schemaRoots.defaultLocale,
-        defaultLocale: schemaRoots.defaultLocale,
-        locales: schemaRoots.locales,
-        rules: schemaRoots.rules,
-        meta: schemaRoots.meta,
+        currentRule: currentRule,
+        currentRoot: currentRoot,
+        currentLocale: currentLocale || schema.defaultLocale,
+        defaultLocale: schema.defaultLocale,
+        locales: schema.locales,
+        rules: schema.rules,
+        meta: schema.meta,
       }}
     >
       <Component {...pageProps} />

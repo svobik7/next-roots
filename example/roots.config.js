@@ -24,7 +24,7 @@ module.exports = {
         },
         {
           locale: 'cs',
-          path: 'auth/registrace-:token',
+          path: 'overeni/registrace-:token',
           suffix: '.page',
           metaData: { title: 'Registrace' },
         },
@@ -42,12 +42,12 @@ module.exports = {
         },
         {
           locale: 'cs',
-          path: 'auth/prihlaseni-:token',
+          path: 'overeni/prihlaseni-:token',
           metaData: { title: 'Přihlášení' },
         },
         {
           locale: 'es',
-          path: 'auth/iniciar-sesion-:token',
+          path: 'autorizacion/iniciar-sesion-:token',
           metaData: { title: 'Iniciar Sesión' },
         },
       ],

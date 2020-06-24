@@ -30,8 +30,8 @@ Complete example can be seen in `example` directory.
    }
    ```
 
-3. create [roots.config.js](#config-options)
-4. Add [RootsContext](#context) to your `_app`
+3. Create [roots.config.js](#config-options) in your project root
+4. Add [RootsContext](#rootscontext) to your `_app`
 5. Run `yarn dev`
 
 ### BASIC USAGE
@@ -45,7 +45,7 @@ Basic configuration can look like:
 ```js
 module.exports = {
   locales: ['en', 'cs'],
-  defaultLocale: 'en',
+  defaultLocale: 'cs',
   defaultSuffix: '.htm',
   schemas: [
     {
@@ -60,7 +60,7 @@ module.exports = {
       root: 'auth/signup',
       pages: [
         { locale: 'en', path: 'auth/signup-:token' },
-        { locale: 'cs', path: 'auth/registrace-:token' },
+        { locale: 'cs', path: 'overeni/registrace-:token' },
       ],
       params: { token: 'p1' },
     },
@@ -73,6 +73,8 @@ module.exports = {
   ],
 }
 ```
+
+> NOTE: all following examples are based on above config.
 
 Before build job for mentioned example is done your project structure needs to look like this:
 
@@ -110,23 +112,23 @@ Static schema file `roots.schema.js` will be also generated and placed to projec
 
 ```js
 module.exports = {
-  defaultLocale: 'en',
   locales: ['en', 'cs'],
+  defaultLocale: 'cs',
   rules: [
     {
-      key: 'en/index',
+      key: 'en:index',
       href: '/en',
     },
     {
-      key: 'cs/index',
+      key: 'cs:index',
       href: '/cs',
     },
     {
-      key: 'en/account/signup',
+      key: 'en:auth/signup',
       href: '/en/auth-signup-p1.htm',
     },
     {
-      key: 'cs/account/signup',
+      key: 'cs:auth/signup',
       href: '/cs/ucet-registrace-p1.htm',
     },
     { key: 'en:dynamic', href: '/en/[...slug]' },
@@ -143,16 +145,16 @@ module.exports = {
 
 ## CONFIG OPTIONS
 
-| Name           | Default                                         | Description                                                     |
-| -------------- | ----------------------------------------------- | --------------------------------------------------------------- |
-| schemas        | []                                              | builder rules for generating pages                              |
-| locales        | []                                              | all allowed locales which will be generated                     |
-| defaultLocales | ''                                              | locale which will be used as default when no locale is detected |
-| defaultSuffix  | ''                                              | default page suffix which will be added to page name            |
-| dirRoot        | `roots`                                         | source folder with all roots files                              |
-| dirPages       | `pages`                                         | target folder where pages will be generated into                |
-| staticRoots    | `['api', '_app', '_document', '_error', '404']` | static roots which will be generated outside locales folders    |
-| extRoots       | `['.tsx']`                                      | suffix of all roots files                                       |
+| Name          | Default                                         | Description                                                     |
+| ------------- | ----------------------------------------------- | --------------------------------------------------------------- |
+| schemas       | []                                              | builder rules for generating pages                              |
+| locales       | []                                              | all allowed locales which will be generated                     |
+| defaultLocale | ''                                              | locale which will be used as default when no locale is detected |
+| defaultSuffix | ''                                              | default page suffix which will be added to page name            |
+| dirRoot       | `roots`                                         | source folder with all roots files                              |
+| dirPages      | `pages`                                         | target folder where pages will be generated into                |
+| staticRoots   | `['api', '_app', '_document', '_error', '404']` | static roots which will be generated outside locales folders    |
+| extRoots      | `['.tsx']`                                      | suffix of all roots files                                       |
 
 ## SCHEMAS
 
@@ -238,10 +240,212 @@ Catch all rule is used only for setting default meta data values which will be t
 
 Router meta data for `index` will be `{ title: 'Index Page', background: 'grey' }`
 
-## useRoots
+## HOOKS
 
-## RootLink
+Next-roots package provides handy hooks to read and manipulate its context values.
 
-## useRootLink
+### useRoots
 
-## useRootMeta
+Provides main roots values according to current router path.
+
+- `locales: string[]` - array of all active locales
+- `defaultLocale: string` - string of default locale value
+- `currentLocale: string` - router path locale
+- `currentRule: Roots.SchemaRule | undefined` - object of current containing current rule `key`, `href` and optionally `alias`
+
+Example usage:
+
+```js
+import { useRoots } from 'next-roots/context'
+
+// router path = /en/auth/signup-p1.htm
+const roots = useRoots()
+
+roots.locales // ['en', 'cs', ...]
+roots.defaultLocale // 'cs'
+roots.currentLocale // 'en'
+roots.currentRoot // 'auth/signup'
+roots.currentRule // { key: 'en:auth/signup', href: '/en/auth/signup' }
+```
+
+### useRootLink
+
+Provides api to create localized links based on `roots.schema.js` rules.
+
+Example usage:
+
+```js
+import { useRootLink } from 'next-roots/link'
+
+const link = useRootLink()
+
+// 1. generates href with current locale using root name (currentLocale = en)
+link.href('auth/signup')
+// result: /en/auth/signup-p1.htm`
+
+// 2. generates href with custom locale using root name and explicit locale option
+link.href('auth/signup', { locale: 'cs' })
+// result: `/cs/overeni/registrace-p1.htm`
+
+// 3. generate href with custom locale using rule key
+link.href('cs:auth/signup')
+// result: '/cs/overeni/registrace-p1.htm'
+
+// 4. generate href with custom locale using current rule key and explicit locale option (currentRule = cs:auth/signup)
+link.href('cs:auth/signup', { locale: 'en' })
+// result: '/en/auth-signup-p1.htm'
+
+// 5. generate href for dynamic page
+link.href('dynamic', { locale: 'en' })
+// result: '/en/[...slug]'
+```
+
+The same options work for link alias plus dynamic params can be explicitly pushed:
+
+```js
+// same options as for link.href() plus:
+
+const link = useRootLink()
+
+// 1. generate alias for dynamic page
+link.href('dynamic', { locale: 'en', params: { slug: 'some-slug' } })
+// result: '/en/some-slug'
+```
+
+### useRootMeta
+
+Provides api to read static meta data attached to router paths and specified in roots schema.
+
+Example usage:
+
+```js
+// example values when current root is 'dynamic'
+const meta = useRootMeta()
+
+// 1. read all meta data for current router path (data is merged with general meta data - schema.meta.key === '*')
+meta.data()
+// result: { title: 'Next Roots', background: 'magenta' }
+
+// 2. read all meta data when using strict param (data is not merged with general meta data - schema.meta.key === '*')
+meta.data('*', { strict: true })
+// result: { background: 'magenta' }
+
+// 3. cherry pick meta data using custom selector
+meta.data('background')
+// result: 'magenta'
+```
+
+## COMPONENTS
+
+Next-roots package provides ready-to-use components with injected roots context.
+
+### RootsContext
+
+Main roots context component which holds current values according to router pathname changes.
+
+This component is required to use in your app so that other components can consume current roots context.
+
+Recommended usage:
+
+```js
+// in your _app.tsx
+import RootsContext, { parsePathname } from 'next-roots/context'
+import { AppProps } from 'next/app'
+import schema from 'roots.schema'
+
+function MyApp({ Component, pageProps, router }: AppProps) {
+  // parse current roots values from router pathname
+  const { currentLocale, currentRoot, currentRule } = parsePathname(
+    router.pathname,
+    schema
+  )
+
+  return (
+    <RootsContext.Provider
+      value={{
+        currentRule: currentRule,
+        currentRoot: currentRoot,
+        currentLocale: currentLocale || schema.defaultLocale,
+        defaultLocale: schema.defaultLocale,
+        locales: schema.locales,
+        rules: schema.rules,
+        meta: schema.meta,
+      }}
+    >
+      <Component {...pageProps} />
+    </RootsContext.Provider>
+  )
+}
+
+export default MyApp
+```
+
+### RootLink
+
+Extends native `link/next` with roots context. Generates links based on roots schema when rule is found otherwise link generation is handled by native link .
+
+Works similar as `useRootLink` as this hook is used under the hood of `RootLink` component.
+
+Example usage:
+
+```js
+import RootLink from 'next-roots/link'
+
+// 1. Using with current locale and root name (currentLocale = en)
+<RootLink href="auth/signup">
+  <a>...</a>
+</RootLink>
+// result <a href="/en/auth/signup-p1.htm">...</a>
+
+// 2. Using with custom locale and root name
+<RootLink href="auth/signup" locale="cs">
+  <a>...</a>
+</RootLink>
+// result <a href="/cs/overeni/registrace-p1.htm">...</a>
+
+// 3. Using with rule key
+<RootLink href="cs:auth/signup">
+  <a>...</a>
+</RootLink>
+// result <a href="/cs/overeni/registrace-p1.htm">...</a>
+
+// 4. Using with rule key and custom locale
+<RootLink href="cs:auth/signup" locale="en">
+  <a>...</a>
+</RootLink>
+// result <a href="/en/auth/signup-p1.htm">...</a>
+
+// 5. Using with dynamic root (e.g. page = [...slug])
+<RootLink href="dynamic" locale="en" params={{slug: 'some-slug'}}>
+  <a>...</a>
+</RootLink>
+// result <a href="/en/auth/some-slug">...</a>
+```
+
+### RootDebug
+
+> COMMING SOON
+
+## UTILS
+
+### parsePathname
+
+Handy util used to parse current router path into following roots context values:
+
+- `currentLocale: string`
+- `currentRoot: string`
+- `currentRule: string`
+
+This is alway used in your `_app` to provide values to `RootsContext.Provider`
+
+Example usage:
+
+```js
+import { parsePathname } from 'next-roots/context'
+
+// router instance can be  obtained from useRouter hook
+// or directly from _app props
+const { currentLocale, currentRoot, currentRule } = parsePathname(
+  router.pathname
+)
+```
