@@ -3,6 +3,7 @@ import { Roots } from '../types'
 
 export type RootsContext = {
   currentRule: Roots.SchemaRule | undefined
+  currentRoot: string
   currentLocale: string
   defaultLocale: string
   locales: string[]
@@ -12,6 +13,7 @@ export type RootsContext = {
 
 const initialContext = {
   currentRule: undefined,
+  currentRoot: '',
   currentLocale: '',
   defaultLocale: '',
   locales: [],
@@ -30,9 +32,37 @@ function useRoots() {
     locales: context.locales,
     defaultLocale: context.defaultLocale,
     currentLocale: context.currentLocale,
+    currentRoot: context.currentRoot,
     currentRule: context.currentRule,
   }
 }
 
+function parsePathname(pathname: string, schema: Roots.Schema) {
+  // detect current locale from router pathname
+  const [, pathLocale] = pathname.split('/')
+
+  // detect current rule from router pathname
+  const schemaRule = schema.rules.find(
+    (r) => r.as === pathname || r.href === pathname
+  )
+
+  // TODO: can I use this instead of condition below
+  // - consider package size
+  // const [pathRoot] = decodeSchemaRuleKey(schemaRule?.key || '')
+
+  let pathRoot = ''
+
+  if (schemaRule) {
+    // detect current root from router pathname
+    const parsedKey = schemaRule.key.split(':')
+    pathRoot = parsedKey.length > 1 ? parsedKey[1] : parsedKey[0]
+  }
+
+  return {
+    currentLocale: pathLocale,
+    currentRoot: pathRoot,
+    currentRule: schemaRule,
+  }
+}
 export default RootsContext
-export { useRoots }
+export { useRoots, parsePathname }
