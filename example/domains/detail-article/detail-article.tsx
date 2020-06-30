@@ -1,9 +1,14 @@
+import { withLayout } from 'components/layout'
 import { isArticle, isAuthor } from 'models'
 import dynamic from 'next/dynamic'
 import styles from './detail-article.module.css'
 
+// dynamic components
 const NotFound = dynamic(() => import('domains/not-found'))
 
+/**
+ * Domain Props
+ */
 type DetailArticleProps = {
   data: {
     author: unknown
@@ -11,7 +16,11 @@ type DetailArticleProps = {
   }
 }
 
-export default function DetailArticle(props: DetailArticleProps) {
+/**
+ * Domain
+ * @param props
+ */
+function DetailArticle(props: DetailArticleProps) {
   const {
     data: { author, article },
   } = props
@@ -38,3 +47,5 @@ export default function DetailArticle(props: DetailArticleProps) {
     </div>
   )
 }
+
+export default withLayout(DetailArticle)

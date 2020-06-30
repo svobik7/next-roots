@@ -1,4 +1,3 @@
-import { LayoutMain } from 'components/layout'
 import {
   fetchAllArticles,
   fetchAllAuthors,
@@ -51,14 +50,7 @@ export default function DynamicRoot({ bodyComponentData, bodyComponentKey }) {
     return <NotFound />
   }
 
-  // TODO: validate data before including body component
-  // to prevent rendering NotFound inside Layout
-  // or do not include LayoutComponent here
-  return (
-    <LayoutMain>
-      <BodyComponent data={bodyComponentData} />
-    </LayoutMain>
-  )
+  return <BodyComponent data={bodyComponentData} />
 }
 
 /**

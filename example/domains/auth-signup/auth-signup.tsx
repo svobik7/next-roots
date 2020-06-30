@@ -1,5 +1,8 @@
 import styles from './auth-signup.module.css'
+import { withLayout } from 'components/layout'
 
-export default function AuthSignup() {
+function AuthSignup() {
   return <div className={styles.root}>Auth Signup Domain</div>
 }
+
+export default withLayout(AuthSignup)
