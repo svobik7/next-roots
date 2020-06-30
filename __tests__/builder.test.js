@@ -49,16 +49,17 @@ describe('next-roots:cli-builder', () => {
         true
       )
       expect(
-        fs.existsSync('example/pages/cs/auth/registrace-a1.page.tsx')
+        fs.existsSync('example/pages/cs/overeni/registrace-a1.page.tsx')
       ).toBe(true)
+      // * this page has no rewrite so it is created with not-translated path
       expect(fs.existsSync('example/pages/es/auth/signup.htm.tsx')).toBe(true)
 
       expect(fs.existsSync('example/pages/en/auth/login-a2.htm.tsx')).toBe(true)
-      expect(fs.existsSync('example/pages/cs/auth/prihlaseni-a2.htm.tsx')).toBe(
-        true
-      )
       expect(
-        fs.existsSync('example/pages/es/auth/iniciar-sesion-a2.htm.tsx')
+        fs.existsSync('example/pages/cs/overeni/prihlaseni-a2.htm.tsx')
+      ).toBe(true)
+      expect(
+        fs.existsSync('example/pages/es/autorizacion/iniciar-sesion-a2.htm.tsx')
       ).toBe(true)
 
       expect(fs.existsSync('example/pages/en/account/profile-b1.htm.tsx')).toBe(
@@ -156,11 +157,11 @@ describe('next-roots:cli-builder', () => {
     test('auth/login content', () => {
       const root = fs.readFileSync('example/roots/auth/login.tsx')
       const csPage = fs.readFileSync(
-        'example/pages/cs/auth/prihlaseni-a2.htm.tsx'
+        'example/pages/cs/overeni/prihlaseni-a2.htm.tsx'
       )
       const enPage = fs.readFileSync('example/pages/en/auth/login-a2.htm.tsx')
       const esPage = fs.readFileSync(
-        'example/pages/es/auth/iniciar-sesion-a2.htm.tsx'
+        'example/pages/es/autorizacion/iniciar-sesion-a2.htm.tsx'
       )
 
       expect(root.equals(csPage)).toBe(true)
@@ -171,7 +172,7 @@ describe('next-roots:cli-builder', () => {
     test('auth/signup content', () => {
       const root = fs.readFileSync('example/roots/auth/signup.tsx')
       const csPage = fs.readFileSync(
-        'example/pages/cs/auth/registrace-a1.page.tsx'
+        'example/pages/cs/overeni/registrace-a1.page.tsx'
       )
       const enPage = fs.readFileSync('example/pages/en/auth/signup-a1.page.tsx')
 
@@ -207,7 +208,7 @@ describe('next-roots:cli-builder', () => {
         },
         {
           key: 'cs:auth/signup',
-          href: '/cs/auth/registrace-a1.page',
+          href: '/cs/overeni/registrace-a1.page',
         },
         {
           key: 'es:auth/signup',
@@ -220,11 +221,11 @@ describe('next-roots:cli-builder', () => {
         },
         {
           key: 'cs:auth/login',
-          href: '/cs/auth/prihlaseni-a2.htm',
+          href: '/cs/overeni/prihlaseni-a2.htm',
         },
         {
           key: 'es:auth/login',
-          href: '/es/auth/iniciar-sesion-a2.htm',
+          href: '/es/autorizacion/iniciar-sesion-a2.htm',
         },
         // PROFILE
         {
@@ -275,7 +276,7 @@ describe('next-roots:cli-builder', () => {
       const expectedMeta = [
         {
           key: '*',
-          data: { title: 'YeahCoach', background: 'grey' },
+          data: { title: 'Awesome Next Roots', background: 'grey' },
         },
         // SIGNUP
         {
