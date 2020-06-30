@@ -1,7 +1,6 @@
-import { LayoutMain } from 'components/layout'
 import {
-  fetchAllArticles,
-  fetchAllAuthors,
+  fetchManyArticles,
+  fetchManyAuthors,
   fetchOneArticle,
   fetchOneAuthor,
 } from 'lib/api'
@@ -51,14 +50,7 @@ export default function DynamicRoot({ bodyComponentData, bodyComponentKey }) {
     return <NotFound />
   }
 
-  // TODO: validate data before including body component
-  // to prevent rendering NotFound inside Layout
-  // or do not include LayoutComponent here
-  return (
-    <LayoutMain>
-      <BodyComponent data={bodyComponentData} />
-    </LayoutMain>
-  )
+  return <BodyComponent data={bodyComponentData} />
 }
 
 /**
@@ -78,7 +70,7 @@ async function parseContextParams(
   // not fount when invalid slug is given
   if (!params.slug || !params.slug.length) return result
 
-  // load author always
+  // load author always as we want to keep paths like `/author-slug[/article-slug]`
   result.key = 'detail-author'
   result.data['author'] = await fetchOneAuthor(params.slug[0])
 
@@ -100,17 +92,17 @@ async function parseContextParams(
  */
 export const getStaticPaths: GetStaticPaths = async () => {
   // load data from api
-  const articles = await fetchAllArticles(2)
-  const authors = await fetchAllAuthors(2)
+  const articles = await fetchManyArticles(2)
+  const authors = await fetchManyAuthors(2)
 
   return {
     paths: [
-      ...authors.map((au) => ({ params: { slug: [au.username] } })),
-      ...articles.map((ar, i) => {
-        const author = authors.find((au) => au.id === ar.authorId)
+      ...authors.map((author) => ({ params: { slug: [author.username] } })),
+      ...articles.map((article) => {
+        const author = authors.find((a) => a.id === article.authorId)
         return {
           params: {
-            slug: [author?.username || 'admin', ar.slug],
+            slug: [author?.username || 'admin', article.slug],
           },
         }
       }),

@@ -1,24 +1,31 @@
+import { withLayout } from 'components/layout'
 import { isAuthor } from 'models'
 import dynamic from 'next/dynamic'
 import styles from './detail-author.module.css'
 
+// dynamic component
 const NotFound = dynamic(() => import('domains/not-found'))
 
+/**
+ * Domain props
+ */
 type DetailAuthorProps = {
   data: {
     author: unknown
   }
-  layout: string
 }
 
-export default function DetailAuthor(props: DetailAuthorProps) {
+/**
+ * Domain
+ * @param props
+ */
+function DetailAuthor(props: DetailAuthorProps) {
   const {
     data: { author },
-    layout = 'none',
   } = props
 
-  // show not found when author neither article exist
-  if (!isAuthor(author)) {
+  // show 404 when author is not found
+  if (!isFound(props.data)) {
     return <NotFound />
   }
 
@@ -33,3 +40,16 @@ export default function DetailAuthor(props: DetailAuthorProps) {
     </div>
   )
 }
+
+/**
+ * Determines if props.data is valid to show or not
+ * @param data
+ */
+function isFound(data: DetailAuthorProps['data']) {
+  return isAuthor(data.author)
+}
+
+export default withLayout(DetailAuthor, {
+  useLayout: (props: DetailAuthorProps, initial: string) =>
+    !isFound(props.data) ? 'none' : initial,
+})

@@ -10,7 +10,7 @@ export async function fetchOneAuthor(username: string) {
   return db.authors.find((a) => a.username === username) || {}
 }
 
-export async function fetchAllAuthors(limit: number) {
+export async function fetchManyAuthors(limit: number) {
   const db = await loadDB()
 
   if (limit) {
@@ -25,7 +25,7 @@ export async function fetchOneArticle(slug: string) {
   return db.articles.find((a) => a.slug === slug) || {}
 }
 
-export async function fetchAllArticles(limit: number = 0) {
+export async function fetchManyArticles(limit: number = 0) {
   const db = await loadDB()
 
   if (limit) {

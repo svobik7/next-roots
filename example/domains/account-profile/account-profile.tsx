@@ -1,5 +1,8 @@
+import { withLayout } from 'components/layout'
 import styles from './account-profile.module.css'
 
-export default function AccountProfile() {
+function AccountProfile() {
   return <div className={styles.root}>Account Profile Domain</div>
 }
+
+export default withLayout(AccountProfile)
