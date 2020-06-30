@@ -25,13 +25,8 @@ function DetailArticle(props: DetailArticleProps) {
     data: { author, article },
   } = props
 
-  // show not found when article does not exist
-  if (!isArticle(article)) {
-    return <NotFound />
-  }
-
-  // show not found when author neither article exist
-  if (!isAuthor(author)) {
+  // show 404 when article either author is not found
+  if (!isFound(props.data)) {
     return <NotFound />
   }
 
@@ -48,4 +43,18 @@ function DetailArticle(props: DetailArticleProps) {
   )
 }
 
-export default withLayout(DetailArticle)
+/**
+ * Determines if props.data is valid to show or not
+ * @param data
+ */
+function isFound(data: DetailArticleProps['data']) {
+  return isAuthor(data.author) && isArticle(data.article)
+}
+
+/**
+ * Domain withLayout
+ */
+export default withLayout(DetailArticle, {
+  useLayout: (props: DetailArticleProps, initial: string) =>
+    !isFound(props.data) ? 'none' : initial,
+})
