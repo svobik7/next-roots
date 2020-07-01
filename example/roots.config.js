@@ -10,7 +10,7 @@ module.exports = {
       metaData: { title: 'Awesome Next Roots', background: 'grey' },
     },
     {
-      root: 'index',
+      root: 'home',
       pages: [{ locale: '*', path: 'index', alias: '/', suffix: '' }],
     },
     {

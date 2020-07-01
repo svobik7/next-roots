@@ -222,7 +222,7 @@ export function rewrite(
   options: Roots.RewriteHrefOptions
 ): Roots.SchemaRule {
   // rename invalid root name
-  input = input === '/' ? 'index' : input
+  input = input === '/' ? 'home' : input
 
   // remove leading slash
   input = input.replace(/^\/+/, '')
