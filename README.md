@@ -53,7 +53,7 @@ module.exports = {
       metaData: { title: 'Next Roots', background: 'grey' },
     },
     {
-      root: 'index',
+      root: 'home',
       pages: [{ locale: '*', path: 'index', alias: '/', suffix: '' }],
     },
     {
@@ -76,23 +76,23 @@ module.exports = {
 
 > NOTE: all following examples are based on above config.
 
-Before build job for mentioned example is done your project structure needs to look like this:
+Before build your project structure needs to look like this:
 
 ```bash
 .
 ├── roots
-│   ├── index.tsx
+│   ├── home.tsx
 │   ├── dynamic.tsx
 │   └── auth
 │       └── signup.tsx
 ```
 
-After build job is done your project structure will look like this:
+After build your project structure will look like this:
 
 ```bash
 .
 ├── roots
-│   ├── index.tsx
+│   ├── home.tsx
 │   └── auth
 │       └── signup.tsx
 ├── pages
@@ -116,11 +116,11 @@ module.exports = {
   defaultLocale: 'cs',
   rules: [
     {
-      key: 'en:index',
+      key: 'en:home',
       href: '/en',
     },
     {
-      key: 'cs:index',
+      key: 'cs:home',
       href: '/cs',
     },
     {
@@ -214,13 +214,13 @@ Catch all rule is used only for setting default meta data values which will be t
   metaData: { title: 'Next Roots', background: 'grey' },
 },
 {
-  root: 'index',
-  metaData: { title: 'Index Page' },
+  root: 'home',
+  metaData: { title: 'Home Page' },
   // ...
 },
 ```
 
-Router meta data for `index` will be `{ title: 'Index Page', background: 'grey' }`
+Router meta data for `home` will be `{ title: 'Home Page', background: 'grey' }`
 
 ## 5. Hooks
 
@@ -280,7 +280,12 @@ link.href('cs:auth/signup', { locale: 'en' })
 // 5. generate href for dynamic page
 link.href('dynamic', { locale: 'en' })
 // result: '/en/[...slug]'
+
+// 6. generate href for home page using shortcut
+link.href('/', { locale: 'en' })
+// result: '/en'
 ```
+> NOTE: There is predefined home page shortcut `/` in roots package. So you do not need to use `home` if you don't want to.
 
 The same options work for link alias plus dynamic params can be explicitly pushed:
 
@@ -290,7 +295,7 @@ The same options work for link alias plus dynamic params can be explicitly pushe
 const link = useRootLink()
 
 // 1. generate alias for dynamic page
-link.href('dynamic', { locale: 'en', params: { slug: 'some-slug' } })
+link.as('dynamic', { locale: 'en', params: { slug: 'some-slug' } })
 // result: '/en/some-slug'
 ```
 
@@ -402,6 +407,13 @@ import RootLink from 'next-roots/link'
   <a>...</a>
 </RootLink>
 // result <a href="/en/auth/some-slug">...</a>
+
+// 6. Using home page shortcut (currentLocale = en)
+<RootLink href="/">
+  <a>...</a>
+</RootLink>
+// result <a href="/en">...</a>
+
 ```
 
 ### RootDebug

@@ -309,12 +309,12 @@ describe('next-roots:utils', () => {
       expect(result).toBe('/en/account/profile')
     })
 
-    test('rewrite `/` with `index` rule', () => {
+    test('rewrite `/` with `home` rule', () => {
       const __rules = [
         {
-          key: 'en:index',
-          href: '/some-href-path',
-          as: '/en/account/profile.htm',
+          key: 'en:home',
+          href: '/en/index',
+          as: '/en',
         },
       ]
 
@@ -322,7 +322,7 @@ describe('next-roots:utils', () => {
         __rules,
         locale: 'en',
       })
-      expect(result).toBe('/en/account/profile.htm')
+      expect(result).toBe('/en')
     })
 
     test('rewrite for `rule.key` and different `locale`', () => {
@@ -426,12 +426,12 @@ describe('next-roots:utils', () => {
       expect(result).toBe('/en/account/profile')
     })
 
-    test('rewrite `/` with `index` rule', () => {
+    test('rewrite `/` with `home` rule', () => {
       const result = rewriteHref('/', {
-        __rules: [{ key: 'en:index', href: '/en/account/profile.htm' }],
+        __rules: [{ key: 'en:home', href: '/en/index' }],
         locale: 'en',
       })
-      expect(result).toBe('/en/account/profile.htm')
+      expect(result).toBe('/en/index')
     })
 
     test('rewrite for `rulekey` and different `locale`', () => {

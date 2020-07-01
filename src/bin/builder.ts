@@ -23,7 +23,7 @@ const cfgDefault = {
   defaultSuffix: '',
   dirRoots: 'roots',
   dirPages: 'pages',
-  staticRoots: ['api', '_app', '_document', '_error', '404'],
+  staticRoots: ['api', '_app', '_document', '_error', '404', 'index'],
   extRoots: '.tsx',
 }
 

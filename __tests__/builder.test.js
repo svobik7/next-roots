@@ -38,6 +38,7 @@ describe('next-roots:cli-builder', () => {
       expect(fs.existsSync('example/pages/_app.tsx')).toBe(true)
       expect(fs.existsSync('example/pages/_document.tsx')).toBe(true)
       expect(fs.existsSync('example/pages/_error.tsx')).toBe(true)
+      expect(fs.existsSync('example/pages/index.tsx')).toBe(true)
       expect(fs.existsSync('example/pages/api/get-version.ts')).toBe(true)
       expect(fs.existsSync('example/pages/api/users/index.ts')).toBe(true)
 
@@ -198,9 +199,9 @@ describe('next-roots:cli-builder', () => {
 
     test('exports.rules', async () => {
       const expectedTable = [
-        { key: 'en:index', href: '/en/index', as: '/en' },
-        { key: 'cs:index', href: '/cs/index', as: '/cs' },
-        { key: 'es:index', href: '/es/index', as: '/es' },
+        { key: 'en:home', href: '/en/index', as: '/en' },
+        { key: 'cs:home', href: '/cs/index', as: '/cs' },
+        { key: 'es:home', href: '/es/index', as: '/es' },
         // SIGNUP
         {
           key: 'en:auth/signup',
