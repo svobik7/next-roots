@@ -25,6 +25,9 @@
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch"
   },
+  "dependencies": {
+    "path-to-regexp": "^6.1.0"
+  },
   "devDependencies": {
     "@types/jest": "^26.0.3",
     "@types/react": "^16.9.41",
@@ -32,7 +35,6 @@
     "husky": "^4.2.5",
     "jest": "^26.1.0",
     "next": "^9.4.4",
-    "path-to-regexp": "^6.1.0",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
     "react": "^16.13.1",
