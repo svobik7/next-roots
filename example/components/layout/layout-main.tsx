@@ -1,31 +1,13 @@
-import { Table } from 'components/table'
-import { useRoots } from 'next-roots/context'
-import RootLink, { useRootLink } from 'next-roots/link'
+import RootsConsole from 'next-roots/console'
+import RootLink from 'next-roots/link'
 import { useRootMeta } from 'next-roots/meta'
-import { useRouter } from 'next/router'
-import React, { PropsWithChildren } from 'react'
-import styles from './layout-main.module.css'
 import Link from 'next/link'
+import React from 'react'
+import styles from './layout-main.module.css'
 
-export type LayoutMainProps = PropsWithChildren<{}>
-
-export default function LayoutMain(props: LayoutMainProps) {
-  const { children } = props
-
-  // use router context
-  const router = useRouter()
-
-  // use roots context
-  const roots = useRoots()
-
+export default function LayoutMain({ children }) {
   // use root meta
   const meta = useRootMeta()
-
-  // use root link
-  const link = useRootLink()
-
-  // parsed data
-  const dataMeta = meta.data('*')
 
   return (
     <div className={styles.root}>
@@ -37,107 +19,6 @@ export default function LayoutMain(props: LayoutMainProps) {
       >
         {children}
       </div>
-
-      <h2>Router</h2>
-
-      <Table
-        columns={[
-          { key: 'name', label: 'Name' },
-          { key: 'value', label: 'Value', tag: 'code' },
-          { key: 'note', label: 'Note' },
-        ]}
-        data={[
-          {
-            name: 'asPath',
-            value: router.asPath,
-          },
-          { name: 'pathname', value: router.pathname },
-          {
-            name: 'query',
-            value: JSON.stringify(router.query),
-            note: 'Query can be empty during SSR',
-          },
-        ]}
-      />
-
-      <h2>Rule</h2>
-
-      <Table
-        columns={[
-          { key: 'name', label: 'Name' },
-          { key: 'value', label: 'Value', tag: 'code' },
-        ]}
-        data={Object.keys(roots.currentRule).map((k) => ({
-          name: k,
-          value: roots.currentRule[k],
-        }))}
-      />
-
-      <h2>Locale</h2>
-      <p>
-        Locales are manipulated by hook <code>const roots = useRoots()</code>.
-        Current locale then by <code>roots.currentLocale</code>. Default locale
-        by <code>roots.defaultLocale</code>.
-      </p>
-
-      <Table
-        columns={[
-          { key: 'name', label: 'Name' },
-          { key: 'value', label: 'Value', tag: 'code' },
-        ]}
-        data={[
-          { name: 'Current', value: roots.currentLocale },
-          { name: 'Default', value: roots.defaultLocale },
-        ]}
-      />
-
-      <h2>Meta Data</h2>
-      <p>
-        Meta data are manipulated by hook{' '}
-        <code>const meta = useRootMeta()</code>. Single data can be obtained
-        using <code>meta.data('title')</code>. All data can be obtained using{' '}
-        <code>meta.data('*')</code>.
-      </p>
-
-      <Table
-        columns={[
-          { key: 'name', label: 'Name' },
-          { key: 'value', label: 'Value', tag: 'code' },
-        ]}
-        data={Object.keys(dataMeta).map((k) => ({
-          name: k,
-          value: dataMeta[k],
-        }))}
-      />
-
-      <h2>Mutations</h2>
-      <p>
-        Following links can be generated using `Rule.key`{' '}
-        <code>en:account/profile</code> or `root` and `locale`
-        <code>/account/profile</code> therefore must be used.
-      </p>
-
-      <Table
-        columns={[
-          { key: 'locale', label: 'Locale' },
-          { key: 'href', label: 'Href', tag: 'code' },
-          { key: 'as', label: 'As', tag: 'code' },
-        ]}
-        data={roots.locales.map((l) => ({
-          locale: (
-            <RootLink key={l} href={roots.currentRule.key} locale={l}>
-              <a>{l}</a>
-            </RootLink>
-          ),
-          href: link.href(roots.currentRule.key, {
-            locale: l,
-          }),
-          as: link.as(roots.currentRule.key, {
-            locale: l,
-            params: { ...router.query },
-          }),
-        }))}
-      />
 
       <h2>Navigation</h2>
       <ol>
@@ -185,6 +66,8 @@ export default function LayoutMain(props: LayoutMainProps) {
           </RootLink>
         </li>
       </ol>
+
+      <RootsConsole />
     </div>
   )
 }

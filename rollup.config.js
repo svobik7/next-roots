@@ -13,6 +13,7 @@ const external = [
 export default [
   {
     input: [
+      'src/packages/console.tsx',
       'src/packages/context.ts',
       'src/packages/link.tsx',
       'src/packages/meta.ts',
@@ -23,6 +24,7 @@ export default [
       format: 'cjs',
       exports: 'named',
     },
+    // preserveModules: true,
     plugins: [
       typescript({
         typescript: require('typescript'),
