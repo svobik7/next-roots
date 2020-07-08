@@ -58,15 +58,13 @@ function parsePathname(pathname: string, schema: Roots.Schema) {
   if (!locale) {
     const [, pathLocale = ''] = pathname.split('/')
 
-    locale = schema.locales.includes(pathLocale)
-      ? pathLocale
-      : schema.defaultLocale
+    locale = schema.locales.includes(pathLocale) ? pathLocale : ''
   }
 
   return {
-    currentLocale: locale,
-    currentRoot: root,
-    currentRule: rule,
+    locale,
+    root,
+    rule,
   }
 }
 export default RootsContext
