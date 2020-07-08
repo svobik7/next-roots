@@ -1,6 +1,6 @@
 {
   "name": "next-roots",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Next.js utility to generate internationalized pages with metadata according to custom roots rules.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,7 +17,7 @@
     "next-roots": "./dist/bin/builder.js"
   },
   "scripts": {
-    "prepublish": "yarn test",
+    "prepublish": "yarn clean && yarn build && yarn test",
     "build": "rollup -c",
     "clean": "rm -rf dist > /dev/null",
     "format": "pretty-quick",
