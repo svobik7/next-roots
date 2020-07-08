@@ -285,6 +285,7 @@ link.href('dynamic', { locale: 'en' })
 link.href('/', { locale: 'en' })
 // result: '/en'
 ```
+
 > NOTE: There is predefined home page shortcut `/` in roots package. So you do not need to use `home` if you don't want to.
 
 The same options work for link alias plus dynamic params can be explicitly pushed:
@@ -342,17 +343,14 @@ import schema from 'roots.schema'
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   // parse current roots values from router pathname
-  const { currentLocale, currentRoot, currentRule } = parsePathname(
-    router.pathname,
-    schema
-  )
+  const { locale, root, rule } = parsePathname(router.pathname, schema)
 
   return (
     <RootsContext.Provider
       value={{
-        currentRule: currentRule,
-        currentRoot: currentRoot,
-        currentLocale: currentLocale || schema.defaultLocale,
+        currentRule: rule,
+        currentRoot: root,
+        currentLocale: locale || schema.defaultLocale,
         defaultLocale: schema.defaultLocale,
         locales: schema.locales,
         rules: schema.rules,
@@ -426,9 +424,9 @@ import RootLink from 'next-roots/link'
 
 Handy util used to parse current router path into following roots context values:
 
-- `currentLocale: string`
-- `currentRoot: string`
-- `currentRule: string`
+- `locale: string`
+- `root: string`
+- `rule: string`
 
 This is alway used in your `_app` to provide values to `RootsContext.Provider`
 
@@ -439,9 +437,7 @@ import { parsePathname } from 'next-roots/context'
 
 // router instance can be  obtained from useRouter hook
 // or directly from _app props
-const { currentLocale, currentRoot, currentRule } = parsePathname(
-  router.pathname
-)
+const { locale, root, rule } = parsePathname(router.pathname)
 ```
 
 ## 8. Example
