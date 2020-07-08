@@ -38,31 +38,35 @@ function useRoots() {
 }
 
 function parsePathname(pathname: string, schema: Roots.Schema) {
-  // detect current locale from router pathname
-  const [, pathLocale] = pathname.split('/')
+  let root = ''
+  let locale = ''
 
   // detect current rule from router pathname
-  const schemaRule = schema.rules.find(
+  const rule = schema.rules.find(
     (r) => r.as === pathname || r.href === pathname
   )
 
-  // NOTE:
-  // can I use this instead of condition below?
-  // const [pathRoot] = decodeSchemaRuleKey(schemaRule?.key || '')
-  // !! consider package size !!
+  // detect current root & locale from found rule
+  if (rule) {
+    const parsedKey = rule.key.split(':')
 
-  let pathRoot = ''
+    root = parsedKey.length > 1 ? parsedKey[1] : parsedKey[0]
+    locale = parsedKey.length > 1 ? parsedKey[0] : ''
+  }
 
-  if (schemaRule) {
-    // detect current root from router pathname
-    const parsedKey = schemaRule.key.split(':')
-    pathRoot = parsedKey.length > 1 ? parsedKey[1] : parsedKey[0]
+  // detect locale from pathname or use default
+  if (!locale) {
+    const [, pathLocale = ''] = pathname.split('/')
+
+    locale = schema.locales.includes(pathLocale)
+      ? pathLocale
+      : schema.defaultLocale
   }
 
   return {
-    currentLocale: pathLocale,
-    currentRoot: pathRoot,
-    currentRule: schemaRule,
+    currentLocale: locale,
+    currentRoot: root,
+    currentRule: rule,
   }
 }
 export default RootsContext
