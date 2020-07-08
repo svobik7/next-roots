@@ -6,9 +6,6 @@ const fs = require('fs')
 const path = require('path')
 const pathToRegexp = require('path-to-regexp')
 
-const minify = require('@node-minify/core')
-const terser = require('@node-minify/terser')
-
 // load CLI args
 const [, , configPath = 'roots.config.js', configParams = {}] = process.argv
 
@@ -280,13 +277,8 @@ function run() {
   const schemaPath = `${mainDir}/roots.schema.js`
   const schema = createSchema(schemaRules, schemaMeta)
 
-  minify({
-    compressor: terser,
-    content: `module.exports = ${JSON.stringify(schema)}`,
-    callback: (_: any, min: string) => {
-      saveFile(schemaPath, min)
-    },
-  })
+  // save schema file
+  saveFile(schemaPath, `module.exports = ${JSON.stringify(schema)}`)
 
   // keep next.js specific files / dirs as they are
   // and just copy them to pages directory
