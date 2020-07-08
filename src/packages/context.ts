@@ -46,9 +46,10 @@ function parsePathname(pathname: string, schema: Roots.Schema) {
     (r) => r.as === pathname || r.href === pathname
   )
 
-  // TODO: can I use this instead of condition below
-  // - consider package size
+  // NOTE:
+  // can I use this instead of condition below?
   // const [pathRoot] = decodeSchemaRuleKey(schemaRule?.key || '')
+  // !! consider package size !!
 
   let pathRoot = ''
 

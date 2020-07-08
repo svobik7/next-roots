@@ -1,8 +1,8 @@
-import RootsDebugger from 'components/debug'
+import RootsConsole from 'next-roots/console'
 import RootLink from 'next-roots/link'
 import { useRootMeta } from 'next-roots/meta'
 import Link from 'next/link'
-import React, { PropsWithChildren } from 'react'
+import React from 'react'
 import styles from './layout-main.module.css'
 
 export default function LayoutMain({ children }) {
@@ -67,7 +67,7 @@ export default function LayoutMain({ children }) {
         </li>
       </ol>
 
-      <RootsDebugger />
+      <RootsConsole />
     </div>
   )
 }
