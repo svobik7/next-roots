@@ -1,10 +1,16 @@
-import { Roots } from '../types'
+import {
+  Builder,
+  BuilderPage,
+  Config,
+  Schema,
+  SchemaMeta,
+  SchemaRule,
+} from '../types'
 import { createSchemaRulePath, encodeSchemaRuleKey } from '../utils'
 
 const colors = require('colors')
 const fs = require('fs')
 const path = require('path')
-const pathToRegexp = require('path-to-regexp')
 
 // load CLI args
 const [, , configPath = 'roots.config.js', configParams = {}] = process.argv
@@ -131,12 +137,9 @@ function isDirectory(path: string): boolean {
  * @param rules
  * @param meta
  */
-function createSchema(
-  rules: Roots.SchemaRule[],
-  meta: Roots.SchemaMeta[]
-): Roots.Schema {
+function createSchema(rules: SchemaRule[], meta: SchemaMeta[]): Schema {
   // create builder config
-  const cfg: Roots.Config = { ...cfgDefault, ...cfgRuntime }
+  const cfg: Config = { ...cfgDefault, ...cfgRuntime }
 
   return {
     defaultLocale: cfg.defaultLocale,
@@ -144,14 +147,6 @@ function createSchema(
     rules,
     meta,
   }
-  // let content = ''
-
-  // content += `module.exports.defaultLocale = "${cfg.defaultLocale}" \n`
-  // content += `module.exports.locales = ${JSON.stringify(cfg.locales)} \n`
-  // content += `module.exports.rules = ${JSON.stringify(rules)} \n`
-  // content += `module.exports.meta = ${JSON.stringify(meta)} \n`
-
-  // return content
 }
 
 /**
@@ -167,18 +162,24 @@ function createSchema(
  * @param params
  */
 function createRouteRule(
-  page: Roots.BuilderPage,
+  page: BuilderPage,
   params = {}
 ): [string, string | undefined] {
   const pageHref = createSchemaRulePath(page.path, page.locale, page.suffix)
   const pageAs =
     page.alias && createSchemaRulePath(page.alias, page.locale, page.suffix)
 
-  const compileHref = pathToRegexp.compile(pageHref)
-  const compileAs = pageAs && pathToRegexp.compile(pageAs)
+  const replaceParams = (input: string, params: Builder['params']): string => {
+    Object.keys(params).forEach((key) => {
+      input = input.replace(`:${key}`, String(params[key]))
+    })
 
-  const rHref = compileHref({ ...params, locale: page.locale })
-  const rAs = compileAs && compileAs({ ...params, locale: page.locale })
+    return input
+  }
+
+  const rHref = replaceParams(pageHref, { ...params, locale: page.locale })
+  const rAs =
+    pageAs && replaceParams(pageAs, { ...params, locale: page.locale })
 
   return [rHref, rAs || undefined]
 }
@@ -187,13 +188,13 @@ function run() {
   console.log(colors.yellow('rewrite'), '- generating next-roots ...')
 
   // create builder config
-  const cfg: Roots.Config = { ...cfgDefault, ...cfgRuntime }
+  const cfg: Config = { ...cfgDefault, ...cfgRuntime }
 
   // ensure pages directory is clean before build
   removeDirectory(cfg.dirPages)
 
-  const schemaRules: Roots.SchemaRule[] = []
-  const schemaMeta: Roots.SchemaMeta[] = []
+  const schemaRules: SchemaRule[] = []
+  const schemaMeta: SchemaMeta[] = []
 
   // create pages for each rewrite
   cfg.schemas.forEach((r) => {
@@ -233,7 +234,7 @@ function run() {
         }
 
         // make sure all page rewrite params are set
-        const pageSchema: Roots.BuilderPage = {
+        const pageSchema: BuilderPage = {
           locale: l,
           path: page?.path || r.root,
           alias: page?.alias || '',

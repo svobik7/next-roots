@@ -1,6 +1,6 @@
 {
   "name": "next-roots",
-  "version": "1.0.4-canary.4",
+  "version": "1.0.4",
   "description": "Next.js utility to generate internationalized pages with metadata according to custom roots rules.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,7 +13,9 @@
     "link.d.ts",
     "link.js",
     "meta.d.ts",
-    "meta.js"
+    "meta.js",
+    "index.d.ts",
+    "index.js"
   ],
   "bin": {
     "next-roots": "./dist/bin/builder.js"
@@ -27,9 +29,7 @@
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch"
   },
-  "dependencies": {
-    "path-to-regexp": "^6.1.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/jest": "^26.0.3",
     "@types/react": "^16.9.41",

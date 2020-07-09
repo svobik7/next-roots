@@ -233,7 +233,7 @@ Provides main roots values according to current router path.
 - `locales: string[]` - array of all active locales
 - `defaultLocale: string` - string of default locale value
 - `currentLocale: string` - router path locale
-- `currentRule: Roots.SchemaRule | undefined` - object of current containing current rule `key`, `href` and optionally `alias`
+- `currentRule: SchemaRule | undefined` - object of current containing current rule `key`, `href` and optionally `alias`
 
 Example usage:
 

@@ -1,5 +1,11 @@
 import { ReactText } from 'react'
-import { Roots } from './types'
+import {
+  RewriteAsOptions,
+  RewriteHrefOptions,
+  RewriteMetaDataOptions,
+  SchemaMeta,
+  SchemaRule,
+} from './types'
 
 /**
  * Parametrizes input based on tags
@@ -194,9 +200,9 @@ export function createSchemaRulePath(
  * @param options
  */
 export function findSchemaRule(
-  rules: Roots.SchemaRule[],
+  rules: SchemaRule[],
   search: string | [string, string]
-): Roots.SchemaRule | undefined {
+): SchemaRule | undefined {
   // find only based on array `key`
   if (Array.isArray(search)) {
     return rules.find(
@@ -219,8 +225,8 @@ export function findSchemaRule(
  */
 export function rewrite(
   input: string,
-  options: Roots.RewriteHrefOptions
-): Roots.SchemaRule {
+  options: RewriteHrefOptions
+): SchemaRule {
   // rename invalid root name
   input = input === '/' ? 'home' : input
 
@@ -248,10 +254,7 @@ export function rewrite(
  * @param input
  * @param options
  */
-export function rewriteAs(
-  input: string,
-  options: Roots.RewriteAsOptions
-): string {
+export function rewriteAs(input: string, options: RewriteAsOptions): string {
   // split input to root and query parts
   const inputParts = input.split('?')
 
@@ -282,7 +285,7 @@ export function rewriteAs(
  */
 export function rewriteHref(
   input: string,
-  options: Roots.RewriteHrefOptions
+  options: RewriteHrefOptions
 ): string {
   // split input to root and query parts
   const inputParts = input.split('?')
@@ -308,11 +311,11 @@ export function rewriteHref(
 export function rewriteMetaData(
   key: string,
   query: string,
-  options: Roots.RewriteMetaDataOptions
+  options: RewriteMetaDataOptions
 ): ReactText | Record<string, ReactText> | undefined {
   const { __meta = [], strict = false } = options
 
-  let data: Roots.SchemaMeta['data'] = {}
+  let data: SchemaMeta['data'] = {}
 
   if (strict === false) {
     // merge general non-strict data

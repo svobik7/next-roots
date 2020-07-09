@@ -1,14 +1,14 @@
 import { createContext, useContext } from 'react'
-import { Roots } from '../types'
+import { Schema, SchemaMeta, SchemaRule } from '../types'
 
 export type RootsContext = {
-  currentRule: Roots.SchemaRule | undefined
+  currentRule: SchemaRule | undefined
   currentRoot: string
   currentLocale: string
   defaultLocale: string
   locales: string[]
-  rules: Roots.SchemaRule[]
-  meta: Roots.SchemaMeta[]
+  rules: SchemaRule[]
+  meta: SchemaMeta[]
 }
 
 const initialContext = {
@@ -37,7 +37,13 @@ function useRoots() {
   }
 }
 
-function parsePathname(pathname: string, schema: Roots.Schema) {
+export type RootsParsedPathname = {
+  locale: string
+  root: string
+  rule: SchemaRule | undefined
+}
+
+function parsePathname(pathname: string, schema: Schema): RootsParsedPathname {
   let root = ''
   let locale = ''
 
