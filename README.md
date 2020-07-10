@@ -1,6 +1,6 @@
 # next-roots
 
-Next.js utility to generate internationalized (i18n) pages according to custom roots rules and with **no need to use Vercel dev server, Rewrites neither Routes**
+Next.js utility to generate internationalized (i18n) pages according to custom roots rules and with **no need to use Vercel dev server, Rewrites neither Routes**. Package has Zero dependencies.
 
 ## 1. About next-roots
 

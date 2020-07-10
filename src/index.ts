@@ -1,2 +1,2 @@
-export * from './types'
-export * from './utils'
+export * as NextRoots from './types'
+export * as NextRootsUtils from './utils'
