@@ -36,3 +36,4 @@ yarn-error.log*
 # automatically generated files & folders 
 /example/pages
 /example/roots.schema.js
+/example/roots.schema.*.js

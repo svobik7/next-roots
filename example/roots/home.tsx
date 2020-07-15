@@ -1,5 +1,7 @@
 import Home from 'domains/home'
 
-export default function HomePage() {
+function HomePage() {
   return <Home />
 }
+
+export default HomePage

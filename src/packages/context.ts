@@ -11,7 +11,7 @@ export type RootsContext = {
   meta: SchemaMeta[]
 }
 
-const initialContext = {
+const initialContext: RootsContext = {
   currentRule: undefined,
   currentRoot: '',
   currentLocale: '',
@@ -35,6 +35,29 @@ function useRoots() {
     currentRoot: context.currentRoot,
     currentRule: context.currentRule,
   }
+}
+
+function detectRoots(
+  Component: any,
+  initial: Partial<RootsContext> = initialContext
+): RootsContext {
+  let context = {
+    ...initialContext,
+    ...initial,
+  }
+
+  if (typeof Component.getRootsContext === 'function') {
+    const ctxComponent = Component.getRootsContext()
+
+    context = {
+      ...context,
+      ...ctxComponent,
+      meta: [...context.meta, ...(ctxComponent.meta || [])],
+      rules: [...context.rules, ...(ctxComponent.rules || [])],
+    }
+  }
+
+  return context
 }
 
 export type RootsParsedPathname = {
@@ -73,5 +96,6 @@ function parsePathname(pathname: string, schema: Schema): RootsParsedPathname {
     rule,
   }
 }
+
 export default RootsContext
-export { useRoots, parsePathname }
+export { useRoots, detectRoots, parsePathname }

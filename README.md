@@ -457,7 +457,40 @@ import { parsePathname } from 'next-roots/context'
 const { locale, root, rule } = parsePathname(router.pathname)
 ```
 
-## 8. Example
+## 8. Special page method
+
+Next.js provides us with special page methods like `getServerSideProps`, `getStaticProps`, `getStaticPaths` and `getInitialProps (will be deprecated)`.
+
+All these methods are parsed during build time and forwarded from generated pages. Current page `locale` is also pushed to context of some of these methods.
+
+For example if you have `root` named `dynamic` which contains two of mentioned methods (getStaticProps, getStaticPaths) the result will look like:
+
+```js
+import { GetStaticPaths, GetStaticProps } from 'next'
+import DynamicRoot, * as __root from 'roots/dynamic'
+
+// ... custom logic
+
+// @ts-ignore
+export const getStaticProps: GetStaticProps = async (context) =>
+  __root.getStaticProps({ ...context, __locale: 'cs' })
+
+export const getStaticPaths: GetStaticPaths = async () =>
+  __root.getStaticPaths()
+
+export default DynamicPage
+```
+
+Then your are able to read page locale directly inside your root's special methods:
+
+```js
+export const getStaticProps: GetStaticProps = async (context) => {
+  const { __locale, ...ctxOthers } = context
+  // ... custom logic
+}
+```
+
+## 9. Example
 
 Example usage with lightweight schema can be found in example folder
 

@@ -33,6 +33,7 @@ export type BuilderPage = {
  * SCHEMA
  */
 export type Schema = {
+  currentLocale: string
   defaultLocale: string
   locales: string[]
   rules: SchemaRule[]

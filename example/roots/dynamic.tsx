@@ -34,7 +34,7 @@ const bodyComponents = new Map<string, ComponentType<{ data: unknown }>>()
  *
  * Catch all non-static url paths
  */
-export default function DynamicRoot({ bodyComponentData, bodyComponentKey }) {
+function DynamicRoot({ bodyComponentData, bodyComponentKey }) {
   const router = useRouter()
 
   // show fallback when SSG is not ready
@@ -132,3 +132,5 @@ export const getStaticProps: GetStaticProps = async (context) => {
     },
   }
 }
+
+export default DynamicRoot

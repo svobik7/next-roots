@@ -1,23 +1,18 @@
-import RootsContext, { parsePathname } from 'next-roots/context'
+import RootsContext, { detectRoots } from 'next-roots/context'
 import { AppProps } from 'next/app'
-import schema from 'roots.schema'
+import schemaRoots from 'roots.schema'
 
-function MyApp({ Component, pageProps, router }: AppProps) {
-  // parse current roots values from router pathname
-  const { locale, root, rule } = parsePathname(router.pathname, schema)
+function MyApp({ Component, pageProps }: AppProps) {
+  // detect roots context from page component
+  const roots = detectRoots(Component, {
+    defaultLocale: schemaRoots.defaultLocale,
+    locales: schemaRoots.locales,
+    rules: schemaRoots.rules,
+    meta: schemaRoots.meta,
+  })
 
   return (
-    <RootsContext.Provider
-      value={{
-        currentRule: rule,
-        currentRoot: root,
-        currentLocale: locale || schema.defaultLocale,
-        defaultLocale: schema.defaultLocale,
-        locales: schema.locales,
-        rules: schema.rules,
-        meta: schema.meta,
-      }}
-    >
+    <RootsContext.Provider value={roots}>
       <Component {...pageProps} />
     </RootsContext.Provider>
   )
