@@ -1,6 +1,6 @@
 {
   "name": "next-roots",
-  "version": "1.0.6-canary.0",
+  "version": "1.0.6",
   "description": "Next.js utility to generate internationalized pages with metadata according to custom roots rules.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -32,6 +32,8 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@testing-library/react": "^10.4.6",
+    "@testing-library/react-hooks": "^3.3.0",
     "@types/jest": "^26.0.3",
     "@types/react": "^16.9.41",
     "colors": "^1.4.0",
@@ -42,6 +44,7 @@
     "pretty-quick": "^2.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-test-renderer": "^16.13.1",
     "rollup": "^2.18.1",
     "rollup-plugin-terser": "^6.1.0",
     "rollup-plugin-ts": "^1.2.24",
@@ -74,15 +77,17 @@
     ],
     "moduleFileExtensions": [
       "js",
+      "jsx",
       "json",
-      "ts"
+      "ts",
+      "tsx"
     ],
     "roots": [
       "<rootDir>/__tests__",
       "<rootDir>/src"
     ],
     "transform": {
-      "^.+\\.ts$": "ts-jest"
+      "^.+\\.tsx?$": "ts-jest"
     }
   },
   "license": "MIT",
