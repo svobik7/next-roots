@@ -269,8 +269,8 @@ link.href('auth/signup')
 link.href('auth/signup', { locale: 'cs' })
 // result: `/cs/overeni/registrace-p1.htm`
 
-// 3. generate href with custom locale using rule key
-link.href('cs:auth/signup')
+// 3. generate href with custom locale using rule key and empty locale option
+link.href('cs:auth/signup', { locale: '' })
 // result: '/cs/overeni/registrace-p1.htm'
 
 // 4. generate href with custom locale using current rule key and explicit locale option (currentRule = cs:auth/signup)
@@ -388,8 +388,8 @@ import RootLink from 'next-roots/link'
 </RootLink>
 // result <a href="/cs/overeni/registrace-p1.htm">...</a>
 
-// 3. Using with rule key
-<RootLink href="cs:auth/signup">
+// 3. Using with rule key and empty locale option
+<RootLink href="cs:auth/signup" locale="">
   <a>...</a>
 </RootLink>
 // result <a href="/cs/overeni/registrace-p1.htm">...</a>

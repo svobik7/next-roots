@@ -67,6 +67,20 @@ export default function LayoutMain({ children }) {
         </li>
       </ol>
 
+      <h2>Mutations</h2>
+      <ol>
+        <li>
+          <RootLink href="cs:auth/signup">
+            <a>Index</a>
+          </RootLink>
+        </li>
+        <li>
+          <RootLink href="en:auth/signup">
+            <a>Index</a>
+          </RootLink>
+        </li>
+      </ol>
+
       <RootsConsole />
     </div>
   )
