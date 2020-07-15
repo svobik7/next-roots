@@ -155,13 +155,6 @@ describe('next-roots:cli-builder', () => {
       expect(cs).toContain(`...schemaRoots.rules`)
       expect(cs).toContain(`{"key":"en:home","href":"/en/index","as":"/en"}`)
       expect(cs).toContain(`{"key":"es:home","href":"/es/index","as":"/es"}`)
-      // expect(cs).toContain(
-      //   `rules: [
-      //     ...schemaRoots.rules,
-      //     {"key":"en:home","href":"/en/index","as":"/en"},
-      //     {"key":"es:home","href":"/es/index","as":"/es"},
-      //   ]`
-      // )
       expect(cs).toContain(`export default HomePage`)
 
       // EN
@@ -178,13 +171,6 @@ describe('next-roots:cli-builder', () => {
       expect(en).toContain(`...schemaRoots.rules`)
       expect(en).toContain(`{"key":"cs:home","href":"/cs/index","as":"/cs"}`)
       expect(en).toContain(`{"key":"es:home","href":"/es/index","as":"/es"}`)
-      // expect(en).toContain(
-      //   `rules: [
-      //     ...schemaRoots.rules,
-      //     {"key":"cs:home","href":"/cs/index","as":"/cs"},
-      //     {"key":"es:home","href":"/es/index","as":"/es"},
-      //   ]`
-      // )
       expect(en).toContain(`export default HomePage`)
 
       // ES
@@ -201,13 +187,6 @@ describe('next-roots:cli-builder', () => {
       expect(es).toContain(`...schemaRoots.rules`)
       expect(es).toContain(`{"key":"en:home","href":"/en/index","as":"/en"}`)
       expect(es).toContain(`{"key":"cs:home","href":"/cs/index","as":"/cs"}`)
-      // expect(es).toContain(
-      //   `rules: [
-      //     ...schemaRoots.rules,
-      //     {"key":"en:home","href":"/en/index","as":"/en"},
-      //     {"key":"cs:home","href":"/cs/index","as":"/cs"},
-      //   ]`
-      // )
       expect(es).toContain(`export default HomePage`)
     })
 
@@ -231,13 +210,6 @@ describe('next-roots:cli-builder', () => {
       expect(cs).toContain(`...schemaRoots.rules`)
       expect(cs).toContain(`{"key":"en:dynamic","href":"/en/[...slug]"}`)
       expect(cs).toContain(`{"key":"es:dynamic","href":"/es/[...slug]"}`)
-      // expect(cs).toContain(
-      //   `rules: [
-      //     ...schemaRoots.rules,
-      //     {"key":"en:dynamic","href":"/en/[...slug]"},
-      //     {"key":"es:dynamic","href":"/es/[...slug]"},
-      //   ]`
-      // )
       expect(cs).toContain(
         `export const getStaticPaths: GetStaticPaths = async () => __root.getStaticPaths()`
       )
@@ -263,13 +235,6 @@ describe('next-roots:cli-builder', () => {
       expect(en).toContain(`...schemaRoots.rules`)
       expect(en).toContain(`{"key":"cs:dynamic","href":"/cs/[...slug]"}`)
       expect(en).toContain(`{"key":"es:dynamic","href":"/es/[...slug]"}`)
-      // expect(en).toContain(
-      //   `rules: [
-      //     ...schemaRoots.rules,
-      //     {"key":"cs:dynamic","href":"/cs/[...slug]"},
-      //     {"key":"es:dynamic","href":"/es/[...slug]"},
-      //   ]`
-      // )
       expect(en).toContain(
         `export const getStaticPaths: GetStaticPaths = async () => __root.getStaticPaths()`
       )
@@ -294,13 +259,6 @@ describe('next-roots:cli-builder', () => {
       expect(es).toContain(`...schemaRoots.rules`)
       expect(es).toContain(`{"key":"en:dynamic","href":"/en/[...slug]"}`)
       expect(es).toContain(`{"key":"cs:dynamic","href":"/cs/[...slug]"}`)
-      // expect(es).toContain(
-      //   `rules: [
-      //     ...schemaRoots.rules,
-      //     {"key":"en:dynamic","href":"/en/[...slug]"},
-      //     {"key":"cs:dynamic","href":"/cs/[...slug]"},
-      //   ]`
-      // )
       expect(es).toContain(
         `export const getStaticPaths: GetStaticPaths = async () => __root.getStaticPaths()`
       )
