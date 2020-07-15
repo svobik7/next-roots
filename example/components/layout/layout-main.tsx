@@ -53,14 +53,14 @@ export default function LayoutMain({ children }) {
           </RootLink>
         </li>
         <li>
-          <RootLink href="dynamic" params={{ slug: 'jirka.svoboda' }}>
+          <RootLink href="dynamic" params={{ slug: 'joe-black' }}>
             <a>Dynamic - Author</a>
           </RootLink>
         </li>
         <li>
           <RootLink
             href="dynamic"
-            params={{ slug: 'jirka.svoboda/nazev-clanku' }}
+            params={{ slug: 'joe-black/how-to-find-your-first-gold-treasure' }}
           >
             <a>Dynamic - Article</a>
           </RootLink>
