@@ -314,13 +314,13 @@ const meta = useRootMeta()
 meta.data()
 // result: { title: 'Next Roots', background: 'magenta' }
 
-// 2. read all meta data when using strict param (data is not merged with general meta data - schema.meta.key === '*')
-meta.data('*', { strict: true })
-// result: { background: 'magenta' }
-
-// 3. cherry pick meta data using custom selector
+// 2. cherry pick meta data using custom selector for current router path
 meta.data('background')
 // result: 'magenta'
+
+// 3. read all meta data for explicit rule key
+meta.data('*', 'cs:auth/signup')
+// result: { title: 'Next Roots', background: 'grey' }
 ```
 
 ## 6. Components
