@@ -198,7 +198,7 @@ pages: [{
 
 Each schema rule can define custom meta data. Type of `metaData` param must be `Record<string, ReactText>`
 
-```js
+```ts
 metaData: { background: 'magenta' },
 ```
 
@@ -237,7 +237,7 @@ Provides main roots values according to current router path.
 
 Example usage:
 
-```js
+```ts
 import { useRoots } from 'next-roots/context'
 
 // router path = /en/auth/signup-p1.htm
@@ -256,7 +256,7 @@ Provides api to create localized links based on `roots.schema.js` rules.
 
 Example usage:
 
-```js
+```ts
 import { useRootLink } from 'next-roots/link'
 
 const link = useRootLink()
@@ -290,7 +290,7 @@ link.href('/', { locale: 'en' })
 
 The same options work for link alias plus dynamic params can be explicitly pushed:
 
-```js
+```ts
 // same options as for link.href() plus:
 
 const link = useRootLink()
@@ -306,7 +306,7 @@ Provides api to read static meta data attached to router paths and specified in 
 
 Example usage:
 
-```js
+```ts
 // example values when current root is 'dynamic'
 const meta = useRootMeta()
 
@@ -329,34 +329,31 @@ Next-roots package provides ready-to-use components with injected roots context.
 
 ### RootsContext
 
-Main roots context component which holds current values according to router pathname changes.
+Main roots context component which holds current values according to current page.
 
 This component is required to use in your app so that other components can consume current roots context.
 
 Recommended usage:
 
-```js
+```tsx
 // in your _app.tsx
-import RootsContext, { parsePathname } from 'next-roots/context'
+import RootsContext, { detectRoots } from 'next-roots/context'
 import { AppProps } from 'next/app'
-import schema from 'roots.schema'
+import schemaRoots from 'roots.schema'
 
-function MyApp({ Component, pageProps, router }: AppProps) {
-  // parse current roots values from router pathname
-  const { locale, root, rule } = parsePathname(router.pathname, schema)
+function MyApp({ Component, pageProps }: AppProps) {
+  // detect roots context from page component
+  // - current values will be obtained from Component.getRootsContext
+  // - second argument holds default values
+  const roots = detectRoots(Component, {
+    defaultLocale: schemaRoots.defaultLocale,
+    locales: schemaRoots.locales,
+    rules: schemaRoots.rules,
+    meta: schemaRoots.meta,
+  })
 
   return (
-    <RootsContext.Provider
-      value={{
-        currentRule: rule,
-        currentRoot: root,
-        currentLocale: locale || schema.defaultLocale,
-        defaultLocale: schema.defaultLocale,
-        locales: schema.locales,
-        rules: schema.rules,
-        meta: schema.meta,
-      }}
-    >
+    <RootsContext.Provider value={roots}>
       <Component {...pageProps} />
     </RootsContext.Provider>
   )
@@ -373,8 +370,8 @@ Works similar as `useRootLink` as this hook is used under the hood of `RootLink`
 
 Example usage:
 
-```js
-import RootLink from 'next-roots/link'
+```tsx
+import RootLink from 'next-roots/link';
 
 // 1. Using with current locale and root name (currentLocale = en)
 <RootLink href="auth/signup">
@@ -437,25 +434,7 @@ All current context values like `currenLocale`, `currentRoot` or `metaData` can 
 
 ## 7. Utils
 
-### parsePathname
-
-Handy util used to parse current router path into following roots context values:
-
-- `locale: string`
-- `root: string`
-- `rule: string`
-
-This is alway used in your `_app` to provide values to `RootsContext.Provider`
-
-Example usage:
-
-```js
-import { parsePathname } from 'next-roots/context'
-
-// router instance can be  obtained from useRouter hook
-// or directly from _app props
-const { locale, root, rule } = parsePathname(router.pathname)
-```
+COMING SOON
 
 ## 8. Special page method
 
@@ -465,7 +444,7 @@ All these methods are parsed during build time and forwarded from generated page
 
 For example if you have `root` named `dynamic` which contains two of mentioned methods (getStaticProps, getStaticPaths) the result will look like:
 
-```js
+```ts
 import { GetStaticPaths, GetStaticProps } from 'next'
 import DynamicRoot, * as __root from 'roots/dynamic'
 
@@ -483,7 +462,7 @@ export default DynamicPage
 
 Then your are able to read page locale directly inside your root's special methods:
 
-```js
+```ts
 export const getStaticProps: GetStaticProps = async (context) => {
   const { __locale, ...ctxOthers } = context
   // ... custom logic
@@ -497,3 +476,49 @@ Example usage with lightweight schema can be found in example folder
 - `cd example`
 - `yarn install`
 - `yarn dev`
+
+## 10. Migrating from 1.x to 2.x
+
+Breaking change is that `parsePathname` is no longer used to detect current roots context values. So migrating to 2.x requires following steps to be done:
+
+1. Replace `parsePathname` in your `_app`
+
+```tsx
+// import RootsContext, { parsePathname } from 'next-roots/context'
+import RootsContext, { detectRoots } from 'next-roots/context'
+import { AppProps } from 'next/app'
+import schemaRoots from 'roots.schema'
+
+function MyApp({ Component, pageProps }: AppProps) {
+  // NOTE: parsePathname is no longer used
+  // parse current roots values from router pathname
+  // const { locale, root, rule } = parsePathname(router.pathname, schema)
+
+  // detect roots context from page component
+  const roots = detectRoots(Component, {
+    defaultLocale: schemaRoots.defaultLocale,
+    locales: schemaRoots.locales,
+    rules: schemaRoots.rules,
+    meta: schemaRoots.meta,
+  })
+
+  return (
+    <RootsContext.Provider
+      value={roots}
+      // value={{
+      //   currentRule: rule,
+      //   currentRoot: root,
+      //   currentLocale: locale || schema.defaultLocale,
+      //   defaultLocale: schema.defaultLocale,
+      //   locales: schema.locales,
+      //   rules: schema.rules,
+      //   meta: schema.meta,
+      // }}
+    >
+      <Component {...pageProps} />
+    </RootsContext.Provider>
+  )
+}
+
+export default MyApp
+```

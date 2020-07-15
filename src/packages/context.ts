@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react'
-import { Schema, SchemaMeta, SchemaRule } from '../types'
+import { SchemaMeta, SchemaRule } from '../types'
 
 export type RootsContext = {
   currentRule: SchemaRule | undefined
@@ -60,42 +60,5 @@ function detectRoots(
   return context
 }
 
-export type RootsParsedPathname = {
-  locale: string
-  root: string
-  rule: SchemaRule | undefined
-}
-
-function parsePathname(pathname: string, schema: Schema): RootsParsedPathname {
-  let root = ''
-  let locale = ''
-
-  // detect current rule from router pathname
-  const rule = schema.rules.find(
-    (r) => r.as === pathname || r.href === pathname
-  )
-
-  // detect current root & locale from found rule
-  if (rule) {
-    const parsedKey = rule.key.split(':')
-
-    root = parsedKey.length > 1 ? parsedKey[1] : parsedKey[0]
-    locale = parsedKey.length > 1 ? parsedKey[0] : ''
-  }
-
-  // detect locale from pathname or use default
-  if (!locale) {
-    const [, pathLocale = ''] = pathname.split('/')
-
-    locale = schema.locales.includes(pathLocale) ? pathLocale : ''
-  }
-
-  return {
-    locale,
-    root,
-    rule,
-  }
-}
-
 export default RootsContext
-export { useRoots, detectRoots, parsePathname }
+export { useRoots, detectRoots }
