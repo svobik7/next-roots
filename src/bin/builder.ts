@@ -9,7 +9,6 @@ import {
 } from '../types'
 import { createSchemaRulePath, encodeSchemaRuleKey } from '../utils'
 
-const colors = require('colors')
 const fs = require('fs')
 const path = require('path')
 
@@ -279,7 +278,7 @@ function hasSpecialMethod(content: string, name: string): boolean {
 }
 
 function run() {
-  console.log(colors.yellow('rewrite'), '- generating next-roots ...')
+  console.log('\x1b[33mrewrite', '\x1b[37m- generating next-roots ...')
 
   // create builder config
   const cfg: Config = { ...cfgDefault, ...cfgRuntime }
@@ -330,10 +329,10 @@ function run() {
         // warn about missing rewrite rule
         if (!page) {
           console.log(
-            colors.red('warn'),
-            `- rewrite rule for`,
-            colors.red(`${l}:${cfgSchema.root}`),
-            'is missing!'
+            '\x1b[31mwarn',
+            '\x1b[37m- rewrite rule for',
+            `\x1b[31m${l}:${cfgSchema.root}`,
+            '\x1b[37mis missing!'
           )
         }
 
