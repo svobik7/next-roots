@@ -417,7 +417,16 @@ It is possible to use <RootsConsole /> component to debug whole Roots context va
 
 ```js
 import RootsConsole from 'next-roots/console'
-;<RootsConsole />
+
+//
+function MyLayout() {
+  return (
+    <div>
+      // ... custom logic
+      <RootsConsole />
+    </div>
+  )
+}
 ```
 
 Once this component is mounted to the DOM following indicator will appear in bottom left corner of window:
