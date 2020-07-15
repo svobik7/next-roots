@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.5] - 2020-07-09
+
+- Fixed issues to keep package stable
+
+### Added
+
+- RootsConsole component for debugging
+
 ## [0.0.2] - 2020-05-26
 
 - RollUp fix

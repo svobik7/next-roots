@@ -414,9 +414,26 @@ import RootLink from 'next-roots/link'
 
 ```
 
-### RootDebug
+### RootsConsole
 
-> COMMING SOON
+It is possible to use <RootsConsole /> component to debug whole Roots context values.
+
+```js
+import RootsConsole from 'next-roots/console'
+;<RootsConsole />
+```
+
+Once this component is mounted to the DOM following indicator will appear in bottom left corner of window:
+
+![Next-roots indicator](./media/next-roots-indicator-min.png)
+
+Console will open once that indicator is clicked:
+
+![Next-roots console](./media/next-roots-console-min.png)
+
+All current context values like `currenLocale`, `currentRoot` or `metaData` can be found in this console. Also links to current page mutations (locales) can be found in tab `links`.
+
+> Note that `RootsConsole` component should be used only in dev and should be removed before deploying to production
 
 ## 7. Utils
 
