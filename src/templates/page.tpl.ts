@@ -1,7 +1,8 @@
 export type PageTemplateProps = {
   locale: string
   pageName: string
-  pageRule: string
+  pageRule: object
+  pageMutations?: object[]
   rootName: string
   rootAlias: string
   hasGetStaticProps?: boolean
@@ -15,6 +16,7 @@ export default function pageTemplate(props: PageTemplateProps) {
     locale,
     pageName,
     pageRule,
+    pageMutations,
     rootName,
     rootAlias,
     hasGetStaticProps = false,
@@ -62,7 +64,19 @@ export default function pageTemplate(props: PageTemplateProps) {
   tpl += `  ...schemaRoots,` + `\n`
   tpl += `  currentLocale: '${locale}',` + `\n`
   tpl += `  currentRoot: '${rootName}',` + `\n`
-  tpl += `  currentRule: ${pageRule},` + `\n`
+  tpl += `  currentRule: ${JSON.stringify(pageRule)},` + `\n`
+
+  if (pageMutations && pageMutations.length) {
+    tpl += `  rules: [` + `\n`
+    tpl += `    ...schemaRoots.rules,` + `\n`
+
+    pageMutations.forEach((m) => {
+      tpl += `    ${JSON.stringify(m)},` + `\n`
+    })
+
+    tpl += `  ]` + `\n`
+  }
+
   tpl += `})` + `\n`
 
   tpl += `\n`

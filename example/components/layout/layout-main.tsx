@@ -1,11 +1,15 @@
 import RootsConsole from 'next-roots/console'
 import RootLink from 'next-roots/link'
 import { useRootMeta } from 'next-roots/meta'
+import { useRoots } from 'next-roots/context'
 import Link from 'next/link'
 import React from 'react'
 import styles from './layout-main.module.css'
 
 export default function LayoutMain({ children }) {
+  // use roots context
+  const roots = useRoots()
+
   // use root meta
   const meta = useRootMeta()
 
@@ -70,13 +74,18 @@ export default function LayoutMain({ children }) {
       <h2>Mutations</h2>
       <ol>
         <li>
-          <RootLink href="cs:auth/signup">
-            <a>Index</a>
+          <RootLink href={roots.currentRoot} locale="en">
+            <a>EN</a>
           </RootLink>
         </li>
         <li>
-          <RootLink href="en:auth/signup">
-            <a>Index</a>
+          <RootLink href={roots.currentRoot} locale="cs">
+            <a>CS</a>
+          </RootLink>
+        </li>
+        <li>
+          <RootLink href={roots.currentRoot} locale="es">
+            <a>ES</a>
           </RootLink>
         </li>
       </ol>

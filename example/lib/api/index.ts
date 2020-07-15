@@ -1,8 +1,6 @@
-const { promises: fs } = require('fs')
-
 async function loadDB() {
-  const rawData = await fs.readFile(process.cwd() + '/lib/api//db.json')
-  return JSON.parse(rawData)
+  const rawData = await import('./db.json')
+  return rawData
 }
 
 export async function fetchOneAuthor(username: string) {

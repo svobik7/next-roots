@@ -141,6 +141,7 @@ describe('next-roots:cli-builder', () => {
       const en = fs.readFileSync('example/pages/en/index.tsx').toString()
       const es = fs.readFileSync('example/pages/es/index.tsx').toString()
 
+      // CS
       expect(cs).toContain(`import schemaRoots from 'roots.schema.cs'`)
       expect(cs).toContain(`import HomeRoot from 'roots/home'`)
       expect(cs).toContain(
@@ -151,8 +152,19 @@ describe('next-roots:cli-builder', () => {
       expect(cs).toContain(
         `currentRule: {"key":"cs:home","href":"/cs/index","as":"/cs"}`
       )
+      expect(cs).toContain(`...schemaRoots.rules`)
+      expect(cs).toContain(`{"key":"en:home","href":"/en/index","as":"/en"}`)
+      expect(cs).toContain(`{"key":"es:home","href":"/es/index","as":"/es"}`)
+      // expect(cs).toContain(
+      //   `rules: [
+      //     ...schemaRoots.rules,
+      //     {"key":"en:home","href":"/en/index","as":"/en"},
+      //     {"key":"es:home","href":"/es/index","as":"/es"},
+      //   ]`
+      // )
       expect(cs).toContain(`export default HomePage`)
 
+      // EN
       expect(en).toContain(`import schemaRoots from 'roots.schema.en'`)
       expect(en).toContain(`import HomeRoot from 'roots/home'`)
       expect(en).toContain(
@@ -163,11 +175,22 @@ describe('next-roots:cli-builder', () => {
       expect(en).toContain(
         `currentRule: {"key":"en:home","href":"/en/index","as":"/en"}`
       )
+      expect(en).toContain(`...schemaRoots.rules`)
+      expect(en).toContain(`{"key":"cs:home","href":"/cs/index","as":"/cs"}`)
+      expect(en).toContain(`{"key":"es:home","href":"/es/index","as":"/es"}`)
+      // expect(en).toContain(
+      //   `rules: [
+      //     ...schemaRoots.rules,
+      //     {"key":"cs:home","href":"/cs/index","as":"/cs"},
+      //     {"key":"es:home","href":"/es/index","as":"/es"},
+      //   ]`
+      // )
       expect(en).toContain(`export default HomePage`)
 
+      // ES
       expect(es).toContain(`import schemaRoots from 'roots.schema.es'`)
       expect(es).toContain(`import HomeRoot from 'roots/home'`)
-      expect(cs).toContain(
+      expect(es).toContain(
         `HomePage.getRootsContext = (): Partial<RootsContext>`
       )
       expect(es).toContain(`currentLocale: 'es'`)
@@ -175,6 +198,16 @@ describe('next-roots:cli-builder', () => {
       expect(es).toContain(
         `currentRule: {"key":"es:home","href":"/es/index","as":"/es"}`
       )
+      expect(es).toContain(`...schemaRoots.rules`)
+      expect(es).toContain(`{"key":"en:home","href":"/en/index","as":"/en"}`)
+      expect(es).toContain(`{"key":"cs:home","href":"/cs/index","as":"/cs"}`)
+      // expect(es).toContain(
+      //   `rules: [
+      //     ...schemaRoots.rules,
+      //     {"key":"en:home","href":"/en/index","as":"/en"},
+      //     {"key":"cs:home","href":"/cs/index","as":"/cs"},
+      //   ]`
+      // )
       expect(es).toContain(`export default HomePage`)
     })
 
@@ -183,6 +216,7 @@ describe('next-roots:cli-builder', () => {
       const en = fs.readFileSync('example/pages/en/[...slug].tsx').toString()
       const es = fs.readFileSync('example/pages/es/[...slug].tsx').toString()
 
+      // CS
       expect(cs).toContain(`import schemaRoots from 'roots.schema.cs'`)
       expect(cs).toContain(
         `import DynamicRoot, * as __root from 'roots/dynamic'`
@@ -194,6 +228,16 @@ describe('next-roots:cli-builder', () => {
       expect(cs).toContain(
         `currentRule: {"key":"cs:dynamic","href":"/cs/[...slug]"}`
       )
+      expect(cs).toContain(`...schemaRoots.rules`)
+      expect(cs).toContain(`{"key":"en:dynamic","href":"/en/[...slug]"}`)
+      expect(cs).toContain(`{"key":"es:dynamic","href":"/es/[...slug]"}`)
+      // expect(cs).toContain(
+      //   `rules: [
+      //     ...schemaRoots.rules,
+      //     {"key":"en:dynamic","href":"/en/[...slug]"},
+      //     {"key":"es:dynamic","href":"/es/[...slug]"},
+      //   ]`
+      // )
       expect(cs).toContain(
         `export const getStaticPaths: GetStaticPaths = async () => __root.getStaticPaths()`
       )
@@ -203,6 +247,7 @@ describe('next-roots:cli-builder', () => {
 
       expect(cs).toContain(`export default DynamicPage`)
 
+      // EN
       expect(en).toContain(`import schemaRoots from 'roots.schema.en'`)
       expect(en).toContain(
         `import DynamicRoot, * as __root from 'roots/dynamic'`
@@ -215,6 +260,16 @@ describe('next-roots:cli-builder', () => {
       expect(en).toContain(
         `currentRule: {"key":"en:dynamic","href":"/en/[...slug]"}`
       )
+      expect(en).toContain(`...schemaRoots.rules`)
+      expect(en).toContain(`{"key":"cs:dynamic","href":"/cs/[...slug]"}`)
+      expect(en).toContain(`{"key":"es:dynamic","href":"/es/[...slug]"}`)
+      // expect(en).toContain(
+      //   `rules: [
+      //     ...schemaRoots.rules,
+      //     {"key":"cs:dynamic","href":"/cs/[...slug]"},
+      //     {"key":"es:dynamic","href":"/es/[...slug]"},
+      //   ]`
+      // )
       expect(en).toContain(
         `export const getStaticPaths: GetStaticPaths = async () => __root.getStaticPaths()`
       )
@@ -223,6 +278,7 @@ describe('next-roots:cli-builder', () => {
       )
       expect(en).toContain(`export default DynamicPage`)
 
+      // ES
       expect(es).toContain(`import schemaRoots from 'roots.schema.es'`)
       expect(es).toContain(
         `import DynamicRoot, * as __root from 'roots/dynamic'`
@@ -235,6 +291,16 @@ describe('next-roots:cli-builder', () => {
       expect(es).toContain(
         `currentRule: {"key":"es:dynamic","href":"/es/[...slug]"}`
       )
+      expect(es).toContain(`...schemaRoots.rules`)
+      expect(es).toContain(`{"key":"en:dynamic","href":"/en/[...slug]"}`)
+      expect(es).toContain(`{"key":"cs:dynamic","href":"/cs/[...slug]"}`)
+      // expect(es).toContain(
+      //   `rules: [
+      //     ...schemaRoots.rules,
+      //     {"key":"en:dynamic","href":"/en/[...slug]"},
+      //     {"key":"cs:dynamic","href":"/cs/[...slug]"},
+      //   ]`
+      // )
       expect(es).toContain(
         `export const getStaticPaths: GetStaticPaths = async () => __root.getStaticPaths()`
       )

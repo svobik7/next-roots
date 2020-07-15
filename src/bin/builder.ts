@@ -227,7 +227,8 @@ function createPageName(rootName: string) {
 function createPageContent(
   rootPath: string,
   rootAlias: string,
-  pageRule: SchemaRule
+  pageRule: SchemaRule,
+  pageMutations: SchemaRule[] = []
 ) {
   const parsedRuleKey = pageRule.key.split(':')
 
@@ -254,7 +255,8 @@ function createPageContent(
     rootName,
     rootAlias,
     pageName,
-    pageRule: JSON.stringify(pageRule),
+    pageRule,
+    pageMutations,
     hasGetInitialProps,
     hasGetServerSideProps,
     hasGetStaticPaths,
@@ -291,19 +293,6 @@ function run() {
 
   // create pages for each rewrite
   cfg.schemas.forEach((cfgSchema) => {
-    const rootPath = getFilePath(
-      path.format({
-        dir: cfg.dirRoots,
-        name: cfgSchema.root,
-        ext: cfg.extRoots,
-      })
-    )
-
-    const rootAlias = path.format({
-      dir: cfg.dirRoots,
-      name: cfgSchema.root,
-    })
-
     const isGeneralRoot = cfgSchema.root === '*'
 
     // push global meta data to global meta table
@@ -317,7 +306,7 @@ function run() {
       ])
     }
 
-    // create page file for each root's rewrite
+    // create schemaRules for each root's rewrite
     !isGeneralRoot &&
       cfgSchema.pages &&
       cfg.locales.forEach((l) => {
@@ -356,40 +345,83 @@ function run() {
           as,
         }
 
-        // push new rule to schema
-        schemaRules.set(l, [...(schemaRules.get(l) || []), pageRule])
+        // push new rule to schema rules
+        schemaRules.set(cfgSchema.root, [
+          ...(schemaRules.get(cfgSchema.root) || []),
+          pageRule,
+        ])
+
+        // push new rule to schema rules
+        schemaRules.set(`__${l}`, [
+          ...(schemaRules.get(`__${l}`) || []),
+          pageRule,
+        ])
 
         // push page meta data to meta table
         if (page?.metaData && Object.keys(page.metaData).length) {
-          schemaMeta.set(l, [
-            ...(schemaMeta.get(l) || []),
-            {
-              key: ruleKey,
-              data: page?.metaData,
-            },
+          const pageMeta = {
+            key: ruleKey,
+            data: page?.metaData,
+          }
+
+          schemaMeta.set(cfgSchema.root, [
+            ...(schemaMeta.get(cfgSchema.root) || []),
+            pageMeta,
+          ])
+
+          schemaMeta.set(`__${l}`, [
+            ...(schemaMeta.get(`__${l}`) || []),
+            pageMeta,
           ])
         }
-
-        const pagePath = getFilePath(
-          path.format({
-            dir: cfg.dirPages,
-            name: href,
-            ext: cfg.extRoots,
-          })
-        )
-
-        // create page template for each root
-        const pageContent = createPageContent(rootPath, rootAlias, pageRule)
-
-        saveFile(pagePath, pageContent)
       })
+  })
+
+  // create page files for schema rules
+  cfg.schemas.forEach((s) => {
+    const pageRules = schemaRules.get(s.root)
+
+    pageRules?.forEach((pageRule) => {
+      const rootPath = getFilePath(
+        path.format({
+          dir: cfg.dirRoots,
+          name: s.root,
+          ext: cfg.extRoots,
+        })
+      )
+
+      const rootAlias = path.format({
+        dir: cfg.dirRoots,
+        name: s.root,
+      })
+
+      const pagePath = getFilePath(
+        path.format({
+          dir: cfg.dirPages,
+          name: pageRule.href,
+          ext: cfg.extRoots,
+        })
+      )
+
+      const pageMutations = pageRules.filter((r) => r.key !== pageRule.key)
+
+      // create page template for each root
+      const pageContent = createPageContent(
+        rootPath,
+        rootAlias,
+        pageRule,
+        pageMutations
+      )
+
+      saveFile(pagePath, pageContent)
+    })
   })
 
   // create context file with rules and meta data
   // for each locale - keep it as small as possible
   cfg.locales.forEach((l) => {
-    const dataRules = schemaRules.get(l) || []
-    const dataMeta = schemaMeta.get(l) || []
+    const dataRules = schemaRules.get(`__${l}`) || []
+    const dataMeta = schemaMeta.get(`__${l}`) || []
 
     const schemaPath = `${mainDir}/roots.schema.${l}.js`
     const schema = createSchema(l, dataRules, dataMeta)
