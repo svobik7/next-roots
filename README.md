@@ -479,9 +479,11 @@ Example usage with lightweight schema can be found in example folder
 
 ## 10. Migrating from 1.x to 2.x
 
-Breaking change is that `parsePathname` is no longer used to detect current roots context values. So migrating to 2.x requires following steps to be done:
+Breaking change is that `parsePathname` is no longer used to detect current roots context values.
 
-1. Replace `parsePathname` in your `_app`
+Another change is that schemas are now separated according to locale which makes initial load even smaller. Also current context values are pushed directly to page component so router pathname is not parsed every time new page is rendered.
+
+Migrating to 2.x requires following update in your `_app`:
 
 ```tsx
 // import RootsContext, { parsePathname } from 'next-roots/context'
