@@ -2,23 +2,29 @@ import { createContext, useContext } from 'react'
 import { SchemaMeta, SchemaRule } from '../types'
 
 export type RootsContext = {
-  currentRule: SchemaRule | undefined
-  currentRoot: string
-  currentLocale: string
-  defaultLocale: string
   locales: string[]
   rules: SchemaRule[]
   meta: SchemaMeta[]
+  // default values
+  defaultLocale: string
+  // current values
+  currentRoot: string
+  currentLocale: string
+  currentRule: SchemaRule | undefined
+  currentMeta: SchemaMeta | undefined
 }
 
 const initialContext: RootsContext = {
-  currentRule: undefined,
-  currentRoot: '',
-  currentLocale: '',
-  defaultLocale: '',
   locales: [],
   rules: [],
   meta: [],
+  // default values
+  defaultLocale: '',
+  // current values
+  currentRoot: '',
+  currentRule: undefined,
+  currentLocale: '',
+  currentMeta: undefined,
 }
 
 const RootsContext = createContext<RootsContext>(initialContext)
@@ -30,10 +36,13 @@ function useRoots() {
 
   return {
     locales: context.locales,
+    // default values
     defaultLocale: context.defaultLocale,
-    currentLocale: context.currentLocale,
+    // current values
     currentRoot: context.currentRoot,
+    currentLocale: context.currentLocale,
     currentRule: context.currentRule,
+    currentMeta: context.currentMeta,
   }
 }
 

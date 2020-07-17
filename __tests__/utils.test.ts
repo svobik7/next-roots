@@ -8,7 +8,6 @@ import {
   parametrize,
   rewriteAs,
   rewriteHref,
-  rewriteMetaData,
   suffixize,
 } from '../src/utils'
 
@@ -463,130 +462,6 @@ describe('next-roots:utils', () => {
         locale: 'en',
       })
       expect(result).toBe('/en/account/profile.htm?param=value')
-    })
-  })
-
-  /**
-   * Test 'rewriteMeta' method
-   * ---
-   * It should find and retrieve meta data for given rewrite key
-   */
-  describe('rewriteMeta', () => {
-    test('get undefined for specific param and non existing page', () => {
-      const result = rewriteMetaData('invalid-page', 'title', {
-        __meta: [
-          {
-            key: 'en:account/profile',
-            data: {
-              title: 'Account Profile',
-            },
-          },
-        ],
-      })
-
-      expect(result).toBeUndefined()
-    })
-
-    test('get empty array for `*` and non existing page', () => {
-      const result = rewriteMetaData('invalid-page', '*', {
-        __meta: [
-          {
-            key: 'en:account/profile',
-            data: {
-              title: 'Account Profile',
-            },
-          },
-        ],
-      })
-
-      expect(result).toEqual({})
-    })
-
-    test('get single data for existing page', () => {
-      const result = rewriteMetaData('en:account/profile', 'title', {
-        __meta: [
-          { key: 'en:account/profile', data: { title: 'Account Profile' } },
-        ],
-      })
-
-      expect(result).toBe('Account Profile')
-    })
-
-    test('get all data for existing page', () => {
-      const result = rewriteMetaData('en:account/profile', '*', {
-        __meta: [
-          {
-            key: 'en:account/profile',
-            data: {
-              title: 'Account Profile',
-              description: 'Account Description',
-            },
-          },
-        ],
-      })
-
-      expect(result).toEqual({
-        title: 'Account Profile',
-        description: 'Account Description',
-      })
-    })
-
-    test('get only strict data for existing page when `strict` is true', () => {
-      const result = rewriteMetaData('en:account/profile', '*', {
-        __meta: [
-          { key: 'en:account/profile', data: { title: 'Account Profile' } },
-          { key: 'account/profile', data: { background: 'red' } },
-          { key: '*', data: { font: 'Arial' } },
-        ],
-        strict: true,
-      })
-
-      expect(result).toEqual({
-        title: 'Account Profile',
-      })
-    })
-
-    test('get merged data for existing page when `strict` is false', () => {
-      const result = rewriteMetaData('en:account/profile', '*', {
-        __meta: [
-          {
-            key: '*',
-            data: { font: 'Arial', background: 'grey', title: 'YeahCoach' },
-          },
-          {
-            key: 'account/profile',
-            data: { background: 'red', title: 'Non-strict title' },
-          },
-          { key: 'en:account/profile', data: { title: 'Account Profile' } },
-        ],
-        strict: false,
-      })
-
-      expect(result).toEqual({
-        font: 'Arial',
-        background: 'red',
-        title: 'Account Profile',
-      })
-    })
-
-    test('do not override strict data un-strict data', () => {
-      const result = rewriteMetaData('en:account/profile', '*', {
-        __meta: [
-          { key: 'en:account/profile', data: { title: 'Account Profile' } },
-          {
-            key: 'account/profile',
-            data: { background: 'red', title: 'Non-strict title' },
-          },
-          { key: '*', data: { font: 'Arial', background: 'white' } },
-        ],
-        strict: false,
-      })
-
-      expect(result).toEqual({
-        title: 'Account Profile',
-        background: 'red',
-        font: 'Arial',
-      })
     })
   })
 })

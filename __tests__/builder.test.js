@@ -50,7 +50,9 @@ describe('next-roots:cli-builder', () => {
 
       expect(fs.existsSync('example/pages/en/index.tsx')).toBe(true)
       expect(fs.existsSync('example/pages/cs/index.tsx')).toBe(true)
-      expect(fs.existsSync('example/pages/es/index.tsx')).toBe(true)
+      expect(
+        fs.existsSync('example/pages/es/autorizacion/iniciar-sesion-a2.htm.tsx')
+      ).toBe(true)
 
       expect(fs.existsSync('example/pages/en/auth/signup-a1.page.tsx')).toBe(
         true
@@ -141,53 +143,163 @@ describe('next-roots:cli-builder', () => {
       const en = fs.readFileSync('example/pages/en/index.tsx').toString()
       const es = fs.readFileSync('example/pages/es/index.tsx').toString()
 
-      // CS
-      expect(cs).toContain(`import schemaRoots from 'roots.schema.cs'`)
+      // CS ROOT
+
       expect(cs).toContain(`import HomeRoot from 'roots/home'`)
       expect(cs).toContain(
         `HomePage.getRootsContext = (): Partial<RootsContext>`
       )
+      expect(cs).toContain(`export default HomePage`)
+
+      // CS CURRENT CONTEXT
+
       expect(cs).toContain(`currentLocale: 'cs'`)
       expect(cs).toContain(`currentRoot: 'home'`)
       expect(cs).toContain(
         `currentRule: {"key":"cs:home","href":"/cs/index","as":"/cs"}`
       )
-      expect(cs).toContain(`...schemaRoots.rules`)
-      expect(cs).toContain(`{"key":"en:home","href":"/en/index","as":"/en"}`)
-      expect(cs).toContain(`{"key":"es:home","href":"/es/index","as":"/es"}`)
-      expect(cs).toContain(`export default HomePage`)
+      expect(cs).toContain(
+        `currentMeta: {"key":"cs:home","data":{"title":"Awesome Next Roots","background":"grey"}}`
+      )
 
-      // EN
-      expect(en).toContain(`import schemaRoots from 'roots.schema.en'`)
+      // CS RULES
+
+      expect(cs).toContain(`{"key":"en:home","href":"/en/index","as":"/en"}`)
+      expect(cs).toContain(`{"key":"cs:home","href":"/cs/index","as":"/cs"}`)
+      expect(cs).toContain(`{"key":"es:home","href":"/es/index","as":"/es"}`)
+
+      expect(cs).toContain(
+        `{"key":"cs:auth/signup","href":"/cs/overeni/registrace-a1.page"}`
+      )
+      expect(cs).toContain(
+        `{"key":"cs:auth/login","href":"/cs/overeni/prihlaseni-a2.htm"}`
+      )
+
+      expect(cs).toContain(
+        `{"key":"cs:account/profile","href":"/cs/ucet/profil-b1.htm"}`
+      )
+      expect(cs).toContain(
+        `{"key":"cs:account/settings","href":"/cs/ucet/nastaveni-b2.htm"}`
+      )
+
+      expect(cs).toContain(`{"key":"cs:dynamic","href":"/cs/[...slug]"}`)
+
+      // CS META
+
+      expect(cs).toContain(
+        `{"key":"en:home","data":{"title":"Awesome Next Roots","background":"grey"}`
+      )
+      expect(cs).toContain(
+        `{"key":"cs:home","data":{"title":"Awesome Next Roots","background":"grey"}`
+      )
+      expect(cs).toContain(
+        `{"key":"es:home","data":{"title":"Awesome Next Roots","background":"grey"}`
+      )
+
+      // EN ROOT
+
       expect(en).toContain(`import HomeRoot from 'roots/home'`)
       expect(en).toContain(
         `HomePage.getRootsContext = (): Partial<RootsContext>`
       )
+      expect(en).toContain(`export default HomePage`)
+
+      // EN CURRENT CONTEXT
+
       expect(en).toContain(`currentLocale: 'en'`)
       expect(en).toContain(`currentRoot: 'home'`)
       expect(en).toContain(
         `currentRule: {"key":"en:home","href":"/en/index","as":"/en"}`
       )
-      expect(en).toContain(`...schemaRoots.rules`)
+      expect(en).toContain(
+        `currentMeta: {"key":"en:home","data":{"title":"Awesome Next Roots","background":"grey"}}`
+      )
+
+      // EN RULES
+
+      expect(en).toContain(`{"key":"en:home","href":"/en/index","as":"/en"}`)
       expect(en).toContain(`{"key":"cs:home","href":"/cs/index","as":"/cs"}`)
       expect(en).toContain(`{"key":"es:home","href":"/es/index","as":"/es"}`)
-      expect(en).toContain(`export default HomePage`)
+
+      expect(en).toContain(
+        `{"key":"en:auth/signup","href":"/en/auth/signup-a1.page"}`
+      )
+      expect(en).toContain(
+        `{"key":"en:auth/login","href":"/en/auth/login-a2.htm"}`
+      )
+
+      expect(en).toContain(
+        `{"key":"en:account/profile","href":"/en/account/profile-b1.htm"}`
+      )
+      expect(en).toContain(
+        `{"key":"en:account/settings","href":"/en/account/settings-b2.htm"}`
+      )
+
+      expect(en).toContain(`{"key":"en:dynamic","href":"/en/[...slug]"}`)
+
+      // EN META
+
+      expect(en).toContain(
+        `{"key":"en:home","data":{"title":"Awesome Next Roots","background":"grey"}`
+      )
+      expect(en).toContain(
+        `{"key":"cs:home","data":{"title":"Awesome Next Roots","background":"grey"}`
+      )
+      expect(en).toContain(
+        `{"key":"es:home","data":{"title":"Awesome Next Roots","background":"grey"}`
+      )
 
       // ES
-      expect(es).toContain(`import schemaRoots from 'roots.schema.es'`)
+
       expect(es).toContain(`import HomeRoot from 'roots/home'`)
       expect(es).toContain(
         `HomePage.getRootsContext = (): Partial<RootsContext>`
       )
+      expect(es).toContain(`export default HomePage`)
+
+      // ES CURRENT CONTEXT
+
       expect(es).toContain(`currentLocale: 'es'`)
       expect(es).toContain(`currentRoot: 'home'`)
       expect(es).toContain(
         `currentRule: {"key":"es:home","href":"/es/index","as":"/es"}`
       )
-      expect(es).toContain(`...schemaRoots.rules`)
+      expect(es).toContain(
+        `currentMeta: {"key":"es:home","data":{"title":"Awesome Next Roots","background":"grey"}}`
+      )
+
+      // ES RULES
+
       expect(es).toContain(`{"key":"en:home","href":"/en/index","as":"/en"}`)
       expect(es).toContain(`{"key":"cs:home","href":"/cs/index","as":"/cs"}`)
-      expect(es).toContain(`export default HomePage`)
+      expect(es).toContain(`{"key":"es:home","href":"/es/index","as":"/es"}`)
+
+      expect(es).toContain(
+        `{"key":"es:auth/signup","href":"/es/auth/signup.htm"}`
+      )
+      expect(es).toContain(
+        `{"key":"es:auth/login","href":"/es/autorizacion/iniciar-sesion-a2.htm"}`
+      )
+      expect(es).toContain(
+        `{"key":"es:account/profile","href":"/es/cuenta/perfil-b1.htm"}`
+      )
+      expect(es).toContain(
+        `{"key":"es:account/settings","href":"/es/cuenta/ajustes-b2.htm"}`
+      )
+
+      expect(es).toContain(`{"key":"es:dynamic","href":"/es/[...slug]"}`)
+
+      // ES META
+
+      expect(es).toContain(
+        `{"key":"en:home","data":{"title":"Awesome Next Roots","background":"grey"}`
+      )
+      expect(es).toContain(
+        `{"key":"cs:home","data":{"title":"Awesome Next Roots","background":"grey"}`
+      )
+      expect(es).toContain(
+        `{"key":"es:home","data":{"title":"Awesome Next Roots","background":"grey"}`
+      )
     })
 
     test('dynamic content', () => {
@@ -195,21 +307,14 @@ describe('next-roots:cli-builder', () => {
       const en = fs.readFileSync('example/pages/en/[...slug].tsx').toString()
       const es = fs.readFileSync('example/pages/es/[...slug].tsx').toString()
 
-      // CS
-      expect(cs).toContain(`import schemaRoots from 'roots.schema.cs'`)
+      // CS ROOT
+
       expect(cs).toContain(
         `import DynamicRoot, * as __root from 'roots/dynamic'`
       )
       expect(cs).toContain(
         `DynamicPage.getRootsContext = (): Partial<RootsContext> => ({`
       )
-      expect(cs).toContain(`currentRoot: 'dynamic'`)
-      expect(cs).toContain(
-        `currentRule: {"key":"cs:dynamic","href":"/cs/[...slug]"}`
-      )
-      expect(cs).toContain(`...schemaRoots.rules`)
-      expect(cs).toContain(`{"key":"en:dynamic","href":"/en/[...slug]"}`)
-      expect(cs).toContain(`{"key":"es:dynamic","href":"/es/[...slug]"}`)
       expect(cs).toContain(
         `export const getStaticPaths: GetStaticPaths = async () => __root.getStaticPaths()`
       )
@@ -219,22 +324,55 @@ describe('next-roots:cli-builder', () => {
 
       expect(cs).toContain(`export default DynamicPage`)
 
-      // EN
-      expect(en).toContain(`import schemaRoots from 'roots.schema.en'`)
+      // CS CURRENT CONTEXT
+
+      expect(cs).toContain(`currentLocale: 'cs'`)
+      expect(cs).toContain(`currentRoot: 'dynamic'`)
+      expect(cs).toContain(
+        `currentRule: {"key":"cs:dynamic","href":"/cs/[...slug]"}`
+      )
+      expect(cs).toContain(
+        `currentMeta: {"key":"cs:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}}`
+      )
+
+      expect(cs).toContain(`{"key":"en:dynamic","href":"/en/[...slug]"}`)
+      expect(cs).toContain(`{"key":"cs:dynamic","href":"/cs/[...slug]"}`)
+      expect(cs).toContain(`{"key":"es:dynamic","href":"/es/[...slug]"}`)
+
+      expect(cs).toContain(`{"key":"cs:home","href":"/cs/index","as":"/cs"}`)
+      expect(cs).toContain(
+        `{"key":"cs:auth/signup","href":"/cs/overeni/registrace-a1.page"}`
+      )
+      expect(cs).toContain(
+        `{"key":"cs:auth/login","href":"/cs/overeni/prihlaseni-a2.htm"}`
+      )
+      expect(cs).toContain(
+        `{"key":"cs:account/profile","href":"/cs/ucet/profil-b1.htm"}`
+      )
+      expect(cs).toContain(
+        `{"key":"cs:account/settings","href":"/cs/ucet/nastaveni-b2.htm"}`
+      )
+
+      // CS META
+
+      expect(cs).toContain(
+        `{"key":"en:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}`
+      )
+      expect(cs).toContain(
+        `{"key":"cs:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}`
+      )
+      expect(cs).toContain(
+        `{"key":"es:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}`
+      )
+
+      // EN ROOT
+
       expect(en).toContain(
         `import DynamicRoot, * as __root from 'roots/dynamic'`
       )
       expect(en).toContain(
         `DynamicPage.getRootsContext = (): Partial<RootsContext> => ({`
       )
-      expect(en).toContain(`currentLocale: 'en'`)
-      expect(en).toContain(`currentRoot: 'dynamic'`)
-      expect(en).toContain(
-        `currentRule: {"key":"en:dynamic","href":"/en/[...slug]"}`
-      )
-      expect(en).toContain(`...schemaRoots.rules`)
-      expect(en).toContain(`{"key":"cs:dynamic","href":"/cs/[...slug]"}`)
-      expect(en).toContain(`{"key":"es:dynamic","href":"/es/[...slug]"}`)
       expect(en).toContain(
         `export const getStaticPaths: GetStaticPaths = async () => __root.getStaticPaths()`
       )
@@ -243,22 +381,57 @@ describe('next-roots:cli-builder', () => {
       )
       expect(en).toContain(`export default DynamicPage`)
 
-      // ES
-      expect(es).toContain(`import schemaRoots from 'roots.schema.es'`)
+      // EN CURRENT CONTEXT
+
+      expect(en).toContain(`currentLocale: 'en'`)
+      expect(en).toContain(`currentRoot: 'dynamic'`)
+      expect(en).toContain(
+        `currentRule: {"key":"en:dynamic","href":"/en/[...slug]"}`
+      )
+      expect(en).toContain(
+        `currentMeta: {"key":"en:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}}`
+      )
+
+      // EN RULES
+
+      expect(en).toContain(`{"key":"en:dynamic","href":"/en/[...slug]"}`)
+      expect(en).toContain(`{"key":"cs:dynamic","href":"/cs/[...slug]"}`)
+      expect(en).toContain(`{"key":"es:dynamic","href":"/es/[...slug]"}`)
+
+      expect(en).toContain(`{"key":"en:home","href":"/en/index","as":"/en"}`)
+      expect(en).toContain(
+        `{"key":"en:auth/signup","href":"/en/auth/signup-a1.page"}`
+      )
+      expect(en).toContain(
+        `{"key":"en:auth/login","href":"/en/auth/login-a2.htm"}`
+      )
+      expect(en).toContain(
+        `{"key":"en:account/profile","href":"/en/account/profile-b1.htm"}`
+      )
+      expect(en).toContain(
+        `{"key":"en:account/settings","href":"/en/account/settings-b2.htm"}`
+      )
+
+      // EN META
+
+      expect(en).toContain(
+        `{"key":"en:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}`
+      )
+      expect(en).toContain(
+        `{"key":"cs:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}`
+      )
+      expect(en).toContain(
+        `{"key":"es:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}`
+      )
+
+      // ES ROOT
+
       expect(es).toContain(
         `import DynamicRoot, * as __root from 'roots/dynamic'`
       )
       expect(es).toContain(
         `DynamicPage.getRootsContext = (): Partial<RootsContext> => ({`
       )
-      expect(es).toContain(`currentLocale: 'es'`)
-      expect(es).toContain(`currentRoot: 'dynamic'`)
-      expect(es).toContain(
-        `currentRule: {"key":"es:dynamic","href":"/es/[...slug]"}`
-      )
-      expect(es).toContain(`...schemaRoots.rules`)
-      expect(es).toContain(`{"key":"en:dynamic","href":"/en/[...slug]"}`)
-      expect(es).toContain(`{"key":"cs:dynamic","href":"/cs/[...slug]"}`)
       expect(es).toContain(
         `export const getStaticPaths: GetStaticPaths = async () => __root.getStaticPaths()`
       )
@@ -267,6 +440,223 @@ describe('next-roots:cli-builder', () => {
       )
 
       expect(es).toContain(`export default DynamicPage`)
+
+      // ES CURRENT CONTEXT
+
+      expect(es).toContain(`currentLocale: 'es'`)
+      expect(es).toContain(`currentRoot: 'dynamic'`)
+      expect(es).toContain(
+        `currentRule: {"key":"es:dynamic","href":"/es/[...slug]"}`
+      )
+      expect(es).toContain(
+        `currentMeta: {"key":"es:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}}`
+      )
+
+      // ES RULES
+
+      expect(es).toContain(`{"key":"en:dynamic","href":"/en/[...slug]"}`)
+      expect(es).toContain(`{"key":"cs:dynamic","href":"/cs/[...slug]"}`)
+      expect(es).toContain(`{"key":"es:dynamic","href":"/es/[...slug]"}`)
+      expect(es).toContain(`{"key":"es:home","href":"/es/index","as":"/es"}`)
+      expect(es).toContain(
+        `{"key":"es:auth/signup","href":"/es/auth/signup.htm"}`
+      )
+      expect(es).toContain(
+        `{"key":"es:auth/login","href":"/es/autorizacion/iniciar-sesion-a2.htm"}`
+      )
+      expect(es).toContain(
+        `{"key":"es:account/profile","href":"/es/cuenta/perfil-b1.htm"}`
+      )
+      expect(es).toContain(
+        `{"key":"es:account/settings","href":"/es/cuenta/ajustes-b2.htm"}`
+      )
+
+      // ES META
+
+      expect(es).toContain(
+        `{"key":"en:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}`
+      )
+      expect(es).toContain(
+        `{"key":"cs:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}`
+      )
+      expect(es).toContain(
+        `{"key":"es:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}`
+      )
+    })
+
+    test('auth/login content', () => {
+      const cs = fs
+        .readFileSync('example/pages/cs/overeni/prihlaseni-a2.htm.tsx')
+        .toString()
+      const en = fs
+        .readFileSync('example/pages/en/auth/login-a2.htm.tsx')
+        .toString()
+      const es = fs
+        .readFileSync('example/pages/es/autorizacion/iniciar-sesion-a2.htm.tsx')
+        .toString()
+
+      // CS ROOT
+
+      expect(cs).toContain(`import AuthLoginRoot from 'roots/auth/login'`)
+      expect(cs).toContain(
+        `AuthLoginPage.getRootsContext = (): Partial<RootsContext>`
+      )
+      expect(cs).toContain(`export default AuthLoginPage`)
+
+      // CS CURRENT CONTEXT
+
+      expect(cs).toContain(`currentLocale: 'cs'`)
+      expect(cs).toContain(`currentRoot: 'auth/login'`)
+      expect(cs).toContain(
+        `currentRule: {"key":"cs:auth/login","href":"/cs/overeni/prihlaseni-a2.htm"}`
+      )
+      expect(cs).toContain(
+        `currentMeta: {"key":"cs:auth/login","data":{"title":"Přihlášení","background":"green"}}`
+      )
+
+      // CS RULES
+
+      expect(cs).toContain(
+        `{"key":"en:auth/login","href":"/en/auth/login-a2.htm"}`
+      )
+      expect(cs).toContain(
+        `{"key":"cs:auth/login","href":"/cs/overeni/prihlaseni-a2.htm"}`
+      )
+      expect(cs).toContain(
+        `{"key":"es:auth/login","href":"/es/autorizacion/iniciar-sesion-a2.htm"}`
+      )
+
+      expect(cs).toContain(`{"key":"cs:home","href":"/cs/index","as":"/cs"}`)
+      expect(cs).toContain(
+        `{"key":"cs:auth/signup","href":"/cs/overeni/registrace-a1.page"}`
+      )
+      expect(cs).toContain(
+        `{"key":"cs:account/profile","href":"/cs/ucet/profil-b1.htm"}`
+      )
+      expect(cs).toContain(
+        `{"key":"cs:account/settings","href":"/cs/ucet/nastaveni-b2.htm"}`
+      )
+      expect(cs).toContain(`{"key":"cs:dynamic","href":"/cs/[...slug]"}`)
+
+      // CS META
+
+      expect(cs).toContain(
+        `{"key":"en:auth/login","data":{"title":"Login","background":"green"}`
+      )
+      expect(cs).toContain(
+        `{"key":"cs:auth/login","data":{"title":"Přihlášení","background":"green"}`
+      )
+      expect(cs).toContain(
+        `{"key":"es:auth/login","data":{"title":"Iniciar Sesión","background":"green"}`
+      )
+
+      // EN ROOT
+
+      expect(en).toContain(`import AuthLoginRoot from 'roots/auth/login'`)
+      expect(en).toContain(
+        `AuthLoginPage.getRootsContext = (): Partial<RootsContext>`
+      )
+      expect(en).toContain(`export default AuthLoginPage`)
+
+      // EN CURRENT CONTEXT
+
+      expect(en).toContain(`currentLocale: 'en'`)
+      expect(en).toContain(`currentRoot: 'auth/login'`)
+      expect(en).toContain(
+        `currentRule: {"key":"en:auth/login","href":"/en/auth/login-a2.htm"}`
+      )
+      expect(en).toContain(
+        `currentMeta: {"key":"en:auth/login","data":{"title":"Login","background":"green"}}`
+      )
+
+      expect(en).toContain(
+        `{"key":"en:auth/login","href":"/en/auth/login-a2.htm"}`
+      )
+      expect(en).toContain(
+        `{"key":"cs:auth/login","href":"/cs/overeni/prihlaseni-a2.htm"}`
+      )
+      expect(en).toContain(
+        `{"key":"es:auth/login","href":"/es/autorizacion/iniciar-sesion-a2.htm"}`
+      )
+
+      expect(en).toContain(`{"key":"en:home","href":"/en/index","as":"/en"}`)
+      expect(en).toContain(
+        `{"key":"en:auth/signup","href":"/en/auth/signup-a1.page"}`
+      )
+      expect(en).toContain(
+        `{"key":"en:account/profile","href":"/en/account/profile-b1.htm"}`
+      )
+      expect(en).toContain(
+        `{"key":"en:account/settings","href":"/en/account/settings-b2.htm"}`
+      )
+      expect(en).toContain(`{"key":"en:dynamic","href":"/en/[...slug]"}`)
+
+      // EN META
+
+      expect(en).toContain(
+        `{"key":"en:auth/login","data":{"title":"Login","background":"green"}`
+      )
+      expect(en).toContain(
+        `{"key":"cs:auth/login","data":{"title":"Přihlášení","background":"green"}`
+      )
+      expect(en).toContain(
+        `{"key":"es:auth/login","data":{"title":"Iniciar Sesión","background":"green"}`
+      )
+
+      // ES ROOT
+
+      expect(es).toContain(`import AuthLoginRoot from 'roots/auth/login'`)
+      expect(es).toContain(
+        `AuthLoginPage.getRootsContext = (): Partial<RootsContext>`
+      )
+
+      expect(es).toContain(`export default AuthLoginPage`)
+
+      // ES CURRENT CONTEXT
+
+      expect(es).toContain(`currentLocale: 'es'`)
+      expect(es).toContain(`currentRoot: 'auth/login'`)
+      expect(es).toContain(
+        `currentRule: {"key":"es:auth/login","href":"/es/autorizacion/iniciar-sesion-a2.htm"}`
+      )
+      expect(es).toContain(
+        `currentMeta: {"key":"es:auth/login","data":{"title":"Iniciar Sesión","background":"green"}}`
+      )
+
+      expect(es).toContain(
+        `{"key":"en:auth/login","href":"/en/auth/login-a2.htm"}`
+      )
+      expect(es).toContain(
+        `{"key":"cs:auth/login","href":"/cs/overeni/prihlaseni-a2.htm"}`
+      )
+      expect(es).toContain(
+        `{"key":"es:auth/login","href":"/es/autorizacion/iniciar-sesion-a2.htm"}`
+      )
+
+      expect(es).toContain(`{"key":"es:home","href":"/es/index","as":"/es"}`)
+      expect(es).toContain(
+        `{"key":"es:auth/signup","href":"/es/auth/signup.htm"}`
+      )
+      expect(es).toContain(
+        `{"key":"es:account/profile","href":"/es/cuenta/perfil-b1.htm"}`
+      )
+      expect(es).toContain(
+        `{"key":"es:account/settings","href":"/es/cuenta/ajustes-b2.htm"}`
+      )
+
+      expect(es).toContain(`{"key":"es:dynamic","href":"/es/[...slug]"}`)
+
+      // ES META
+
+      expect(es).toContain(
+        `{"key":"en:auth/login","data":{"title":"Login","background":"green"}`
+      )
+      expect(es).toContain(
+        `{"key":"cs:auth/login","data":{"title":"Přihlášení","background":"green"}`
+      )
+      expect(es).toContain(
+        `{"key":"es:auth/login","data":{"title":"Iniciar Sesión","background":"green"}`
+      )
     })
   })
 
@@ -287,210 +677,67 @@ describe('next-roots:cli-builder', () => {
       expect(content.locales).toStrictEqual(['en', 'cs', 'es'])
     })
 
-    test('exports.meta', async () => {
-      const expectedMeta = [
-        {
-          key: '*',
-          data: { title: 'Awesome Next Roots', background: 'grey' },
-        },
-        // SIGNUP
-        {
-          key: 'auth/signup',
-          data: { background: 'red' },
-        },
-        // LOGIN
-        {
-          key: 'auth/login',
-          data: { background: 'green' },
-        },
-        // PROFILE
-        {
-          key: 'account/profile',
-          data: { background: 'orange' },
-        },
-        // SETTINGS
-        {
-          key: 'account/settings',
-          data: { background: 'blue' },
-        },
-        // DYNAMIC
-        {
-          key: 'dynamic',
-          data: { background: 'magenta' },
-        },
-      ]
-
-      const content = await require(schemaPath)
-      expect(content.meta).toStrictEqual(expectedMeta)
-    })
-  })
-
-  describe('roots.schema.en.js file is properly created', () => {
-    const schemaPath = 'example/roots.schema.en.js'
-
-    test('file exists', () => {
-      expect(fs.existsSync(schemaPath)).toBe(true)
-    })
-
-    test('exports.currentLocale', async () => {
-      const content = await require(schemaPath)
-      expect(content.currentLocale).toStrictEqual('en')
-    })
-
     test('exports.rules', async () => {
-      const expectedTable = [
+      const expectedRules = [
         { key: 'en:home', href: '/en/index', as: '/en' },
-        // SIGNUP
         {
           key: 'en:auth/signup',
           href: '/en/auth/signup-a1.page',
         },
-        // LOGIN
         {
           key: 'en:auth/login',
           href: '/en/auth/login-a2.htm',
         },
-        // PROFILE
         {
           key: 'en:account/profile',
           href: '/en/account/profile-b1.htm',
         },
-        // SETTINGS
         {
           key: 'en:account/settings',
           href: '/en/account/settings-b2.htm',
         },
-        // DYNAMIC
         {
           key: 'en:dynamic',
           href: '/en/[...slug]',
         },
-      ]
-
-      const content = await require(schemaPath)
-      expect(content.rules).toStrictEqual(expectedTable)
-    })
-
-    test('exports.meta', async () => {
-      const expectedMeta = [
-        // SIGNUP
-        {
-          key: 'en:auth/signup',
-          data: { title: 'Signup' },
-        },
-        // LOGIN
-        {
-          key: 'en:auth/login',
-          data: { title: 'Login' },
-        },
-      ]
-
-      const content = await require(schemaPath)
-      expect(content.meta).toStrictEqual(expectedMeta)
-    })
-  })
-
-  describe('roots.schema.cs.js file is properly created', () => {
-    const schemaPath = 'example/roots.schema.cs.js'
-
-    test('file exists', () => {
-      expect(fs.existsSync(schemaPath)).toBe(true)
-    })
-
-    test('exports.currentLocale', async () => {
-      const content = await require(schemaPath)
-      expect(content.currentLocale).toStrictEqual('cs')
-    })
-
-    test('exports.rules', async () => {
-      const expectedTable = [
         { key: 'cs:home', href: '/cs/index', as: '/cs' },
-        // SIGNUP
         {
           key: 'cs:auth/signup',
           href: '/cs/overeni/registrace-a1.page',
         },
-        // LOGIN
         {
           key: 'cs:auth/login',
           href: '/cs/overeni/prihlaseni-a2.htm',
         },
-        // PROFILE
         {
           key: 'cs:account/profile',
           href: '/cs/ucet/profil-b1.htm',
         },
-        // SETTINGS
         {
           key: 'cs:account/settings',
           href: '/cs/ucet/nastaveni-b2.htm',
         },
-        // DYNAMIC
         {
           key: 'cs:dynamic',
           href: '/cs/[...slug]',
         },
-      ]
-
-      const content = await require(schemaPath)
-      expect(content.rules).toStrictEqual(expectedTable)
-    })
-
-    test('exports.meta', async () => {
-      const expectedMeta = [
-        // SIGNUP
-        {
-          key: 'cs:auth/signup',
-          data: { title: 'Registrace' },
-        },
-        // LOGIN
-        {
-          key: 'cs:auth/login',
-          data: { title: 'Přihlášení' },
-        },
-      ]
-
-      const content = await require(schemaPath)
-      expect(content.meta).toStrictEqual(expectedMeta)
-    })
-  })
-
-  describe('roots.schema.es.js file is properly created', () => {
-    const schemaPath = 'example/roots.schema.es.js'
-
-    test('file exists', () => {
-      expect(fs.existsSync(schemaPath)).toBe(true)
-    })
-
-    test('exports.currentLocale', async () => {
-      const content = await require(schemaPath)
-      expect(content.currentLocale).toStrictEqual('es')
-    })
-
-    test('exports.rules', async () => {
-      const expectedTable = [
         { key: 'es:home', href: '/es/index', as: '/es' },
-        // SIGNUP
         {
           key: 'es:auth/signup',
           href: '/es/auth/signup.htm',
         },
-        // LOGIN
         {
           key: 'es:auth/login',
           href: '/es/autorizacion/iniciar-sesion-a2.htm',
         },
-        // PROFILE
         {
           key: 'es:account/profile',
           href: '/es/cuenta/perfil-b1.htm',
         },
-        // SETTINGS
         {
           key: 'es:account/settings',
           href: '/es/cuenta/ajustes-b2.htm',
         },
-        // DYNAMIC
         {
           key: 'es:dynamic',
           href: '/es/[...slug]',
@@ -498,19 +745,7 @@ describe('next-roots:cli-builder', () => {
       ]
 
       const content = await require(schemaPath)
-      expect(content.rules).toStrictEqual(expectedTable)
-    })
-
-    test('exports.meta', async () => {
-      const expectedMeta = [
-        {
-          key: 'es:auth/login',
-          data: { title: 'Iniciar Sesión' },
-        },
-      ]
-
-      const content = await require(schemaPath)
-      expect(content.meta).toStrictEqual(expectedMeta)
+      expect(content.rules).toStrictEqual(expectedRules)
     })
   })
 })

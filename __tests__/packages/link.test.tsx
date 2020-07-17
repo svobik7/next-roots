@@ -10,36 +10,25 @@ describe('next-roots/link', () => {
     <RootsContext.Provider
       value={{
         currentLocale: 'en',
-        currentRoot: undefined,
+        currentRoot: 'auth/login',
         currentRule: undefined,
+        currentMeta: undefined,
         defaultLocale: 'en',
         locales: ['en', 'cs', 'es'],
         meta: [],
         rules: [
-          { key: 'en:home', href: '/en/index', as: '/en' },
-          { key: 'cs:home', href: '/cs/index', as: '/cs' },
-          { key: 'es:home', href: '/es/index', as: '/es' },
           { key: 'en:auth/signup', href: '/en/auth/signup-a1.page' },
           { key: 'cs:auth/signup', href: '/cs/overeni/registrace-a1.page' },
           { key: 'es:auth/signup', href: '/es/auth/signup.htm' },
+
+          { key: 'en:home', href: '/en/index', as: '/en' },
           { key: 'en:auth/login', href: '/en/auth/login-a2.htm' },
-          { key: 'cs:auth/login', href: '/cs/overeni/prihlaseni-a2.htm' },
-          {
-            key: 'es:auth/login',
-            href: '/es/autorizacion/iniciar-sesion-a2.htm',
-          },
           { key: 'en:account/profile', href: '/en/account/profile-b1.htm' },
-          { key: 'cs:account/profile', href: '/cs/ucet/profil-b1.htm' },
-          { key: 'es:account/profile', href: '/es/cuenta/perfil-b1.htm' },
           {
             key: 'en:account/settings',
             href: '/en/account/settings-b2.htm',
           },
-          { key: 'cs:account/settings', href: '/cs/ucet/nastaveni-b2.htm' },
-          { key: 'es:account/settings', href: '/es/cuenta/ajustes-b2.htm' },
           { key: 'en:dynamic', href: '/en/[...slug]' },
-          { key: 'cs:dynamic', href: '/cs/[...slug]' },
-          { key: 'es:dynamic', href: '/es/[...slug]' },
         ],
       }}
     >
@@ -93,6 +82,17 @@ describe('next-roots/link', () => {
       )
       expect(result.current.as('cs:auth/signup', { locale: 'en' })).toEqual(
         '/en/auth/signup-a1.page'
+      )
+    })
+
+    test('use with non-existing rule in current context', () => {
+      const { result } = renderHook(() => useRootLink(), { wrapper })
+
+      expect(result.current.href('auth/login', { locale: 'cs' })).toEqual(
+        '/cs/auth/login'
+      )
+      expect(result.current.as('auth/login', { locale: 'cs' })).toEqual(
+        '/cs/auth/login'
       )
     })
   })

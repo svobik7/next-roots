@@ -244,7 +244,7 @@ export function rewrite(
 
   return {
     key: input,
-    href: `/${locale}/${input}`,
+    href: `/${locale}/${root}`,
     ...rule,
   }
 }
@@ -300,44 +300,4 @@ export function rewriteHref(
 
   // use `rule.href` with `input` query
   return [rule.href, inputParts[1]].join('?')
-}
-
-/**
- * Finds and retrieves `meta.data` for given key
- * @param key
- * @query query
- * @param options
- */
-export function rewriteMetaData(
-  key: string,
-  query: string,
-  options: RewriteMetaDataOptions
-): ReactText | Record<string, ReactText> | undefined {
-  const { __meta = [], strict = false } = options
-
-  let data: SchemaMeta['data'] = {}
-
-  if (strict === false) {
-    // merge general non-strict data
-    const generalMeta = __meta.find((m) => m.key === '*')
-    generalMeta && (data = { ...data, ...generalMeta.data })
-
-    const decoded = decodeSchemaRuleKey(key)
-
-    // merge rewrite non-strict data
-    const rewriteMeta = __meta.find((m) => m.key === decoded[0])
-    rewriteMeta && (data = { ...data, ...rewriteMeta.data })
-  }
-
-  // merge with page strict data
-  const pageMeta = __meta.find((m) => m.key === key)
-  pageMeta && (data = { ...data, ...pageMeta.data })
-
-  // retrieve all params when `*`
-  if (query === '*') {
-    return data
-  }
-
-  // retrieve specific param otherwise
-  return data[query] ? String(data[query]) : undefined
 }

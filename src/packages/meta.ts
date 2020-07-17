@@ -1,5 +1,4 @@
 import { ReactText, useContext } from 'react'
-import { rewriteMetaData } from '../utils'
 import RootsContext from './context'
 
 function useRootMeta() {
@@ -10,10 +9,18 @@ function useRootMeta() {
     data: (
       query: string = '*',
       key: string = ''
-    ): ReactText | Record<string, ReactText> | undefined =>
-      rewriteMetaData(key || context.currentRule?.key || '*', query, {
-        __meta: context.meta,
-      }),
+    ): ReactText | Record<string, ReactText> | undefined => {
+      const meta =
+        key && key !== context.currentRule?.key
+          ? context.meta.find((m) => m.key === key)
+          : context.currentMeta
+
+      if (query === '*') {
+        return meta?.data
+      }
+
+      return meta?.data[query]
+    },
   }
 }
 

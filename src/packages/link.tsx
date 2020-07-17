@@ -1,7 +1,7 @@
 import NextLink, { LinkProps as NextLinkProps } from 'next/link'
 import React, { useContext } from 'react'
 import { RewriteAsOptions, RewriteHrefOptions } from '../types'
-import { rewriteAs, rewriteHref, decodeSchemaRuleKey } from '../utils'
+import { rewriteAs, rewriteHref } from '../utils'
 import RootsContext from './context'
 
 export type RootLinkProps = React.PropsWithChildren<

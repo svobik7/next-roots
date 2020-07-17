@@ -1,7 +1,7 @@
 import { ReactText } from 'react'
 
 export type Config = {
-  schemas: Builder[]
+  schemas: BuilderSchema[]
   locales: string[]
   defaultLocale: string
   defaultSuffix: string
@@ -14,19 +14,24 @@ export type Config = {
 /**
  * BUILDER
  */
-export type Builder = {
+export type BuilderSchema = {
   root: string
-  pages: BuilderPage[]
-  params: Record<string, string>
-  metaData?: SchemaMeta['data']
+  pages: BuilderSchemaPage[]
+  metaData?: BuilderSchemaMeta[]
+  params?: Record<string, string>
+  isPrototype?: boolean
 }
 
-export type BuilderPage = {
+export type BuilderSchemaPage = {
   locale: string
   path: string
   alias: string
   suffix: string
-  metaData?: SchemaMeta['data']
+}
+
+export type BuilderSchemaMeta = {
+  locale: string
+  data?: Record<string, ReactText>
 }
 
 /**

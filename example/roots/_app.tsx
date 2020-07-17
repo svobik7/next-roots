@@ -7,8 +7,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   const roots = detectRoots(Component, {
     defaultLocale: schemaRoots.defaultLocale,
     locales: schemaRoots.locales,
-    rules: schemaRoots.rules,
-    meta: schemaRoots.meta,
+    // rules: schemaRoots.rules,
+    // meta: schemaRoots.meta,
   })
 
   return (

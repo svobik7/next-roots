@@ -1,13 +1,18 @@
 import pageTemplate from '../templates/page.tpl'
 import {
-  Builder,
-  BuilderPage,
+  BuilderSchema,
+  BuilderSchemaMeta,
+  BuilderSchemaPage,
   Config,
   Schema,
   SchemaMeta,
   SchemaRule,
 } from '../types'
-import { createSchemaRulePath, encodeSchemaRuleKey } from '../utils'
+import {
+  createSchemaRulePath,
+  decodeSchemaRuleKey,
+  encodeSchemaRuleKey,
+} from '../utils'
 
 const fs = require('fs')
 const path = require('path')
@@ -133,35 +138,6 @@ function isDirectory(path: string): boolean {
 }
 
 /**
- * Creates schema file content
- * @param rules
- * @param meta
- */
-function createSchema(
-  locale: string,
-  rules: SchemaRule[],
-  meta: SchemaMeta[]
-): Partial<Schema> {
-  // create builder config
-  const cfg: Config = { ...cfgDefault, ...cfgRuntime }
-
-  if (locale === '*') {
-    return {
-      defaultLocale: cfg.defaultLocale,
-      locales: cfg.locales,
-      rules,
-      meta,
-    }
-  }
-
-  return {
-    currentLocale: locale,
-    rules,
-    meta,
-  }
-}
-
-/**
  * Create route rule for given page
  *
  * Input:
@@ -173,18 +149,22 @@ function createSchema(
  *
  * @param params
  */
-function createRouteRule(
-  page: BuilderPage,
+function createSchemaRewrite(
+  page: BuilderSchemaPage,
   params = {}
 ): [string, string | undefined] {
   const pageHref = createSchemaRulePath(page.path, page.locale, page.suffix)
   const pageAs =
     page.alias && createSchemaRulePath(page.alias, page.locale, page.suffix)
 
-  const replaceParams = (input: string, params: Builder['params']): string => {
-    Object.keys(params).forEach((key) => {
-      input = input.replace(`:${key}`, String(params[key]))
-    })
+  const replaceParams = (
+    input: string,
+    params: BuilderSchema['params']
+  ): string => {
+    params &&
+      Object.keys(params).forEach((key) => {
+        input = input.replace(`:${key}`, String(params[key]))
+      })
 
     return input
   }
@@ -227,19 +207,10 @@ function createPageName(rootName: string) {
 function createPageContent(
   rootPath: string,
   rootAlias: string,
-  pageRule: SchemaRule,
-  pageMutations: SchemaRule[] = []
+  schemaRules: Map<string, SchemaRule[]>,
+  schemaMeta: Map<string, SchemaMeta[]>,
+  pageRule: SchemaRule
 ) {
-  const parsedRuleKey = pageRule.key.split(':')
-
-  // create camel cased page name from root name
-  const locale = parsedRuleKey.length > 1 ? parsedRuleKey[0] : ''
-
-  // create names
-  const rootName =
-    parsedRuleKey.length > 1 ? parsedRuleKey[1] : parsedRuleKey[0]
-  const pageName = createPageName(rootName)
-
   // create special method indicators
   const rootContent = readFile(rootPath)
   const hasGetInitialProps = hasSpecialMethod(rootContent, 'getInitialProps')
@@ -250,13 +221,33 @@ function createPageContent(
   const hasGetStaticPaths = hasSpecialMethod(rootContent, 'getStaticPaths')
   const hasGetStaticProps = hasSpecialMethod(rootContent, 'getStaticProps')
 
+  // parse page rule
+  const [pageRoot, pageLocale = ''] = decodeSchemaRuleKey(pageRule.key)
+
+  // create page name
+  const pageName = createPageName(pageRoot)
+
+  // create page relative rules
+  const rules = [
+    ...(schemaRules.get(`__${pageLocale}`) || []),
+    ...(schemaRules.get(pageRoot) || []),
+  ]
+
+  // create page relative meta
+  const meta = [...(schemaMeta.get(pageRoot) || [])]
+
+  // create current page meta
+  const pageMeta = meta.find((m) => m.key === pageRule.key)
+
   return pageTemplate({
-    locale,
-    rootName,
+    locale: pageLocale,
+    rules,
+    meta,
+    rootName: pageRoot,
     rootAlias,
     pageName,
     pageRule,
-    pageMutations,
+    pageMeta,
     hasGetInitialProps,
     hasGetServerSideProps,
     hasGetStaticPaths,
@@ -279,8 +270,51 @@ function hasSpecialMethod(content: string, name: string): boolean {
   )
 }
 
+/**
+ * Merges locale specific metaData with prototyped metaData
+ *
+ * Input:
+ * - metaData: [
+ *  { locale: '*', data: { background: 'red' } }
+ *  { locale: 'en', data: { title: 'Next Roots' } }
+ * ]
+ *
+ * Expected output:
+ * - { title: 'Next Roots', background: 'red' }
+ *
+ * @param meta
+ * @param locale
+ */
+function reduceMetaData(meta: BuilderSchemaMeta[], locale: string) {
+  const metaProto = meta.find((m) => m.locale === '*')
+  const metaSchema = meta.find((m) => m.locale === locale)
+
+  return { ...metaProto?.data, ...metaSchema?.data }
+}
+
+/**
+ * Splits given builder schemas into array with two indexes
+ * - [0] contains array of real schemas
+ * - [1] contains array of prototype schemas
+ *
+ * @param schemas
+ */
+function parseSchemas(
+  schemas: BuilderSchema[]
+): [BuilderSchema[], BuilderSchema[]] {
+  return schemas.reduce(
+    (result: [BuilderSchema[], BuilderSchema[]], current: BuilderSchema) => {
+      current.isPrototype || current.root === '*'
+        ? result[1].push(current)
+        : result[0].push(current)
+      return result
+    },
+    [[], []]
+  )
+}
+
 function run() {
-  console.log('\x1b[33mrewrite', '\x1b[37m- generating next-roots ...')
+  console.log('\x1b[33mnext-roots', '\x1b[37m- generating pages ...')
 
   // create builder config
   const cfg: Config = { ...cfgDefault, ...cfgRuntime }
@@ -291,94 +325,102 @@ function run() {
   const schemaRules = new Map<string, SchemaRule[]>()
   const schemaMeta = new Map<string, SchemaMeta[]>()
 
+  const [realSchemas, protoSchemas] = parseSchemas(cfg.schemas)
+
   // create pages for each rewrite
-  cfg.schemas.forEach((cfgSchema) => {
-    const isGeneralRoot = cfgSchema.root === '*'
+  realSchemas.forEach((schema) => {
+    // // push global meta data to global meta table
+    // if (cfgSchema.metaData && Object.keys(cfgSchema.metaData).length) {
+    //   schemaMeta.set('*', [
+    //     ...(schemaMeta.get('*') || []),
+    //     {
+    //       key: cfgSchema.root,
+    //       data: cfgSchema.metaData,
+    //     },
+    //   ])
+    // }
 
-    // push global meta data to global meta table
-    if (cfgSchema.metaData && Object.keys(cfgSchema.metaData).length) {
-      schemaMeta.set('*', [
-        ...(schemaMeta.get('*') || []),
-        {
-          key: cfgSchema.root,
-          data: cfgSchema.metaData,
-        },
-      ])
-    }
-
-    // create schemaRules for each root's rewrite
-    !isGeneralRoot &&
-      cfgSchema.pages &&
+    // create schemaRules for each root's schema
+    schema.pages &&
       cfg.locales.forEach((l) => {
+        const pageProto = schema.pages.find((p) => p.locale === '*')
+
         // find rewrite param based on locale
-        let page = cfgSchema.pages.find(
-          (p) => p.locale === l || p.locale === '*'
-        )
+        const pageSchema = schema.pages.find((p) => p.locale === l)
 
         // warn about missing rewrite rule
-        if (!page) {
+        if (!pageSchema && !pageProto) {
           console.log(
             '\x1b[31mwarn',
-            '\x1b[37m- rewrite rule for',
-            `\x1b[31m${l}:${cfgSchema.root}`,
+            '\x1b[37m- page schema for',
+            `\x1b[31m${l}:${schema.root}`,
             '\x1b[37mis missing!'
           )
         }
 
         // make sure all page rewrite params are set
-        const pageSchema: BuilderPage = {
+        const page: BuilderSchemaPage = {
           locale: l,
-          path: page?.path || cfgSchema.root,
-          alias: page?.alias || '',
-          suffix: page?.suffix ?? cfg.defaultSuffix,
+          path: pageSchema?.path || pageProto?.path || schema.root,
+          alias: pageSchema?.alias || pageProto?.alias || '',
+          suffix: pageSchema?.suffix ?? pageProto?.suffix ?? cfg.defaultSuffix,
         }
 
-        const ruleKey = encodeSchemaRuleKey(cfgSchema.root, l)
-
         // create page rewrite
-        const [href, as] = createRouteRule(pageSchema, cfgSchema.params)
+        const [href, as] = createSchemaRewrite(page, schema.params)
 
         // create page rule
         const pageRule = {
-          key: ruleKey,
+          key: encodeSchemaRuleKey(schema.root, l),
           href,
           as,
         }
 
-        // push new rule to schema rules
-        schemaRules.set(cfgSchema.root, [
-          ...(schemaRules.get(cfgSchema.root) || []),
+        schemaRules.set(schema.root, [
+          ...(schemaRules.get(schema.root) || []),
           pageRule,
         ])
 
-        // push new rule to schema rules
         schemaRules.set(`__${l}`, [
           ...(schemaRules.get(`__${l}`) || []),
           pageRule,
         ])
-
-        // push page meta data to meta table
-        if (page?.metaData && Object.keys(page.metaData).length) {
-          const pageMeta = {
-            key: ruleKey,
-            data: page?.metaData,
-          }
-
-          schemaMeta.set(cfgSchema.root, [
-            ...(schemaMeta.get(cfgSchema.root) || []),
-            pageMeta,
-          ])
-
-          schemaMeta.set(`__${l}`, [
-            ...(schemaMeta.get(`__${l}`) || []),
-            pageMeta,
-          ])
-        }
       })
+
+    // create schemaMeta for each root's schema
+    cfg.locales.forEach((l) => {
+      const metaDataProto = protoSchemas.reduce((acc, curr) => {
+        if (curr.metaData && curr.root === '*') {
+          acc = {
+            ...acc,
+            ...reduceMetaData(curr.metaData, l),
+          }
+        }
+
+        return acc
+      }, {})
+
+      const metaData = schema.metaData && reduceMetaData(schema.metaData, l)
+
+      if (metaData || metaDataProto) {
+        const pageMeta = {
+          key: encodeSchemaRuleKey(schema.root, l),
+          data: { ...metaDataProto, ...metaData },
+        }
+
+        schemaMeta.set(schema.root, [
+          ...(schemaMeta.get(schema.root) || []),
+          pageMeta,
+        ])
+      }
+    })
   })
 
   // create page files for schema rules
   cfg.schemas.forEach((s) => {
+    // skip prototype rules
+    if (s.isPrototype || s.root === '*') return
+
     const pageRules = schemaRules.get(s.root)
 
     pageRules?.forEach((pageRule) => {
@@ -403,42 +445,37 @@ function run() {
         })
       )
 
-      const pageMutations = pageRules.filter((r) => r.key !== pageRule.key)
-
       // create page template for each root
       const pageContent = createPageContent(
         rootPath,
         rootAlias,
-        pageRule,
-        pageMutations
+        schemaRules,
+        schemaMeta,
+        pageRule
       )
 
       saveFile(pagePath, pageContent)
     })
   })
 
-  // create context file with rules and meta data
-  // for each locale - keep it as small as possible
-  cfg.locales.forEach((l) => {
-    const dataRules = schemaRules.get(`__${l}`) || []
-    const dataMeta = schemaMeta.get(`__${l}`) || []
-
-    const schemaPath = `${mainDir}/roots.schema.${l}.js`
-    const schema = createSchema(l, dataRules, dataMeta)
-
-    // save schema file
-    saveFile(schemaPath, `module.exports = ${JSON.stringify(schema)}`)
-  })
-
   // create GLOBAL context file with rules and meta data
-  const dataRules = schemaRules.get('*') || []
-  const dataMeta = schemaMeta.get('*') || []
+  const allRules = cfg.locales.reduce((acc: SchemaRule[], curr: string) => {
+    acc = [...acc, ...(schemaRules.get(`__${curr}`) || [])]
+    return acc
+  }, [] as SchemaRule[])
 
-  const schemaPath = `${mainDir}/roots.schema.js`
-  const schema = createSchema('*', dataRules, dataMeta)
+  const schemaFilePath = `${mainDir}/roots.schema.js`
+  const schemaFileContent = {
+    locales: cfg.locales,
+    defaultLocale: cfg.defaultLocale,
+    rules: allRules,
+  }
 
   // save schema file
-  saveFile(schemaPath, `module.exports = ${JSON.stringify(schema)}`)
+  saveFile(
+    schemaFilePath,
+    `module.exports = ${JSON.stringify(schemaFileContent)}`
+  )
 
   // keep next.js specific files / dirs as they are
   // and just copy them to pages directory
