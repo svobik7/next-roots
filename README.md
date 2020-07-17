@@ -490,15 +490,27 @@ Example usage with lightweight schema can be found in example folder
 
 Breaking change is that `parsePathname` is no longer used to detect current roots context values.
 
+Breaking changes:
+
+- utils.rewriteMetaData - is no longer available
+- only current page metaData and current page mutations metaData are available
+- only current locale rules are available
+- roots.schema.js is no longer need to use in your app - it exists only for parsing not-found routes/rules
+- initial context setup has to be specified manually not from including root.schema.file
+- context.currentMeta is now available
+- roots.config.js - page level metaData are now ignored, all meta data are specified in same way as pages
+- roots.config.js - meta data are now merged during build time
+- roots.config.js - prototype schemas are now available
+
 Another change is that schemas are now separated according to locale which makes initial load even smaller. Also current context values are pushed directly to page component so router pathname is not parsed every time new page is rendered.
 
 Migrating to 2.x requires following update in your `_app`:
 
 ```tsx
 // import RootsContext, { parsePathname } from 'next-roots/context'
+// import schemaRoots from 'roots.schema'
 import RootsContext, { detectRoots } from 'next-roots/context'
 import { AppProps } from 'next/app'
-import schemaRoots from 'roots.schema'
 
 function MyApp({ Component, pageProps }: AppProps) {
   // NOTE: parsePathname is no longer used
@@ -507,15 +519,19 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   // detect roots context from page component
   const roots = detectRoots(Component, {
-    defaultLocale: schemaRoots.defaultLocale,
-    locales: schemaRoots.locales,
-    rules: schemaRoots.rules,
-    meta: schemaRoots.meta,
+    // NOTE: rules & meta is no longer need to specify here - it is injected from page Component
+    // defaultLocale: schemaRoots.defaultLocale,
+    // locales: schemaRoots.locales,
+    // rules: schemaRoots.rules,
+    // meta: schemaRoots.meta,
+    defaultLocale: 'en',
+    locales: ['en', 'cs', 'es'],
   })
 
   return (
     <RootsContext.Provider
       value={roots}
+      // NOTE: there is no need to include and pass schema file values here
       // value={{
       //   currentRule: rule,
       //   currentRoot: root,
