@@ -17,18 +17,18 @@ A complete example can be seen in the `example` directory.
 
 1. Add the package to your project dependencies
 
- `yarn add next-roots`
+`yarn add next-roots`
 
 2. Add pages builder script to your `package.json`
 
- ```json
- {
+```json
+{
   "scripts": {
-  "dev": "yarn next-roots && next dev",
-  "build": "yarn next-roots && next build"
+    "dev": "yarn next-roots && next dev",
+    "build": "yarn next-roots && next build"
   }
- }
- ```
+}
+```
 
 3. Create [roots.config.js](#config-options) in your project root
 4. Add [RootsContext](#rootscontext) to your `_app`
@@ -44,42 +44,42 @@ Basic configuration can look like:
 
 ```js
 module.exports = {
- locales: ['en', 'cs'],
- defaultLocale: 'cs',
- defaultSuffix: '.htm',
- schemas: [
- {
- root: '*',
- metaData: [
- {
- locale: '*',
- data: { title: 'Next Roots', background: 'grey' },
- },
- ],
- },
- {
- root: 'home',
- pages: [{ locale: '*', path: 'index', alias: '/', suffix: '' }],
- },
- {
- root: 'auth/signup',
- pages: [
- { locale: 'en', path: 'auth/signup-:token' },
- { locale: 'cs', path: 'overeni/registrace-:token' },
- ],
- params: { token: 'p1' },
- metaData: [
- { locale: 'en', data: { title: 'Signup' } },
- { locale: 'cs', data: { title: 'Registrace' } },
- ],
- },
- {
- root: 'dynamic',
- pages: [{ locale: '*', path: '[...slug]', suffix: '' }],
- params: { token: 'p1' },
- metaData: [{ locale: '*', data: { background: 'magenta' } }],
- },
- ],
+  locales: ['en', 'cs'],
+  defaultLocale: 'cs',
+  defaultSuffix: '.htm',
+  schemas: [
+    {
+      root: '*',
+      metaData: [
+        {
+          locale: '*',
+          data: { title: 'Next Roots', background: 'grey' },
+        },
+      ],
+    },
+    {
+      root: 'home',
+      pages: [{ locale: '*', path: 'index', alias: '/', suffix: '' }],
+    },
+    {
+      root: 'auth/signup',
+      pages: [
+        { locale: 'en', path: 'auth/signup-:token' },
+        { locale: 'cs', path: 'overeni/registrace-:token' },
+      ],
+      params: { token: 'p1' },
+      metaData: [
+        { locale: 'en', data: { title: 'Signup' } },
+        { locale: 'cs', data: { title: 'Registrace' } },
+      ],
+    },
+    {
+      root: 'dynamic',
+      pages: [{ locale: '*', path: '[...slug]', suffix: '' }],
+      params: { token: 'p1' },
+      metaData: [{ locale: '*', data: { background: 'magenta' } }],
+    },
+  ],
 }
 ```
 
@@ -121,28 +121,28 @@ Static schema file `roots.schema.js` will also be generated and placed to the pr
 
 ```js
 module.exports = {
- locales: ['en', 'cs'],
- defaultLocale: 'cs',
- rules: [
- {
- key: 'en:home',
- href: '/en',
- },
- {
- key: 'cs:home',
- href: '/cs',
- },
- {
- key: 'en:auth/signup',
- href: '/en/auth-signup-p1.htm',
- },
- {
- key: 'cs:auth/signup',
- href: '/cs/ucet-registrace-p1.htm',
- },
- { key: 'en:dynamic', href: '/en/[...slug]' },
- { key: 'cs:dynamic', href: '/cs/[...slug]' },
- ],
+  locales: ['en', 'cs'],
+  defaultLocale: 'cs',
+  rules: [
+    {
+      key: 'en:home',
+      href: '/en',
+    },
+    {
+      key: 'cs:home',
+      href: '/cs',
+    },
+    {
+      key: 'en:auth/signup',
+      href: '/en/auth-signup-p1.htm',
+    },
+    {
+      key: 'cs:auth/signup',
+      href: '/cs/ucet-registrace-p1.htm',
+    },
+    { key: 'en:dynamic', href: '/en/[...slug]' },
+    { key: 'cs:dynamic', href: '/cs/[...slug]' },
+  ],
 }
 ```
 
@@ -150,16 +150,16 @@ module.exports = {
 
 ## 3. Configuration
 
-| Name | Default | Description |
+| Name          | Default                                         | Description                                                     |
 | ------------- | ----------------------------------------------- | --------------------------------------------------------------- |
-| schemas | [] | builder rules for generating pages |
-| locales | [] | all allowed locales which will be generated |
-| defaultLocale | '' | locale which will be used as default when no locale is detected |
-| defaultSuffix | '' | default page suffix which will be added to page name |
-| dirRoot | `roots` | source folder with all roots files |
-| dirPages | `pages` | target folder where pages will be generated into |
-| staticRoots | `['api', '_app', '_document', '_error', '404']` | static roots which will be generated outside locales folders |
-| extRoots | `['.tsx']` | suffix of all roots files |
+| schemas       | []                                              | builder rules for generating pages                              |
+| locales       | []                                              | all allowed locales which will be generated                     |
+| defaultLocale | ''                                              | locale which will be used as default when no locale is detected |
+| defaultSuffix | ''                                              | default page suffix which will be added to page name            |
+| dirRoot       | `roots`                                         | source folder with all roots files                              |
+| dirPages      | `pages`                                         | target folder where pages will be generated into                |
+| staticRoots   | `['api', '_app', '_document', '_error', '404']` | static roots which will be generated outside locales folders    |
+| extRoots      | `['.tsx']`                                      | suffix of all roots files                                       |
 
 ## 4. Schemas
 
@@ -220,25 +220,37 @@ This data can be used to change layout, CSS, background images, ... based on you
 
 ### Schema prototype rule
 
-Prototype rule is used only for setting general/default metadata values which will be then merged with page-specific metadata values
+Prototype rule is used for setting general/default metadata values which will be then merged with page-specific metadata values
 
 ```js
 {
- root: '*',
- metaData: [
- { locale: '*', data: { title: 'Next Roots', background: 'grey' } }
- ],
+ 	root: 'account/*',
+	metaData: [
+ 		{ locale: '*', data: { background: 'red' } }
+ 		{ locale: 'en', data: { section: 'Account' } }
+	],
+	isPrototype: true
 },
 {
- root: 'home',
- metaData: [
- { locale: 'en', data: { title: 'Home Page' } }
- ],
- // ...
+	root: 'account/profile',
+	metaData: [
+		{ locale: 'en', data: { title: 'Profile' } }
+	],
+	// ...
 },
 ```
 
-Final meta data for `home` root will be then `{ title: 'Home Page', background: 'grey' }`
+Final metadata for `account/profile` root will be then
+
+```js
+{
+	background: 'red',
+	section: 'Account',
+	title: 'Profile'
+}
+```
+
+Root property works here like RegExp. The prototype schema will be merged into any root passing the condition `realSchema.root.match(new Regexp(prototypeSchema.root))`
 
 ## 5. Hooks
 
@@ -366,19 +378,19 @@ import RootsContext, { detectRoots } from 'next-roots/context'
 import { AppProps } from 'next/app'
 
 function MyApp({ Component, pageProps }: AppProps) {
- // detect roots context from page component
- // - current values will be obtained from Component.getRootsContext
- // - second argument holds default values
- const roots = detectRoots(Component, {
- defaultLocale: 'en',
- locales: ['en', 'cs', 'es'],
- })
+  // detect roots context from page component
+  // - current values will be obtained from Component.getRootsContext
+  // - second argument holds default values
+  const roots = detectRoots(Component, {
+    defaultLocale: 'en',
+    locales: ['en', 'cs', 'es'],
+  })
 
- return (
- <RootsContext.Provider value={roots}>
- <Component {...pageProps} />
- </RootsContext.Provider>
- )
+  return (
+    <RootsContext.Provider value={roots}>
+      <Component {...pageProps} />
+    </RootsContext.Provider>
+  )
 }
 
 export default MyApp
@@ -442,12 +454,12 @@ import RootsConsole from 'next-roots/console'
 
 //
 function MyLayout() {
- return (
- <div>
- // ... custom logic
- <RootsConsole />
- </div>
- )
+  return (
+    <div>
+      // ... custom logic
+      <RootsConsole />
+    </div>
+  )
 }
 ```
 
@@ -483,10 +495,10 @@ import DynamicRoot, * as __root from 'roots/dynamic'
 
 // @ts-ignore
 export const getStaticProps: GetStaticProps = async (context) =>
- __root.getStaticProps({ ...context, __locale: 'cs' })
+  __root.getStaticProps({ ...context, __locale: 'cs' })
 
 export const getStaticPaths: GetStaticPaths = async () =>
- __root.getStaticPaths()
+  __root.getStaticPaths()
 
 export default DynamicPage
 ```
@@ -495,8 +507,8 @@ Then your are able to read page locale directly inside your root's special metho
 
 ```ts
 export const getStaticProps: GetStaticProps = async (context) => {
- const { __locale, ...ctxOthers } = context
- // ... custom logic
+  const { __locale, ...ctxOthers } = context
+  // ... custom logic
 }
 ```
 
@@ -529,24 +541,24 @@ import schemaRoots from 'roots.schema'
 import { AppProps } from 'next/app'
 
 function MyApp({ Component, pageProps }: AppProps) {
- // parse current roots values from router pathname
- const { locale, root, rule } = parsePathname(router.pathname, schema)
+  // parse current roots values from router pathname
+  const { locale, root, rule } = parsePathname(router.pathname, schema)
 
- return (
- <RootsContext.Provider
- value={{
- currentRule: rule,
- currentRoot: root,
- currentLocale: locale || schema.defaultLocale,
- defaultLocale: schema.defaultLocale,
- locales: schema.locales,
- rules: schema.rules,
- meta: schema.meta,
- }}
- >
- <Component {...pageProps} />
- </RootsContext.Provider>
- )
+  return (
+    <RootsContext.Provider
+      value={{
+        currentRule: rule,
+        currentRoot: root,
+        currentLocale: locale || schema.defaultLocale,
+        defaultLocale: schema.defaultLocale,
+        locales: schema.locales,
+        rules: schema.rules,
+        meta: schema.meta,
+      }}
+    >
+      <Component {...pageProps} />
+    </RootsContext.Provider>
+  )
 }
 
 export default MyApp
@@ -558,17 +570,17 @@ import RootsContext, { detectRoots } from 'next-roots/context'
 import { AppProps } from 'next/app'
 
 function MyApp({ Component, pageProps }: AppProps) {
- // detect roots context from page component
- const roots = detectRoots(Component, {
- defaultLocale: 'en',
- locales: ['en', 'cs', 'es'],
- })
+  // detect roots context from page component
+  const roots = detectRoots(Component, {
+    defaultLocale: 'en',
+    locales: ['en', 'cs', 'es'],
+  })
 
- return (
- <RootsContext.Provider value={roots}>
- <Component {...pageProps} />
- </RootsContext.Provider>
- )
+  return (
+    <RootsContext.Provider value={roots}>
+      <Component {...pageProps} />
+    </RootsContext.Provider>
+  )
 }
 
 export default MyApp
@@ -579,15 +591,15 @@ export default MyApp
 ```js
 // BEFORE 2.0.0
 {
- root: 'some-root-name',
- pages: [
- {
- locale: 'en',
- metaData: { background: 'blue' },
- // ... other page config
- }
- ],
- metaData: { title: 'Next Roots', background: 'grey' },
+  root: 'some-root-name',
+  pages: [
+    {
+      locale: 'en',
+      metaData: { background: 'blue' },
+      // ... other page config
+    }
+  ],
+  metaData: { title: 'Next Roots', background: 'grey' },
 },
 
 ```
@@ -595,17 +607,17 @@ export default MyApp
 ```js
 // AFTER 2.0.0
 {
- root: 'some-root-name',
- pages: [
- {
- locale: 'en',
- // ... other page config
- }
+  root: 'some-root-name',
+  pages: [
+    {
+      locale: 'en',
+      // ... other page config
+    }
  ],
- metaData: [
- { locale: '*', data: { title: 'Next Roots', background: 'grey' } }
- { locale: 'en', data: { background: 'blue' } }
- ],
+  metaData: [
+    { locale: '*', data: { title: 'Next Roots', background: 'grey' } }
+    { locale: 'en', data: { background: 'blue' } }
+  ],
 },
 
 ```
