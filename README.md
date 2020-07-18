@@ -1,34 +1,34 @@
 # next-roots
 
-Next.js utility to generate internationalized (i18n) pages according to custom roots rules and with **no need to use Vercel dev server, Rewrites neither Routes**. Package has Zero dependencies.
+Next.js utility to generate internationalized (i18n) pages according to custom roots rules and with **no need to use Vercel dev server, Rewrites neither Routes**. The package has zero dependencies.
 
 ## 1. About next-roots
 
 This package is highly inspired by [next-translate](https://github.com/vinissimus/next-translate#readme).
-It solves some additional features like `static routing schema`, `url tokenizing`, `page meta`, `injecting config directly to pages` ... and is completely **TypeScript friendly!**
+It solves some additional features like `static routing schema`, `URL tokenizing`, `page meta`, `injecting config directly to pages` ... and is completely **TypeScript friendly!**
 
-Similar as `next-translate` this package holds all pages implementation in separate directory. We call it `roots`. Required `pages` directory is then created during `build` time.
+Similar to `next-translate` this package holds all pages implementation in a separate directory. We call it `roots`. Required `pages` directory is then created during `build` time.
 
 ## 2. Getting started
 
-Complete example can be seen in `example` directory.
+A complete example can be seen in the `example` directory.
 
 ### Installation
 
-1. Add package to your project dependencies
+1. Add the package to your project dependencies
 
-   `yarn add next-roots`
+ `yarn add next-roots`
 
 2. Add pages builder script to your `package.json`
 
-   ```json
-   {
-     "scripts": {
-       "dev": "yarn next-roots && next dev",
-       "build": "yarn next-roots && next build"
-     }
-   }
-   ```
+ ```json
+ {
+  "scripts": {
+  "dev": "yarn next-roots && next dev",
+  "build": "yarn next-roots && next build"
+  }
+ }
+ ```
 
 3. Create [roots.config.js](#config-options) in your project root
 4. Add [RootsContext](#rootscontext) to your `_app`
@@ -36,7 +36,7 @@ Complete example can be seen in `example` directory.
 
 ### How to use it
 
-Default behavior is to have `roots.config.js` file placed in your project root folder (next to your package.json file).
+The default behavior is to have a `roots.config.js` file placed in your project root folder (next to your package.json file).
 
 This file defines roots schema for your pages and config params for pages builder.
 
@@ -44,105 +44,105 @@ Basic configuration can look like:
 
 ```js
 module.exports = {
-  locales: ['en', 'cs'],
-  defaultLocale: 'cs',
-  defaultSuffix: '.htm',
-  schemas: [
-    {
-      root: '*',
-      metaData: [
-        {
-          locale: '*',
-          data: { title: 'Next Roots', background: 'grey' },
-        },
-      ],
-    },
-    {
-      root: 'home',
-      pages: [{ locale: '*', path: 'index', alias: '/', suffix: '' }],
-    },
-    {
-      root: 'auth/signup',
-      pages: [
-        { locale: 'en', path: 'auth/signup-:token' },
-        { locale: 'cs', path: 'overeni/registrace-:token' },
-      ],
-      params: { token: 'p1' },
-      metaData: [
-        { locale: 'en', data: { title: 'Signup' } },
-        { locale: 'cs', data: { title: 'Registrace' } },
-      ],
-    },
-    {
-      root: 'dynamic',
-      pages: [{ locale: '*', path: '[...slug]', suffix: '' }],
-      params: { token: 'p1' },
-      metaData: [{ locale: '*', data: { background: 'magenta' } }],
-    },
-  ],
+ locales: ['en', 'cs'],
+ defaultLocale: 'cs',
+ defaultSuffix: '.htm',
+ schemas: [
+ {
+ root: '*',
+ metaData: [
+ {
+ locale: '*',
+ data: { title: 'Next Roots', background: 'grey' },
+ },
+ ],
+ },
+ {
+ root: 'home',
+ pages: [{ locale: '*', path: 'index', alias: '/', suffix: '' }],
+ },
+ {
+ root: 'auth/signup',
+ pages: [
+ { locale: 'en', path: 'auth/signup-:token' },
+ { locale: 'cs', path: 'overeni/registrace-:token' },
+ ],
+ params: { token: 'p1' },
+ metaData: [
+ { locale: 'en', data: { title: 'Signup' } },
+ { locale: 'cs', data: { title: 'Registrace' } },
+ ],
+ },
+ {
+ root: 'dynamic',
+ pages: [{ locale: '*', path: '[...slug]', suffix: '' }],
+ params: { token: 'p1' },
+ metaData: [{ locale: '*', data: { background: 'magenta' } }],
+ },
+ ],
 }
 ```
 
 > NOTE: all following examples are based on above config.
 
-Before you run build on above config - your project structure needs to look like this:
+Before you run a build process with the above config your project structure needs to look like this:
 
 ```bash
 .
 ├── roots
-│   ├── home.tsx
-│   ├── dynamic.tsx
-│   └── auth
-│       └── signup.tsx
+│ ├── home.tsx
+│ ├── dynamic.tsx
+│ └── auth
+│ └── signup.tsx
 ```
 
-After you run build on above config - your project structure will look like this:
+After you run a build process with the above config your project structure will look like this:
 
 ```bash
 .
 ├── roots
-│   ├── home.tsx
-│   └── auth
-│       └── signup.tsx
+│ ├── home.tsx
+│ └── auth
+│ └── signup.tsx
 ├── pages
-│   └── en
-│       └── index.tsx
-│       └── [...slug].tsx
-│       └── auth
-│         └── signup-p1.htm.tsx
-│   └── cs
-│       └── index.tsx
-│       └── [...slug].tsx
-│       └── auth
-│         └── registrace-p1.htm.tsx
+│ └── en
+│ └── index.tsx
+│ └── [...slug].tsx
+│ └── auth
+│ └── signup-p1.htm.tsx
+│ └── cs
+│ └── index.tsx
+│ └── [...slug].tsx
+│ └── auth
+│ └── registrace-p1.htm.tsx
 ```
 
-Static schema file `roots.schema.js` will be also generated and placed to project root folder. This file contains routing map for each page in your roots configuration, available locales and default locale.
+Static schema file `roots.schema.js` will also be generated and placed to the project root folder. This file contains a routing map for each page in your roots configuration, available locales, and default locale.
 
 ```js
 module.exports = {
-  locales: ['en', 'cs'],
-  defaultLocale: 'cs',
-  rules: [
-    {
-      key: 'en:home',
-      href: '/en',
-    },
-    {
-      key: 'cs:home',
-      href: '/cs',
-    },
-    {
-      key: 'en:auth/signup',
-      href: '/en/auth-signup-p1.htm',
-    },
-    {
-      key: 'cs:auth/signup',
-      href: '/cs/ucet-registrace-p1.htm',
-    },
-    { key: 'en:dynamic', href: '/en/[...slug]' },
-    { key: 'cs:dynamic', href: '/cs/[...slug]' },
-  ],
+ locales: ['en', 'cs'],
+ defaultLocale: 'cs',
+ rules: [
+ {
+ key: 'en:home',
+ href: '/en',
+ },
+ {
+ key: 'cs:home',
+ href: '/cs',
+ },
+ {
+ key: 'en:auth/signup',
+ href: '/en/auth-signup-p1.htm',
+ },
+ {
+ key: 'cs:auth/signup',
+ href: '/cs/ucet-registrace-p1.htm',
+ },
+ { key: 'en:dynamic', href: '/en/[...slug]' },
+ { key: 'cs:dynamic', href: '/cs/[...slug]' },
+ ],
 }
 ```
 
@@ -150,33 +150,33 @@ module.exports = {
 
 ## 3. Configuration
 
-| Name          | Default                                         | Description                                                     |
+| Name | Default | Description |
 | ------------- | ----------------------------------------------- | --------------------------------------------------------------- |
-| schemas       | []                                              | builder rules for generating pages                              |
-| locales       | []                                              | all allowed locales which will be generated                     |
-| defaultLocale | ''                                              | locale which will be used as default when no locale is detected |
-| defaultSuffix | ''                                              | default page suffix which will be added to page name            |
-| dirRoot       | `roots`                                         | source folder with all roots files                              |
-| dirPages      | `pages`                                         | target folder where pages will be generated into                |
-| staticRoots   | `['api', '_app', '_document', '_error', '404']` | static roots which will be generated outside locales folders    |
-| extRoots      | `['.tsx']`                                      | suffix of all roots files                                       |
+| schemas | [] | builder rules for generating pages |
+| locales | [] | all allowed locales which will be generated |
+| defaultLocale | '' | locale which will be used as default when no locale is detected |
+| defaultSuffix | '' | default page suffix which will be added to page name |
+| dirRoot | `roots` | source folder with all roots files |
+| dirPages | `pages` | target folder where pages will be generated into |
+| staticRoots | `['api', '_app', '_document', '_error', '404']` | static roots which will be generated outside locales folders |
+| extRoots | `['.tsx']` | suffix of all roots files |
 
 ## 4. Schemas
 
-Each schema rule represent one `root+page` combination. Here you defines routing map for your localized pages.
+Each schema rule represents one `root + page` combination. This is the main way how to define the routing map for your localized pages.
 
 ```js
 {
-  root: 'auth/signup',
-  pages: [
-    { locale: 'en', path: 'auth/signup-:token' },
-    { locale: 'cs', path: 'auth/registrace-:token' },
-  ],
-  params: { token: 'p1' },
-  metaData: [
-    { locale: 'en', data: { title: 'Signup' } },
-    { locale: 'cs', data: { title: 'Registrace' } },
-  ],
+ root: 'auth/signup',
+ pages: [
+ { locale: 'en', path: 'auth/signup-:token' },
+ { locale: 'cs', path: 'auth/registrace-:token' },
+ ],
+ params: { token: 'p1' },
+ metaData: [
+ { locale: 'en', data: { title: 'Signup' } },
+ { locale: 'cs', data: { title: 'Registrace' } },
+ ],
 }
 ```
 
@@ -191,50 +191,50 @@ Each schema rule must define pages array. Otherwise it must be defined as [proto
 
 ```js
 pages: [{
-  locale: '*',
-  path: 'index',
-  alias: '/',
-  suffix: ''
+ locale: '*',
+ path: 'index',
+ alias: '/',
+ suffix: ''
 }],
 ```
 
-- `locale` - folder name the page will be placed inside (use `*` to generate same schema for all locales)
+- `locale` - the name of the folder where the page will be generated (use `*` to generate the same schema for all locales)
 - `path` - page file name which will also be used for routing as link `href`
 - `alias` - page alias which will be used for routing as link `as`
 - `suffix` - custom suffix which will be appended to `path` param
 
 ### Meta data
 
-Each schema rule can define custom meta data array. Each array item has to define two properties:
+Each schema rule can define custom metadata array. Each array item has to define two properties:
 
 - `locale` - must be one of `locales` value or `*` to be used for each available locale
 - `data` - custom values type of `Record<string, ReactText>`
 
 ```ts
 metaData: [
-  { locale: 'en', data: { background: 'magenta' } }
+ { locale: 'en', data: { background: 'magenta' } }
 ],
 ```
 
-This data can be used to change layout, css, background images and more based on your requirements.
+This data can be used to change layout, CSS, background images, ... based on your requirements.
 
 ### Schema prototype rule
 
-Prototype rule is used only for setting general/default meta data values which will be then merged with page specific meta data values
+Prototype rule is used only for setting general/default metadata values which will be then merged with page-specific metadata values
 
 ```js
 {
-  root: '*',
-  metaData: [
-    { locale: '*', data: { title: 'Next Roots', background: 'grey' } }
-  ],
+ root: '*',
+ metaData: [
+ { locale: '*', data: { title: 'Next Roots', background: 'grey' } }
+ ],
 },
 {
-  root: 'home',
-  metaData: [
-    { locale: 'en', data: { title: 'Home Page' } }
-  ],
-  // ...
+ root: 'home',
+ metaData: [
+ { locale: 'en', data: { title: 'Home Page' } }
+ ],
+ // ...
 },
 ```
 
@@ -242,11 +242,11 @@ Final meta data for `home` root will be then `{ title: 'Home Page', background: 
 
 ## 5. Hooks
 
-Next-roots package provides handy hooks to read and manipulate its context values.
+The Next-roots package provides handy hooks to read and manipulate its context values.
 
 ### useRoots
 
-Provides main roots values according to current router path.
+Provides main roots values according to the current router path.
 
 - `locales: string[]` - all active locales
 - `defaultLocale: string` - default locale value
@@ -273,7 +273,7 @@ roots.currentMeta // { key: 'en:auth/signup', data: { title: 'Signup', backgroun
 
 ### useRootLink
 
-Provides api to create localized links based on context rules.
+Provides API to create localized links based on context rules.
 
 Example usage:
 
@@ -307,7 +307,7 @@ link.href('/', { locale: 'en' })
 // result: '/en'
 ```
 
-> NOTE: There is predefined home page shortcut `/` in roots package. So you do not need to use `home` if you don't want to.
+> NOTE: There is a predefined home page shortcut `/` in roots package. So you do not need to use `home` if you don't want to.
 
 The same options work for link alias. Plus dynamic params can be explicitly pushed:
 
@@ -321,11 +321,11 @@ link.as('dynamic', { locale: 'en', params: { slug: 'some-slug' } })
 // result: '/en/some-slug'
 ```
 
-> NOTE: It is not required to have all possible rules injected in every page so that if your current page is `cs:auth/signup` you have access to all `cs` rules and to all `auth/signup` rules with different locale.
+> NOTE: It is not practical to have all possible rules injected into every page because it makes page bundle size bigger in large applications. Therefore if your current page is `cs:auth/signup` you have access only to `cs` rules and to `auth/signup` rules with a different locale.
 
 ### useRootMeta
 
-Provides api to read static meta data attached current page or its mutations.
+Provides API to read static metadata attached current page or its mutations.
 
 Example usage:
 
@@ -346,17 +346,17 @@ meta.data('*', 'cs:auth/signup')
 // result: { title: 'Next Roots', background: 'grey' }
 ```
 
-> NOTE: It is not required to have all possible meta data injected in every page so that if your current page is `cs:auth/signup` you have access to its current meta data and to all `auth/signup` meta data with different locale.
+> NOTE: It is not practical to have all possible metadata injected into every page because it makes page bundle size bigger in large applications. Therefore if your current page is `cs:auth/signup` you have access only to its current metadata and metadata with a different locale but the same root.
 
 ## 6. Components
 
-Next-roots package provides ready-to-use components with injected roots context.
+The Next-roots package provides ready-to-use components with injected roots context.
 
 ### RootsContext
 
-Main roots context component which holds current values according to current page.
+Main roots context component which holds current values according to the current page.
 
-This component is required to use in your app so that other components can consume current roots context.
+This component is required to use in your app so that other components can consume the context of the current root.
 
 Recommended usage:
 
@@ -366,19 +366,19 @@ import RootsContext, { detectRoots } from 'next-roots/context'
 import { AppProps } from 'next/app'
 
 function MyApp({ Component, pageProps }: AppProps) {
-  // detect roots context from page component
-  // - current values will be obtained from Component.getRootsContext
-  // - second argument holds default values
-  const roots = detectRoots(Component, {
-    defaultLocale: 'en',
-    locales: ['en', 'cs', 'es'],
-  })
+ // detect roots context from page component
+ // - current values will be obtained from Component.getRootsContext
+ // - second argument holds default values
+ const roots = detectRoots(Component, {
+ defaultLocale: 'en',
+ locales: ['en', 'cs', 'es'],
+ })
 
-  return (
-    <RootsContext.Provider value={roots}>
-      <Component {...pageProps} />
-    </RootsContext.Provider>
-  )
+ return (
+ <RootsContext.Provider value={roots}>
+ <Component {...pageProps} />
+ </RootsContext.Provider>
+ )
 }
 
 export default MyApp
@@ -386,9 +386,9 @@ export default MyApp
 
 ### RootLink
 
-Extends native `link/next` with roots context. Generates links based on roots schema when rule is found otherwise link generation is handled by native link .
+Extends native `link/next` with roots context. Generates links based on roots schema when a rule is found otherwise link generation is handled by native link component.
 
-Works similar as `useRootLink` as this hook is used under the hood of `RootLink` component.
+Works similar to `useRootLink` as this hook is used under the hood of the `RootLink` component.
 
 Example usage:
 
@@ -397,37 +397,37 @@ import RootLink from 'next-roots/link';
 
 // 1. Using with current locale and root name (currentLocale = en)
 <RootLink href="auth/signup">
-  <a>...</a>
+ <a>...</a>
 </RootLink>
 // result <a href="/en/auth/signup-p1.htm">...</a>
 
-// 2. Using with custom locale and root name
+// 2. Using with the custom locale and root name
 <RootLink href="auth/signup" locale="cs">
-  <a>...</a>
+ <a>...</a>
 </RootLink>
 // result <a href="/cs/overeni/registrace-p1.htm">...</a>
 
 // 3. Using with rule key and empty locale option
 <RootLink href="cs:auth/signup" locale="">
-  <a>...</a>
+ <a>...</a>
 </RootLink>
 // result <a href="/cs/overeni/registrace-p1.htm">...</a>
 
 // 4. Using with rule key and custom locale
 <RootLink href="cs:auth/signup" locale="en">
-  <a>...</a>
+ <a>...</a>
 </RootLink>
 // result <a href="/en/auth/signup-p1.htm">...</a>
 
 // 5. Using with dynamic root (e.g. page = [...slug])
 <RootLink href="dynamic" locale="en" params={{slug: 'some-slug'}}>
-  <a>...</a>
+ <a>...</a>
 </RootLink>
 // result <a href="/en/auth/some-slug">...</a>
 
 // 6. Using home page shortcut (currentLocale = en)
 <RootLink href="/">
-  <a>...</a>
+ <a>...</a>
 </RootLink>
 // result <a href="/en">...</a>
 
@@ -442,24 +442,24 @@ import RootsConsole from 'next-roots/console'
 
 //
 function MyLayout() {
-  return (
-    <div>
-      // ... custom logic
-      <RootsConsole />
-    </div>
-  )
+ return (
+ <div>
+ // ... custom logic
+ <RootsConsole />
+ </div>
+ )
 }
 ```
 
-Once this component is mounted to the DOM following indicator will appear in bottom left corner of window:
+Once this component is mounted to the DOM following indicator will appear in the bottom left corner of the window:
 
 ![Next-roots indicator](./media/next-roots-indicator-min.png)
 
-Console will open once that indicator is clicked:
+The console will open once that indicator is clicked:
 
 ![Next-roots console](./media/next-roots-console-min.png)
 
-All current context values like `currenLocale`, `currentRoot` or `metaData` can be found in this console. Also links to current page mutations (locales) can be found in tab `links`.
+All current context values like `currenLocale`, `currentRoot` or `currentMeta` can be found in this console. Also, links to current page mutations (locales) can be found in a tab called `links`.
 
 > Note that `RootsConsole` component should be used only in dev and should be removed before deploying to production
 
@@ -471,7 +471,7 @@ COMING SOON
 
 Next.js provides us with special page methods like `getServerSideProps`, `getStaticProps`, `getStaticPaths` and `getInitialProps (will be deprecated)`.
 
-All these methods are parsed during build time and forwarded from generated pages. Current page `locale` is also pushed to context of some of these methods.
+All these methods are parsed during build time and forwarded from generated pages. The current page `locale` is also pushed to the context of some of these methods.
 
 For example if you have `root` named `dynamic` which contains two of mentioned methods (getStaticProps, getStaticPaths) the result will look like:
 
@@ -483,10 +483,10 @@ import DynamicRoot, * as __root from 'roots/dynamic'
 
 // @ts-ignore
 export const getStaticProps: GetStaticProps = async (context) =>
-  __root.getStaticProps({ ...context, __locale: 'cs' })
+ __root.getStaticProps({ ...context, __locale: 'cs' })
 
 export const getStaticPaths: GetStaticPaths = async () =>
-  __root.getStaticPaths()
+ __root.getStaticPaths()
 
 export default DynamicPage
 ```
@@ -495,14 +495,14 @@ Then your are able to read page locale directly inside your root's special metho
 
 ```ts
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { __locale, ...ctxOthers } = context
-  // ... custom logic
+ const { __locale, ...ctxOthers } = context
+ // ... custom logic
 }
 ```
 
 ## 9. Example
 
-Example usage with lightweight schema can be found in example folder
+Example usage with lightweight schema can be found in the example folder
 
 - `cd example`
 - `yarn install`
@@ -514,9 +514,9 @@ Refactor has been done to keep page bundles size as small as possible. Therefore
 
 > The only possible case for using `roots.schema.js` is handling tokenized page redirects like `/en/p1.htm` >>> `/en/auth/signup-p1.htm` in your [catchAllRoute] page
 
-The `parsePathname` util has ben replaced with `detectRoots` and is no longer dependent on router pathname. Context values are obtained from `PageComponent.getRootsContext` method which is generated during build time.
+The `parsePathname` util has been replaced with `detectRoots` and is no longer dependent on the router pathname. Context values are obtained from the `PageComponent.getRootsContext` which is generated during build time.
 
-Rules and meta data are now directly injected to page file during build time BUT to keep page size bundle small only rules and meta with same locale or root are injected.
+Rules and metadata are now directly injected to page file during build time BUT to keep page size bundle small only rules and meta with same locale or root are injected.
 
 Migrating to 2.x requires two steps:
 
@@ -529,24 +529,24 @@ import schemaRoots from 'roots.schema'
 import { AppProps } from 'next/app'
 
 function MyApp({ Component, pageProps }: AppProps) {
-  // parse current roots values from router pathname
-  const { locale, root, rule } = parsePathname(router.pathname, schema)
+ // parse current roots values from router pathname
+ const { locale, root, rule } = parsePathname(router.pathname, schema)
 
-  return (
-    <RootsContext.Provider
-      value={{
-        currentRule: rule,
-        currentRoot: root,
-        currentLocale: locale || schema.defaultLocale,
-        defaultLocale: schema.defaultLocale,
-        locales: schema.locales,
-        rules: schema.rules,
-        meta: schema.meta,
-      }}
-    >
-      <Component {...pageProps} />
-    </RootsContext.Provider>
-  )
+ return (
+ <RootsContext.Provider
+ value={{
+ currentRule: rule,
+ currentRoot: root,
+ currentLocale: locale || schema.defaultLocale,
+ defaultLocale: schema.defaultLocale,
+ locales: schema.locales,
+ rules: schema.rules,
+ meta: schema.meta,
+ }}
+ >
+ <Component {...pageProps} />
+ </RootsContext.Provider>
+ )
 }
 
 export default MyApp
@@ -558,17 +558,17 @@ import RootsContext, { detectRoots } from 'next-roots/context'
 import { AppProps } from 'next/app'
 
 function MyApp({ Component, pageProps }: AppProps) {
-  // detect roots context from page component
-  const roots = detectRoots(Component, {
-    defaultLocale: 'en',
-    locales: ['en', 'cs', 'es'],
-  })
+ // detect roots context from page component
+ const roots = detectRoots(Component, {
+ defaultLocale: 'en',
+ locales: ['en', 'cs', 'es'],
+ })
 
-  return (
-    <RootsContext.Provider value={roots}>
-      <Component {...pageProps} />
-    </RootsContext.Provider>
-  )
+ return (
+ <RootsContext.Provider value={roots}>
+ <Component {...pageProps} />
+ </RootsContext.Provider>
+ )
 }
 
 export default MyApp
@@ -579,15 +579,15 @@ export default MyApp
 ```js
 // BEFORE 2.0.0
 {
-  root: 'some-root-name',
-  pages: [
-    {
-      locale: 'en',
-      metaData: { background: 'blue' },
-      // ... other page config
-    }
-  ],
-  metaData: { title: 'Next Roots', background: 'grey' },
+ root: 'some-root-name',
+ pages: [
+ {
+ locale: 'en',
+ metaData: { background: 'blue' },
+ // ... other page config
+ }
+ ],
+ metaData: { title: 'Next Roots', background: 'grey' },
 },
 
 ```
@@ -595,17 +595,17 @@ export default MyApp
 ```js
 // AFTER 2.0.0
 {
-  root: 'some-root-name',
-  pages: [
-    {
-      locale: 'en',
-      // ... other page config
-    }
-  ],
-  metaData: [
-    { locale: '*', data: { title: 'Next Roots', background: 'grey' } }
-    { locale: 'en', data: { background: 'blue' } }
-  ],
+ root: 'some-root-name',
+ pages: [
+ {
+ locale: 'en',
+ // ... other page config
+ }
+ ],
+ metaData: [
+ { locale: '*', data: { title: 'Next Roots', background: 'grey' } }
+ { locale: 'en', data: { background: 'blue' } }
+ ],
 },
 
 ```
