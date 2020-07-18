@@ -511,7 +511,7 @@ describe('next-roots:cli-builder', () => {
         `currentRule: {"key":"cs:auth/login","href":"/cs/overeni/prihlaseni-a2.htm"}`
       )
       expect(cs).toContain(
-        `currentMeta: {"key":"cs:auth/login","data":{"title":"Přihlášení","background":"green"}}`
+        `currentMeta: {"key":"cs:auth/login","data":{"section":"Ověření","title":"Přihlášení","background":"green"}}`
       )
 
       // CS RULES
@@ -541,13 +541,13 @@ describe('next-roots:cli-builder', () => {
       // CS META
 
       expect(cs).toContain(
-        `{"key":"en:auth/login","data":{"title":"Login","background":"green"}`
+        `{"key":"en:auth/login","data":{"section":"Authorization","title":"Login","background":"green"}`
       )
       expect(cs).toContain(
-        `{"key":"cs:auth/login","data":{"title":"Přihlášení","background":"green"}`
+        `{"key":"cs:auth/login","data":{"section":"Ověření","title":"Přihlášení","background":"green"}`
       )
       expect(cs).toContain(
-        `{"key":"es:auth/login","data":{"title":"Iniciar Sesión","background":"green"}`
+        `{"key":"es:auth/login","data":{"section":"Autorización","title":"Iniciar Sesión","background":"green"}`
       )
 
       // EN ROOT
@@ -566,7 +566,7 @@ describe('next-roots:cli-builder', () => {
         `currentRule: {"key":"en:auth/login","href":"/en/auth/login-a2.htm"}`
       )
       expect(en).toContain(
-        `currentMeta: {"key":"en:auth/login","data":{"title":"Login","background":"green"}}`
+        `currentMeta: {"key":"en:auth/login","data":{"section":"Authorization","title":"Login","background":"green"}}`
       )
 
       expect(en).toContain(
@@ -594,13 +594,13 @@ describe('next-roots:cli-builder', () => {
       // EN META
 
       expect(en).toContain(
-        `{"key":"en:auth/login","data":{"title":"Login","background":"green"}`
+        `{"key":"en:auth/login","data":{"section":"Authorization","title":"Login","background":"green"}`
       )
       expect(en).toContain(
-        `{"key":"cs:auth/login","data":{"title":"Přihlášení","background":"green"}`
+        `{"key":"cs:auth/login","data":{"section":"Ověření","title":"Přihlášení","background":"green"}`
       )
       expect(en).toContain(
-        `{"key":"es:auth/login","data":{"title":"Iniciar Sesión","background":"green"}`
+        `{"key":"es:auth/login","data":{"section":"Autorización","title":"Iniciar Sesión","background":"green"}`
       )
 
       // ES ROOT
@@ -620,7 +620,7 @@ describe('next-roots:cli-builder', () => {
         `currentRule: {"key":"es:auth/login","href":"/es/autorizacion/iniciar-sesion-a2.htm"}`
       )
       expect(es).toContain(
-        `currentMeta: {"key":"es:auth/login","data":{"title":"Iniciar Sesión","background":"green"}}`
+        `currentMeta: {"key":"es:auth/login","data":{"section":"Autorización","title":"Iniciar Sesión","background":"green"}}`
       )
 
       expect(es).toContain(
@@ -649,13 +649,13 @@ describe('next-roots:cli-builder', () => {
       // ES META
 
       expect(es).toContain(
-        `{"key":"en:auth/login","data":{"title":"Login","background":"green"}`
+        `{"key":"en:auth/login","data":{"section":"Authorization","title":"Login","background":"green"}`
       )
       expect(es).toContain(
-        `{"key":"cs:auth/login","data":{"title":"Přihlášení","background":"green"}`
+        `{"key":"cs:auth/login","data":{"section":"Ověření","title":"Přihlášení","background":"green"}`
       )
       expect(es).toContain(
-        `{"key":"es:auth/login","data":{"title":"Iniciar Sesión","background":"green"}`
+        `{"key":"es:auth/login","data":{"section":"Autorización","title":"Iniciar Sesión","background":"green"}`
       )
     })
   })

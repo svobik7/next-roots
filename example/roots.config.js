@@ -20,6 +20,15 @@ module.exports = {
       pages: [{ locale: '*', path: 'index', alias: '/', suffix: '' }],
     },
     {
+      root: 'auth/(.*)',
+      metaData: [
+        { locale: 'en', data: { section: 'Authorization' } },
+        { locale: 'cs', data: { section: 'Ověření' } },
+        { locale: 'es', data: { section: 'Autorización' } },
+      ],
+      isPrototype: true,
+    },
+    {
       root: 'auth/signup',
       pages: [
         {
@@ -64,15 +73,6 @@ module.exports = {
       ],
       params: { token: 'a2' },
     },
-    // {
-    //   root: 'account/*',
-    //   metaData: [
-    //     { locale: 'cs', data: { section: 'Account' } },
-    //     { locale: 'en', data: { section: 'Účet' } },
-    //     { locale: 'es', data: { section: 'Cuenta' } },
-    //   ],
-    //   isPrototype: true,
-    // },
     {
       root: 'account/profile',
       pages: [

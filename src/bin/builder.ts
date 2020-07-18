@@ -4,7 +4,6 @@ import {
   BuilderSchemaMeta,
   BuilderSchemaPage,
   Config,
-  Schema,
   SchemaMeta,
   SchemaRule,
 } from '../types'
@@ -329,17 +328,6 @@ function run() {
 
   // create pages for each rewrite
   realSchemas.forEach((schema) => {
-    // // push global meta data to global meta table
-    // if (cfgSchema.metaData && Object.keys(cfgSchema.metaData).length) {
-    //   schemaMeta.set('*', [
-    //     ...(schemaMeta.get('*') || []),
-    //     {
-    //       key: cfgSchema.root,
-    //       data: cfgSchema.metaData,
-    //     },
-    //   ])
-    // }
-
     // create schemaRules for each root's schema
     schema.pages &&
       cfg.locales.forEach((l) => {
@@ -390,10 +378,24 @@ function run() {
     // create schemaMeta for each root's schema
     cfg.locales.forEach((l) => {
       const metaDataProto = protoSchemas.reduce((acc, curr) => {
-        if (curr.metaData && curr.root === '*') {
+        // ignore roots with no metadata
+        if (!curr.metaData) {
+          return acc
+        }
+
+        let isMatch = false
+
+        try {
+          isMatch = curr.root === '*' || schema.root.match(curr.root) !== null
+        } catch {
+          isMatch = false
+        }
+
+        // merge general prototype or regex prototype
+        if (isMatch) {
           acc = {
-            ...acc,
             ...reduceMetaData(curr.metaData, l),
+            ...acc,
           }
         }
 
