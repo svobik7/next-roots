@@ -155,7 +155,10 @@ function createPageRewrite(
   page: BuilderSchemaPage,
   params = {}
 ): [string, string | undefined] {
-  const locale = cfg.shallowLocales.includes(page.locale) ? '' : page.locale
+  const locale =
+    cfg.shallowLocales && cfg.shallowLocales.includes(page.locale)
+      ? ''
+      : page.locale
 
   const pageHref = createSchemaRulePath(page.path, locale, page.suffix)
   const pageAs =
