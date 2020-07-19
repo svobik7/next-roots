@@ -34,6 +34,9 @@ const cfgDefault = {
   extRoots: '.tsx',
 }
 
+// create builder config
+const cfg: Config = { ...cfgDefault, ...cfgRuntime }
+
 // create main dir path
 const mainDir = path.dirname(path.join(process.cwd(), configPath))
 
@@ -148,13 +151,15 @@ function isDirectory(path: string): boolean {
  *
  * @param params
  */
-function createSchemaRewrite(
+function createPageRewrite(
   page: BuilderSchemaPage,
   params = {}
 ): [string, string | undefined] {
-  const pageHref = createSchemaRulePath(page.path, page.locale, page.suffix)
+  const locale = cfg.shallowLocales.includes(page.locale) ? '' : page.locale
+
+  const pageHref = createSchemaRulePath(page.path, locale, page.suffix)
   const pageAs =
-    page.alias && createSchemaRulePath(page.alias, page.locale, page.suffix)
+    page.alias && createSchemaRulePath(page.alias, locale, page.suffix)
 
   const replaceParams = (
     input: string,
@@ -168,9 +173,8 @@ function createSchemaRewrite(
     return input
   }
 
-  const rHref = replaceParams(pageHref, { ...params, locale: page.locale })
-  const rAs =
-    pageAs && replaceParams(pageAs, { ...params, locale: page.locale })
+  const rHref = replaceParams(pageHref, { ...params, locale })
+  const rAs = pageAs && replaceParams(pageAs, { ...params, locale })
 
   return [rHref, rAs || undefined]
 }
@@ -312,11 +316,11 @@ function parseSchemas(
   )
 }
 
+/**
+ * Lets a miracle happen
+ */
 function run() {
   console.log('\x1b[33mnext-roots', '\x1b[37m- generating pages ...')
-
-  // create builder config
-  const cfg: Config = { ...cfgDefault, ...cfgRuntime }
 
   // ensure pages directory is clean before build
   removeDirectory(cfg.dirPages)
@@ -326,21 +330,20 @@ function run() {
 
   const [realSchemas, protoSchemas] = parseSchemas(cfg.schemas)
 
-  // create pages for each rewrite
   realSchemas.forEach((schema) => {
-    // create schemaRules for each root's schema
-    schema.pages &&
-      cfg.locales.forEach((l) => {
-        const pageProto = schema.pages.find((p) => p.locale === '*')
-
+    // rewrite schema for each locale
+    cfg.locales.forEach((l) => {
+      if (schema.pages) {
         // find rewrite param based on locale
-        const pageSchema = schema.pages.find((p) => p.locale === l)
+        const pageSchema =
+          schema.pages.find((p) => p.locale === l) ||
+          schema.pages.find((p) => p.locale === '*')
 
         // warn about missing rewrite rule
-        if (!pageSchema && !pageProto) {
+        if (!pageSchema) {
           console.log(
             '\x1b[31mwarn',
-            '\x1b[37m- page schema for',
+            '\x1b[37m- page rule for',
             `\x1b[31m${l}:${schema.root}`,
             '\x1b[37mis missing!'
           )
@@ -349,13 +352,13 @@ function run() {
         // make sure all page rewrite params are set
         const page: BuilderSchemaPage = {
           locale: l,
-          path: pageSchema?.path || pageProto?.path || schema.root,
-          alias: pageSchema?.alias || pageProto?.alias || '',
-          suffix: pageSchema?.suffix ?? pageProto?.suffix ?? cfg.defaultSuffix,
+          path: pageSchema?.path || schema.root,
+          alias: pageSchema?.alias || '',
+          suffix: pageSchema?.suffix ?? cfg.defaultSuffix,
         }
 
         // create page rewrite
-        const [href, as] = createSchemaRewrite(page, schema.params)
+        const [href, as] = createPageRewrite(page, schema.params)
 
         // create page rule
         const pageRule = {
@@ -373,10 +376,8 @@ function run() {
           ...(schemaRules.get(`__${l}`) || []),
           pageRule,
         ])
-      })
+      }
 
-    // create schemaMeta for each root's schema
-    cfg.locales.forEach((l) => {
       const metaDataProto = protoSchemas.reduce((acc, curr) => {
         // ignore roots with no metadata
         if (!curr.metaData) {
@@ -524,5 +525,4 @@ function run() {
   })
 }
 
-// run async generator
 run()

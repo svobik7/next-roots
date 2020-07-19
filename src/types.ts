@@ -3,6 +3,7 @@ import { ReactText } from 'react'
 export type Config = {
   schemas: BuilderSchema[]
   locales: string[]
+  shallowLocales: string[]
   defaultLocale: string
   defaultSuffix: string
   dirRoots: string

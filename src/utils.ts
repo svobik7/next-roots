@@ -1,11 +1,4 @@
-import { ReactText } from 'react'
-import {
-  RewriteAsOptions,
-  RewriteHrefOptions,
-  RewriteMetaDataOptions,
-  SchemaMeta,
-  SchemaRule,
-} from './types'
+import { RewriteAsOptions, RewriteHrefOptions, SchemaRule } from './types'
 
 /**
  * Parametrizes input based on tags
@@ -191,7 +184,9 @@ export function createSchemaRulePath(
   suffix: string = ''
 ): string {
   if (!input) return input
-  return `/${suffixize(localize(input, locale), suffix)}`
+
+  const path = suffixize(localize(input, locale), suffix)
+  return path[0] !== '/' ? `/${path}` : path
 }
 
 /**

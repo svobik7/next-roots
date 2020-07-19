@@ -475,11 +475,7 @@ All current context values like `currenLocale`, `currentRoot` or `currentMeta` c
 
 > Note that `RootsConsole` component should be used only in dev and should be removed before deploying to production
 
-## 7. Utils
-
-COMING SOON
-
-## 8. Special page method
+## 7. Special page method
 
 Next.js provides us with special page methods like `getServerSideProps`, `getStaticProps`, `getStaticPaths` and `getInitialProps (will be deprecated)`.
 
@@ -512,7 +508,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 }
 ```
 
-## 9. Example
+## 8. Example
 
 Example usage with lightweight schema can be found in the example folder
 
@@ -520,7 +516,7 @@ Example usage with lightweight schema can be found in the example folder
 - `yarn install`
 - `yarn dev`
 
-## 10. Migrating from 1.x to 2.x
+## 9. Migrating from 1.x to 2.x
 
 Refactor has been done to keep page bundles size as small as possible. Therefore including `roots.schema.js` file in your `_app` (or anywhere else) is not required anymore.
 
@@ -620,4 +616,20 @@ export default MyApp
   ],
 },
 
+```
+
+## 10. Experimental
+
+Following options are experimental and should not be used in production yet.
+
+### Generate pages outside locale folders
+
+To generate localized pages directly inside `pages` directory and ignore its enclosing locale folder the following configuration is required:
+
+```js
+// roots.config.js
+{
+  shallowLocales: ['en']
+  // ...other options
+}
 ```

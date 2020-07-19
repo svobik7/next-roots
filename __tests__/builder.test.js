@@ -7,9 +7,6 @@ describe('next-roots:cli-builder', () => {
     execSync('yarn build')
     // remove examples roots.schema.js
     execSync('rm -f example/roots.schema.js')
-    execSync('rm -f example/roots.schema.en.js')
-    execSync('rm -f example/roots.schema.cs.js')
-    execSync('rm -f example/roots.schema.es.js')
     // remove example pages directory (this dir will be use in tests)
     execSync('rm -rf example/pages')
     // run next-roots in example folder and then get back
@@ -18,9 +15,6 @@ describe('next-roots:cli-builder', () => {
 
   afterAll(() => {
     execSync('rm -f example/roots.schema.js')
-    execSync('rm -f example/roots.schema.en.js')
-    execSync('rm -f example/roots.schema.cs.js')
-    execSync('rm -f example/roots.schema.es.js')
     execSync('rm -rf example/pages')
   })
 
@@ -48,43 +42,45 @@ describe('next-roots:cli-builder', () => {
       expect(fs.existsSync('example/pages/api/get-version.ts')).toBe(true)
       expect(fs.existsSync('example/pages/api/users/index.ts')).toBe(true)
 
-      expect(fs.existsSync('example/pages/en/index.tsx')).toBe(true)
-      expect(fs.existsSync('example/pages/cs/index.tsx')).toBe(true)
-      expect(
-        fs.existsSync('example/pages/es/autorizacion/iniciar-sesion-a2.htm.tsx')
-      ).toBe(true)
-
-      expect(fs.existsSync('example/pages/en/auth/signup-a1.page.tsx')).toBe(
+      // test shallow locales
+      expect(fs.existsSync('example/pages/home.tsx')).toBe(true)
+      expect(fs.existsSync('example/pages/auth/signup-a1.page.tsx')).toBe(
+        true
+      )
+      expect(fs.existsSync('example/pages/auth/login-a2.htm.tsx')).toBe(true)
+      expect(fs.existsSync('example/pages/account/profile-b1.htm.tsx')).toBe(
         true
       )
       expect(
+        fs.existsSync('example/pages/account/settings-b2.htm.tsx')
+      ).toBe(true)
+
+      // test non-shallow locales
+      expect(fs.existsSync('example/pages/cs/index.tsx')).toBe(true)
+      expect(
         fs.existsSync('example/pages/cs/overeni/registrace-a1.page.tsx')
+      ).toBe(true)
+      expect(
+        fs.existsSync('example/pages/cs/overeni/prihlaseni-a2.htm.tsx')
+      ).toBe(true)
+      expect(fs.existsSync('example/pages/cs/ucet/profil-b1.htm.tsx')).toBe(
+        true
+      )
+      expect(fs.existsSync('example/pages/cs/ucet/nastaveni-b2.htm.tsx')).toBe(
+        true
+      )
+
+      expect(
+        fs.existsSync('example/pages/es/autorizacion/iniciar-sesion-a2.htm.tsx')
       ).toBe(true)
       // * this page has no rewrite so it is created with not-translated path
       expect(fs.existsSync('example/pages/es/auth/signup.htm.tsx')).toBe(true)
 
-      expect(fs.existsSync('example/pages/en/auth/login-a2.htm.tsx')).toBe(true)
-      expect(
-        fs.existsSync('example/pages/cs/overeni/prihlaseni-a2.htm.tsx')
-      ).toBe(true)
       expect(
         fs.existsSync('example/pages/es/autorizacion/iniciar-sesion-a2.htm.tsx')
       ).toBe(true)
 
-      expect(fs.existsSync('example/pages/en/account/profile-b1.htm.tsx')).toBe(
-        true
-      )
-      expect(fs.existsSync('example/pages/cs/ucet/profil-b1.htm.tsx')).toBe(
-        true
-      )
       expect(fs.existsSync('example/pages/es/cuenta/perfil-b1.htm.tsx')).toBe(
-        true
-      )
-
-      expect(
-        fs.existsSync('example/pages/en/account/settings-b2.htm.tsx')
-      ).toBe(true)
-      expect(fs.existsSync('example/pages/cs/ucet/nastaveni-b2.htm.tsx')).toBe(
         true
       )
       expect(fs.existsSync('example/pages/es/cuenta/ajustes-b2.htm.tsx')).toBe(
@@ -140,7 +136,7 @@ describe('next-roots:cli-builder', () => {
   describe('i18n pages should have proper content', () => {
     test('home content', () => {
       const cs = fs.readFileSync('example/pages/cs/index.tsx').toString()
-      const en = fs.readFileSync('example/pages/en/index.tsx').toString()
+      const en = fs.readFileSync('example/pages/home.tsx').toString()
       const es = fs.readFileSync('example/pages/es/index.tsx').toString()
 
       // CS ROOT
@@ -164,7 +160,7 @@ describe('next-roots:cli-builder', () => {
 
       // CS RULES
 
-      expect(cs).toContain(`{"key":"en:home","href":"/en/index","as":"/en"}`)
+      expect(cs).toContain(`{"key":"en:home","href":"/home"}`)
       expect(cs).toContain(`{"key":"cs:home","href":"/cs/index","as":"/cs"}`)
       expect(cs).toContain(`{"key":"es:home","href":"/es/index","as":"/es"}`)
 
@@ -209,7 +205,7 @@ describe('next-roots:cli-builder', () => {
       expect(en).toContain(`currentLocale: 'en'`)
       expect(en).toContain(`currentRoot: 'home'`)
       expect(en).toContain(
-        `currentRule: {"key":"en:home","href":"/en/index","as":"/en"}`
+        `currentRule: {"key":"en:home","href":"/home"}`
       )
       expect(en).toContain(
         `currentMeta: {"key":"en:home","data":{"title":"Awesome Next Roots","background":"grey"}}`
@@ -217,25 +213,25 @@ describe('next-roots:cli-builder', () => {
 
       // EN RULES
 
-      expect(en).toContain(`{"key":"en:home","href":"/en/index","as":"/en"}`)
+      expect(en).toContain(`{"key":"en:home","href":"/home"}`)
       expect(en).toContain(`{"key":"cs:home","href":"/cs/index","as":"/cs"}`)
       expect(en).toContain(`{"key":"es:home","href":"/es/index","as":"/es"}`)
 
       expect(en).toContain(
-        `{"key":"en:auth/signup","href":"/en/auth/signup-a1.page"}`
+        `{"key":"en:auth/signup","href":"/auth/signup-a1.page"}`
       )
       expect(en).toContain(
-        `{"key":"en:auth/login","href":"/en/auth/login-a2.htm"}`
+        `{"key":"en:auth/login","href":"/auth/login-a2.htm"}`
       )
 
       expect(en).toContain(
-        `{"key":"en:account/profile","href":"/en/account/profile-b1.htm"}`
+        `{"key":"en:account/profile","href":"/account/profile-b1.htm"}`
       )
       expect(en).toContain(
-        `{"key":"en:account/settings","href":"/en/account/settings-b2.htm"}`
+        `{"key":"en:account/settings","href":"/account/settings-b2.htm"}`
       )
 
-      expect(en).toContain(`{"key":"en:dynamic","href":"/en/[...slug]"}`)
+      expect(en).toContain(`{"key":"en:dynamic","href":"/[...slug]"}`)
 
       // EN META
 
@@ -270,7 +266,7 @@ describe('next-roots:cli-builder', () => {
 
       // ES RULES
 
-      expect(es).toContain(`{"key":"en:home","href":"/en/index","as":"/en"}`)
+      expect(es).toContain(`{"key":"en:home","href":"/home"}`)
       expect(es).toContain(`{"key":"cs:home","href":"/cs/index","as":"/cs"}`)
       expect(es).toContain(`{"key":"es:home","href":"/es/index","as":"/es"}`)
 
@@ -304,7 +300,7 @@ describe('next-roots:cli-builder', () => {
 
     test('dynamic content', () => {
       const cs = fs.readFileSync('example/pages/cs/[...slug].tsx').toString()
-      const en = fs.readFileSync('example/pages/en/[...slug].tsx').toString()
+      const en = fs.readFileSync('example/pages/[...slug].tsx').toString()
       const es = fs.readFileSync('example/pages/es/[...slug].tsx').toString()
 
       // CS ROOT
@@ -335,7 +331,7 @@ describe('next-roots:cli-builder', () => {
         `currentMeta: {"key":"cs:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}}`
       )
 
-      expect(cs).toContain(`{"key":"en:dynamic","href":"/en/[...slug]"}`)
+      expect(cs).toContain(`{"key":"en:dynamic","href":"/[...slug]"}`)
       expect(cs).toContain(`{"key":"cs:dynamic","href":"/cs/[...slug]"}`)
       expect(cs).toContain(`{"key":"es:dynamic","href":"/es/[...slug]"}`)
 
@@ -386,7 +382,7 @@ describe('next-roots:cli-builder', () => {
       expect(en).toContain(`currentLocale: 'en'`)
       expect(en).toContain(`currentRoot: 'dynamic'`)
       expect(en).toContain(
-        `currentRule: {"key":"en:dynamic","href":"/en/[...slug]"}`
+        `currentRule: {"key":"en:dynamic","href":"/[...slug]"}`
       )
       expect(en).toContain(
         `currentMeta: {"key":"en:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}}`
@@ -394,22 +390,22 @@ describe('next-roots:cli-builder', () => {
 
       // EN RULES
 
-      expect(en).toContain(`{"key":"en:dynamic","href":"/en/[...slug]"}`)
+      expect(en).toContain(`{"key":"en:dynamic","href":"/[...slug]"}`)
       expect(en).toContain(`{"key":"cs:dynamic","href":"/cs/[...slug]"}`)
       expect(en).toContain(`{"key":"es:dynamic","href":"/es/[...slug]"}`)
 
-      expect(en).toContain(`{"key":"en:home","href":"/en/index","as":"/en"}`)
+      expect(en).toContain(`{"key":"en:home","href":"/home"}`)
       expect(en).toContain(
-        `{"key":"en:auth/signup","href":"/en/auth/signup-a1.page"}`
+        `{"key":"en:auth/signup","href":"/auth/signup-a1.page"}`
       )
       expect(en).toContain(
-        `{"key":"en:auth/login","href":"/en/auth/login-a2.htm"}`
+        `{"key":"en:auth/login","href":"/auth/login-a2.htm"}`
       )
       expect(en).toContain(
-        `{"key":"en:account/profile","href":"/en/account/profile-b1.htm"}`
+        `{"key":"en:account/profile","href":"/account/profile-b1.htm"}`
       )
       expect(en).toContain(
-        `{"key":"en:account/settings","href":"/en/account/settings-b2.htm"}`
+        `{"key":"en:account/settings","href":"/account/settings-b2.htm"}`
       )
 
       // EN META
@@ -454,7 +450,7 @@ describe('next-roots:cli-builder', () => {
 
       // ES RULES
 
-      expect(es).toContain(`{"key":"en:dynamic","href":"/en/[...slug]"}`)
+      expect(es).toContain(`{"key":"en:dynamic","href":"/[...slug]"}`)
       expect(es).toContain(`{"key":"cs:dynamic","href":"/cs/[...slug]"}`)
       expect(es).toContain(`{"key":"es:dynamic","href":"/es/[...slug]"}`)
       expect(es).toContain(`{"key":"es:home","href":"/es/index","as":"/es"}`)
@@ -489,7 +485,7 @@ describe('next-roots:cli-builder', () => {
         .readFileSync('example/pages/cs/overeni/prihlaseni-a2.htm.tsx')
         .toString()
       const en = fs
-        .readFileSync('example/pages/en/auth/login-a2.htm.tsx')
+        .readFileSync('example/pages/auth/login-a2.htm.tsx')
         .toString()
       const es = fs
         .readFileSync('example/pages/es/autorizacion/iniciar-sesion-a2.htm.tsx')
@@ -517,7 +513,7 @@ describe('next-roots:cli-builder', () => {
       // CS RULES
 
       expect(cs).toContain(
-        `{"key":"en:auth/login","href":"/en/auth/login-a2.htm"}`
+        `{"key":"en:auth/login","href":"/auth/login-a2.htm"}`
       )
       expect(cs).toContain(
         `{"key":"cs:auth/login","href":"/cs/overeni/prihlaseni-a2.htm"}`
@@ -563,14 +559,14 @@ describe('next-roots:cli-builder', () => {
       expect(en).toContain(`currentLocale: 'en'`)
       expect(en).toContain(`currentRoot: 'auth/login'`)
       expect(en).toContain(
-        `currentRule: {"key":"en:auth/login","href":"/en/auth/login-a2.htm"}`
+        `currentRule: {"key":"en:auth/login","href":"/auth/login-a2.htm"}`
       )
       expect(en).toContain(
         `currentMeta: {"key":"en:auth/login","data":{"section":"Authorization","title":"Login","background":"green"}}`
       )
 
       expect(en).toContain(
-        `{"key":"en:auth/login","href":"/en/auth/login-a2.htm"}`
+        `{"key":"en:auth/login","href":"/auth/login-a2.htm"}`
       )
       expect(en).toContain(
         `{"key":"cs:auth/login","href":"/cs/overeni/prihlaseni-a2.htm"}`
@@ -579,17 +575,17 @@ describe('next-roots:cli-builder', () => {
         `{"key":"es:auth/login","href":"/es/autorizacion/iniciar-sesion-a2.htm"}`
       )
 
-      expect(en).toContain(`{"key":"en:home","href":"/en/index","as":"/en"}`)
+      expect(en).toContain(`{"key":"en:home","href":"/home"}`)
       expect(en).toContain(
-        `{"key":"en:auth/signup","href":"/en/auth/signup-a1.page"}`
+        `{"key":"en:auth/signup","href":"/auth/signup-a1.page"}`
       )
       expect(en).toContain(
-        `{"key":"en:account/profile","href":"/en/account/profile-b1.htm"}`
+        `{"key":"en:account/profile","href":"/account/profile-b1.htm"}`
       )
       expect(en).toContain(
-        `{"key":"en:account/settings","href":"/en/account/settings-b2.htm"}`
+        `{"key":"en:account/settings","href":"/account/settings-b2.htm"}`
       )
-      expect(en).toContain(`{"key":"en:dynamic","href":"/en/[...slug]"}`)
+      expect(en).toContain(`{"key":"en:dynamic","href":"/[...slug]"}`)
 
       // EN META
 
@@ -624,7 +620,7 @@ describe('next-roots:cli-builder', () => {
       )
 
       expect(es).toContain(
-        `{"key":"en:auth/login","href":"/en/auth/login-a2.htm"}`
+        `{"key":"en:auth/login","href":"/auth/login-a2.htm"}`
       )
       expect(es).toContain(
         `{"key":"cs:auth/login","href":"/cs/overeni/prihlaseni-a2.htm"}`
@@ -679,26 +675,26 @@ describe('next-roots:cli-builder', () => {
 
     test('exports.rules', async () => {
       const expectedRules = [
-        { key: 'en:home', href: '/en/index', as: '/en' },
+        { key: 'en:home', href: '/home' },
         {
           key: 'en:auth/signup',
-          href: '/en/auth/signup-a1.page',
+          href: '/auth/signup-a1.page',
         },
         {
           key: 'en:auth/login',
-          href: '/en/auth/login-a2.htm',
+          href: '/auth/login-a2.htm',
         },
         {
           key: 'en:account/profile',
-          href: '/en/account/profile-b1.htm',
+          href: '/account/profile-b1.htm',
         },
         {
           key: 'en:account/settings',
-          href: '/en/account/settings-b2.htm',
+          href: '/account/settings-b2.htm',
         },
         {
           key: 'en:dynamic',
-          href: '/en/[...slug]',
+          href: '/[...slug]',
         },
         { key: 'cs:home', href: '/cs/index', as: '/cs' },
         {

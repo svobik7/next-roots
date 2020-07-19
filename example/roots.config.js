@@ -1,5 +1,6 @@
 module.exports = {
   locales: ['en', 'cs', 'es'],
+  shallowLocales: ['en'],
   defaultLocale: 'en',
   defaultSuffix: '.htm',
   dirRoots: 'roots',
@@ -17,7 +18,10 @@ module.exports = {
     },
     {
       root: 'home',
-      pages: [{ locale: '*', path: 'index', alias: '/', suffix: '' }],
+      pages: [
+        { locale: 'en', path: 'home', suffix: '' },
+        { locale: '*', path: 'index', alias: '/', suffix: '' },
+      ],
     },
     {
       root: 'auth/(.*)',
