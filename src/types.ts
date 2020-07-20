@@ -10,6 +10,7 @@ export type Config = {
   dirPages: string
   extRoots: string
   staticRoots: string[]
+  useTypings: boolean
 }
 
 /**

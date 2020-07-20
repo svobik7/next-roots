@@ -11,6 +11,7 @@ export type PageTemplateProps = {
   hasGetStaticPaths?: boolean
   hasGetServerSideProps?: boolean
   hasGetInitialProps?: boolean
+  useTypings?: boolean
 }
 
 export default function pageTemplate(props: PageTemplateProps) {
@@ -27,6 +28,7 @@ export default function pageTemplate(props: PageTemplateProps) {
     hasGetStaticPaths = false,
     hasGetServerSideProps = false,
     hasGetInitialProps = false,
+    useTypings = true,
   } = props
 
   // const pageMeta = meta?.find(m => m);
@@ -39,7 +41,7 @@ export default function pageTemplate(props: PageTemplateProps) {
 
   let tpl = ``
 
-  if (hasSpecialMethods) {
+  if (useTypings && hasSpecialMethods) {
     const specialTypes = []
 
     hasGetInitialProps && specialTypes.push('NextPageContext')
@@ -58,14 +60,17 @@ export default function pageTemplate(props: PageTemplateProps) {
 
   tpl += `\n`
 
-  tpl += `function ${pageName}Page(pageProps: any) {` + `\n`
+  const pageProps = useTypings ? 'pageProps: any' : 'pageProps'
+
+  tpl += `function ${pageName}Page(${pageProps}) {` + `\n`
   tpl += `  return <${pageName}Root {...pageProps} />` + `\n`
   tpl += `}` + `\n`
 
   tpl += `\n`
 
-  tpl +=
-    `${pageName}Page.getRootsContext = (): Partial<RootsContext> => ({` + `\n`
+  const ctxReturnType = useTypings ? ': Partial<RootsContext>' : ''
+
+  tpl += `${pageName}Page.getRootsContext = ()${ctxReturnType} => ({` + `\n`
   tpl += `  currentLocale: '${locale}',` + `\n`
   tpl += `  currentRoot: '${rootName}',` + `\n`
   tpl += `  currentRule: ${JSON.stringify(pageRule)},` + `\n`
@@ -98,33 +103,50 @@ export default function pageTemplate(props: PageTemplateProps) {
 
   if (hasGetInitialProps) {
     tpl += `\n`
-    tpl += `// @ts-ignore` + `\n`
+    tpl += useTypings ? `// @ts-ignore` + `\n` : ''
+
+    const ctxProp = useTypings ? 'context: NextPageContext' : 'context'
+
     tpl +=
-      `${pageName}Page.getInitialProps = async (context: NextPageContext) => __root.getInitialProps({ ...context, __locale: '${locale}' })` +
+      `${pageName}Page.getInitialProps = async (${ctxProp}) => __root.getInitialProps({ ...context, __locale: '${locale}' })` +
       `\n`
   }
 
   if (hasGetServerSideProps) {
     tpl += `\n`
-    tpl += `// @ts-ignore` + `\n`
+    tpl += useTypings ? `// @ts-ignore` + `\n` : ''
+
+    const methodName = useTypings
+      ? 'getServerSideProps: GetServerSideProps'
+      : 'getServerSideProps'
+
     tpl +=
-      `export const getServerSideProps: GetServerSideProps = async (context) => __root.getServerSideProps({ ...context, __locale: '${locale}' })` +
+      `export const ${methodName} = async (context) => __root.getServerSideProps({ ...context, __locale: '${locale}' })` +
       `\n`
   }
 
   if (hasGetStaticProps) {
     tpl += `\n`
-    tpl += `// @ts-ignore` + `\n`
+    tpl += useTypings ? `// @ts-ignore` + `\n` : ''
+
+    const methodName = useTypings
+      ? 'getStaticProps: GetStaticProps'
+      : 'getStaticProps'
+
     tpl +=
-      `export const getStaticProps: GetStaticProps = async (context) => __root.getStaticProps({ ...context, __locale: '${locale}' })` +
+      `export const ${methodName} = async (context) => __root.getStaticProps({ ...context, __locale: '${locale}' })` +
       `\n`
   }
 
   if (hasGetStaticPaths) {
     tpl += `\n`
+
+    const methodName = useTypings
+      ? 'getStaticPaths: GetStaticPaths'
+      : 'getStaticPaths'
+
     tpl +=
-      `export const getStaticPaths: GetStaticPaths = async () => __root.getStaticPaths()` +
-      `\n`
+      `export const ${methodName} = async () => __root.getStaticPaths()` + `\n`
   }
 
   tpl += `\n`

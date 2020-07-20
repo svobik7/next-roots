@@ -32,6 +32,7 @@ const cfgDefault = {
   dirPages: 'pages',
   staticRoots: ['api', '_app', '_document', '_error', '404', 'index'],
   extRoots: '.tsx',
+  useTypings: true,
 }
 
 // create builder config
@@ -258,6 +259,7 @@ function createPageContent(
     hasGetServerSideProps,
     hasGetStaticPaths,
     hasGetStaticProps,
+    useTypings: cfg.useTypings,
   })
 }
 
