@@ -52,7 +52,9 @@ export default function pageTemplate(props: PageTemplateProps) {
     tpl += `import { ${specialTypes.join(', ')} } from 'next'` + `\n`
   }
 
-  tpl += `import RootsContext from 'next-roots/context'` + `\n`
+  if (useTypings) {
+    tpl += `import RootsContext from 'next-roots/context'` + `\n`
+  }
 
   tpl += hasSpecialMethods
     ? `import ${pageName}Root, * as __root from '${rootAlias}'` + `\n`

@@ -440,10 +440,7 @@ function run() {
         })
       )
 
-      const rootAlias = path.format({
-        dir: cfg.dirRoots,
-        name: s.root,
-      })
+      const rootAlias = `${cfg.dirRoots}/${s.root}`
 
       const pagePath = getFilePath(
         path.format({
