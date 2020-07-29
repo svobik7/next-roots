@@ -3,7 +3,6 @@ module.exports = {
   shallowLocales: ['en'],
   defaultLocale: 'en',
   defaultSuffix: '.htm',
-  basePath: './src',
   dirRoots: 'roots',
   dirPages: 'pages',
   schemas: [
