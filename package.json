@@ -1,6 +1,6 @@
 {
   "name": "next-roots",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Next.js utility to generate internationalized pages with metadata according to custom roots rules.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
