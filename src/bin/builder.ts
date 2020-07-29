@@ -28,6 +28,7 @@ const cfgDefault = {
   locales: [],
   defaultLocale: '',
   defaultSuffix: '',
+  basePath: '.',
   dirRoots: 'roots',
   dirPages: 'pages',
   staticRoots: ['api', '_app', '_document', '_error', '404', 'index'],
@@ -327,8 +328,11 @@ function parseSchemas(
 function run() {
   console.log('\x1b[33mnext-roots', '\x1b[37m- generating pages ...')
 
+  const DIR_ROOTS = path.join(cfg.basePath, cfg.dirRoots)
+  const DIR_PAGES = path.join(cfg.basePath, cfg.dirPages)
+
   // ensure pages directory is clean before build
-  removeDirectory(cfg.dirPages)
+  removeDirectory(DIR_PAGES)
 
   const schemaRules = new Map<string, SchemaRule[]>()
   const schemaMeta = new Map<string, SchemaMeta[]>()
@@ -434,7 +438,7 @@ function run() {
     pageRules?.forEach((pageRule) => {
       const rootPath = getFilePath(
         path.format({
-          dir: cfg.dirRoots,
+          dir: DIR_ROOTS,
           name: s.root,
           ext: cfg.extRoots,
         })
@@ -444,7 +448,7 @@ function run() {
 
       const pagePath = getFilePath(
         path.format({
-          dir: cfg.dirPages,
+          dir: DIR_PAGES,
           name: pageRule.href,
           ext: cfg.extRoots,
         })
@@ -487,7 +491,7 @@ function run() {
   cfg.staticRoots.forEach((staticPath) => {
     const sourceDir = getFilePath(
       path.format({
-        dir: cfg.dirRoots,
+        dir: DIR_ROOTS,
         name: staticPath,
       })
     )
@@ -495,7 +499,7 @@ function run() {
     if (isDirectory(sourceDir)) {
       const targetDir = getFilePath(
         path.format({
-          dir: cfg.dirPages,
+          dir: DIR_PAGES,
           name: staticPath,
         })
       )
@@ -506,7 +510,7 @@ function run() {
 
     const sourceFile = getFilePath(
       path.format({
-        dir: cfg.dirRoots,
+        dir: DIR_ROOTS,
         name: staticPath,
         ext: cfg.extRoots,
       })
@@ -515,7 +519,7 @@ function run() {
     if (isFile(sourceFile)) {
       const targetFile = getFilePath(
         path.format({
-          dir: cfg.dirPages,
+          dir: DIR_PAGES,
           name: staticPath,
           ext: cfg.extRoots,
         })

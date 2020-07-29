@@ -6,6 +6,7 @@ export type Config = {
   shallowLocales: string[]
   defaultLocale: string
   defaultSuffix: string
+  basePath: string
   dirRoots: string
   dirPages: string
   extRoots: string
