@@ -44,16 +44,14 @@ describe('next-roots:cli-builder', () => {
 
       // test shallow locales
       expect(fs.existsSync('example/pages/home.tsx')).toBe(true)
-      expect(fs.existsSync('example/pages/auth/signup-a1.page.tsx')).toBe(
-        true
-      )
+      expect(fs.existsSync('example/pages/auth/signup-a1.page.tsx')).toBe(true)
       expect(fs.existsSync('example/pages/auth/login-a2.htm.tsx')).toBe(true)
       expect(fs.existsSync('example/pages/account/profile-b1.htm.tsx')).toBe(
         true
       )
-      expect(
-        fs.existsSync('example/pages/account/settings-b2.htm.tsx')
-      ).toBe(true)
+      expect(fs.existsSync('example/pages/account/settings-b2.htm.tsx')).toBe(
+        true
+      )
 
       // test non-shallow locales
       expect(fs.existsSync('example/pages/cs/index.tsx')).toBe(true)
@@ -204,9 +202,7 @@ describe('next-roots:cli-builder', () => {
 
       expect(en).toContain(`currentLocale: 'en'`)
       expect(en).toContain(`currentRoot: 'home'`)
-      expect(en).toContain(
-        `currentRule: {"key":"en:home","href":"/home"}`
-      )
+      expect(en).toContain(`currentRule: {"key":"en:home","href":"/home"}`)
       expect(en).toContain(
         `currentMeta: {"key":"en:home","data":{"title":"Awesome Next Roots","background":"grey"}}`
       )
@@ -671,77 +667,6 @@ describe('next-roots:cli-builder', () => {
     test('exports.locales', async () => {
       const content = await require(schemaPath)
       expect(content.locales).toStrictEqual(['en', 'cs', 'es'])
-    })
-
-    test('exports.rules', async () => {
-      const expectedRules = [
-        { key: 'en:home', href: '/home' },
-        {
-          key: 'en:auth/signup',
-          href: '/auth/signup-a1.page',
-        },
-        {
-          key: 'en:auth/login',
-          href: '/auth/login-a2.htm',
-        },
-        {
-          key: 'en:account/profile',
-          href: '/account/profile-b1.htm',
-        },
-        {
-          key: 'en:account/settings',
-          href: '/account/settings-b2.htm',
-        },
-        {
-          key: 'en:dynamic',
-          href: '/[...slug]',
-        },
-        { key: 'cs:home', href: '/cs/index', as: '/cs' },
-        {
-          key: 'cs:auth/signup',
-          href: '/cs/overeni/registrace-a1.page',
-        },
-        {
-          key: 'cs:auth/login',
-          href: '/cs/overeni/prihlaseni-a2.htm',
-        },
-        {
-          key: 'cs:account/profile',
-          href: '/cs/ucet/profil-b1.htm',
-        },
-        {
-          key: 'cs:account/settings',
-          href: '/cs/ucet/nastaveni-b2.htm',
-        },
-        {
-          key: 'cs:dynamic',
-          href: '/cs/[...slug]',
-        },
-        { key: 'es:home', href: '/es/index', as: '/es' },
-        {
-          key: 'es:auth/signup',
-          href: '/es/auth/signup.htm',
-        },
-        {
-          key: 'es:auth/login',
-          href: '/es/autorizacion/iniciar-sesion-a2.htm',
-        },
-        {
-          key: 'es:account/profile',
-          href: '/es/cuenta/perfil-b1.htm',
-        },
-        {
-          key: 'es:account/settings',
-          href: '/es/cuenta/ajustes-b2.htm',
-        },
-        {
-          key: 'es:dynamic',
-          href: '/es/[...slug]',
-        },
-      ]
-
-      const content = await require(schemaPath)
-      expect(content.rules).toStrictEqual(expectedRules)
     })
   })
 })
