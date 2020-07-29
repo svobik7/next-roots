@@ -477,7 +477,7 @@ function run() {
   const schemaFileContent = {
     locales: cfg.locales,
     defaultLocale: cfg.defaultLocale,
-    rules: allRules,
+    // rules: allRules,
   }
 
   // save schema file
