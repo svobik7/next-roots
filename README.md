@@ -156,6 +156,7 @@ module.exports = {
 | locales       | []                                              | all allowed locales which will be generated                     |
 | defaultLocale | ''                                              | locale which will be used as default when no locale is detected |
 | defaultSuffix | ''                                              | default page suffix which will be added to page name            |
+| basePath      | `.`                                         | path to base folder where roots and pages are located                |
 | dirRoot       | `roots`                                         | source folder with all roots files                              |
 | dirPages      | `pages`                                         | target folder where pages will be generated into                |
 | staticRoots   | `['api', '_app', '_document', '_error', '404']` | static roots which will be generated outside locales folders    |
