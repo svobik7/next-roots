@@ -446,10 +446,15 @@ function run() {
 
       const rootAlias = `${cfg.dirRoots}/${s.root}`
 
+      // create `/en/index.tsx` instead of `/en.tsx`
+      const pageName = cfg.locales.includes(pageRule.href.slice(1))
+        ? `${pageRule.href}/index`
+        : pageRule.href
+
       const pagePath = getFilePath(
         path.format({
           dir: DIR_PAGES,
-          name: pageRule.href,
+          name: pageName,
           ext: cfg.extRoots,
         })
       )

@@ -20,7 +20,7 @@ module.exports = {
       root: 'home',
       pages: [
         { locale: 'en', path: 'home', suffix: '' },
-        { locale: '*', path: 'index', alias: '/', suffix: '' },
+        { locale: '*', path: 'index', suffix: '' },
       ],
     },
     {

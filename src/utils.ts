@@ -185,6 +185,9 @@ export function createSchemaRulePath(
 ): string {
   if (!input) return input
 
+  // create `/en` instead of `/en/index`
+  input = input === 'index' ? '/' : input
+
   const path = suffixize(localize(input, locale), suffix)
   return path[0] !== '/' ? `/${path}` : path
 }

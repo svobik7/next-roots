@@ -150,7 +150,7 @@ describe('next-roots:cli-builder', () => {
       expect(cs).toContain(`currentLocale: 'cs'`)
       expect(cs).toContain(`currentRoot: 'home'`)
       expect(cs).toContain(
-        `currentRule: {"key":"cs:home","href":"/cs/index","as":"/cs"}`
+        `currentRule: {"key":"cs:home","href":"/cs"}`
       )
       expect(cs).toContain(
         `currentMeta: {"key":"cs:home","data":{"title":"Awesome Next Roots","background":"grey"}}`
@@ -159,8 +159,8 @@ describe('next-roots:cli-builder', () => {
       // CS RULES
 
       expect(cs).toContain(`{"key":"en:home","href":"/home"}`)
-      expect(cs).toContain(`{"key":"cs:home","href":"/cs/index","as":"/cs"}`)
-      expect(cs).toContain(`{"key":"es:home","href":"/es/index","as":"/es"}`)
+      expect(cs).toContain(`{"key":"cs:home","href":"/cs"}`)
+      expect(cs).toContain(`{"key":"es:home","href":"/es"}`)
 
       expect(cs).toContain(
         `{"key":"cs:auth/signup","href":"/cs/overeni/registrace-a1.page"}`
@@ -210,8 +210,8 @@ describe('next-roots:cli-builder', () => {
       // EN RULES
 
       expect(en).toContain(`{"key":"en:home","href":"/home"}`)
-      expect(en).toContain(`{"key":"cs:home","href":"/cs/index","as":"/cs"}`)
-      expect(en).toContain(`{"key":"es:home","href":"/es/index","as":"/es"}`)
+      expect(en).toContain(`{"key":"cs:home","href":"/cs"}`)
+      expect(en).toContain(`{"key":"es:home","href":"/es"}`)
 
       expect(en).toContain(
         `{"key":"en:auth/signup","href":"/auth/signup-a1.page"}`
@@ -254,7 +254,7 @@ describe('next-roots:cli-builder', () => {
       expect(es).toContain(`currentLocale: 'es'`)
       expect(es).toContain(`currentRoot: 'home'`)
       expect(es).toContain(
-        `currentRule: {"key":"es:home","href":"/es/index","as":"/es"}`
+        `currentRule: {"key":"es:home","href":"/es"}`
       )
       expect(es).toContain(
         `currentMeta: {"key":"es:home","data":{"title":"Awesome Next Roots","background":"grey"}}`
@@ -263,8 +263,8 @@ describe('next-roots:cli-builder', () => {
       // ES RULES
 
       expect(es).toContain(`{"key":"en:home","href":"/home"}`)
-      expect(es).toContain(`{"key":"cs:home","href":"/cs/index","as":"/cs"}`)
-      expect(es).toContain(`{"key":"es:home","href":"/es/index","as":"/es"}`)
+      expect(es).toContain(`{"key":"cs:home","href":"/cs"}`)
+      expect(es).toContain(`{"key":"es:home","href":"/es"}`)
 
       expect(es).toContain(
         `{"key":"es:auth/signup","href":"/es/auth/signup.htm"}`
@@ -331,7 +331,7 @@ describe('next-roots:cli-builder', () => {
       expect(cs).toContain(`{"key":"cs:dynamic","href":"/cs/[...slug]"}`)
       expect(cs).toContain(`{"key":"es:dynamic","href":"/es/[...slug]"}`)
 
-      expect(cs).toContain(`{"key":"cs:home","href":"/cs/index","as":"/cs"}`)
+      expect(cs).toContain(`{"key":"cs:home","href":"/cs"}`)
       expect(cs).toContain(
         `{"key":"cs:auth/signup","href":"/cs/overeni/registrace-a1.page"}`
       )
@@ -449,7 +449,7 @@ describe('next-roots:cli-builder', () => {
       expect(es).toContain(`{"key":"en:dynamic","href":"/[...slug]"}`)
       expect(es).toContain(`{"key":"cs:dynamic","href":"/cs/[...slug]"}`)
       expect(es).toContain(`{"key":"es:dynamic","href":"/es/[...slug]"}`)
-      expect(es).toContain(`{"key":"es:home","href":"/es/index","as":"/es"}`)
+      expect(es).toContain(`{"key":"es:home","href":"/es"}`)
       expect(es).toContain(
         `{"key":"es:auth/signup","href":"/es/auth/signup.htm"}`
       )
@@ -518,7 +518,7 @@ describe('next-roots:cli-builder', () => {
         `{"key":"es:auth/login","href":"/es/autorizacion/iniciar-sesion-a2.htm"}`
       )
 
-      expect(cs).toContain(`{"key":"cs:home","href":"/cs/index","as":"/cs"}`)
+      expect(cs).toContain(`{"key":"cs:home","href":"/cs"}`)
       expect(cs).toContain(
         `{"key":"cs:auth/signup","href":"/cs/overeni/registrace-a1.page"}`
       )
@@ -625,7 +625,7 @@ describe('next-roots:cli-builder', () => {
         `{"key":"es:auth/login","href":"/es/autorizacion/iniciar-sesion-a2.htm"}`
       )
 
-      expect(es).toContain(`{"key":"es:home","href":"/es/index","as":"/es"}`)
+      expect(es).toContain(`{"key":"es:home","href":"/es"}`)
       expect(es).toContain(
         `{"key":"es:auth/signup","href":"/es/auth/signup.htm"}`
       )
