@@ -59,7 +59,7 @@ module.exports = {
     },
     {
       root: 'home',
-      pages: [{ locale: '*', path: 'index', alias: '/', suffix: '' }],
+      pages: [{ locale: '*', path: 'index', suffix: '' }],
     },
     {
       root: 'auth/signup',
@@ -194,7 +194,6 @@ Each schema rule must define pages array. Otherwise it must be defined as [proto
 pages: [{
  locale: '*',
  path: 'index',
- alias: '/',
  suffix: ''
 }],
 ```
