@@ -149,11 +149,9 @@ describe('next-roots:cli-builder', () => {
 
       expect(cs).toContain(`currentLocale: 'cs'`)
       expect(cs).toContain(`currentRoot: 'home'`)
+      expect(cs).toContain(`currentRule: {"key":"cs:home","href":"/cs"}`)
       expect(cs).toContain(
-        `currentRule: {"key":"cs:home","href":"/cs"}`
-      )
-      expect(cs).toContain(
-        `currentMeta: {"key":"cs:home","data":{"title":"Awesome Next Roots","background":"grey"}}`
+        `currentMeta: {"key":"cs:home","data":{"title":"Awesome Next Roots","background":"grey","footer":false}}`
       )
 
       // CS RULES
@@ -181,13 +179,13 @@ describe('next-roots:cli-builder', () => {
       // CS META
 
       expect(cs).toContain(
-        `{"key":"en:home","data":{"title":"Awesome Next Roots","background":"grey"}`
+        `{"key":"en:home","data":{"title":"Awesome Next Roots","background":"grey","footer":false}`
       )
       expect(cs).toContain(
-        `{"key":"cs:home","data":{"title":"Awesome Next Roots","background":"grey"}`
+        `{"key":"cs:home","data":{"title":"Awesome Next Roots","background":"grey","footer":false}`
       )
       expect(cs).toContain(
-        `{"key":"es:home","data":{"title":"Awesome Next Roots","background":"grey"}`
+        `{"key":"es:home","data":{"title":"Awesome Next Roots","background":"grey","footer":false}`
       )
 
       // EN ROOT
@@ -204,7 +202,7 @@ describe('next-roots:cli-builder', () => {
       expect(en).toContain(`currentRoot: 'home'`)
       expect(en).toContain(`currentRule: {"key":"en:home","href":"/home"}`)
       expect(en).toContain(
-        `currentMeta: {"key":"en:home","data":{"title":"Awesome Next Roots","background":"grey"}}`
+        `currentMeta: {"key":"en:home","data":{"title":"Awesome Next Roots","background":"grey","footer":false}}`
       )
 
       // EN RULES
@@ -232,13 +230,13 @@ describe('next-roots:cli-builder', () => {
       // EN META
 
       expect(en).toContain(
-        `{"key":"en:home","data":{"title":"Awesome Next Roots","background":"grey"}`
+        `{"key":"en:home","data":{"title":"Awesome Next Roots","background":"grey","footer":false}`
       )
       expect(en).toContain(
-        `{"key":"cs:home","data":{"title":"Awesome Next Roots","background":"grey"}`
+        `{"key":"cs:home","data":{"title":"Awesome Next Roots","background":"grey","footer":false}`
       )
       expect(en).toContain(
-        `{"key":"es:home","data":{"title":"Awesome Next Roots","background":"grey"}`
+        `{"key":"es:home","data":{"title":"Awesome Next Roots","background":"grey","footer":false}`
       )
 
       // ES
@@ -253,11 +251,9 @@ describe('next-roots:cli-builder', () => {
 
       expect(es).toContain(`currentLocale: 'es'`)
       expect(es).toContain(`currentRoot: 'home'`)
+      expect(es).toContain(`currentRule: {"key":"es:home","href":"/es"}`)
       expect(es).toContain(
-        `currentRule: {"key":"es:home","href":"/es"}`
-      )
-      expect(es).toContain(
-        `currentMeta: {"key":"es:home","data":{"title":"Awesome Next Roots","background":"grey"}}`
+        `currentMeta: {"key":"es:home","data":{"title":"Awesome Next Roots","background":"grey","footer":false}}`
       )
 
       // ES RULES
@@ -284,13 +280,13 @@ describe('next-roots:cli-builder', () => {
       // ES META
 
       expect(es).toContain(
-        `{"key":"en:home","data":{"title":"Awesome Next Roots","background":"grey"}`
+        `{"key":"en:home","data":{"title":"Awesome Next Roots","background":"grey","footer":false}`
       )
       expect(es).toContain(
-        `{"key":"cs:home","data":{"title":"Awesome Next Roots","background":"grey"}`
+        `{"key":"cs:home","data":{"title":"Awesome Next Roots","background":"grey","footer":false}`
       )
       expect(es).toContain(
-        `{"key":"es:home","data":{"title":"Awesome Next Roots","background":"grey"}`
+        `{"key":"es:home","data":{"title":"Awesome Next Roots","background":"grey","footer":false}`
       )
     })
 
@@ -324,7 +320,7 @@ describe('next-roots:cli-builder', () => {
         `currentRule: {"key":"cs:dynamic","href":"/cs/[...slug]"}`
       )
       expect(cs).toContain(
-        `currentMeta: {"key":"cs:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}}`
+        `currentMeta: {"key":"cs:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}}`
       )
 
       expect(cs).toContain(`{"key":"en:dynamic","href":"/[...slug]"}`)
@@ -348,13 +344,13 @@ describe('next-roots:cli-builder', () => {
       // CS META
 
       expect(cs).toContain(
-        `{"key":"en:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}`
+        `{"key":"en:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
       )
       expect(cs).toContain(
-        `{"key":"cs:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}`
+        `{"key":"cs:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
       )
       expect(cs).toContain(
-        `{"key":"es:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}`
+        `{"key":"es:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
       )
 
       // EN ROOT
@@ -381,7 +377,7 @@ describe('next-roots:cli-builder', () => {
         `currentRule: {"key":"en:dynamic","href":"/[...slug]"}`
       )
       expect(en).toContain(
-        `currentMeta: {"key":"en:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}}`
+        `currentMeta: {"key":"en:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}}`
       )
 
       // EN RULES
@@ -407,13 +403,13 @@ describe('next-roots:cli-builder', () => {
       // EN META
 
       expect(en).toContain(
-        `{"key":"en:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}`
+        `{"key":"en:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
       )
       expect(en).toContain(
-        `{"key":"cs:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}`
+        `{"key":"cs:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
       )
       expect(en).toContain(
-        `{"key":"es:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}`
+        `{"key":"es:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
       )
 
       // ES ROOT
@@ -441,7 +437,7 @@ describe('next-roots:cli-builder', () => {
         `currentRule: {"key":"es:dynamic","href":"/es/[...slug]"}`
       )
       expect(es).toContain(
-        `currentMeta: {"key":"es:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}}`
+        `currentMeta: {"key":"es:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}}`
       )
 
       // ES RULES
@@ -466,13 +462,13 @@ describe('next-roots:cli-builder', () => {
       // ES META
 
       expect(es).toContain(
-        `{"key":"en:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}`
+        `{"key":"en:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
       )
       expect(es).toContain(
-        `{"key":"cs:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}`
+        `{"key":"cs:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
       )
       expect(es).toContain(
-        `{"key":"es:dynamic","data":{"title":"Awesome Next Roots","background":"magenta"}`
+        `{"key":"es:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
       )
     })
 
@@ -503,7 +499,7 @@ describe('next-roots:cli-builder', () => {
         `currentRule: {"key":"cs:auth/login","href":"/cs/overeni/prihlaseni-a2.htm"}`
       )
       expect(cs).toContain(
-        `currentMeta: {"key":"cs:auth/login","data":{"section":"Ověření","title":"Přihlášení","background":"green"}}`
+        `currentMeta: {"key":"cs:auth/login","data":{"title":"Přihlášení","background":"green","footer":false,"section":"Ověření"}}`
       )
 
       // CS RULES
@@ -533,13 +529,13 @@ describe('next-roots:cli-builder', () => {
       // CS META
 
       expect(cs).toContain(
-        `{"key":"en:auth/login","data":{"section":"Authorization","title":"Login","background":"green"}`
+        `{"key":"en:auth/login","data":{"title":"Login","background":"green","footer":true,"section":"Authorization"}`
       )
       expect(cs).toContain(
-        `{"key":"cs:auth/login","data":{"section":"Ověření","title":"Přihlášení","background":"green"}`
+        `{"key":"cs:auth/login","data":{"title":"Přihlášení","background":"green","footer":false,"section":"Ověření"}`
       )
       expect(cs).toContain(
-        `{"key":"es:auth/login","data":{"section":"Autorización","title":"Iniciar Sesión","background":"green"}`
+        `{"key":"es:auth/login","data":{"title":"Iniciar Sesión","background":"green","footer":true,"section":"Autorización"}`
       )
 
       // EN ROOT
@@ -558,7 +554,7 @@ describe('next-roots:cli-builder', () => {
         `currentRule: {"key":"en:auth/login","href":"/auth/login-a2.htm"}`
       )
       expect(en).toContain(
-        `currentMeta: {"key":"en:auth/login","data":{"section":"Authorization","title":"Login","background":"green"}}`
+        `currentMeta: {"key":"en:auth/login","data":{"title":"Login","background":"green","footer":true,"section":"Authorization"}}`
       )
 
       expect(en).toContain(
@@ -586,13 +582,13 @@ describe('next-roots:cli-builder', () => {
       // EN META
 
       expect(en).toContain(
-        `{"key":"en:auth/login","data":{"section":"Authorization","title":"Login","background":"green"}`
+        `{"key":"en:auth/login","data":{"title":"Login","background":"green","footer":true,"section":"Authorization"}`
       )
       expect(en).toContain(
-        `{"key":"cs:auth/login","data":{"section":"Ověření","title":"Přihlášení","background":"green"}`
+        `{"key":"cs:auth/login","data":{"title":"Přihlášení","background":"green","footer":false,"section":"Ověření"}`
       )
       expect(en).toContain(
-        `{"key":"es:auth/login","data":{"section":"Autorización","title":"Iniciar Sesión","background":"green"}`
+        `{"key":"es:auth/login","data":{"title":"Iniciar Sesión","background":"green","footer":true,"section":"Autorización"}`
       )
 
       // ES ROOT
@@ -612,7 +608,7 @@ describe('next-roots:cli-builder', () => {
         `currentRule: {"key":"es:auth/login","href":"/es/autorizacion/iniciar-sesion-a2.htm"}`
       )
       expect(es).toContain(
-        `currentMeta: {"key":"es:auth/login","data":{"section":"Autorización","title":"Iniciar Sesión","background":"green"}}`
+        `currentMeta: {"key":"es:auth/login","data":{"title":"Iniciar Sesión","background":"green","footer":true,"section":"Autorización"}}`
       )
 
       expect(es).toContain(
@@ -641,13 +637,13 @@ describe('next-roots:cli-builder', () => {
       // ES META
 
       expect(es).toContain(
-        `{"key":"en:auth/login","data":{"section":"Authorization","title":"Login","background":"green"}`
+        `{"key":"en:auth/login","data":{"title":"Login","background":"green","footer":true,"section":"Authorization"}`
       )
       expect(es).toContain(
-        `{"key":"cs:auth/login","data":{"section":"Ověření","title":"Přihlášení","background":"green"}`
+        `{"key":"cs:auth/login","data":{"title":"Přihlášení","background":"green","footer":false,"section":"Ověření"}`
       )
       expect(es).toContain(
-        `{"key":"es:auth/login","data":{"section":"Autorización","title":"Iniciar Sesión","background":"green"}`
+        `{"key":"es:auth/login","data":{"title":"Iniciar Sesión","background":"green","footer":true,"section":"Autorización"}`
       )
     })
   })

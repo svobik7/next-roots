@@ -56,8 +56,10 @@ export type SchemaRule = {
 
 export type SchemaMeta = {
   key: string
-  data: Record<string, ReactText>
+  data: Record<string, SchemaMetaData>
 }
+
+export type SchemaMetaData = string | number | boolean;
 
 /**
  * REWRITE

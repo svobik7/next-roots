@@ -1,4 +1,5 @@
-import { ReactText, useContext } from 'react'
+import { useContext } from 'react'
+import { SchemaMetaData } from '../types'
 import RootsContext from './context'
 
 function useRootMeta() {
@@ -9,7 +10,7 @@ function useRootMeta() {
     data: (
       query: string = '*',
       key: string = ''
-    ): ReactText | Record<string, ReactText> | undefined => {
+    ): SchemaMetaData | Record<string, SchemaMetaData> | undefined => {
       const meta =
         key && key !== context.currentRule?.key
           ? context.meta.find((m) => m.key === key)
