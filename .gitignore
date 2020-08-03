@@ -33,6 +33,9 @@ yarn-error.log*
 # Local History for Visual Studio Code
 .history/
 
+# example yarn.lock
+/example/yarn.lock
+
 # automatically generated files & folders 
 /example/pages
 /example/roots.schema.js
