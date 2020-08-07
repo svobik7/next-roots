@@ -404,8 +404,8 @@ function run() {
         // merge general prototype or regex prototype
         if (isMatch) {
           acc = {
-            ...reduceMetaData(curr.metaData, l),
             ...acc,
+            ...reduceMetaData(curr.metaData, l),
           }
         }
 

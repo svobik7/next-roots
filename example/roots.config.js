@@ -11,7 +11,11 @@ module.exports = {
       metaData: [
         {
           locale: '*',
-          data: { title: 'Awesome Next Roots', background: 'grey' },
+          data: {
+            title: 'Awesome Next Roots',
+            background: 'grey',
+            footer: false,
+          },
         },
       ],
       isPrototype: true,
@@ -26,6 +30,7 @@ module.exports = {
     {
       root: 'auth/(.*)',
       metaData: [
+        { locale: '*', data: { footer: true } },
         { locale: 'en', data: { section: 'Authorization' } },
         { locale: 'cs', data: { section: 'Ověření' } },
         { locale: 'es', data: { section: 'Autorización' } },
@@ -71,7 +76,7 @@ module.exports = {
       ],
       metaData: [
         { locale: '*', data: { background: 'green' } },
-        { locale: 'cs', data: { title: 'Přihlášení' } },
+        { locale: 'cs', data: { title: 'Přihlášení', footer: false } },
         { locale: 'en', data: { title: 'Login' } },
         { locale: 'es', data: { title: 'Iniciar Sesión' } },
       ],
