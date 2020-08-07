@@ -1,5 +1,7 @@
-import { ReactText, useContext } from 'react'
+import { useContext } from 'react'
 import RootsContext from './context'
+
+type MetaData = string | number | object
 
 function useRootMeta() {
   // use rewrite context for current locale and rules
@@ -9,7 +11,7 @@ function useRootMeta() {
     data: (
       query: string = '*',
       key: string = ''
-    ): ReactText | Record<string, ReactText> | undefined => {
+    ): MetaData | Record<string, MetaData> | undefined => {
       const meta =
         key && key !== context.currentRule?.key
           ? context.meta.find((m) => m.key === key)

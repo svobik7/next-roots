@@ -254,7 +254,7 @@ function RootsConsole() {
   }
 
   // parsed data
-  const dataMeta = meta.data('*') || {}
+  const dataMeta = meta.data('*')
 
   return (
     <div id={`${PREFIX}panel`}>
@@ -361,7 +361,7 @@ function RootsConsole() {
                 ]}
                 data={Object.keys(dataMeta).map((k) => ({
                   name: k,
-                  value: typeof dataMeta === 'object' ? dataMeta[k] : dataMeta,
+                  value: JSON.stringify(dataMeta),
                 }))}
               />
             )}

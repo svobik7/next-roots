@@ -34,7 +34,7 @@ export type BuilderSchemaPage = {
 
 export type BuilderSchemaMeta = {
   locale: string
-  data?: Record<string, ReactText>
+  data?: Record<string, string | number | object>
 }
 
 /**
@@ -56,7 +56,7 @@ export type SchemaRule = {
 
 export type SchemaMeta = {
   key: string
-  data: Record<string, ReactText>
+  data: Record<string, string | number | object>
 }
 
 /**
