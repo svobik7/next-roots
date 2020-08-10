@@ -19,6 +19,7 @@ export type Config = {
  */
 export type BuilderSchema = {
   root: string
+  rootName?: string
   pages: BuilderSchemaPage[]
   metaData?: BuilderSchemaMeta[]
   params?: Record<string, string>

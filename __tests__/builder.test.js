@@ -174,7 +174,9 @@ describe('next-roots:cli-builder', () => {
         `{"key":"cs:account/settings","href":"/cs/ucet/nastaveni-b2.htm"}`
       )
 
-      expect(cs).toContain(`{"key":"cs:dynamic","href":"/cs/[...slug]"}`)
+      expect(cs).toContain(
+        `{"key":"cs:detail/article","href":"/cs/articles/[...slug]"}`
+      )
 
       // CS META
 
@@ -225,7 +227,9 @@ describe('next-roots:cli-builder', () => {
         `{"key":"en:account/settings","href":"/account/settings-b2.htm"}`
       )
 
-      expect(en).toContain(`{"key":"en:dynamic","href":"/[...slug]"}`)
+      expect(en).toContain(
+        `{"key":"en:detail/article","href":"/articles/[...slug]"}`
+      )
 
       // EN META
 
@@ -275,7 +279,9 @@ describe('next-roots:cli-builder', () => {
         `{"key":"es:account/settings","href":"/es/cuenta/ajustes-b2.htm"}`
       )
 
-      expect(es).toContain(`{"key":"es:dynamic","href":"/es/[...slug]"}`)
+      expect(es).toContain(
+        `{"key":"es:detail/article","href":"/es/articles/[...slug]"}`
+      )
 
       // ES META
 
@@ -291,17 +297,23 @@ describe('next-roots:cli-builder', () => {
     })
 
     test('dynamic content', () => {
-      const cs = fs.readFileSync('example/pages/cs/[...slug].tsx').toString()
-      const en = fs.readFileSync('example/pages/[...slug].tsx').toString()
-      const es = fs.readFileSync('example/pages/es/[...slug].tsx').toString()
+      const cs = fs
+        .readFileSync('example/pages/cs/articles/[...slug].tsx')
+        .toString()
+      const en = fs
+        .readFileSync('example/pages/articles/[...slug].tsx')
+        .toString()
+      const es = fs
+        .readFileSync('example/pages/es/articles/[...slug].tsx')
+        .toString()
 
       // CS ROOT
 
       expect(cs).toContain(
-        `import DynamicRoot, * as __root from 'roots/dynamic'`
+        `import DetailArticleRoot, * as __root from 'roots/detail/dynamic-root'`
       )
       expect(cs).toContain(
-        `DynamicPage.getRootsContext = (): Partial<RootsContext> => ({`
+        `DetailArticlePage.getRootsContext = (): Partial<RootsContext> => ({`
       )
       expect(cs).toContain(
         `export const getStaticPaths: GetStaticPaths = async () => __root.getStaticPaths()`
@@ -310,22 +322,28 @@ describe('next-roots:cli-builder', () => {
         `export const getStaticProps: GetStaticProps = async (context) => __root.getStaticProps({ ...context, __locale: 'cs' })`
       )
 
-      expect(cs).toContain(`export default DynamicPage`)
+      expect(cs).toContain(`export default DetailArticlePage`)
 
       // CS CURRENT CONTEXT
 
       expect(cs).toContain(`currentLocale: 'cs'`)
-      expect(cs).toContain(`currentRoot: 'dynamic'`)
+      expect(cs).toContain(`currentRoot: 'detail/article'`)
       expect(cs).toContain(
-        `currentRule: {"key":"cs:dynamic","href":"/cs/[...slug]"}`
+        `currentRule: {"key":"cs:detail/article","href":"/cs/articles/[...slug]"}`
       )
       expect(cs).toContain(
-        `currentMeta: {"key":"cs:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}}`
+        `currentMeta: {"key":"cs:detail/article","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}}`
       )
 
-      expect(cs).toContain(`{"key":"en:dynamic","href":"/[...slug]"}`)
-      expect(cs).toContain(`{"key":"cs:dynamic","href":"/cs/[...slug]"}`)
-      expect(cs).toContain(`{"key":"es:dynamic","href":"/es/[...slug]"}`)
+      expect(cs).toContain(
+        `{"key":"en:detail/article","href":"/articles/[...slug]"}`
+      )
+      expect(cs).toContain(
+        `{"key":"cs:detail/article","href":"/cs/articles/[...slug]"}`
+      )
+      expect(cs).toContain(
+        `{"key":"es:detail/article","href":"/es/articles/[...slug]"}`
+      )
 
       expect(cs).toContain(`{"key":"cs:home","href":"/cs"}`)
       expect(cs).toContain(
@@ -344,22 +362,22 @@ describe('next-roots:cli-builder', () => {
       // CS META
 
       expect(cs).toContain(
-        `{"key":"en:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
+        `{"key":"en:detail/article","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
       )
       expect(cs).toContain(
-        `{"key":"cs:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
+        `{"key":"cs:detail/article","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
       )
       expect(cs).toContain(
-        `{"key":"es:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
+        `{"key":"es:detail/article","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
       )
 
       // EN ROOT
 
       expect(en).toContain(
-        `import DynamicRoot, * as __root from 'roots/dynamic'`
+        `import DetailArticleRoot, * as __root from 'roots/detail/dynamic-root'`
       )
       expect(en).toContain(
-        `DynamicPage.getRootsContext = (): Partial<RootsContext> => ({`
+        `DetailArticlePage.getRootsContext = (): Partial<RootsContext> => ({`
       )
       expect(en).toContain(
         `export const getStaticPaths: GetStaticPaths = async () => __root.getStaticPaths()`
@@ -367,24 +385,30 @@ describe('next-roots:cli-builder', () => {
       expect(en).toContain(
         `export const getStaticProps: GetStaticProps = async (context) => __root.getStaticProps({ ...context, __locale: 'en' })`
       )
-      expect(en).toContain(`export default DynamicPage`)
+      expect(en).toContain(`export default DetailArticlePage`)
 
       // EN CURRENT CONTEXT
 
       expect(en).toContain(`currentLocale: 'en'`)
-      expect(en).toContain(`currentRoot: 'dynamic'`)
+      expect(en).toContain(`currentRoot: 'detail/article'`)
       expect(en).toContain(
-        `currentRule: {"key":"en:dynamic","href":"/[...slug]"}`
+        `currentRule: {"key":"en:detail/article","href":"/articles/[...slug]"}`
       )
       expect(en).toContain(
-        `currentMeta: {"key":"en:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}}`
+        `currentMeta: {"key":"en:detail/article","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}}`
       )
 
       // EN RULES
 
-      expect(en).toContain(`{"key":"en:dynamic","href":"/[...slug]"}`)
-      expect(en).toContain(`{"key":"cs:dynamic","href":"/cs/[...slug]"}`)
-      expect(en).toContain(`{"key":"es:dynamic","href":"/es/[...slug]"}`)
+      expect(en).toContain(
+        `{"key":"en:detail/article","href":"/articles/[...slug]"}`
+      )
+      expect(en).toContain(
+        `{"key":"cs:detail/article","href":"/cs/articles/[...slug]"}`
+      )
+      expect(en).toContain(
+        `{"key":"es:detail/article","href":"/es/articles/[...slug]"}`
+      )
 
       expect(en).toContain(`{"key":"en:home","href":"/home"}`)
       expect(en).toContain(
@@ -403,22 +427,22 @@ describe('next-roots:cli-builder', () => {
       // EN META
 
       expect(en).toContain(
-        `{"key":"en:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
+        `{"key":"en:detail/article","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
       )
       expect(en).toContain(
-        `{"key":"cs:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
+        `{"key":"cs:detail/article","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
       )
       expect(en).toContain(
-        `{"key":"es:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
+        `{"key":"es:detail/article","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
       )
 
       // ES ROOT
 
       expect(es).toContain(
-        `import DynamicRoot, * as __root from 'roots/dynamic'`
+        `import DetailArticleRoot, * as __root from 'roots/detail/dynamic-root'`
       )
       expect(es).toContain(
-        `DynamicPage.getRootsContext = (): Partial<RootsContext> => ({`
+        `DetailArticlePage.getRootsContext = (): Partial<RootsContext> => ({`
       )
       expect(es).toContain(
         `export const getStaticPaths: GetStaticPaths = async () => __root.getStaticPaths()`
@@ -427,24 +451,30 @@ describe('next-roots:cli-builder', () => {
         `export const getStaticProps: GetStaticProps = async (context) => __root.getStaticProps({ ...context, __locale: 'es' })`
       )
 
-      expect(es).toContain(`export default DynamicPage`)
+      expect(es).toContain(`export default DetailArticlePage`)
 
       // ES CURRENT CONTEXT
 
       expect(es).toContain(`currentLocale: 'es'`)
-      expect(es).toContain(`currentRoot: 'dynamic'`)
+      expect(es).toContain(`currentRoot: 'detail/article'`)
       expect(es).toContain(
-        `currentRule: {"key":"es:dynamic","href":"/es/[...slug]"}`
+        `currentRule: {"key":"es:detail/article","href":"/es/articles/[...slug]"}`
       )
       expect(es).toContain(
-        `currentMeta: {"key":"es:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}}`
+        `currentMeta: {"key":"es:detail/article","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}}`
       )
 
       // ES RULES
 
-      expect(es).toContain(`{"key":"en:dynamic","href":"/[...slug]"}`)
-      expect(es).toContain(`{"key":"cs:dynamic","href":"/cs/[...slug]"}`)
-      expect(es).toContain(`{"key":"es:dynamic","href":"/es/[...slug]"}`)
+      expect(es).toContain(
+        `{"key":"en:detail/article","href":"/articles/[...slug]"}`
+      )
+      expect(es).toContain(
+        `{"key":"cs:detail/article","href":"/cs/articles/[...slug]"}`
+      )
+      expect(es).toContain(
+        `{"key":"es:detail/article","href":"/es/articles/[...slug]"}`
+      )
       expect(es).toContain(`{"key":"es:home","href":"/es"}`)
       expect(es).toContain(
         `{"key":"es:auth/signup","href":"/es/auth/signup.htm"}`
@@ -462,13 +492,13 @@ describe('next-roots:cli-builder', () => {
       // ES META
 
       expect(es).toContain(
-        `{"key":"en:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
+        `{"key":"en:detail/article","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
       )
       expect(es).toContain(
-        `{"key":"cs:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
+        `{"key":"cs:detail/article","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
       )
       expect(es).toContain(
-        `{"key":"es:dynamic","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
+        `{"key":"es:detail/article","data":{"title":"Awesome Next Roots","background":"magenta","footer":false}`
       )
     })
 
@@ -524,7 +554,9 @@ describe('next-roots:cli-builder', () => {
       expect(cs).toContain(
         `{"key":"cs:account/settings","href":"/cs/ucet/nastaveni-b2.htm"}`
       )
-      expect(cs).toContain(`{"key":"cs:dynamic","href":"/cs/[...slug]"}`)
+      expect(cs).toContain(
+        `{"key":"cs:detail/article","href":"/cs/articles/[...slug]"}`
+      )
 
       // CS META
 
@@ -577,7 +609,9 @@ describe('next-roots:cli-builder', () => {
       expect(en).toContain(
         `{"key":"en:account/settings","href":"/account/settings-b2.htm"}`
       )
-      expect(en).toContain(`{"key":"en:dynamic","href":"/[...slug]"}`)
+      expect(en).toContain(
+        `{"key":"en:detail/article","href":"/articles/[...slug]"}`
+      )
 
       // EN META
 
@@ -632,7 +666,9 @@ describe('next-roots:cli-builder', () => {
         `{"key":"es:account/settings","href":"/es/cuenta/ajustes-b2.htm"}`
       )
 
-      expect(es).toContain(`{"key":"es:dynamic","href":"/es/[...slug]"}`)
+      expect(es).toContain(
+        `{"key":"es:detail/article","href":"/es/articles/[...slug]"}`
+      )
 
       // ES META
 

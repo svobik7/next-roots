@@ -118,15 +118,29 @@ module.exports = {
     },
 
     {
-      root: 'dynamic',
+      root: 'detail/dynamic-root',
+      rootName: 'detail/article',
       pages: [
         {
           locale: '*',
-          path: '[...slug]',
+          path: 'articles/[...slug]',
           suffix: '',
         },
       ],
       metaData: [{ locale: '*', data: { background: 'magenta' } }],
+    },
+
+    {
+      root: 'detail/dynamic-root',
+      rootName: 'detail/product',
+      pages: [
+        {
+          locale: '*',
+          path: 'products/[...slug]',
+          suffix: '',
+        },
+      ],
+      metaData: [{ locale: '*', data: { background: 'cyan' } }],
     },
   ],
 }
