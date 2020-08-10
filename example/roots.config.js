@@ -132,11 +132,11 @@ module.exports = {
 
     {
       root: 'detail/dynamic-root',
-      rootName: 'detail/product',
+      rootName: 'detail/author',
       pages: [
         {
           locale: '*',
-          path: 'products/[...slug]',
+          path: 'authors/[...slug]',
           suffix: '',
         },
       ],
