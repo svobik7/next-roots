@@ -181,7 +181,8 @@ Each schema rule represents one `root + page` combination. This is the main way 
 }
 ```
 
-- `root` - source file name
+- `root` - source file path (will be used as root name if rootName options is empty)
+- `rootName` - explicit root name (used when creating RootLinks)
 - `pages` - localized aliases for current root
 - `params` - params which will be used as replace value in page `path` or `alias` during build
 - `metaData` - custom params which can will be injected directly into page and can by obtained using `useRootMeta` hook in runtime.

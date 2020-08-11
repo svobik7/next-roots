@@ -209,12 +209,12 @@ function createPageName(rootName: string) {
  * - add page locale to special methods context
  *
  * @param rootPath
- * @param rootAlias
+ * @param rootPathAlias
  * @param pageRule
  */
 function createPageContent(
   rootPath: string,
-  rootAlias: string,
+  rootPathAlias: string,
   schemaRules: Map<string, SchemaRule[]>,
   schemaMeta: Map<string, SchemaMeta[]>,
   pageRule: SchemaRule
@@ -252,7 +252,7 @@ function createPageContent(
     rules,
     meta,
     rootName: pageRoot,
-    rootAlias,
+    rootAlias: rootPathAlias,
     pageName,
     pageRule,
     pageMeta,
@@ -342,6 +342,8 @@ function run() {
   realSchemas.forEach((schema) => {
     // rewrite schema for each locale
     cfg.locales.forEach((l) => {
+      const schemaRootName = schema.rootName || schema.root
+
       if (schema.pages) {
         // find rewrite param based on locale
         const pageSchema =
@@ -371,13 +373,13 @@ function run() {
 
         // create page rule
         const pageRule = {
-          key: encodeSchemaRuleKey(schema.root, l),
+          key: encodeSchemaRuleKey(schemaRootName, l),
           href,
           as,
         }
 
-        schemaRules.set(schema.root, [
-          ...(schemaRules.get(schema.root) || []),
+        schemaRules.set(schemaRootName, [
+          ...(schemaRules.get(schemaRootName) || []),
           pageRule,
         ])
 
@@ -396,7 +398,8 @@ function run() {
         let isMatch = false
 
         try {
-          isMatch = curr.root === '*' || schema.root.match(curr.root) !== null
+          isMatch =
+            curr.root === '*' || schemaRootName.match(curr.root) !== null
         } catch {
           isMatch = false
         }
@@ -416,12 +419,12 @@ function run() {
 
       if (metaData || metaDataProto) {
         const pageMeta = {
-          key: encodeSchemaRuleKey(schema.root, l),
+          key: encodeSchemaRuleKey(schemaRootName, l),
           data: { ...metaDataProto, ...metaData },
         }
 
-        schemaMeta.set(schema.root, [
-          ...(schemaMeta.get(schema.root) || []),
+        schemaMeta.set(schemaRootName, [
+          ...(schemaMeta.get(schemaRootName) || []),
           pageMeta,
         ])
       }
@@ -433,9 +436,10 @@ function run() {
     // skip prototype rules
     if (s.isPrototype || s.root === '*') return
 
-    const pageRules = schemaRules.get(s.root)
+    const pageRules = schemaRules.get(s.rootName || s.root)
 
     pageRules?.forEach((pageRule) => {
+      // absolute root file path on drive
       const rootPath = getFilePath(
         path.format({
           dir: DIR_ROOTS,
@@ -444,7 +448,8 @@ function run() {
         })
       )
 
-      const rootAlias = `${cfg.dirRoots}/${s.root}`
+      // relative root file alias used in `import` statements
+      const rootPathAlias = `${cfg.dirRoots}/${s.root}`
 
       // create `/en/index.tsx` instead of `/en.tsx`
       const pageName = cfg.locales.includes(pageRule.href.slice(1))
@@ -462,7 +467,7 @@ function run() {
       // create page template for each root
       const pageContent = createPageContent(
         rootPath,
-        rootAlias,
+        rootPathAlias,
         schemaRules,
         schemaMeta,
         pageRule
@@ -472,11 +477,11 @@ function run() {
     })
   })
 
-  // create GLOBAL context file with rules and meta data
-  const allRules = cfg.locales.reduce((acc: SchemaRule[], curr: string) => {
-    acc = [...acc, ...(schemaRules.get(`__${curr}`) || [])]
-    return acc
-  }, [] as SchemaRule[])
+  // // create GLOBAL context file with rules and meta data
+  // const allRules = cfg.locales.reduce((acc: SchemaRule[], curr: string) => {
+  //   acc = [...acc, ...(schemaRules.get(`__${curr}`) || [])]
+  //   return acc
+  // }, [] as SchemaRule[])
 
   const schemaFilePath = `${mainDir}/roots.schema.js`
   const schemaFileContent = {
