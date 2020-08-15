@@ -1,6 +1,5 @@
-import { ReactText } from 'react'
-
 export type Config = {
+  prototypes: BuilderPrototype[]
   schemas: BuilderSchema[]
   locales: string[]
   shallowLocales: string[]
@@ -17,6 +16,11 @@ export type Config = {
 /**
  * BUILDER
  */
+export type BuilderPrototype = {
+  root: string
+  metaData?: BuilderSchemaMeta[]
+}
+
 export type BuilderSchema = {
   root: string
   rootName?: string

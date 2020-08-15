@@ -1,5 +1,6 @@
 import pageTemplate from '../templates/page.tpl'
 import {
+  BuilderPrototype,
   BuilderSchema,
   BuilderSchemaMeta,
   BuilderSchemaPage,
@@ -309,16 +310,19 @@ function reduceMetaData(meta: BuilderSchemaMeta[], locale: string) {
  * @param schemas
  */
 function parseSchemas(
-  schemas: BuilderSchema[]
-): [BuilderSchema[], BuilderSchema[]] {
+  schemas: BuilderSchema[],
+  prototypes: BuilderPrototype[] = []
+): [BuilderSchema[], BuilderPrototype[]] {
+  const parsed: [BuilderSchema[], BuilderPrototype[]] = [[], prototypes]
+
   return schemas.reduce(
-    (result: [BuilderSchema[], BuilderSchema[]], current: BuilderSchema) => {
+    (result: [BuilderSchema[], BuilderPrototype[]], current: BuilderSchema) => {
       current.isPrototype || current.root === '*'
         ? result[1].push(current)
         : result[0].push(current)
       return result
     },
-    [[], []]
+    parsed
   )
 }
 
@@ -337,7 +341,7 @@ function run() {
   const schemaRules = new Map<string, SchemaRule[]>()
   const schemaMeta = new Map<string, SchemaMeta[]>()
 
-  const [realSchemas, protoSchemas] = parseSchemas(cfg.schemas)
+  const [realSchemas, protoSchemas] = parseSchemas(cfg.schemas, cfg.prototypes)
 
   realSchemas.forEach((schema) => {
     // rewrite schema for each locale

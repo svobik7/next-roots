@@ -5,7 +5,7 @@ module.exports = {
   defaultSuffix: '.htm',
   dirRoots: 'roots',
   dirPages: 'pages',
-  schemas: [
+  prototypes: [
     {
       root: '*',
       metaData: [
@@ -18,8 +18,9 @@ module.exports = {
           },
         },
       ],
-      isPrototype: true,
     },
+  ],
+  schemas: [
     {
       root: 'home',
       pages: [
