@@ -156,7 +156,7 @@ module.exports = {
 | locales       | []                                              | all allowed locales which will be generated                     |
 | defaultLocale | ''                                              | locale which will be used as default when no locale is detected |
 | defaultSuffix | ''                                              | default page suffix which will be added to page name            |
-| basePath      | `.`                                         | path to base folder where roots and pages are located                |
+| basePath      | `.`                                             | path to base folder where roots and pages are located           |
 | dirRoot       | `roots`                                         | source folder with all roots files                              |
 | dirPages      | `pages`                                         | target folder where pages will be generated into                |
 | staticRoots   | `['api', '_app', '_document', '_error', '404']` | static roots which will be generated outside locales folders    |
@@ -377,14 +377,16 @@ Recommended usage:
 // in your _app.tsx
 import RootsContext, { detectRoots } from 'next-roots/context'
 import { AppProps } from 'next/app'
+import schemaRoots from 'roots.schema'
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp(appProps: AppProps) {
+  const { Component, pageProps } = appProps
   // detect roots context from page component
   // - current values will be obtained from Component.getRootsContext
   // - second argument holds default values
-  const roots = detectRoots(Component, {
-    defaultLocale: 'en',
-    locales: ['en', 'cs', 'es'],
+  const roots = detectRoots(appProps, {
+    defaultLocale: schemaRoots.defaultLocale,
+    locales: schemaRoots.locales,
   })
 
   return (

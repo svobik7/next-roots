@@ -48,19 +48,22 @@ function useRoots() {
 }
 
 function detectRoots(
-  appProps: AppProps & {
-    Component: AppProps['Component'] & { getRootsContext: () => RootsContext }
-  },
+  appProps: AppProps,
   initial: Partial<RootsContext> = initialContext
 ): RootsContext {
-  const { Component, router } = appProps
+  const { router } = appProps
 
   let context = {
     ...initialContext,
     ...initial,
   }
 
-  if (typeof Component.getRootsContext === 'function') {
+  // re-type component to suppress TS errors about getRootsContext method
+  const Component = appProps.Component as AppProps['Component'] & {
+    getRootsContext: () => RootsContext
+  }
+
+  if (Component && typeof Component.getRootsContext === 'function') {
     const ctxComponent = Component.getRootsContext()
 
     return {
