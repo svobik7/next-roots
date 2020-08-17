@@ -2,13 +2,13 @@ import RootsContext, { detectRoots } from 'next-roots/context'
 import { AppProps } from 'next/app'
 import schemaRoots from 'roots.schema'
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp(props: AppProps) {
+  const { Component, pageProps } = props
+
   // detect roots context from page component
-  const roots = detectRoots(Component, {
+  const roots = detectRoots(props, {
     defaultLocale: schemaRoots.defaultLocale,
     locales: schemaRoots.locales,
-    // rules: schemaRoots.rules,
-    // meta: schemaRoots.meta,
   })
 
   return (
