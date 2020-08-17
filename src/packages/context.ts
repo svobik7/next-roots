@@ -1,3 +1,4 @@
+import { AppProps } from 'next/app'
 import { createContext, useContext } from 'react'
 import { SchemaMeta, SchemaRule } from '../types'
 
@@ -47,9 +48,13 @@ function useRoots() {
 }
 
 function detectRoots(
-  Component: any,
+  appProps: AppProps & {
+    Component: AppProps['Component'] & { getRootsContext: () => RootsContext }
+  },
   initial: Partial<RootsContext> = initialContext
 ): RootsContext {
+  const { Component, router } = appProps
+
   let context = {
     ...initialContext,
     ...initial,
@@ -58,7 +63,7 @@ function detectRoots(
   if (typeof Component.getRootsContext === 'function') {
     const ctxComponent = Component.getRootsContext()
 
-    context = {
+    return {
       ...context,
       ...ctxComponent,
       meta: [...context.meta, ...(ctxComponent.meta || [])],
@@ -66,7 +71,15 @@ function detectRoots(
     }
   }
 
-  return context
+  const currentLocale = router.asPath
+    .split('/')
+    .find((l) => l && context.locales.includes(l))
+
+  // use 404 context when page has not getRootsContext method defined
+  return {
+    ...context,
+    currentLocale: currentLocale || context.defaultLocale,
+  }
 }
 
 export default RootsContext
