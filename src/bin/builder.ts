@@ -296,6 +296,8 @@ function hasSpecialMethod(content: string, name: string): boolean {
  * @param locale
  */
 function reduceMetaData(meta: BuilderSchemaMeta[], locale: string) {
+  if (!Array.isArray(meta)) return {}
+
   const metaProto = meta.find((m) => m.locale === '*')
   const metaSchema = meta.find((m) => m.locale === locale)
 
