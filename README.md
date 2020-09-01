@@ -47,16 +47,27 @@ module.exports = {
   locales: ['en', 'cs'],
   defaultLocale: 'cs',
   defaultSuffix: '.htm',
-  schemas: [
+  prototypes: [
     {
       root: '*',
       metaData: [
         {
           locale: '*',
-          data: { title: 'Next Roots', background: 'grey' },
+          data: { title: 'Next Roots', background: 'grey', footer: false },
         },
       ],
     },
+    {
+      root: 'auth/(.*)',
+      metaData: [
+        { locale: '*', data: { footer: true } },
+        { locale: 'en', data: { section: 'Authorization' } },
+        { locale: 'cs', data: { section: 'Ověření' } },
+        { locale: 'es', data: { section: 'Autorización' } },
+      ],
+    },
+  ],
+  schemas: [
     {
       root: 'home',
       pages: [{ locale: '*', path: 'index', suffix: '' }],
