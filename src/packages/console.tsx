@@ -254,7 +254,7 @@ function RootsConsole() {
   }
 
   // parsed data
-  const dataMeta = meta.data('*')
+  const dataMeta = meta.data<object>('*')
 
   return (
     <div id={`${PREFIX}panel`}>
