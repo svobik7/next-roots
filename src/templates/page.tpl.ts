@@ -53,7 +53,7 @@ export default function pageTemplate(props: PageTemplateProps) {
   }
 
   if (useTypings) {
-    tpl += `import RootsContext from 'next-roots/context'` + `\n`
+    tpl += `import { Roots } from 'next-roots/context'` + `\n`
   }
 
   tpl += hasSpecialMethods
@@ -70,9 +70,9 @@ export default function pageTemplate(props: PageTemplateProps) {
 
   tpl += `\n`
 
-  const ctxReturnType = useTypings ? ': Partial<RootsContext>' : ''
+  const ctxReturnType = useTypings ? ': Partial<Roots>' : ''
 
-  tpl += `${pageName}Page.getRootsContext = ()${ctxReturnType} => ({` + `\n`
+  tpl += `${pageName}Page.getRoots = ()${ctxReturnType} => ({` + `\n`
   tpl += `  currentLocale: '${locale}',` + `\n`
   tpl += `  currentRoot: '${rootName}',` + `\n`
   tpl += `  currentRule: ${JSON.stringify(pageRule)},` + `\n`

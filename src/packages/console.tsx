@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react'
 import { useRoots } from './context'
-import RootLink, { useRootLink } from './link'
+import { RootLink, useRootLink } from './link'
 import { useRootMeta } from './meta'
 
 type ConsoleTableProps = {
@@ -182,7 +182,7 @@ function createPanelCss(prefix: string) {
   `
 }
 
-function RootsConsole() {
+export function RootsConsole() {
   const PREFIX = '__next-roots_console'
 
   // use ref to indicate mount state
@@ -419,5 +419,3 @@ function RootsConsole() {
     </div>
   )
 }
-
-export default RootsConsole

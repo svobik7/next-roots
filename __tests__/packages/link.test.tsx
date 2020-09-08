@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { renderHook } from '@testing-library/react-hooks'
 import React from 'react'
-import RootsContext from '../../src/packages/context'
-import RootLink, { RootLinkProps, useRootLink } from '../../src/packages/link'
+import { RootsContext } from '../../src/packages/context'
+import { RootLink, RootLinkProps, useRootLink } from '../../src/packages/link'
 
 describe('next-roots/link', () => {
   // mock context wrapper

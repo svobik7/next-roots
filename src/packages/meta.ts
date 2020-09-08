@@ -1,19 +1,19 @@
-import { useContext } from 'react'
-import RootsContext from './context'
+import { useRoots } from './context'
 
-function useRootMeta() {
+export type RootMetaHook = {
+  data: <T>(query?: string, key?: string) => T | undefined
+}
+
+export function useRootMeta(): RootMetaHook {
   // use rewrite context for current locale and rules
-  const context = useContext(RootsContext)
+  const roots = useRoots()
 
   return {
-    data: <T = unknown>(
-      query: string = '*',
-      key: string = ''
-    ): T | undefined => {
+    data: <T = unknown>(query = '*', key = '') => {
       const meta =
-        key && key !== context.currentRule?.key
-          ? context.meta.find((m) => m.key === key)
-          : context.currentMeta
+        key && key !== roots.currentRule?.key
+          ? roots.meta.find((m) => m.key === key)
+          : roots.currentMeta
 
       if (query === '*') {
         return meta?.data as T
@@ -23,5 +23,3 @@ function useRootMeta() {
     },
   }
 }
-
-export { useRootMeta }

@@ -2,7 +2,7 @@ import { AppProps } from 'next/app'
 import { createContext, useContext } from 'react'
 import { SchemaMeta, SchemaRule } from '../types'
 
-export type RootsContext = {
+export type Roots = {
   locales: string[]
   rules: SchemaRule[]
   meta: SchemaMeta[]
@@ -15,7 +15,7 @@ export type RootsContext = {
   currentMeta: SchemaMeta | undefined
 }
 
-const initialContext: RootsContext = {
+const initialContext: Roots = {
   locales: [],
   rules: [],
   meta: [],
@@ -28,18 +28,20 @@ const initialContext: RootsContext = {
   currentMeta: undefined,
 }
 
-const RootsContext = createContext<RootsContext>(initialContext)
+export const RootsContext = createContext<Roots>(initialContext)
 RootsContext.displayName = 'RootsContext'
 
-function useRoots() {
+export function useRoots(): Roots {
   // use rewrite context for current locale and rules
   const context = useContext(RootsContext)
 
   return {
     locales: context.locales,
-    // default values
+    rules: context.rules,
+    meta: context.meta,
+    // - default values
     defaultLocale: context.defaultLocale,
-    // current values
+    // - current values
     currentRoot: context.currentRoot,
     currentLocale: context.currentLocale,
     currentRule: context.currentRule,
@@ -47,10 +49,10 @@ function useRoots() {
   }
 }
 
-function detectRoots(
+export function detectRoots(
   appProps: AppProps,
-  initial: Partial<RootsContext> = initialContext
-): RootsContext {
+  initial: Partial<Roots> = initialContext
+): Roots {
   const { router } = appProps
 
   let context = {
@@ -58,13 +60,13 @@ function detectRoots(
     ...initial,
   }
 
-  // re-type component to suppress TS errors about getRootsContext method
+  // re-type component to suppress TS errors about getRoots method
   const Component = appProps.Component as AppProps['Component'] & {
-    getRootsContext: () => RootsContext
+    getRoots: () => Roots
   }
 
-  if (Component && typeof Component.getRootsContext === 'function') {
-    const ctxComponent = Component.getRootsContext()
+  if (Component && typeof Component.getRoots === 'function') {
+    const ctxComponent = Component.getRoots()
 
     return {
       ...context,
@@ -78,12 +80,9 @@ function detectRoots(
     .split('/')
     .find((l) => l && context.locales.includes(l))
 
-  // use 404 context when page has not getRootsContext method defined
+  // use 404 context when page has not getRoots method defined
   return {
     ...context,
     currentLocale: currentLocale || context.defaultLocale,
   }
 }
-
-export default RootsContext
-export { useRoots, detectRoots }

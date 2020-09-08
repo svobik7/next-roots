@@ -1,10 +1,11 @@
 module.exports = {
   locales: ['en', 'cs', 'es'],
-  shallowLocales: ['en'],
+  shallowLocale: 'en',
   defaultLocale: 'en',
   defaultSuffix: '.htm',
   dirRoots: 'roots',
   dirPages: 'pages',
+  staticRoots: ['api', '_app', '_document', '_error', '404'],
   prototypes: [
     {
       root: '*',
@@ -23,10 +24,7 @@ module.exports = {
   schemas: [
     {
       root: 'home',
-      pages: [
-        { locale: 'en', path: 'home', suffix: '' },
-        { locale: '*', path: 'index', suffix: '' },
-      ],
+      pages: [{ locale: '*', path: 'index', suffix: '' }],
     },
     {
       root: 'auth/(.*)',

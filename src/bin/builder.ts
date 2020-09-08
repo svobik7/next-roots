@@ -159,7 +159,7 @@ function createPageRewrite(
   params = {}
 ): [string, string | undefined] {
   const locale =
-    cfg.shallowLocales && cfg.shallowLocales.includes(page.locale)
+    cfg.shallowLocale && cfg.shallowLocale.includes(page.locale)
       ? ''
       : page.locale
 
@@ -205,7 +205,7 @@ function createPageName(rootName: string) {
 
 /**
  * Creates page content based on root
- * - adds `getRootsContext` method
+ * - adds `getRoots` method
  * - add forwards to all special methods like `getStaticProps`, ...
  * - add page locale to special methods context
  *
@@ -458,9 +458,11 @@ function run() {
       const rootPathAlias = `${cfg.dirRoots}/${s.root}`
 
       // create `/en/index.tsx` instead of `/en.tsx`
-      const pageName = cfg.locales.includes(pageRule.href.slice(1))
-        ? `${pageRule.href}/index`
-        : pageRule.href
+      // or create `/index.tsx` instead of `/.tsx` for shallow locale
+      const pageName =
+        pageRule.href === '/' || cfg.locales.includes(pageRule.href.slice(1))
+          ? `${pageRule.href}/index`
+          : pageRule.href
 
       const pagePath = getFilePath(
         path.format({
@@ -493,7 +495,7 @@ function run() {
   const schemaFileContent = {
     locales: cfg.locales,
     defaultLocale: cfg.defaultLocale,
-    // rules: allRules,
+    shallowLocale: cfg.shallowLocale,
   }
 
   // save schema file
@@ -505,6 +507,11 @@ function run() {
   // keep next.js specific files / dirs as they are
   // and just copy them to pages directory
   cfg.staticRoots.forEach((staticPath) => {
+    // skip index file copy to prevent breaking shallow locale from work
+    if (staticPath === 'index' && cfg.locales.includes(cfg.shallowLocale)) {
+      return
+    }
+
     const sourceDir = getFilePath(
       path.format({
         dir: DIR_ROOTS,

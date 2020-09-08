@@ -2,7 +2,7 @@ export type Config = {
   prototypes: BuilderPrototype[]
   schemas: BuilderSchema[]
   locales: string[]
-  shallowLocales: string[]
+  shallowLocale: string
   defaultLocale: string
   defaultSuffix: string
   basePath: string

@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks'
 import React from 'react'
-import RootsContext from '../../src/packages/context'
+import { RootsContext } from '../../src/packages/context'
 import { useRootMeta } from '../../src/packages/meta'
 
 describe('next-roots/meta', () => {

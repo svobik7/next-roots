@@ -1,4 +1,4 @@
-import RootsContext, { detectRoots } from 'next-roots/context'
+import { detectRoots, RootsContext } from 'next-roots/context'
 import { AppProps } from 'next/app'
 import schemaRoots from 'roots.schema'
 

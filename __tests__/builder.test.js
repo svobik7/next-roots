@@ -38,12 +38,11 @@ describe('next-roots:cli-builder', () => {
       expect(fs.existsSync('example/pages/_app.tsx')).toBe(true)
       expect(fs.existsSync('example/pages/_document.tsx')).toBe(true)
       expect(fs.existsSync('example/pages/_error.tsx')).toBe(true)
-      expect(fs.existsSync('example/pages/index.tsx')).toBe(true)
       expect(fs.existsSync('example/pages/api/get-version.ts')).toBe(true)
       expect(fs.existsSync('example/pages/api/users/index.ts')).toBe(true)
 
       // test shallow locales
-      expect(fs.existsSync('example/pages/home.tsx')).toBe(true)
+      expect(fs.existsSync('example/pages/index.tsx')).toBe(true)
       expect(fs.existsSync('example/pages/auth/signup-a1.page.tsx')).toBe(true)
       expect(fs.existsSync('example/pages/auth/login-a2.htm.tsx')).toBe(true)
       expect(fs.existsSync('example/pages/account/profile-b1.htm.tsx')).toBe(
@@ -122,27 +121,18 @@ describe('next-roots:cli-builder', () => {
 
       expect(root.equals(page)).toBe(true)
     })
-
-    test('index content', () => {
-      const root = fs.readFileSync('example/roots/index.tsx')
-      const page = fs.readFileSync('example/pages/index.tsx')
-
-      expect(root.equals(page)).toBe(true)
-    })
   })
 
   describe('i18n pages should have proper content', () => {
     test('home content', () => {
       const cs = fs.readFileSync('example/pages/cs/index.tsx').toString()
-      const en = fs.readFileSync('example/pages/home.tsx').toString()
+      const en = fs.readFileSync('example/pages/index.tsx').toString()
       const es = fs.readFileSync('example/pages/es/index.tsx').toString()
 
       // CS ROOT
 
       expect(cs).toContain(`import HomeRoot from 'roots/home'`)
-      expect(cs).toContain(
-        `HomePage.getRootsContext = (): Partial<RootsContext>`
-      )
+      expect(cs).toContain(`HomePage.getRoots = (): Partial<Roots>`)
       expect(cs).toContain(`export default HomePage`)
 
       // CS CURRENT CONTEXT
@@ -156,7 +146,7 @@ describe('next-roots:cli-builder', () => {
 
       // CS RULES
 
-      expect(cs).toContain(`{"key":"en:home","href":"/home"}`)
+      expect(cs).toContain(`{"key":"en:home","href":"/"}`)
       expect(cs).toContain(`{"key":"cs:home","href":"/cs"}`)
       expect(cs).toContain(`{"key":"es:home","href":"/es"}`)
 
@@ -193,23 +183,21 @@ describe('next-roots:cli-builder', () => {
       // EN ROOT
 
       expect(en).toContain(`import HomeRoot from 'roots/home'`)
-      expect(en).toContain(
-        `HomePage.getRootsContext = (): Partial<RootsContext>`
-      )
+      expect(en).toContain(`HomePage.getRoots = (): Partial<Roots>`)
       expect(en).toContain(`export default HomePage`)
 
       // EN CURRENT CONTEXT
 
       expect(en).toContain(`currentLocale: 'en'`)
       expect(en).toContain(`currentRoot: 'home'`)
-      expect(en).toContain(`currentRule: {"key":"en:home","href":"/home"}`)
+      expect(en).toContain(`currentRule: {"key":"en:home","href":"/"}`)
       expect(en).toContain(
         `currentMeta: {"key":"en:home","data":{"title":"Awesome Next Roots","background":"grey","footer":false}}`
       )
 
       // EN RULES
 
-      expect(en).toContain(`{"key":"en:home","href":"/home"}`)
+      expect(en).toContain(`{"key":"en:home","href":"/"}`)
       expect(en).toContain(`{"key":"cs:home","href":"/cs"}`)
       expect(en).toContain(`{"key":"es:home","href":"/es"}`)
 
@@ -246,9 +234,7 @@ describe('next-roots:cli-builder', () => {
       // ES
 
       expect(es).toContain(`import HomeRoot from 'roots/home'`)
-      expect(es).toContain(
-        `HomePage.getRootsContext = (): Partial<RootsContext>`
-      )
+      expect(es).toContain(`HomePage.getRoots = (): Partial<Roots>`)
       expect(es).toContain(`export default HomePage`)
 
       // ES CURRENT CONTEXT
@@ -262,7 +248,7 @@ describe('next-roots:cli-builder', () => {
 
       // ES RULES
 
-      expect(es).toContain(`{"key":"en:home","href":"/home"}`)
+      expect(es).toContain(`{"key":"en:home","href":"/"}`)
       expect(es).toContain(`{"key":"cs:home","href":"/cs"}`)
       expect(es).toContain(`{"key":"es:home","href":"/es"}`)
 
@@ -313,7 +299,7 @@ describe('next-roots:cli-builder', () => {
         `import DetailArticleRoot, * as __root from 'roots/detail/dynamic-root'`
       )
       expect(cs).toContain(
-        `DetailArticlePage.getRootsContext = (): Partial<RootsContext> => ({`
+        `DetailArticlePage.getRoots = (): Partial<Roots> => ({`
       )
       expect(cs).toContain(
         `export const getStaticPaths: GetStaticPaths = async () => __root.getStaticPaths()`
@@ -377,7 +363,7 @@ describe('next-roots:cli-builder', () => {
         `import DetailArticleRoot, * as __root from 'roots/detail/dynamic-root'`
       )
       expect(en).toContain(
-        `DetailArticlePage.getRootsContext = (): Partial<RootsContext> => ({`
+        `DetailArticlePage.getRoots = (): Partial<Roots> => ({`
       )
       expect(en).toContain(
         `export const getStaticPaths: GetStaticPaths = async () => __root.getStaticPaths()`
@@ -410,7 +396,7 @@ describe('next-roots:cli-builder', () => {
         `{"key":"es:detail/article","href":"/es/articles/[...slug]"}`
       )
 
-      expect(en).toContain(`{"key":"en:home","href":"/home"}`)
+      expect(en).toContain(`{"key":"en:home","href":"/"}`)
       expect(en).toContain(
         `{"key":"en:auth/signup","href":"/auth/signup-a1.page"}`
       )
@@ -442,7 +428,7 @@ describe('next-roots:cli-builder', () => {
         `import DetailArticleRoot, * as __root from 'roots/detail/dynamic-root'`
       )
       expect(es).toContain(
-        `DetailArticlePage.getRootsContext = (): Partial<RootsContext> => ({`
+        `DetailArticlePage.getRoots = (): Partial<Roots> => ({`
       )
       expect(es).toContain(
         `export const getStaticPaths: GetStaticPaths = async () => __root.getStaticPaths()`
@@ -516,9 +502,7 @@ describe('next-roots:cli-builder', () => {
       // CS ROOT
 
       expect(cs).toContain(`import AuthLoginRoot from 'roots/auth/login'`)
-      expect(cs).toContain(
-        `AuthLoginPage.getRootsContext = (): Partial<RootsContext>`
-      )
+      expect(cs).toContain(`AuthLoginPage.getRoots = (): Partial<Roots>`)
       expect(cs).toContain(`export default AuthLoginPage`)
 
       // CS CURRENT CONTEXT
@@ -573,9 +557,7 @@ describe('next-roots:cli-builder', () => {
       // EN ROOT
 
       expect(en).toContain(`import AuthLoginRoot from 'roots/auth/login'`)
-      expect(en).toContain(
-        `AuthLoginPage.getRootsContext = (): Partial<RootsContext>`
-      )
+      expect(en).toContain(`AuthLoginPage.getRoots = (): Partial<Roots>`)
       expect(en).toContain(`export default AuthLoginPage`)
 
       // EN CURRENT CONTEXT
@@ -599,7 +581,7 @@ describe('next-roots:cli-builder', () => {
         `{"key":"es:auth/login","href":"/es/autorizacion/iniciar-sesion-a2.htm"}`
       )
 
-      expect(en).toContain(`{"key":"en:home","href":"/home"}`)
+      expect(en).toContain(`{"key":"en:home","href":"/"}`)
       expect(en).toContain(
         `{"key":"en:auth/signup","href":"/auth/signup-a1.page"}`
       )
@@ -628,9 +610,7 @@ describe('next-roots:cli-builder', () => {
       // ES ROOT
 
       expect(es).toContain(`import AuthLoginRoot from 'roots/auth/login'`)
-      expect(es).toContain(
-        `AuthLoginPage.getRootsContext = (): Partial<RootsContext>`
-      )
+      expect(es).toContain(`AuthLoginPage.getRoots = (): Partial<Roots>`)
 
       expect(es).toContain(`export default AuthLoginPage`)
 

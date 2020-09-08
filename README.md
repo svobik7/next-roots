@@ -386,14 +386,14 @@ Recommended usage:
 
 ```tsx
 // in your _app.tsx
-import RootsContext, { detectRoots } from 'next-roots/context'
+import { RootsContext, detectRoots } from 'next-roots/context'
 import { AppProps } from 'next/app'
 import schemaRoots from 'roots.schema'
 
 function MyApp(appProps: AppProps) {
   const { Component, pageProps } = appProps
   // detect roots context from page component
-  // - current values will be obtained from Component.getRootsContext
+  // - current values will be obtained from Component.getRoots
   // - second argument holds default values
   const roots = detectRoots(appProps, {
     defaultLocale: schemaRoots.defaultLocale,
@@ -464,7 +464,7 @@ import RootLink from 'next-roots/link';
 It is possible to use <RootsConsole /> component to debug whole Roots context values.
 
 ```js
-import RootsConsole from 'next-roots/console'
+import { RootsConsole } from 'next-roots/console'
 
 //
 function MyLayout() {
@@ -536,7 +536,7 @@ Refactor has been done to keep page bundles size as small as possible. Therefore
 
 > The only possible case for using `roots.schema.js` is handling tokenized page redirects like `/en/p1.htm` >>> `/en/auth/signup-p1.htm` in your [catchAllRoute] page
 
-The `parsePathname` util has been replaced with `detectRoots` and is no longer dependent on the router pathname. Context values are obtained from the `PageComponent.getRootsContext` which is generated during build time.
+The `parsePathname` util has been replaced with `detectRoots` and is no longer dependent on the router pathname. Context values are obtained from the `PageComponent.getRoots` which is generated during build time.
 
 Rules and metadata are now directly injected to page file during build time BUT to keep page size bundle small only rules and meta with same locale or root are injected.
 
@@ -576,7 +576,7 @@ export default MyApp
 
 ```tsx
 // AFTER 2.0.0
-import RootsContext, { detectRoots } from 'next-roots/context'
+import { RootsContext, detectRoots } from 'next-roots/context'
 import { AppProps } from 'next/app'
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -643,7 +643,7 @@ To generate localized pages directly inside `pages` directory and ignore its enc
 ```js
 // roots.config.js
 {
-  shallowLocales: ['en']
+  shallowLocale: 'en'
   // ...other options
 }
 ```

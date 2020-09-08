@@ -1,6 +1,12 @@
 import { GetServerSideProps } from 'next'
 import schema from 'roots.schema'
 
+/**
+ * NOTE: This is example of initial redirect to default localized page. This page is not used in current example because of
+ * - roots.config.shallowLocale points to 'en'
+ * - and roots.config.staticRoots ignores 'index'
+ */
+
 export default function IndexPage({ locale }) {
   return <h1>Redirecting to {locale}... </h1>
 }

@@ -1,8 +1,14 @@
 import NextLink, { LinkProps as NextLinkProps } from 'next/link'
-import React, { useContext } from 'react'
+import React from 'react'
 import { RewriteAsOptions, RewriteHrefOptions } from '../types'
 import { rewriteAs, rewriteHref } from '../utils'
-import RootsContext from './context'
+import { useRoots } from './context'
+
+/**
+ * ---
+ * ROOT LINK COMPONENT
+ * ---
+ */
 
 export type RootLinkProps = React.PropsWithChildren<
   NextLinkProps & {
@@ -11,7 +17,7 @@ export type RootLinkProps = React.PropsWithChildren<
   }
 >
 
-function RootLink(props: RootLinkProps) {
+export function RootLink(props: RootLinkProps) {
   const { children, href, as, locale, params, ...otherProps } = props
 
   const link = useRootLink()
@@ -43,24 +49,32 @@ function RootLink(props: RootLinkProps) {
   )
 }
 
-function useRootLink() {
+/**
+ * ---
+ * ROOT LINK HOOK
+ * ---
+ */
+
+export type RootLinkHook = {
+  href: (root: string, options?: Partial<RewriteHrefOptions>) => string
+  as: (root: string, options?: Partial<RewriteAsOptions>) => string
+}
+
+export function useRootLink(): RootLinkHook {
   // use rewrite context for current locale and rules
-  const context = useContext(RootsContext)
+  const roots = useRoots()
 
   return {
-    as: (root: string, options: Partial<RewriteAsOptions> = {}) =>
+    as: (root, options = {}) =>
       rewriteAs(root, {
-        locale: options.locale ?? context.currentLocale,
+        locale: options.locale ?? roots.currentLocale,
         params: options.params,
-        __rules: context.rules,
+        __rules: roots.rules,
       }),
-    href: (root: string, options: Partial<RewriteHrefOptions> = {}) =>
+    href: (root, options = {}) =>
       rewriteHref(root, {
-        locale: options.locale ?? context.currentLocale,
-        __rules: context.rules,
+        locale: options.locale ?? roots.currentLocale,
+        __rules: roots.rules,
       }),
   }
 }
-
-export { useRootLink }
-export default RootLink

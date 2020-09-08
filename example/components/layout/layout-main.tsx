@@ -1,7 +1,7 @@
-import RootsConsole from 'next-roots/console'
-import RootLink from 'next-roots/link'
-import { useRootMeta } from 'next-roots/meta'
+import { RootsConsole } from 'next-roots/console'
 import { useRoots } from 'next-roots/context'
+import { RootLink } from 'next-roots/link'
+import { useRootMeta } from 'next-roots/meta'
 import Link from 'next/link'
 import React from 'react'
 import styles from './layout-main.module.css'
@@ -15,7 +15,7 @@ export default function LayoutMain({ children }) {
 
   return (
     <div className={styles.root}>
-      <h1>NEXT ROOTS</h1>
+      <h1>NEXT ROOTS ({roots.currentLocale})</h1>
 
       <div
         className={styles.body}
