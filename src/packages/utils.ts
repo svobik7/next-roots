@@ -1,4 +1,4 @@
-import { RewriteAsOptions, RewriteHrefOptions, SchemaRule } from './types'
+import { RewriteAsOptions, RewriteHrefOptions, SchemaRule } from '../types'
 
 /**
  * Parametrizes input based on tags

@@ -1,3 +1,8 @@
+import {
+  createSchemaRulePath,
+  decodeSchemaRuleKey,
+  encodeSchemaRuleKey,
+} from '../packages/utils'
 import pageTemplate from '../templates/page.tpl'
 import {
   BuilderPrototype,
@@ -8,11 +13,6 @@ import {
   SchemaMeta,
   SchemaRule,
 } from '../types'
-import {
-  createSchemaRulePath,
-  decodeSchemaRuleKey,
-  encodeSchemaRuleKey,
-} from '../utils'
 
 const fs = require('fs')
 const path = require('path')

@@ -1,10 +1,10 @@
 import { useRoots } from './context'
 
-export type RootMetaHook = {
+type RootMetaHook = {
   data: <T>(query?: string, key?: string) => T | undefined
 }
 
-export function useRootMeta(): RootMetaHook {
+function useRootMeta(): RootMetaHook {
   // use rewrite context for current locale and rules
   const roots = useRoots()
 
@@ -23,3 +23,5 @@ export function useRootMeta(): RootMetaHook {
     },
   }
 }
+
+export { useRootMeta, RootMetaHook }

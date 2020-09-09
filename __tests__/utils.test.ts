@@ -9,7 +9,7 @@ import {
   rewriteAs,
   rewriteHref,
   suffixize,
-} from '../src/utils'
+} from '../src/packages/utils'
 
 describe('next-roots:utils', () => {
   /**

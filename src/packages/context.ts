@@ -2,7 +2,7 @@ import { AppProps } from 'next/app'
 import { createContext, useContext } from 'react'
 import { SchemaMeta, SchemaRule } from '../types'
 
-export type Roots = {
+type Roots = {
   locales: string[]
   rules: SchemaRule[]
   meta: SchemaMeta[]
@@ -28,10 +28,10 @@ const initialContext: Roots = {
   currentMeta: undefined,
 }
 
-export const RootsContext = createContext<Roots>(initialContext)
+const RootsContext = createContext<Roots>(initialContext)
 RootsContext.displayName = 'RootsContext'
 
-export function useRoots(): Roots {
+function useRoots(): Roots {
   // use rewrite context for current locale and rules
   const context = useContext(RootsContext)
 
@@ -49,7 +49,7 @@ export function useRoots(): Roots {
   }
 }
 
-export function detectRoots(
+function detectRoots(
   appProps: AppProps,
   initial: Partial<Roots> = initialContext
 ): Roots {
@@ -86,3 +86,5 @@ export function detectRoots(
     currentLocale: currentLocale || context.defaultLocale,
   }
 }
+
+export { Roots, RootsContext, detectRoots, useRoots }
