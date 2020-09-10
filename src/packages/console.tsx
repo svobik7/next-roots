@@ -182,7 +182,7 @@ function createPanelCss(prefix: string) {
   `
 }
 
-export function RootsConsole() {
+function RootsConsole() {
   const PREFIX = '__next-roots_console'
 
   // use ref to indicate mount state
@@ -419,3 +419,5 @@ export function RootsConsole() {
     </div>
   )
 }
+
+export { RootsConsole }

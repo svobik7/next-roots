@@ -32,7 +32,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@testing-library/react": "^10.4.6",
+    "@testing-library/react": "^11.0.2",
     "@testing-library/react-hooks": "^3.3.0",
     "@types/jest": "^26.0.3",
     "@types/react": "^16.9.41",
@@ -41,15 +41,15 @@
     "jest": "^26.1.0",
     "next": "^9.4.4",
     "prettier": "^2.0.5",
-    "pretty-quick": "^2.0.1",
+    "pretty-quick": "^3.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-test-renderer": "^16.13.1",
     "rollup": "^2.18.1",
-    "rollup-plugin-terser": "^6.1.0",
+    "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-ts": "^1.2.24",
     "ts-jest": "^26.1.0",
-    "typescript": "^3.9.5"
+    "typescript": "^4.0.2"
   },
   "peerDependencies": {
     "next": "^9.4.4",
