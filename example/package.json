@@ -19,6 +19,7 @@
     "@heroicons/react": "^2.0.14",
     "@types/accept-language-parser": "^1.5.3",
     "accept-language-parser": "^1.5.0",
+    "clsx": "^1.2.1",
     "next": "^13.1.6",
     "next-roots": "link:../",
     "react": "^18.2.0",
