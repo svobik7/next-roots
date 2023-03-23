@@ -6,23 +6,36 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "root": "node ../dist/bin/builder.js",
-    "dev": "yarn root && next dev",
-    "build": "yarn root && next build",
+    "roots": "node ../dist/cli.js",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
-    "analyze": "yarn root && cross-env ANALYZE=true next build",
-    "analyze:server": "yarn root && cross-env BUNDLE_ANALYZE=server next build",
-    "analyze:browser": "yarn root && cross-env BUNDLE_ANALYZE=browser next build"
+    "analyze": "cross-env ANALYZE=true next build",
+    "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
+    "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build"
   },
   "dependencies": {
-    "next": "^9.4.4",
+    "@headlessui/react": "^1.7.8",
+    "@heroicons/react": "^2.0.14",
+    "@types/accept-language-parser": "^1.5.3",
+    "accept-language-parser": "^1.5.0",
+    "next": "^13.1.6",
     "next-roots": "link:../",
-    "react": "link:../node_modules/react",
-    "react-dom": "link:../node_modules/react-dom"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^9.4.4",
-    "@types/react": "link:../node_modules/@types/react",
-    "cross-env": "^7.0.2"
+    "@next/bundle-analyzer": "^13.1.6",
+    "@tailwindcss/typography": "^0.5.9",
+    "@types/react": "^18.0.27",
+    "autoprefixer": "^10.4.13",
+    "cross-env": "^7.0.2",
+    "eslint": "^8.33.0",
+    "eslint-config-next": "^13.1.6",
+    "eslint-plugin-tailwindcss": "^3.8.3",
+    "postcss": "^8.4.21",
+    "prettier-plugin-tailwindcss": "^0.2.2",
+    "tailwindcss": "^3.2.4"
   }
 }
