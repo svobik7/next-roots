@@ -3,4 +3,4 @@
 
 yarn lint-staged 
 yarn pretty-quick --staged
-yarn test --no-watch
+yarn test
