@@ -111,7 +111,7 @@ const expectedOutput: Origin[] = [
 
 test('getOrigins', async () => {
   const files = await getOrigins({
-    dirName: process.cwd() + '/src/cli/__mocks__/roots',
+    dirName: process.cwd() + '/src/__mocks__/roots',
     locales: ['en', 'cs', 'es'],
     defaultLocale: 'en',
   })

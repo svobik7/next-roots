@@ -39,7 +39,6 @@ async function parseI18nFile(
     const { routeNames, generateRouteNames } = await importI18nFile(fileName)
     return generateRouteNames ? await generateRouteNames() : routeNames
   } catch (err) {
-    console.log(err)
     return undefined
   }
 }
@@ -84,7 +83,7 @@ function getOriginFiles(dirName: string) {
     fs
       .readdirSync(dirName)
       // do not include i18n files to copied into app folder
-      .filter((fileName) => !fileName.match(/^i18n\.(m?js)$/))
+      .filter((fileName) => !I18N_FILE_NAMES.includes(fileName))
       // make sure directories are always at the top of the list
       .sort((a, b) => priority(b) - priority(a))
   )

@@ -2,13 +2,11 @@ import {
   copyFileSync,
   existsSync,
   mkdirSync,
-  moveSync,
-  readdirSync,
   readFileSync,
-  removeSync,
   statSync,
   writeFileSync,
-} from 'fs-extra'
+} from 'fs'
+import { removeSync } from 'fs-extra'
 import path from 'path'
 
 /**
@@ -27,8 +25,11 @@ export function readFile(
   path: string,
   encoding: BufferEncoding = 'utf8'
 ): string {
-  if (!isFile(path)) return ''
-  return readFileSync(path).toString(encoding)
+  if (isFile(path)) {
+    return readFileSync(path).toString(encoding)
+  }
+
+  return ''
 }
 
 /**
@@ -42,48 +43,14 @@ export function copyFile(from: string, to: string): void {
 }
 
 /**
- * Removes given file recursively
- */
-export function removeFile(filePath: string): void {
-  if (!isFile(filePath)) return
-  removeSync(filePath)
-}
-
-/**
  * Indicates if filePath is file
  */
 export function isFile(filePath: string): boolean {
-  if (!existsSync(filePath)) return false
-  return statSync(filePath).isFile()
-}
-
-/**
- * Copies directory from `from` to `to` recursively
- */
-export function moveDir(from: string, to: string): void {
-  if (from !== to && isDirectory(from)) {
-    moveSync(from, to)
+  if (existsSync(filePath)) {
+    return statSync(filePath).isFile()
   }
-}
 
-/**
- * Copies directory from `from` to `to` recursively
- */
-export function copyDir(from: string, to: string): void {
-  if (from !== to && isDirectory(from)) {
-    makeDir(to)
-
-    const files = readdirSync(from)
-
-    files.forEach((currentPath: string) => {
-      const currentFrom = path.join(from, currentPath)
-      const currentTo = path.join(to, currentPath)
-
-      isDirectory(currentFrom)
-        ? copyDir(currentFrom, currentTo)
-        : copyFile(currentFrom, currentTo)
-    })
-  }
+  return false
 }
 
 /**
@@ -99,8 +66,9 @@ export function makeDir(dirPath: string): void {
  * Removes given file recursively
  */
 export function removeDir(dirPath: string): void {
-  if (!isDirectory(dirPath)) return
-  removeSync(dirPath)
+  if (isDirectory(dirPath)) {
+    removeSync(dirPath)
+  }
 }
 
 /**

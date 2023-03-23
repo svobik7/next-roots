@@ -32,34 +32,34 @@ describe('getHref', () => {
   const router = new Router(inputSchema)
 
   const testCases = [
-    ['/(auth)/login', { locale: 'cs' }, undefined, '/cs/prihlaseni'],
-    ['/(auth)/login', { locale: 'es' }, undefined, '/es/acceso'],
-    ['/(auth)/login', { locale: 'invalid' }, undefined, '/'],
+    ['/(auth)/login', { locale: 'cs' }, '', '/cs/prihlaseni'],
+    ['/(auth)/login', { locale: 'es' }, '', '/es/acceso'],
+    ['/(auth)/login', { locale: 'invalid' }, '', '/'],
     [
       '/blog/articles/[articleId]',
       { locale: 'cs', articleId: '1' },
-      undefined,
+      '',
       '/cs/blog/clanky/1',
     ],
     [
       '/blog/articles/[articleId]',
       { locale: 'es', articleId: '1' },
-      undefined,
+      '',
       '/es/blog/articulos/1',
     ],
-    ['/(auth)/login', undefined, undefined, '/es/acceso'],
+    ['/(auth)/login', undefined, '', '/es/acceso'],
     ['/(auth)/login', undefined, '/cs', '/cs/prihlaseni'],
     ['/(auth)/login', { locale: 'es' }, '/cs', '/es/acceso'],
     [
       '/blog/articles/[articleId]',
       undefined,
-      undefined,
+      '',
       '/es/blog/articulos/:articleId',
     ],
     [
       '/blog/articles/[articleId]',
       undefined,
-      '/',
+      '',
       '/es/blog/articulos/:articleId',
     ],
   ] as const
@@ -67,7 +67,8 @@ describe('getHref', () => {
   test.each(testCases)(
     'given %s as routeName and %o as params when pageHref is %s, returns %s',
     (routeName, params, pageHref, expectedResult) => {
-      Router.setPageHref(pageHref || '/')
+      Router.setPageHref(pageHref)
+      expect(Router.getPageHref()).toEqual(pageHref)
 
       const result = router.getHref(routeName, params)
       expect(result).toEqual(expectedResult)

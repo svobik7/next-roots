@@ -1,6 +1,6 @@
 import type { Route } from '~/types'
 import type { Rewrite } from '../types'
-import { getRoute } from './getRoute'
+import { getRoute, isRoute } from './getRoute'
 
 const inputRewrites: Rewrite[] = [
   { originPath: '/(auth)/layout.ts', localizedPath: '/en/(auth)/layout.ts' },
@@ -39,4 +39,17 @@ const expectedSchema: Array<Route | undefined> = [
 test('getRoute', () => {
   const routes = inputRewrites.map(getRoute)
   expect(routes).toEqual(expectedSchema)
+})
+
+describe('isRoute', () => {
+  const testCases = [
+    [{}, false],
+    [{ name: '' }, false],
+    [{ href: '' }, false],
+    [{ name: '', href: '' }, true],
+  ] as const
+
+  test.each(testCases)('given %o, returns %s', (input, expectedResult) => {
+    expect(isRoute(input)).toEqual(expectedResult)
+  })
 })

@@ -17,7 +17,5 @@ export async function buildI18n(fileName: string, buildDir: string) {
     target: 'node14',
     drop: ['debugger'],
     conditions: ['react-server', 'next-roots-mock'],
-  })
-    .then(() => path.resolve(`${buildDir}/${outputFileName}.js`))
-    .catch(() => process.exit(1))
+  }).then(() => path.resolve(`${buildDir}/${outputFileName}.js`))
 }
