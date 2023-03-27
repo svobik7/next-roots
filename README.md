@@ -1,17 +1,31 @@
 # next-roots
 
-Next.js utility to generate internationalized (i18n) pages according to custom roots rules and with **no need to use Vercel dev server, Rewrites neither Routes**. The package has zero dependencies.
+NextRoots is package for generating i18n file-based routes for the new Next.js APP directory. It leverages server-side concept of APP folder. That means router code lives always on the server and should not be populated to the client. Generating i18n routes is alternative to well known (and suggested) option of having one dynamic `[lang]` folder sitting as a root above all other routes. It makes the sites SEO friendly and does not bother client with routing maps and toher additional bundles.
 
-## 1. About next-roots
+> If you are using old Next.js pages directory check [next-roots@v2](https://github.com/svobik7/next-roots/tree/v2).
 
-This package is highly inspired by [next-translate](https://github.com/vinissimus/next-translate#readme).
-It solves some additional features like `static routing schema`, `URL tokenizing`, `page meta`, `injecting config directly to pages` ... and is completely **TypeScript friendly!**
+Bellow we are going to cover localization of simple site containing just two routes. Check out the `example` folder to see more real world example of translating blog site.
 
-Similar to `next-translate` this package holds all pages implementation in a separate directory. We call it `roots`. Required `pages` directory is then created during `build` time.
+## 1. Getting started
 
-## 2. Getting started
+Let's consider simple project structure that was built with English as a default locale and now needs to be localized for Czech audience.
 
-A complete example can be seen in the `example` directory.
+```bash
+├── app
+│   ├── about
+│   │   └── page.js
+│   └── page.js
+└── ...
+```
+
+The requirement is to have English localization served from `/` and Czech from `/cs/...`. The goal is to have following URLs:
+
+1. `/`
+1. `/cs`
+1. `/about`
+1. `/cs/o-nas`
+
+> NextRoots supports both prefixed `/en` and un-prefixed `/` default locale.
 
 ### Installation
 
@@ -19,631 +33,288 @@ A complete example can be seen in the `example` directory.
 
 `yarn add next-roots`
 
-2. Add pages builder script to your `package.json`
+2. Add generate script to your `package.json`
 
 ```json
 {
   "scripts": {
-    "dev": "yarn next-roots && next dev",
-    "build": "yarn next-roots && next build"
+    "roots": "yarn next-roots"
   }
 }
 ```
 
-3. Create [roots.config.js](#config-options) in your project root
-4. Add [RootsContext](#rootscontext) to your `_app`
-5. Run `yarn dev`
+### Migrate routes to the roots directory
 
-### How to use it
+As default Next.js reads routes from the folder called `app`. Using NextRoots and generating i18n routes requires you to move all your current routes into different folder called `roots` by default (name is customizable). Run following command from your project root:
 
-The default behavior is to have a `roots.config.js` file placed in your project root folder (next to your package.json file).
+`mv ./app/ ./roots`
 
-This file defines roots schema for your pages and config params for pages builder.
+This would be the new area where you are going to store your original routes, write your code and make changes. From now on you wont be editing the files under the `app` folder. The `app` folder will stands only as a keeper of localized routes and forwards everything to original routes.
 
-Basic configuration can look like:
-
-```js
-module.exports = {
-  locales: ['en', 'cs'],
-  defaultLocale: 'cs',
-  defaultSuffix: '.htm',
-  prototypes: [
-    {
-      root: '*',
-      metaData: [
-        {
-          locale: '*',
-          data: { title: 'Next Roots', background: 'grey', footer: false },
-        },
-      ],
-    },
-    {
-      root: 'auth/(.*)',
-      metaData: [
-        { locale: '*', data: { footer: true } },
-        { locale: 'en', data: { section: 'Authorization' } },
-        { locale: 'cs', data: { section: 'Ověření' } },
-        { locale: 'es', data: { section: 'Autorización' } },
-      ],
-    },
-  ],
-  schemas: [
-    {
-      root: 'home',
-      pages: [{ locale: '*', path: 'index', suffix: '' }],
-    },
-    {
-      root: 'auth/signup',
-      pages: [
-        { locale: 'en', path: 'auth/signup-:token' },
-        { locale: 'cs', path: 'overeni/registrace-:token' },
-      ],
-      params: { token: 'p1' },
-      metaData: [
-        { locale: 'en', data: { title: 'Signup' } },
-        { locale: 'cs', data: { title: 'Registrace' } },
-      ],
-    },
-    {
-      root: 'dynamic',
-      pages: [{ locale: '*', path: '[...slug]', suffix: '' }],
-      params: { token: 'p1' },
-      metaData: [{ locale: '*', data: { background: 'magenta' } }],
-    },
-  ],
-}
-```
-
-> NOTE: all following examples are based on above config.
-
-Before you run a build process with the above config your project structure needs to look like this:
+The project structure now looks like:
 
 ```bash
-.
 ├── roots
-│ ├── home.tsx
-│ ├── dynamic.tsx
-│ └── auth
-│ └── signup.tsx
+│   ├── about
+│   │   └── page.js
+│   └── page.js
+└── ...
 ```
 
-After you run a build process with the above config your project structure will look like this:
+### Setting roots config
+
+To tell NextRoots which locales we want to generate and where the roots files and app files can be found the `roots.config.js` file must to be defined in project root.
+
+`touch ./roots.config.js`
+
+Simple configuration for English and Spanish localization can looks like this:
+
+```js
+const path = require('path')
+
+module.exports = {
+  originDir: path.resolve(__dirname, 'roots'),
+  localizedDir: path.resolve(__dirname, 'app'),
+  locales: ['en', 'cs'],
+  defaultLocale: 'en',
+  prefixDefaultLocale: false, // serves "en" locale on / instead of /en
+}
+```
+
+### Generate localized routes
+
+Generation is initiated by running `yarn next-roots` or just `yarn roots` in our case (we added it to our package.json scripts) from the project root folder. The `app` folder was generated and project structer is now shaped like this:
 
 ```bash
-.
-├── roots
-│ ├── home.tsx
-│ └── auth
-│ └── signup.tsx
-├── pages
-│ └── en
-│ └── index.tsx
-│ └── [...slug].tsx
-│ └── auth
-│ └── signup-p1.htm.tsx
-│ └── cs
-│ └── index.tsx
-│ └── [...slug].tsx
-│ └── auth
-│ └── registrace-p1.htm.tsx
+├── app
+│   ├── (en)
+│   │   ├── about
+│   │   │   └── page.js
+│   │   └── page.js
+│   ├── cs
+│   │   ├── about
+│   │   │   └── page.js
+│   │   └── page.js
+├── roots,
+│   ├── about
+│   │   └── page.js
+│   └── page.js
+└── ...
 ```
 
-Static schema file `roots.schema.js` will also be generated and placed to the project root folder. This file contains a routing map for each page in your roots configuration, available locales, and default locale.
+Without any further steps the project would ended up with URLs like that:
+
+1. /
+1. /about
+1. /cs
+1. /cs/about // this path needs to be translated
+
+### Translating URL paths
+
+Every URL path or even segment of the URL path can be translated or left untranslated (depends on project needs). To translate URL segment we need to add `i18n.js` file into the route directory in our original routes.
+
+> Note that i18n.js, i18n.mjs and i18n.ts files are supported. If `i18n.ts` is used then it is compiled during the runtime by [esbuild](https://esbuild.github.io/).
+
+```bash
+├── app               // app folder stays untouched now
+├── roots,
+│   ├── about
+│   │   ├── i18n.js   // i18n.js file is added to the route that URL path needs to be translated
+│   │   └── page.js
+│   └── page.js
+└── ...
+```
+
+Adding translated paths into `i18n.js` does the trick:
 
 ```js
-module.exports = {
-  locales: ['en', 'cs'],
-  defaultLocale: 'cs',
-  rules: [
-    {
-      key: 'en:home',
-      href: '/en',
-    },
-    {
-      key: 'cs:home',
-      href: '/cs',
-    },
-    {
-      key: 'en:auth/signup',
-      href: '/en/auth-signup-p1.htm',
-    },
-    {
-      key: 'cs:auth/signup',
-      href: '/cs/ucet-registrace-p1.htm',
-    },
-    { key: 'en:dynamic', href: '/en/[...slug]' },
-    { key: 'cs:dynamic', href: '/cs/[...slug]' },
-  ],
+module.exports.routeNames = [
+  { locale: 'cs', path: 'o-nas' },
+  // you don't need to specify default translation as long as it match the route folder name
+  // { locale: 'en', path: 'about' },
+]
+```
+
+> For describing translations in promise-like way see [Ways of translating URL paths](#ways-of-translating-url-paths)
+
+Running `yarn roots` again will update `app` folder routes with translated paths. The project structure now looks like:
+
+```bash
+├── app
+│   ├── (en)
+│   │   ├── about
+│   │   │   └── page.js
+│   │   └── page.js
+│   ├── cs
+│   │   ├── o-nas           // translated URL path
+│   │   │   └── page.js
+│   │   └── page.js
+├── roots,
+│   ├── about
+│   │   └── page.js
+│   └── page.js
+└── ...
+```
+
+Finally our project is server on URLs that are generated during the build time and match perfectly the initial requirements. If you need to change your routes or translation do not forget to run `yarn roots` again.
+
+## 2. Router and Links
+
+Roots comes with a strongly typed Router class for creating links between your pages. Thanks to the generated schema and types you will be notified if the desired page exists or requires additional parameters.
+
+> It is good practice to use Router only on the server side so that the list of all possible routes does not need to be sent to the client.
+
+### GetHref
+
+For creating links you should use the `getHref(name: string, params?: object)` method of the router. The first parameter called `name` is the original route folder name. The second parameter is an object which can define desired `locale` or additional dynamic params. Thanks to next-roots strong types you can import the `RouteName` type which includes all available route name strings.
+
+```ts
+import { Router, schema, RouteName } from 'next-roots'
+
+const router = new Router(schema)
+
+// for getting '/cs/o-nas'
+router.getHref('/about', { locale: 'cs' })
+
+// typescript will yield at you here as /not-existing is not a valid route
+router.getHref('/not-existing', { locale: 'cs' })
+
+const routeNameValid: RouteName = '/about'
+const routeNameInvalid: RouteName = '/invalid' // yields TS error
+```
+
+For dynamic routes let's say we have route called `[articleId]`. In case we want to link that page we can utilize the getHref method in following way:
+
+```ts
+// for getting '/cs/revista/1'
+router.getHref('/[articleId]', { locale: 'cs', articleId: '1' })
+
+// typescript will yield at you here because of the missing required parameter called articleId
+router.getHref('/[articleId]', { locale: 'cs' })
+
+const routeDynamic: RouteName = '/[articleId]'
+const paramsDynamicValid: RouteParamsDynamic<typeof routeDynamic> = {
+  locale: 'cs',
+  articleId: '1',
+}
+
+// typescript will yield at you here because of the missing required parameter called articleId
+const paramsDynamicInvalid: RouteParamsDynamic<typeof routeDynamic> = {
+  locale: 'cs',
 }
 ```
 
-> NOTE: If some rule does not contain `as` it means that it is the same as `href`.
-
-## 3. Configuration
-
-| Name          | Default                                         | Description                                                     |
-| ------------- | ----------------------------------------------- | --------------------------------------------------------------- |
-| schemas       | []                                              | builder rules for generating pages                              |
-| locales       | []                                              | all allowed locales which will be generated                     |
-| defaultLocale | ''                                              | locale which will be used as default when no locale is detected |
-| defaultSuffix | ''                                              | default page suffix which will be added to page name            |
-| basePath      | `.`                                             | path to base folder where roots and pages are located           |
-| dirRoot       | `roots`                                         | source folder with all roots files                              |
-| dirPages      | `pages`                                         | target folder where pages will be generated into                |
-| staticRoots   | `['api', '_app', '_document', '_error', '404']` | static roots which will be generated outside locales folders    |
-| extRoots      | `['.tsx']`                                      | suffix of all roots files                                       |
-
-## 4. Schemas
-
-Each schema rule represents one `root + page` combination. This is the main way how to define the routing map for your localized pages.
-
-```js
-{
- root: 'auth/signup',
- pages: [
- { locale: 'en', path: 'auth/signup-:token' },
- { locale: 'cs', path: 'auth/registrace-:token' },
- ],
- params: { token: 'p1' },
- metaData: [
- { locale: 'en', data: { title: 'Signup' } },
- { locale: 'cs', data: { title: 'Registrace' } },
- ],
-}
-```
-
-- `root` - source file path (will be used as root name if rootName options is empty)
-- `rootName` - explicit root name (used when creating RootLinks)
-- `pages` - localized aliases for current root
-- `params` - params which will be used as replace value in page `path` or `alias` during build
-- `metaData` - custom params which can will be injected directly into page and can by obtained using `useRootMeta` hook in runtime.
-
-### Pages
-
-Each schema rule must define pages array. Otherwise it must be defined as [prototype rule](#schema-prototype-rule).
-
-```js
-pages: [{
- locale: '*',
- path: 'index',
- suffix: ''
-}],
-```
-
-- `locale` - the name of the folder where the page will be generated (use `*` to generate the same schema for all locales)
-- `path` - page file name which will also be used for routing as link `href`
-- `alias` - page alias which will be used for routing as link `as`
-- `suffix` - custom suffix which will be appended to `path` param
-
-### Meta data
-
-Each schema rule can define custom metadata array. Each array item has to define two properties:
-
-- `locale` - must be one of `locales` value or `*` to be used for each available locale
-- `data` - custom values type of `Record<string, ReactText>`
+Passing the `locale` parameter is not required. If you do not pass any `locale` param then the current one will be automatically used.
 
 ```ts
-metaData: [
- { locale: 'en', data: { background: 'magenta' } }
-],
+// on "/cs" page it will creates "/cs/o-nas" href while on "/" (en) it will create "/about" href
+router.getHref('/about')
 ```
 
-This data can be used to change layout, CSS, background images, ... based on your requirements.
-
-### Schema prototype rule
-
-Prototype rule is used for setting general/default metadata values which will be then merged with page-specific metadata values
-
-```js
-{
- 	root: 'account/*',
-	metaData: [
- 		{ locale: '*', data: { background: 'red' } }
- 		{ locale: 'en', data: { section: 'Account' } }
-	],
-	isPrototype: true
-},
-{
-	root: 'account/profile',
-	metaData: [
-		{ locale: 'en', data: { title: 'Profile' } }
-	],
-	// ...
-},
-```
-
-Final metadata for `account/profile` root will be then
-
-```js
-{
-	background: 'red',
-	section: 'Account',
-	title: 'Profile'
-}
-```
-
-Root property works here like RegExp. The prototype schema will be merged into any root passing the condition `realSchema.root.match(new Regexp(prototypeSchema.root))`
-
-## 5. Hooks
-
-The Next-roots package provides handy hooks to read and manipulate its context values.
-
-### useRoots
-
-Provides main roots values according to the current router path.
-
-- `locales: string[]` - all active locales
-- `defaultLocale: string` - default locale value
-- `currentLocale: string` - current page locale
-- `currentRoot: string` - current page root
-- `currentRule: SchemaRule | undefined` - containing current rule `key`, `href` and optionally `alias`
-- `currentMeta: SchemaMeta | undefined` - containing current page meta data
-
-Example usage:
-
-```ts
-import { useRoots } from 'next-roots/context'
-
-// router path = /en/auth/signup-p1.htm
-const roots = useRoots()
-
-roots.locales // ['en', 'cs', ...]
-roots.defaultLocale // 'cs'
-roots.currentLocale // 'en'
-roots.currentRoot // 'auth/signup'
-roots.currentRule // { key: 'en:auth/signup', href: '/en/auth/signup' }
-roots.currentMeta // { key: 'en:auth/signup', data: { title: 'Signup', background: 'grey' } }
-```
-
-### useRootLink
-
-Provides API to create localized links based on context rules.
-
-Example usage:
-
-```ts
-import { useRootLink } from 'next-roots/link'
-
-const link = useRootLink()
-
-// 1. generates href with current locale using root name (currentLocale = en)
-link.href('auth/signup')
-// result: /en/auth/signup-p1.htm`
-
-// 2. generates href with custom locale using root name and explicit locale option
-link.href('auth/signup', { locale: 'cs' })
-// result: `/cs/overeni/registrace-p1.htm`
-
-// 3. generate href with custom locale using rule key and empty locale option
-link.href('cs:auth/signup', { locale: '' })
-// result: '/cs/overeni/registrace-p1.htm'
-
-// 4. generate href with custom locale using current rule key and explicit locale option (currentRule = cs:auth/signup)
-link.href('cs:auth/signup', { locale: 'en' })
-// result: '/en/auth-signup-p1.htm'
-
-// 5. generate href for dynamic page
-link.href('dynamic', { locale: 'en' })
-// result: '/en/[...slug]'
-
-// 6. generate href for home page using shortcut
-link.href('/', { locale: 'en' })
-// result: '/en'
-```
-
-> NOTE: There is a predefined home page shortcut `/` in roots package. So you do not need to use `home` if you don't want to.
-
-The same options work for link alias. Plus dynamic params can be explicitly pushed:
-
-```ts
-// same options as for link.href() plus:
-
-const link = useRootLink()
-
-// 1. generate alias for dynamic page
-link.as('dynamic', { locale: 'en', params: { slug: 'some-slug' } })
-// result: '/en/some-slug'
-```
-
-> NOTE: It is not practical to have all possible rules injected into every page because it makes page bundle size bigger in large applications. Therefore if your current page is `cs:auth/signup` you have access only to `cs` rules and to `auth/signup` rules with a different locale.
-
-### useRootMeta
-
-Provides API to read static metadata attached current page or its mutations.
-
-Example usage:
-
-```ts
-// example values when current root is 'dynamic'
-const meta = useRootMeta()
-
-// 1. read all meta data for current router path (data is merged with general meta data - schema.meta.key === '*')
-meta.data()
-// result: { title: 'Next Roots', background: 'magenta' }
-
-// 2. cherry pick meta data using custom selector for current router path
-meta.data('background')
-// result: 'magenta'
-
-// 3. read all meta data for explicit rule key
-meta.data('*', 'cs:auth/signup')
-// result: { title: 'Next Roots', background: 'grey' }
-```
-
-> NOTE: It is not practical to have all possible metadata injected into every page because it makes page bundle size bigger in large applications. Therefore if your current page is `cs:auth/signup` you have access only to its current metadata and metadata with a different locale but the same root.
-
-## 6. Components
-
-The Next-roots package provides ready-to-use components with injected roots context.
-
-### RootsContext
-
-Main roots context component which holds current values according to the current page.
-
-This component is required to use in your app so that other components can consume the context of the current root.
-
-Recommended usage:
+This is possible thanks to Router internal static context value of current href. Whenever user visit a page Router will sets the the internal page href and determine the locale from that. If you look at generated page routes you can see that:
 
 ```tsx
-// in your _app.tsx
-import { RootsContext, detectRoots } from 'next-roots/context'
-import { AppProps } from 'next/app'
-import schemaRoots from 'roots.schema'
-
-function MyApp(appProps: AppProps) {
-  const { Component, pageProps } = appProps
-  // detect roots context from page component
-  // - current values will be obtained from Component.getRoots
-  // - second argument holds default values
-  const roots = detectRoots(appProps, {
-    defaultLocale: schemaRoots.defaultLocale,
-    locales: schemaRoots.locales,
-  })
-
-  return (
-    <RootsContext.Provider value={roots}>
-      <Component {...pageProps} />
-    </RootsContext.Provider>
-  )
+// in "app/cs/o-nas/page.js
+export default function AboutPage(props: any) {
+  Router.setPageHref('/cs/about')
+  return <AboutPageOrigin {...props} pageHref={Router.getPageHref()} />
 }
 
-export default MyApp
-```
-
-### RootLink
-
-Extends native `link/next` with roots context. Generates links based on roots schema when a rule is found otherwise link generation is handled by native link component.
-
-Works similar to `useRootLink` as this hook is used under the hood of the `RootLink` component.
-
-Example usage:
-
-```tsx
-import RootLink from 'next-roots/link';
-
-// 1. Using with current locale and root name (currentLocale = en)
-<RootLink href="auth/signup">
- <a>...</a>
-</RootLink>
-// result <a href="/en/auth/signup-p1.htm">...</a>
-
-// 2. Using with the custom locale and root name
-<RootLink href="auth/signup" locale="cs">
- <a>...</a>
-</RootLink>
-// result <a href="/cs/overeni/registrace-p1.htm">...</a>
-
-// 3. Using with rule key and empty locale option
-<RootLink href="cs:auth/signup" locale="">
- <a>...</a>
-</RootLink>
-// result <a href="/cs/overeni/registrace-p1.htm">...</a>
-
-// 4. Using with rule key and custom locale
-<RootLink href="cs:auth/signup" locale="en">
- <a>...</a>
-</RootLink>
-// result <a href="/en/auth/signup-p1.htm">...</a>
-
-// 5. Using with dynamic root (e.g. page = [...slug])
-<RootLink href="dynamic" locale="en" params={{slug: 'some-slug'}}>
- <a>...</a>
-</RootLink>
-// result <a href="/en/auth/some-slug">...</a>
-
-// 6. Using home page shortcut (currentLocale = en)
-<RootLink href="/">
- <a>...</a>
-</RootLink>
-// result <a href="/en">...</a>
-
-```
-
-### RootsConsole
-
-It is possible to use <RootsConsole /> component to debug whole Roots context values.
-
-```js
-import { RootsConsole } from 'next-roots/console'
-
-//
-function MyLayout() {
-  return (
-    <div>
-      // ... custom logic
-      <RootsConsole />
-    </div>
-  )
+// in "app/(en)/about/page.js
+export default function AboutPage(props: any) {
+  Router.setPageHref('/about')
+  return <AboutPageOrigin {...props} pageHref={Router.getPageHref()} />
 }
 ```
 
-Once this component is mounted to the DOM following indicator will appear in the bottom left corner of the window:
+Even you are allowed to change this static context down in the code by calling `Router.setPageHref` it is not recommended and can break the links.
 
-![Next-roots indicator](./media/next-roots-indicator-min.png)
+### GetLocaleFromHref
 
-The console will open once that indicator is clicked:
-
-![Next-roots console](./media/next-roots-console-min.png)
-
-All current context values like `currenLocale`, `currentRoot` or `currentMeta` can be found in this console. Also, links to current page mutations (locales) can be found in a tab called `links`.
-
-> Note that `RootsConsole` component should be used only in dev and should be removed before deploying to production
-
-## 7. Special page method
-
-Next.js provides us with special page methods like `getServerSideProps`, `getStaticProps`, `getStaticPaths` and `getInitialProps (will be deprecated)`.
-
-All these methods are parsed during build time and forwarded from generated pages. The current page `locale` is also pushed to the context of some of these methods.
-
-For example if you have `root` named `dynamic` which contains two of mentioned methods (getStaticProps, getStaticPaths) the result will look like:
+Detects locale from given href and send it back. When no valid locale is found then the default one is retrieved.
 
 ```ts
-import { GetStaticPaths, GetStaticProps } from 'next'
-import DynamicRoot, * as __root from 'roots/dynamic'
+// retrieves "en"
+router.getLocaleFromHref('/about')
 
-// ... custom logic
+// retrieves "cs"
+router.getLocaleFromHref('/cs/o-nas')
 
-// @ts-ignore
-export const getStaticProps: GetStaticProps = async (context) =>
-  __root.getStaticProps({ ...context, __locale: 'cs' })
-
-export const getStaticPaths: GetStaticPaths = async () =>
-  __root.getStaticPaths()
-
-export default DynamicPage
+// retrieves "en"
+router.getLocaleFromHref('/invalid-locale/o-nas')
 ```
 
-Then your are able to read page locale directly inside your root's special methods:
+### GetRouteFromHref
+
+Detects route from given href and send it back. When no valid route is found then undefined is retrieved.
 
 ```ts
-export const getStaticProps: GetStaticProps = async (context) => {
-  const { __locale, ...ctxOthers } = context
-  // ... custom logic
+// retrieves "{ name: "/about", href: "/about" }"
+router.getRouteFromHref('/about')
+
+// retrieves "{ name: "/about", href: "/cs/o-nas" }"
+router.getRouteFromHref('/cs/o-nas')
+
+// retrieves "undefined"
+router.getRouteFromHref('/invalid-locale/o-nas')
+```
+
+## 3. Ways of translating URL paths
+
+Translation of URL paths is done in `i18n.js` of `i18n.ts` files by placing this file right next to the `page.js` of `page.ts` file and running `yarn roots`. There are two main ways how you can define the i18n file.
+
+### Static translations
+
+Useful when you want to specify the translation in the i18n file itself:
+
+```ts
+// if you use "i18n.mjs"
+export const routeNames = [
+  { locale: 'en', path: 'about' },
+  { locale: 'cs', path: 'o-nas' },
+]
+
+// if you use "i18n.js"
+module.exports.routeNames = [
+  { locale: 'en', path: 'about' },
+  { locale: 'cs', path: 'o-nas' },
+]
+```
+
+### Dynamic translations
+
+Useful when you want to store the translations in DB or other async storage:
+
+```ts
+export async function generateRouteNames() {
+  // "getTranslation" is custom async function that loads translated paths from DB
+  const { enPath, csPath } = await getTranslations('/about')
+
+  return [
+    { locale: 'en', path: enPath },
+    { locale: 'cs', path: csPath },
+  ]
 }
 ```
 
-## 8. Example
+You don't need to specify translations for default locale. Routes inherit the path names from origin folders by default. If you specify the translation for default locale then it is used instead of origin folder name.
 
-Example usage with lightweight schema can be found in the example folder
+## 4. Config params
 
-- `cd example`
-- `yarn install`
-- `yarn dev`
+| name                  | type     | default   | description                                                                                                                 |
+| --------------------- | -------- | --------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `originDir`           | string   | `./roots` | absolute path to the origin un-translated routes                                                                            |
+| `localizedDir`        | string   | `./app`   | absolute path to the localized routes. This is where next-roots saves generated routes.                                     |
+| `locales`             | string[] | `[]`      | localization prefixes that will be used in URL                                                                              |
+| `defaultLocale`       | string   | `''`      | default locale that is specified in `locales`                                                                               |
+| `prefixDefaultLocale` | boolean  | `true`    | when default locale = en then TRUE means it will be served from "/en" and FALSE means it will be served without prefix on / |
 
-## 9. Migrating from 1.x to 2.x
+## 5. FAQ
 
-Refactor has been done to keep page bundles size as small as possible. Therefore including `roots.schema.js` file in your `_app` (or anywhere else) is not required anymore.
+### Why generated routes are better than recommended `[lang]` approach?
 
-> The only possible case for using `roots.schema.js` is handling tokenized page redirects like `/en/p1.htm` >>> `/en/auth/signup-p1.htm` in your [catchAllRoute] page
+The `[lang]` approach works well until you need to boost your SEO. While content translations work well with the `[lang]` the URL translations become cumbersome. Read more about generated routes
 
-The `parsePathname` util has been replaced with `detectRoots` and is no longer dependent on the router pathname. Context values are obtained from the `PageComponent.getRoots` which is generated during build time.
+### Can I use Router in client?
 
-Rules and metadata are now directly injected to page file during build time BUT to keep page size bundle small only rules and meta with same locale or root are injected.
-
-Migrating to 2.x requires two steps:
-
-### 1. Update `_app`:
-
-```tsx
-// BEFORE 2.0.0
-import RootsContext, { parsePathname } from 'next-roots/context'
-import schemaRoots from 'roots.schema'
-import { AppProps } from 'next/app'
-
-function MyApp({ Component, pageProps }: AppProps) {
-  // parse current roots values from router pathname
-  const { locale, root, rule } = parsePathname(router.pathname, schema)
-
-  return (
-    <RootsContext.Provider
-      value={{
-        currentRule: rule,
-        currentRoot: root,
-        currentLocale: locale || schema.defaultLocale,
-        defaultLocale: schema.defaultLocale,
-        locales: schema.locales,
-        rules: schema.rules,
-        meta: schema.meta,
-      }}
-    >
-      <Component {...pageProps} />
-    </RootsContext.Provider>
-  )
-}
-
-export default MyApp
-```
-
-```tsx
-// AFTER 2.0.0
-import { RootsContext, detectRoots } from 'next-roots/context'
-import { AppProps } from 'next/app'
-
-function MyApp({ Component, pageProps }: AppProps) {
-  // detect roots context from page component
-  const roots = detectRoots(Component, {
-    defaultLocale: 'en',
-    locales: ['en', 'cs', 'es'],
-  })
-
-  return (
-    <RootsContext.Provider value={roots}>
-      <Component {...pageProps} />
-    </RootsContext.Provider>
-  )
-}
-
-export default MyApp
-```
-
-### 2. Update `roots.config.js`
-
-```js
-// BEFORE 2.0.0
-{
-  root: 'some-root-name',
-  pages: [
-    {
-      locale: 'en',
-      metaData: { background: 'blue' },
-      // ... other page config
-    }
-  ],
-  metaData: { title: 'Next Roots', background: 'grey' },
-},
-
-```
-
-```js
-// AFTER 2.0.0
-{
-  root: 'some-root-name',
-  pages: [
-    {
-      locale: 'en',
-      // ... other page config
-    }
- ],
-  metaData: [
-    { locale: '*', data: { title: 'Next Roots', background: 'grey' } }
-    { locale: 'en', data: { background: 'blue' } }
-  ],
-},
-
-```
-
-## 10. Experimental
-
-Following options are experimental and should not be used in production yet.
-
-### Generate pages outside locale folders
-
-To generate localized pages directly inside `pages` directory and ignore its enclosing locale folder the following configuration is required:
-
-```js
-// roots.config.js
-{
-  shallowLocale: 'en'
-  // ...other options
-}
-```
+While it is not recommended it is still possible. In that case the whole schema needs to be send to client as well which increases bundle size. Read more about server components https://beta.nextjs.org/docs/rendering/server-and-client-components

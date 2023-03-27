@@ -1,107 +1,83 @@
 {
   "name": "next-roots",
-  "version": "2.2.1",
-  "description": "Next.js utility to generate internationalized pages with metadata according to custom roots rules.",
+  "version": "3.0.0",
+  "description": "Utility to handle internationalized routing for Next.js app folder.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist",
-    "console.d.ts",
-    "console.js",
-    "context.d.ts",
-    "context.js",
-    "link.d.ts",
-    "link.js",
-    "meta.d.ts",
-    "meta.js",
     "index.d.ts",
     "index.js"
   ],
+  "exports": {
+    ".": {
+      "next-roots-mock": "./mock.js",
+      "default": "./index.js"
+    }
+  },
   "bin": {
-    "next-roots": "./dist/bin/builder.js"
+    "roots": "./dist/cli.js"
   },
   "scripts": {
-    "prepublish": "yarn clean && yarn build && yarn test",
-    "build": "rollup -c",
-    "clean": "rm -rf dist > /dev/null",
+    "prepare": "husky install",
+    "clean": "rm -rf dist || true",
+    "build": "yarn clean && yarn check:types && yarn test && node esbuild.mjs",
+    "build:coverage": "yarn clean && yarn check:types && yarn test && node esbuild.mjs",
     "format": "pretty-quick",
-    "test": "jest",
-    "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch",
+    "lint": "eslint --fix --ext .js,.ts,.tsx src/",
+    "test": "vitest --no-watch",
+    "test:watch": "vitest",
+    "test:coverage": "yarn test --coverage",
+    "check:types": "yarn tsc --noEmit",
+    "prepublish": "yarn build",
     "publish:canary": "yarn publish --tag canary"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@vitest/coverage-istanbul": "^0.29.7"
+  },
   "devDependencies": {
-    "@testing-library/react": "^11.0.2",
-    "@testing-library/react-hooks": "^3.3.0",
-    "@types/jest": "^26.0.3",
-    "@types/react": "^16.9.41",
+    "@types/fs-extra": "^11.0.1",
+    "@types/mock-fs": "^4.13.1",
+    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "@typescript-eslint/parser": "^5.56.0",
+    "arg": "^5.0.2",
     "colors": "^1.4.0",
-    "husky": "^4.2.5",
-    "jest": "^26.1.0",
-    "next": "^9.4.4",
-    "prettier": "^2.0.5",
-    "pretty-quick": "^3.0.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-test-renderer": "^16.13.1",
-    "rollup": "^2.18.1",
-    "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-ts": "^1.2.24",
-    "ts-jest": "^26.1.0",
-    "typescript": "^4.0.2"
+    "esbuild": "^0.17.12",
+    "esbuild-node-externals": "^1.6.0",
+    "eslint": "^8.36.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-import-resolver-typescript": "^3.5.3",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "fs-extra": "^11.1.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.0",
+    "mock-fs": "^5.2.0",
+    "path-to-regexp": "^6.2.1",
+    "prettier": "^2.8.6",
+    "pretty-quick": "^3.1.3",
+    "resolve-pkg": "^2.0.0",
+    "typescript": "^5.0.2",
+    "vitest": "^0.29.7"
   },
   "peerDependencies": {
-    "next": "^9.4.4",
-    "react": "^16.13.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged && yarn test"
-    }
-  },
-  "prettier": {
-    "trailingComma": "es5",
-    "tabWidth": 2,
-    "semi": false,
-    "singleQuote": true
-  },
-  "jest": {
-    "globals": {
-      "ts-jest": {
-        "isolatedModules": true
-      }
-    },
-    "modulePaths": [
-      "<rootDir>"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "jsx",
-      "json",
-      "ts",
-      "tsx"
-    ],
-    "roots": [
-      "<rootDir>/__tests__",
-      "<rootDir>/src"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    }
+    "path-to-regexp": "^6.2.1"
   },
   "license": "MIT",
   "keywords": [
+    "next.js",
+    "i18n",
+    "routes",
+    "locale",
+    "internationalization",
+    "localization",
+    "localized",
     "react",
     "next",
     "nextjs",
-    "next.js",
-    "roots",
-    "routes",
-    "localization",
-    "localized",
-    "locale",
-    "static"
+    "server components"
   ],
   "author": {
     "name": "Jirka Svoboda",
@@ -110,5 +86,10 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/svobik7/next-roots"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": [
+      "eslint --fix"
+    ]
   }
 }

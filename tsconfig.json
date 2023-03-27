@@ -1,16 +1,26 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "noEmit": true,
+    "target": "ESNext",
     "strict": true,
     "allowJs": true,
     "noImplicitAny": true,
     "esModuleInterop": true,
     "removeComments": true,
-    "declaration": true,
+    "declaration": false,
+    "noEmit": true,
+    "outDir": "dist",
     "skipLibCheck": true,
-    "jsx": "react"
+    "jsx": "react",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "verbatimModuleSyntax": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["src/*"]
+    },
+    "types": ["vitest/globals"]
   },
-  "include": ["src", "bin"],
-  "exclude": ["**/node_modules", "dist", "__tests__"]
+  "include": ["src"],
+  "exclude": ["**/node_modules", "dist"]
 }
