@@ -4,8 +4,7 @@ import { getLocaleFactory } from '~/utils/locale-utils'
 
 export class Router {
   private schema: RouterSchema
-
-  private static PAGE_HREF: string = '/'
+  private static PAGE_HREF = '/'
 
   constructor(schema: RouterSchema) {
     this.schema = schema

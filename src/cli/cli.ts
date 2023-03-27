@@ -2,7 +2,7 @@
 import path from 'path'
 import { generateFactory } from './commands/generate'
 import { DEFAULT_LOCALIZE_DIR, DEFAULT_ORIGIN_DIR, getConfig } from './config'
-import { CliError, CompileError, ConfigError } from './errors'
+import { CliError } from './errors'
 import type { CliParams } from './types'
 
 const [, , configPath = 'roots.config.js', configParams = {}] = process.argv
