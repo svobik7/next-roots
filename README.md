@@ -1,34 +1,34 @@
 # next-roots
 
-Tiny (just 1.9kb) next.js utility to handle i18n routing in the new app directory.
+NextRoots is package for generating i18n file-based routes for the new Next.js APP directory. It leverages server-side concept of APP folder. That means router code lives always on the server and should not be populated to the client. Generating i18n routes is alternative to well known (and suggested) option of having one dynamic `[locale]` folder sitting as a root above all other routes. It makes the sites SEO friendly and does not bother client with routing maps and toher additional bundles.
 
-If you are looking for an i18n routing utility for the old pages directory check [next-roots](https://github.com/svobik7/next-roots) which is built on the same idea as the next-roots.
+> If you are using old Next.js pages directory check [next-roots@v2](https://github.com/svobik7/next-roots/tree/v2).
 
-## 1. About next-roots
+Bellow we are going to cover localization of simple site containing just two routes. Check out the `example` folder to see more real world example of translating blog site.
 
-Roots routing mechanism depends on files routes generation rather than dynamic `[locale]` parent folder
+## 1. Getting started
 
-### What is wrong with the [locale] approach?
+Let's consider simple project structure that was built with English as a default locale and now needs to be localized for Czech audience.
 
-The `[locale]` approach works well until you need to boost your SEO. While content translations work well with the `[locale]` in place the URL translations become cumbersome.
+```bash
+├── app
+│   ├── about
+│   │   └── page.js
+│   └── page.js
+└── ...
+```
 
-Right, there is this config called rewrites where you can set all possible URL translations and point them to proper destinations.
+The requirement is to have English localization served from `/` and Czech from `/cs/...` (btw NextRoots supports both prefixed and uprefixed default locale). The goal is to have following URLs:
 
-But that rubs out the benefits of file-based routing because all those rewrites must be checked in runtime before every request so that the proper file route can be targeted.
+For index page:
 
-> This is usually true even for the origin locale which is reachable without any rewrites check.
+1. /
+1. /cs
 
-And also all those rewrite rules can easily become unmanageable as the site grows and another site locale is added.
+For about page:
 
-Another drawback of the `[locale]` approach is that your origin paths (the ones used for naming the actual files) are accessible (without additional redirect rules) on every locale.
-
-> Your account route becomes available on '/en/account' as well as on `/es/account` or `/cs/account` without additional hijacking of next.config.js.
-
-All the above break good SEO. So why don't just utilize the benefits of file-based routing itself and generate all localized routes in advance during build (or in dev) and free up the runtime?
-
-## 2. Getting started
-
-A complete example can be seen in the `example` directory.
+1. /about
+1. /cs/o-nas
 
 ### Installation
 
@@ -41,153 +41,133 @@ A complete example can be seen in the `example` directory.
 ```json
 {
   "scripts": {
-    "dev": "yarn roots && next dev",
-    "build": "yarn roots && next build"
+    "roots": "yarn next-roots"
   }
 }
 ```
 
-### Step-by-step guide
+### Migrate routes to the roots directory
 
-This file `roots.config.js` defines rules based on which the routes will be generated.
+As default Next.js reads routes from the folder called `app`. Using NextRoots and generating i18n routes requires you to move all your current routes into different folder called `roots` by default (name is customizable). Run following command from your project root:
 
-Let's take a simple example of existing English only based site structure like this:
+`mv ./app/ ./roots`
 
-```bash
-├── app
-│ └── (auth)
-│   └── login
-│   |  └── page.tsx
-│   └── signup
-│     └── page.tsx
-│ └── account
-│   └── profile
-│     └── page.tsx
-│     └── edit
-│       └── page.tsx
-│   └── page.tsx
-│ └── blog
-│   └── page.tsx
-│   └── [articleId]
-│     └── page.tsx
+This would be the new area where you are going to store your original routes, write your code and make changes. From now on you wont be editing the files under the `app` folder. The `app` folder will stands only as a keeper of localized routes and forwards everything to original routes.
 
-```
-
-In such a structure we work with 7 pages and their URLs. Those URLs will be:
-
-/login
-/signup
-/account
-/account/profile
-/account/profile/edit
-/blog
-/blog/[articleId]
-
-Everything works like a charm while rainbows and unicorns are everywhere. But one day we decide to translate our pages and their URLs into another language let's say Spanish.
-
-What we need to do is wrap our current structure into root locale which is in our case English = en. So we did that and our structure now looks like this:
+The project structure now looks like:
 
 ```bash
-├── app
-│ └── en
-│ 	└── (auth)
-│   	└── login
-│   	|  └── page.tsx
-│   	└── signup
-│     	└── page.tsx
-│ 	└── account
-│   	└── profile
-│     	└── page.tsx
-│     	└── edit
-│      	 └── page.tsx
-│   	└── page.tsx
-│ 	└── blog
-│   	└── page.tsx
-│   	└── [articleId]
-│     	└── page.tsx
+├── roots
+│   ├── about
+│   │   └── page.js
+│   └── page.js
+└── ...
 ```
 
-No doubt our root URLs become localized immediately
+### Setting roots config
 
-/en/login
-/en/signup
-/en/account
-/en/account/profile
-/en/account/profile/edit
-/en/blog
-/en/blog/[articleId]
+To tell NextRoots which locales we want to generate and where the roots files and app files can be found the `roots.config.js` file must to be defined in project root.
 
-Now, this is the time to set some rules and generate a Spanish version of our routes.
+`touch ./roots.config.js`
 
-Let's dive into roots.config.js and do something like this:
+Simple configuration for English and Spanish localization can looks like this:
 
 ```js
+const path = require('path')
+
 module.exports = {
-  rootDir: './app',
-  locales: ['en', 'es'],
-  routes: [
-    {
-      rootPath: 'account',
-      routes: [{ locale: 'es', routePath: 'cuenta' }],
-      children: [
-        {
-          rootPath: 'profile',
-          routes: [
-            // child route takes parent routePath as prefix => /es/cuenta/perfil
-            { locale: 'es', routePath: 'perfil' },
-          ],
-          children: [
-            {
-              rootPath: 'edit',
-              routes: [
-                // grandchild route take all parents routePath as prefix => /es/cuenta/perfil/editar
-                { locale: 'es', routePath: 'editar' },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      rootPath: '(auth)',
-      children: [
-        {
-          rootPath: 'login',
-          routes: [{ locale: 'es', routePath: 'acceso' }],
-        },
-        {
-          rootPath: 'signup',
-          routes: [{ locale: 'es', routePath: 'registrarse' }],
-        },
-      ],
-    },
-    {
-      rootPath: 'blog',
-      routes: [{ locale: 'es', routePath: 'revista' }],
-      children: [
-        {
-          rootPath: 'articles',
-          routes: [{ locale: 'es', routePath: 'articulos' }],
-          children: [
-            {
-              rootPath: '[articleId]',
-            },
-          ],
-        },
-        {
-          rootPath: 'authors',
-          routes: [{ locale: 'es', routePath: 'autores' }],
-          children: [
-            {
-              rootPath: '[authorId]',
-            },
-          ],
-        },
-      ],
-    },
-  ],
+  originDir: path.resolve(__dirname, 'roots'),
+  localizedDir: path.resolve(__dirname, 'app'),
+  locales: ['en', 'cs'],
+  defaultLocale: 'en',
+  prefixDefaultLocale: false, // serves "en" locale on / instead of /en
 }
 ```
+
+### Generate localized routes
+
+Generation is initiated by running `yarn next-roots` or just `yarn roots` in our case (we added it to our package.json scripts) from the project root folder. The `app` folder was generated and project structer is now shaped like this:
+
+```bash
+├── app
+│   ├── (en)
+│   │   ├── about
+│   │   │   └── page.js
+│   │   └── page.js
+│   ├── cs
+│   │   ├── about
+│   │   │   └── page.js
+│   │   └── page.js
+├── roots,
+│   ├── about
+│   │   └── page.js
+│   └── page.js
+└── ...
+```
+
+Without any further steps the project would ended up with URLs like that:
+
+1. /
+1. /about
+1. /cs
+1. /cs/about // this path needs to be translated
+
+### Translating URL paths
+
+Every URL path or even segment of the URL path can be translated or left untranslated (depends on project needs). To translate URL segment we need to add `i18n.js` file into the route directory in our original routes.
+
+> Note that i18n.js, i18n.mjs and i18n.ts files are supported. If i18n.ts is used it is compiled during the runtime by (esbuild)[https://esbuild.github.io/].
+
+```bash
+├── app               // app folder stays untouched now
+├── roots,
+│   ├── about
+│   │   ├── i18n.js   // i18n.js file is added to the route which URL path needs to be translated
+│   │   └── page.js
+│   └── page.js
+└── ...
+```
+
+That `i18n.js` can be shaped in three differen ways file contents:
+
+```js
+module.exports.routeNames = [
+  { locale: 'cs', path: 'o-nas' },
+  // { locale: 'en', path: 'about' },   // you dont need to specify default translation as long as it match the route folder name
+]
+```
+
+Running `yarn roots` again will update `app` folder routes. The project structure now looks like:
+
+```bash
+├── app
+│   ├── (en)
+│   │   ├── about
+│   │   │   └── page.js
+│   │   └── page.js
+│   ├── cs
+│   │   ├── o-nas    // translated URL path
+│   │   │   └── page.js
+│   │   └── page.js
+├── roots,
+│   ├── about
+│   │   └── page.js
+│   └── page.js
+└── ...
+```
+
+Finally our project is server on URLs that are generated during the build time and match perfectly the initial requirements:
+
+1. /
+2. /about
+3. /cs
+4. /cs/o-nas
+
+## 2. Router and Links
+
+## 3. Ways of translating URL paths
+
+## 4. Config params
 
 > NOTE: generating the rules structure automatically is in progress. Once in place, you will run something like `yarn roots add es`, and the rules will be enriched with `{ locale: 'es', routePath: '@missingTranslation' }`
 
@@ -340,3 +320,21 @@ export function getRouter() {
   return router
 }
 ```
+
+### What is wrong with the [locale] approach?
+
+The `[locale]` approach works well until you need to boost your SEO. While content translations work well with the `[locale]` the URL translations become cumbersome.
+
+Rig§ht, there is this config called rewrites where you can set all possible URL translations and point them to proper destinations.
+
+But that rubs out the benefits of file-based routing because all those rewrites must be checked in runtime before every request so that the proper file route can be targeted.
+
+> This is usually true even for the origin locale which is reachable without any rewrites check.
+
+And also all those rewrite rules can easily become unmanageable as the site grows and another site locale is added.
+
+Another drawback of the `[locale]` approach is that your origin paths (the ones used for naming the actual files) are accessible (without additional redirect rules) on every locale.
+
+> Your account route becomes available on '/en/account' as well as on `/es/account` or `/cs/account` without additional hijacking of next.config.js.
+
+All the above break good SEO. So why don't just utilize the benefits of file-based routing itself and generate all localized routes in advance during build (or in dev) and free up the runtime?
