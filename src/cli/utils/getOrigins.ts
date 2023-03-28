@@ -1,10 +1,10 @@
 import fs from 'fs'
 import path from 'path'
 import { pathToFileURL } from 'url'
+import { compileI18n } from '~/cli/compilers/compileI18n'
 import { isDirectory, isFile, removeDir } from '~/utils/fs-utils'
 import { asRootPath } from '~/utils/path-utils'
 import type { Origin, RootTranslation } from '../types'
-import { buildI18n } from './buildI18n'
 
 const I18N_FILE_NAMES = ['i18n.ts', 'i18n.mjs', 'i18n.js']
 const I18N_BUILD_DIR = '.next-roots'
@@ -32,9 +32,7 @@ async function parseI18nFile(
       return undefined
     }
 
-    if (fileName.endsWith('.ts')) {
-      fileName = await buildI18n(fileName, I18N_BUILD_DIR)
-    }
+    fileName = await compileI18n(fileName, I18N_BUILD_DIR)
 
     const { routeNames, generateRouteNames } = await importI18nFile(fileName)
     return generateRouteNames ? await generateRouteNames() : routeNames

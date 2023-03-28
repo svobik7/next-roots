@@ -301,13 +301,14 @@ You don't need to specify translations for default locale. Routes inherit the pa
 
 ## 4. Config params
 
-| name                  | type     | default   | description                                                                                                                 |
-| --------------------- | -------- | --------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `originDir`           | string   | `./roots` | absolute path to the origin un-translated routes                                                                            |
-| `localizedDir`        | string   | `./app`   | absolute path to the localized routes. This is where next-roots saves generated routes.                                     |
-| `locales`             | string[] | `[]`      | localization prefixes that will be used in URL                                                                              |
-| `defaultLocale`       | string   | `''`      | default locale that is specified in `locales`                                                                               |
-| `prefixDefaultLocale` | boolean  | `true`    | when default locale = en then TRUE means it will be served from "/en" and FALSE means it will be served without prefix on / |
+| name                  | type     | default                     | required | description                                                                                                                                       |
+| --------------------- | -------- | --------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `originDir`           | string   | `./roots`                   | optional | absolute path to the origin un-translated routes                                                                                                  |
+| `localizedDir`        | string   | `./app`                     | optional | absolute path to the localized routes. This is where next-roots saves generated routes.                                                           |
+| `locales`             | string[] | `[]`                        | required | localization prefixes that will be used in URL                                                                                                    |
+| `defaultLocale`       | string   | `''`                        | required | default locale that is specified in `locales`                                                                                                     |
+| `prefixDefaultLocale` | boolean  | `true`                      | optional | when default locale = en then TRUE means it will be served from "/en" and FALSE means it will be served without prefix on /                       |
+| `packageDir`          | string   | `./node_modules/next-roots` | optional | absolute path to the next-root package itself. Should be changed only when package is stored in different location than project root node_modules |
 
 ## 5. FAQ
 

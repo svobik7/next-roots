@@ -2,7 +2,7 @@ import { createHash } from 'crypto'
 import { build } from 'esbuild'
 import path from 'path'
 
-export async function buildI18n(fileName: string, buildDir: string) {
+export async function compileI18n(fileName: string, buildDir: string) {
   const outputFileName = createHash('md5').update(fileName).digest('hex')
 
   return build({
