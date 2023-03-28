@@ -16,7 +16,7 @@
     }
   },
   "bin": {
-    "roots": "./dist/cli.js"
+    "next-roots": "./dist/cli.js"
   },
   "scripts": {
     "prepare": "husky install",
@@ -32,14 +32,13 @@
     "prepublish": "yarn build",
     "publish:canary": "yarn publish --tag canary"
   },
-  "dependencies": {
-    "@vitest/coverage-istanbul": "^0.29.7"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/fs-extra": "^11.0.1",
     "@types/mock-fs": "^4.13.1",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
+    "@vitest/coverage-istanbul": "^0.29.7",
     "arg": "^5.0.2",
     "colors": "^1.4.0",
     "esbuild": "^0.17.12",
@@ -63,7 +62,9 @@
     "vitest": "^0.29.7"
   },
   "peerDependencies": {
-    "path-to-regexp": "^6.2.1"
+    "esbuild": "^0.17.12",
+    "path-to-regexp": "^6.2.1",
+    "resolve-pkg": "^2.0.0"
   },
   "license": "MIT",
   "keywords": [

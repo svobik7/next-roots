@@ -313,7 +313,7 @@ You don't need to specify translations for default locale. Routes inherit the pa
 
 ### Why generated routes are better than recommended `[lang]` approach?
 
-The `[lang]` approach works well until you need to boost your SEO. While content translations work well with the `[lang]` the URL translations become cumbersome. Read more about generated routes
+The `[lang]` approach works well until you need to boost your SEO. While content translations work well with the `[lang]` the URL translations become cumbersome. Read more about generated routes in https://dev.to/svobik7/dont-use-dynamic-lang-segment-for-your-i18n-nextjs-routes-1k6j-temp-slug-8759660
 
 ### Can I use Router in client?
 
