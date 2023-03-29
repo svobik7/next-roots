@@ -1,10 +1,31 @@
-# next-roots
+# Introduction
 
-NextRoots is package for generating i18n file-based routes for the new Next.js APP directory. It leverages server-side concept of APP folder. That means router code lives always on the server and should not be populated to the client. Generating i18n routes is alternative to well known (and suggested) option of having one dynamic `[lang]` folder sitting as a root above all other routes. It makes the sites SEO friendly and does not bother client with routing maps and toher additional bundles.
+NextRoots is i18n routes generator for the new Next.js APP directory. It is an alternative to [officially recommended way](https://beta.nextjs.org/docs/guides/internationalization#routing-overview ) of handling i18n routes in Next.js app.
+
+The main idea behind is to generate all localized file-routes (slugs) in advance rather than putting everything into dynamic `[lang]` segment.
+
+[Read more about benefits](https://dev.to/svobik7/dont-use-dynamic-lang-segment-for-your-i18n-nextjs-routes-3k05 ) of generated i18n routes.
 
 > If you are using old Next.js pages directory check [next-roots@v2](https://github.com/svobik7/next-roots/tree/v2).
 
-Bellow we are going to cover localization of simple site containing just two routes. Check out the `example` folder to see more real world example of translating blog site.
+## Table of contents
+
+- [Getting started](#1-getting-started)
+  - [Installation](#installation)
+  - [Migrating routes](#migrating-routes)
+  - [Configuring generator](#configuring-generator)
+  - [Generating routes](#generating-routes)
+  - [Translating slugs](#translating-slugs)
+- [Router & Links](#2-router-and-links)
+  - [GetHref](#gethref)
+  - [GetLocaleFromHref](#getlocalefromhref)
+  - [GetRouteFromHref](#getroutefromhref)
+- [Additional props](#3-additional-props)
+- [Translation files](#4-translation-files)
+  - [Static translations](#static-translations)
+  - [Dynamic translations](#dynamic-translations)
+- [Config params](#5-config-params)
+- [FAQ](#6-faq)
 
 ## 1. Getting started
 
@@ -33,11 +54,11 @@ The requirement is to have English localization served from `/` and Czech from `
 
 `yarn add next-roots`
 
-2. Add esbuild to compile i18n files to your project devDependencies
+2. Add esbuild for compiling i18n config files to your project devDependencies
 
 `yarn add --dev esbuild`
 
-2. Add generate script to your `package.json`
+2. (optional) Add generate script to your `package.json`
 
 ```json
 {
@@ -47,13 +68,15 @@ The requirement is to have English localization served from `/` and Czech from `
 }
 ```
 
-### Migrate routes to the roots directory
+### Migrating routes
 
-As default Next.js reads routes from the folder called `app`. Using NextRoots and generating i18n routes requires you to move all your current routes into different folder called `roots` by default (name is customizable). Run following command from your project root:
+As default Next.js reads routes from the folder called `app`. Using NextRoots and generating i18n routes requires you to move all your original routes into different folder called `roots` (name is customizable). 
+
+Run following command from your project root:
 
 `mv ./app/ ./roots`
 
-This would be the new area where you are going to store your original routes, write your code and make changes. From now on you wont be editing the files under the `app` folder. The `app` folder will stands only as a keeper of localized routes and forwards everything to original routes.
+This would be the new area where you are going to store your original routes, write your code and make changes. From now on you wont be editing the files under the `app` folder. The `app` folder will stands only as a keeper of localized routes and forwards everything to the original ones.
 
 The project structure now looks like:
 
@@ -65,13 +88,13 @@ The project structure now looks like:
 └── ...
 ```
 
-### Setting roots config
+### Configuring generator
 
-To tell NextRoots which locales we want to generate and where the roots files and app files can be found the `roots.config.js` file must to be defined in project root.
+To tell NextRoots which locales we want to generate and where the roots files and app files can be found the `roots.config.js` file must be defined in project root.
 
 `touch ./roots.config.js`
 
-Simple configuration for English and Spanish localization can looks like this:
+Simple configuration for English and Czech localizations can looks like this:
 
 ```js
 const path = require('path')
@@ -85,9 +108,9 @@ module.exports = {
 }
 ```
 
-### Generate localized routes
+### Generating routes
 
-Generation is initiated by running `yarn next-roots` or just `yarn roots` in our case (we added it to our package.json scripts) from the project root folder. The `app` folder was generated and project structer is now shaped like this:
+Generation is initiated by running `yarn next-roots` or just `yarn roots` in our case (we added it to our package.json scripts) from the project root folder. The `app` folder is then generated and project structure is shaped like this:
 
 ```bash
 ├── app
@@ -106,24 +129,24 @@ Generation is initiated by running `yarn next-roots` or just `yarn roots` in our
 └── ...
 ```
 
-Without any further steps the project would ended up with URLs like that:
+Without any further steps the project ends up with URLs like that:
 
 1. /
 1. /about
 1. /cs
 1. /cs/about // this path needs to be translated
 
-### Translating URL paths
+### Translating slugs
 
-Every URL path or even segment of the URL path can be translated or left untranslated (depends on project needs). To translate URL segment we need to add `i18n.js` file into the route directory in our original routes.
+Every URL path (slug) or even segment of the URL path can be translated or left untranslated (depends on project needs). To translate URL segment we need to add `i18n.js` file into the original route directory.
 
-> Note that i18n.js, i18n.mjs and i18n.ts files are supported. If `i18n.ts` is used then it is compiled during the runtime by [esbuild](https://esbuild.github.io/).
+> Note that i18n.js, i18n.mjs and i18n.ts files are supported. Each of those file are compiled during the generation by [esbuild](https://esbuild.github.io/).
 
 ```bash
-├── app               // app folder stays untouched now
+├── app  // app folder stays untouched now
 ├── roots,
 │   ├── about
-│   │   ├── i18n.js   // i18n.js file is added to the route that URL path needs to be translated
+│   │   ├── i18n.js  // i18n.js file is added to the route that URL path needs to be translated
 │   │   └── page.js
 │   └── page.js
 └── ...
@@ -150,7 +173,7 @@ Running `yarn roots` again will update `app` folder routes with translated paths
 │   │   │   └── page.js
 │   │   └── page.js
 │   ├── cs
-│   │   ├── o-nas           // translated URL path
+│   │   ├── o-nas  // translated URL path
 │   │   │   └── page.js
 │   │   └── page.js
 ├── roots,
@@ -160,17 +183,27 @@ Running `yarn roots` again will update `app` folder routes with translated paths
 └── ...
 ```
 
-Finally our project is server on URLs that are generated during the build time and match perfectly the initial requirements. If you need to change your routes or translation do not forget to run `yarn roots` again.
+Finally our project is served on URLs that match perfectly the initial requirements. If you need to change your routes or translation do not forget to run `yarn roots` again.
 
 ## 2. Router and Links
 
-Roots comes with a strongly typed Router class for creating links between your pages. Thanks to the generated schema and types you will be notified if the desired page exists or requires additional parameters.
+Roots comes with a strongly typed Router class for creating links between your pages. Thanks to the generated schema and types you will be notified if the desired route exists or requires additional parameters.
 
-> It is good practice to use Router only on the server side so that the list of all possible routes does not need to be sent to the client.
+> It is good practice to use Router only on the server side so that the list of all possible routes is not sent to the client.
 
 ### GetHref
 
-For creating links you should use the `getHref(name: string, params?: object)` method of the router. The first parameter called `name` is the original route folder name. The second parameter is an object which can define desired `locale` or additional dynamic params. Thanks to next-roots strong types you can import the `RouteName` type which includes all available route name strings.
+Creates page href.
+
+```ts
+getHref(name: string, params?: object)
+```
+
+The first parameter called `name` is the original route URL path. 
+
+The second parameter is an object which can define desired `locale` or additional dynamic params. 
+
+Thanks to strong types you can import the `RouteName` type which includes all available route name strings.
 
 ```ts
 import { Router, schema, RouteName } from 'next-roots'
@@ -187,10 +220,10 @@ const routeNameValid: RouteName = '/about'
 const routeNameInvalid: RouteName = '/invalid' // yields TS error
 ```
 
-For dynamic routes let's say we have route called `[articleId]`. In case we want to link that page we can utilize the getHref method in following way:
+For dynamic routes like `[articleId]`:
 
 ```ts
-// for getting '/cs/revista/1'
+// for getting '/cs/1'
 router.getHref('/[articleId]', { locale: 'cs', articleId: '1' })
 
 // typescript will yield at you here because of the missing required parameter called articleId
@@ -208,7 +241,7 @@ const paramsDynamicInvalid: RouteParamsDynamic<typeof routeDynamic> = {
 }
 ```
 
-Passing the `locale` parameter is not required. If you do not pass any `locale` param then the current one will be automatically used.
+Passing the `locale` parameter is not required. If you do not pass any `locale` param then the current page locale will be automatically used.
 
 ```ts
 // on "/cs" page it will creates "/cs/o-nas" href while on "/" (en) it will create "/about" href
@@ -263,7 +296,23 @@ router.getRouteFromHref('/cs/o-nas')
 router.getRouteFromHref('/invalid-locale/o-nas')
 ```
 
-## 3. Ways of translating URL paths
+## 3. Additional props
+
+NextRoots pushes some additional props to your components and functions to be able to read current page href or locale directly.
+
+1. [Page](https://github.com/svobik7/next-roots/blob/master/example/src/routes/about/page.tsx#L22) - `pageHref`
+2. [Layout](https://github.com/svobik7/next-roots/blob/ccbc6a83c7a3309c9a88f5746ac5b479930816b0/example/src/features/common/components/Layout.tsx#L28) - `locale`
+3. [generateMetadata](https://github.com/svobik7/next-roots/blob/master/example/src/routes/about/page.tsx#L43) - `pageHref`
+4. [generateStaticParams](https://github.com/svobik7/next-roots/blob/master/example/src/routes/%5Bauthor%5D/page.tsx#L89) - `pageLocale`
+
+Following types are available for props above and can be imported from next-roots:
+
+1. PageProps
+2. LayoutProps
+3. GenerateMetadataProps
+4. GenerateStaticParamsProps
+
+## 4. Translation files
 
 Translation of URL paths is done in `i18n.js` of `i18n.ts` files by placing this file right next to the `page.js` of `page.ts` file and running `yarn roots`. There are two main ways how you can define the i18n file.
 
@@ -303,7 +352,7 @@ export async function generateRouteNames() {
 
 You don't need to specify translations for default locale. Routes inherit the path names from origin folders by default. If you specify the translation for default locale then it is used instead of origin folder name.
 
-## 4. Config params
+## 5. Config params
 
 | name                  | type     | default                     | required | description                                                                                                                                       |
 | --------------------- | -------- | --------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -314,11 +363,11 @@ You don't need to specify translations for default locale. Routes inherit the pa
 | `prefixDefaultLocale` | boolean  | `true`                      | optional | when default locale = en then TRUE means it will be served from "/en" and FALSE means it will be served without prefix on /                       |
 | `packageDir`          | string   | `./node_modules/next-roots` | optional | absolute path to the next-root package itself. Should be changed only when package is stored in different location than project root node_modules |
 
-## 5. FAQ
+## 6. FAQ
 
 ### Why generated routes are better than recommended `[lang]` approach?
 
-The `[lang]` approach works well until you need to boost your SEO. While content translations work well with the `[lang]` the URL translations become cumbersome. Read more about generated routes in https://dev.to/svobik7/dont-use-dynamic-lang-segment-for-your-i18n-nextjs-routes-3k05
+The `[lang]` approach works well until you need to translate URL slugs. Read more about generated routes in https://dev.to/svobik7/dont-use-dynamic-lang-segment-for-your-i18n-nextjs-routes-3k05
 
 ### Can I use Router in client?
 
