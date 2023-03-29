@@ -162,7 +162,7 @@ module.exports.routeNames = [
 ]
 ```
 
-> For describing translations in promise-like way see [Translation files](#translation-files)
+> For describing translations in promise-like way see [Translation files](#4-translation-files)
 
 Running `yarn roots` again will update `app` folder routes with translated paths. The project structure now looks like:
 
