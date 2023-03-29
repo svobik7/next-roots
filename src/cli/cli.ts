@@ -1,7 +1,12 @@
 #!/usr/bin/env node
 import path from 'path'
 import { generateFactory } from './commands/generate'
-import { DEFAULT_LOCALIZE_DIR, DEFAULT_ORIGIN_DIR, getConfig } from './config'
+import {
+  DEFAULT_LOCALIZE_DIR,
+  DEFAULT_ORIGIN_DIR,
+  getConfig,
+  PKG_NAME,
+} from './config'
 import { CliError } from './errors'
 import type { CliParams } from './types'
 
@@ -13,6 +18,7 @@ const cliDefaultParams: CliParams = {
   defaultLocale: '',
   locales: [],
   prefixDefaultLocale: true,
+  packageDir: path.join(process.cwd(), `node_modules/${PKG_NAME}`),
 }
 
 const cliFileParams = require(path.join(process.cwd(), configPath))

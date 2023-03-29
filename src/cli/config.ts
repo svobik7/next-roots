@@ -1,5 +1,4 @@
 import path from 'path'
-import resolvePkg from 'resolve-pkg'
 import type { CliParams, Config } from '~/cli/types'
 import { isDirectory, makeDir, readFile } from '~/utils/fs-utils'
 import { ConfigError } from './errors'
@@ -7,16 +6,6 @@ import { ConfigError } from './errors'
 export const PKG_NAME = 'next-roots'
 export const DEFAULT_ORIGIN_DIR = './roots'
 export const DEFAULT_LOCALIZE_DIR = './app'
-
-function getPackageDir(projectRoot: string) {
-  let pkgDir = resolvePkg(PKG_NAME, { cwd: projectRoot }) || ''
-
-  if (!pkgDir) {
-    pkgDir = path.join(projectRoot, `node_modules/${PKG_NAME}`)
-  }
-
-  return pkgDir
-}
 
 function getPathFactory(dirName: string) {
   return (fileName = '') => path.join(dirName, fileName)
@@ -27,8 +16,7 @@ function getContentsFactory(getAbsolutePath: (fileName: string) => string) {
 }
 
 export function getConfig(cliParams: CliParams): Config {
-  const packageRoot = getPackageDir(process.cwd())
-  const distRoot = path.join(packageRoot, 'dist')
+  const distRoot = path.join(cliParams.packageDir, 'dist')
 
   const getOriginAbsolutePath = getPathFactory(cliParams.originDir)
   const getLocalizedAbsolutePath = getPathFactory(cliParams.localizedDir)
@@ -44,7 +32,9 @@ export function getConfig(cliParams: CliParams): Config {
   }
 
   if (!isDirectory(getLocalizedAbsolutePath())) {
-    throw new ConfigError('Invalid "localizedDir" path. Directory neither exists nor be created.')
+    throw new ConfigError(
+      'Invalid "localizedDir" path. Directory neither exists nor be created.'
+    )
   }
 
   const getDistAbsolutePath = getPathFactory(distRoot)
@@ -53,7 +43,9 @@ export function getConfig(cliParams: CliParams): Config {
   const defaultLocale = cliParams.defaultLocale || cliParams.locales.at(0) || ''
 
   if (!cliParams.locales.includes(defaultLocale)) {
-    throw new ConfigError('Invalid or empty "defaultLocale". Must be one of given "locales".')
+    throw new ConfigError(
+      'Invalid or empty "defaultLocale". Must be one of given "locales".'
+    )
   }
 
   const getOriginContents = getContentsFactory(getOriginAbsolutePath)

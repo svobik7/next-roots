@@ -33,6 +33,10 @@ The requirement is to have English localization served from `/` and Czech from `
 
 `yarn add next-roots`
 
+2. Add esbuild to compile i18n files to your project devDependencies
+
+`yarn add --dev esbuild`
+
 2. Add generate script to your `package.json`
 
 ```json
@@ -301,20 +305,26 @@ You don't need to specify translations for default locale. Routes inherit the pa
 
 ## 4. Config params
 
-| name                  | type     | default   | description                                                                                                                 |
-| --------------------- | -------- | --------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `originDir`           | string   | `./roots` | absolute path to the origin un-translated routes                                                                            |
-| `localizedDir`        | string   | `./app`   | absolute path to the localized routes. This is where next-roots saves generated routes.                                     |
-| `locales`             | string[] | `[]`      | localization prefixes that will be used in URL                                                                              |
-| `defaultLocale`       | string   | `''`      | default locale that is specified in `locales`                                                                               |
-| `prefixDefaultLocale` | boolean  | `true`    | when default locale = en then TRUE means it will be served from "/en" and FALSE means it will be served without prefix on / |
+| name                  | type     | default                     | required | description                                                                                                                                       |
+| --------------------- | -------- | --------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `originDir`           | string   | `./roots`                   | optional | absolute path to the origin un-translated routes                                                                                                  |
+| `localizedDir`        | string   | `./app`                     | optional | absolute path to the localized routes. This is where next-roots saves generated routes.                                                           |
+| `locales`             | string[] | `[]`                        | required | localization prefixes that will be used in URL                                                                                                    |
+| `defaultLocale`       | string   | `''`                        | required | default locale that is specified in `locales`                                                                                                     |
+| `prefixDefaultLocale` | boolean  | `true`                      | optional | when default locale = en then TRUE means it will be served from "/en" and FALSE means it will be served without prefix on /                       |
+| `packageDir`          | string   | `./node_modules/next-roots` | optional | absolute path to the next-root package itself. Should be changed only when package is stored in different location than project root node_modules |
 
 ## 5. FAQ
 
 ### Why generated routes are better than recommended `[lang]` approach?
 
-The `[lang]` approach works well until you need to boost your SEO. While content translations work well with the `[lang]` the URL translations become cumbersome. Read more about generated routes
+The `[lang]` approach works well until you need to boost your SEO. While content translations work well with the `[lang]` the URL translations become cumbersome. Read more about generated routes in https://dev.to/svobik7/dont-use-dynamic-lang-segment-for-your-i18n-nextjs-routes-3k05
 
 ### Can I use Router in client?
 
 While it is not recommended it is still possible. In that case the whole schema needs to be send to client as well which increases bundle size. Read more about server components https://beta.nextjs.org/docs/rendering/server-and-client-components
+
+### Changes in I18n files are not propagated
+
+1. Did you run next-roots? If not run it again.
+2. Did you try to remove .next folder? Sometimes next.js caches previous schema and you need to delete its cache.

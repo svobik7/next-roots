@@ -4,6 +4,7 @@ export type CliParams = {
   locales: string[]
   defaultLocale: string
   prefixDefaultLocale: boolean
+  packageDir: string
 }
 
 export type Config = {

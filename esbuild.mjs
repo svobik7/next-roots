@@ -14,5 +14,6 @@ build({
   sourcemap: true,
   color: true,
   drop: ['debugger'],
+  external: ['esbuild'],
   plugins: [nodeExternalsPlugin()],
 }).catch(() => process.exit(1))
