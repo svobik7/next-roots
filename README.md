@@ -31,7 +31,7 @@ The requirement is to have English localization served from `/` and Czech from `
 
 1. Add the package to your project dependencies
 
-`yarn add next-roots`
+`yarn add next-roots esbuild --dev`
 
 2. Add generate script to your `package.json`
 

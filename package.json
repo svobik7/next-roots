@@ -61,9 +61,6 @@
     "typescript": "^5.0.2",
     "vitest": "^0.29.7"
   },
-  "peerDependencies": {
-    "esbuild": "^0.17.12"
-  },
   "license": "MIT",
   "keywords": [
     "next.js",

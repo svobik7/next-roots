@@ -1,9 +1,19 @@
 import { createHash } from 'crypto'
-import { build } from 'esbuild'
 import path from 'path'
+
+async function buildFactory() {
+  try {
+    const { build } = await import('esbuild')
+    return build
+  } catch {
+    throw new Error('ESBuild was not found')
+  }
+}
 
 export async function compileI18n(fileName: string, buildDir: string) {
   const outputFileName = createHash('md5').update(fileName).digest('hex')
+
+  const build = await buildFactory()
 
   return build({
     entryPoints: [fileName],
