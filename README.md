@@ -134,7 +134,7 @@ Without any further steps the project ends up with URLs like that:
 1. /
 1. /about
 1. /cs
-1. /cs/about // this path needs to be translated
+1. /cs/about    // this path needs to be translated
 
 ### Translating slugs
 
@@ -162,7 +162,7 @@ module.exports.routeNames = [
 ]
 ```
 
-> For describing translations in promise-like way see [Ways of translating URL paths](#ways-of-translating-url-paths)
+> For describing translations in promise-like way see [Translation files](#translation-files)
 
 Running `yarn roots` again will update `app` folder routes with translated paths. The project structure now looks like:
 
