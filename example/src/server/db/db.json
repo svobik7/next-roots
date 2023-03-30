@@ -9,7 +9,8 @@
         },
         "nav": {
           "Home": "Home",
-          "About": "About"
+          "About": "About",
+          "Contacts": "Contacts"
         },
         "article": { "BtnBack": "Back", "Author:": "Author:" },
         "author": {
@@ -36,7 +37,8 @@
         },
         "nav": {
           "Home": "Domů",
-          "About": "O Nás"
+          "About": "O Nás",
+          "Contacts": "Kontakty"
         },
         "article": { "BtnBack": "Zpět", "Author:": "Autor:" },
         "author": {
@@ -63,7 +65,8 @@
         },
         "nav": {
           "Home": "Hogar",
-          "About": "Sobre"
+          "About": "Sobre",
+          "Contacts": "Contactos"
         },
         "article": { "BtnBack": "Atrás", "Author:": "Autor:" },
         "author": {
