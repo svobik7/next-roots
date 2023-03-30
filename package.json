@@ -1,6 +1,6 @@
 {
   "name": "next-roots",
-  "version": "3.0.3-canary.0",
+  "version": "3.0.4",
   "description": "Utility to handle internationalized routing for Next.js app folder.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -37,7 +37,6 @@
     "path-to-regexp": "^6.2.1"
   },
   "devDependencies": {
-    "@types/fs-extra": "^11.0.1",
     "@types/mock-fs": "^4.13.1",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
@@ -53,7 +52,6 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
-    "fs-extra": "^11.1.1",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.0",
     "mock-fs": "^5.2.0",
