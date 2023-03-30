@@ -2,11 +2,13 @@ import {
   copyFileSync,
   existsSync,
   mkdirSync,
+  readdirSync,
   readFileSync,
+  rmdirSync,
   statSync,
+  unlinkSync,
   writeFileSync,
 } from 'fs'
-import { removeSync } from 'fs-extra'
 import path from 'path'
 
 /**
@@ -67,7 +69,16 @@ export function makeDir(dirPath: string): void {
  */
 export function removeDir(dirPath: string): void {
   if (isDirectory(dirPath)) {
-    removeSync(dirPath)
+    readdirSync(dirPath).forEach((child) => {
+      const childPath = path.join(dirPath, child)
+      if (isDirectory(childPath)) {
+        removeDir(childPath)
+      } else {
+        unlinkSync(childPath)
+      }
+    })
+
+    rmdirSync(dirPath)
   }
 }
 
