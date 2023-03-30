@@ -1,6 +1,6 @@
 {
   "name": "next-roots",
-  "version": "3.0.3-canary.0",
+  "version": "3.0.3",
   "description": "Utility to handle internationalized routing for Next.js app folder.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
