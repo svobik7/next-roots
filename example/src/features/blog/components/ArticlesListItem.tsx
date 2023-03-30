@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import type { ArticleTranslation } from '~/server/db/types'
 import { getArticleHref, getAuthorHref } from '~/server/router'
@@ -22,13 +23,13 @@ export function ArticlesListItem({ article }: ArticlesListItemProps) {
             {article.title}
           </Link>
         </h3>
-        <p className="mt-5 text-sm leading-6 text-gray-600 line-clamp-3">
+        <p className="mt-5 text-sm leading-6 text-gray-600">
           {article.content.slice(0, 160)}...
         </p>
       </div>
       {article.author && (
         <div className="relative mt-8 flex items-center gap-x-4">
-          <img
+          <Image
             src={`${article.author.avatar}?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80`}
             alt={article.author.username}
             className="h-10 w-10 rounded-full bg-gray-50"

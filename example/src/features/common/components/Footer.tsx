@@ -18,7 +18,7 @@ export function Footer() {
         <Link
           key={l.name}
           href={l.href}
-          className="text-gray-500 px-3 py-2 text-sm font-medium"
+          className="px-3 py-2 text-sm font-medium text-gray-500"
         >
           {l.name}
         </Link>
