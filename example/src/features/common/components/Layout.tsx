@@ -3,9 +3,9 @@ import type { PropsWithChildren } from 'react'
 import { Nav } from './Nav'
 
 import Link from 'next/link'
-import '~/features/common/styles.css'
-import { getAboutHref, getHomeHref } from '~/server/router'
-import { getDictionary } from '~/server/utils/getDictionary'
+import 'src/features/common/styles.css'
+import { getAboutHref, getHomeHref } from 'src/server/router'
+import { getDictionary } from 'src/server/utils/getDictionary'
 import { Footer } from './Footer'
 
 type RootLayoutProps = PropsWithChildren<{ locale: RouteLocale }>
@@ -31,7 +31,7 @@ export async function Layout({ children, locale }: RootLayoutProps) {
   return (
     <html lang={locale} className="h-full bg-gray-100">
       <body className="h-full">
-        <div className="min-h-full flex flex-col">
+        <div className="flex min-h-full flex-col">
           <Nav items={navigation} />
           <main className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
             {children}

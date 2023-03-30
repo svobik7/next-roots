@@ -1,12 +1,12 @@
 # Introduction
 
-NextRoots is i18n routes generator for the new Next.js APP directory. It is an alternative to [officially recommended way](https://beta.nextjs.org/docs/guides/internationalization#routing-overview ) of handling i18n routes in Next.js app.
+NextRoots is i18n routes generator for the new Next.js APP directory. It is an alternative to [officially recommended way](https://beta.nextjs.org/docs/guides/internationalization#routing-overview) of handling i18n routes in Next.js app.
 
-The main idea behind is to generate all localized file-routes (slugs) in advance rather than putting everything into dynamic `[lang]` segment.
-
-[Read more about benefits](https://dev.to/svobik7/dont-use-dynamic-lang-segment-for-your-i18n-nextjs-routes-3k05 ) of generated i18n routes.
+The main idea behind is to generate all localized file-routes (slugs) in advance rather than putting everything into dynamic `[lang]` segment. Read more about [benefits of generated i18n routes](https://dev.to/svobik7/dont-use-dynamic-lang-segment-for-your-i18n-nextjs-routes-3k05).
 
 > If you are using old Next.js pages directory check [next-roots@v2](https://github.com/svobik7/next-roots/tree/v2).
+
+Working demo site built on top of next-roots can be seen https://next-roots-svobik7.vercel.app
 
 ## Table of contents
 
@@ -70,7 +70,7 @@ The requirement is to have English localization served from `/` and Czech from `
 
 ### Migrating routes
 
-As default Next.js reads routes from the folder called `app`. Using NextRoots and generating i18n routes requires you to move all your original routes into different folder called `roots` (name is customizable). 
+As default Next.js reads routes from the folder called `app`. Using NextRoots and generating i18n routes requires you to move all your original routes into different folder called `roots` (name is customizable).
 
 Run following command from your project root:
 
@@ -134,7 +134,7 @@ Without any further steps the project ends up with URLs like that:
 1. /
 1. /about
 1. /cs
-1. /cs/about    // this path needs to be translated
+1. /cs/about // this path needs to be translated
 
 ### Translating slugs
 
@@ -199,9 +199,9 @@ Creates page href.
 getHref(name: string, params?: object)
 ```
 
-The first parameter called `name` is the original route URL path. 
+The first parameter called `name` is the original route URL path.
 
-The second parameter is an object which can define desired `locale` or additional dynamic params. 
+The second parameter is an object which can define desired `locale` or additional dynamic params.
 
 Thanks to strong types you can import the `RouteName` type which includes all available route name strings.
 

@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
-import type { ArticleTranslation } from '~/server/db/types'
-import { getAuthorHref, getHomeHref } from '~/server/router'
-import { getDictionary } from '~/server/utils/getDictionary'
+import type { ArticleTranslation } from 'src/server/db/types'
+import { getAuthorHref, getHomeHref } from 'src/server/router'
+import { getDictionary } from 'src/server/utils/getDictionary'
 
 type ArticleDetailProps = {
   article: ArticleTranslation
@@ -15,7 +15,7 @@ export async function ArticleDetail({
 }: ArticleDetailProps) {
   const t = await getDictionary(article.locale)
   return (
-    <div className="relative isolate overflow-hidden bg-white px-6 py-6 sm:py-8 lg:px-0">
+    <div className="relative isolate overflow-hidden bg-white p-6 sm:py-8 lg:px-0">
       <div className="mx-auto grid max-w-2xl grid-cols-1 gap-y-16 gap-x-8 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start lg:gap-y-10">
         <div className="lg:col-span-2 lg:col-start-1 lg:row-start-1 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
           <div className="lg:pr-4">
@@ -42,7 +42,7 @@ export async function ArticleDetail({
                 <Link
                   href={getHomeHref(article.locale)}
                   role="button"
-                  className="text-base font-semibold leading-7 text-white bg-indigo-600 px-4 py-2 rounded"
+                  className="rounded bg-indigo-600 px-4 py-2 text-base font-semibold leading-7 text-white"
                 >
                   {t('article.BtnBack')}
                 </Link>

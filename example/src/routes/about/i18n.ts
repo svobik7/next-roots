@@ -1,4 +1,4 @@
-import { getDictionary } from '~/server/utils/getDictionary'
+import { getDictionary } from 'src/server/utils/getDictionary'
 
 export async function generateRouteNames() {
   const tEN = await getDictionary('en')

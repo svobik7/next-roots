@@ -1,5 +1,5 @@
-import type { ArticleTranslation } from '~/server/db/types'
-import { getArticleHref } from '~/server/router'
+import type { ArticleTranslation } from 'src/server/db/types'
+import { getArticleHref } from 'src/server/router'
 
 export function getArticleLinkParams(article: ArticleTranslation) {
   return {

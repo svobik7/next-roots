@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import type { GenerateMetadataProps, PageProps } from 'next-roots'
-import { Page } from '~/features/common/components/Page'
-import { Links } from '~/features/common/components/Links'
-import { getAboutHref, getLocales, router } from '~/server/router'
-import { getDictionary } from '~/server/utils/getDictionary'
+import { Page } from 'src/features/common/components/Page'
+import { Links } from 'src/features/common/components/Links'
+import { getAboutHref, getLocales, router } from 'src/server/router'
+import { getDictionary } from 'src/server/utils/getDictionary'
 
 async function getData(locale: string) {
   const t = await getDictionary(locale)
