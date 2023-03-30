@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import type { Article, Author } from '~/server/db/types'
+import type { Article, Author } from 'src/server/db/types'
 import { getArticleTranslation } from './getArticleTranslation'
 import { getAuthorTranslation } from './getAuthorTranslation'
 

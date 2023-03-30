@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import type { ArticleTranslation } from '~/server/db/types'
-import { getArticleHref, getAuthorHref } from '~/server/router'
+import type { ArticleTranslation } from 'src/server/db/types'
+import { getArticleHref, getAuthorHref } from 'src/server/router'
 
 type ArticlesListItemProps = { article: ArticleTranslation }
 

@@ -1,5 +1,5 @@
-import type { AuthorTranslation } from '~/server/db/types'
-import { getAuthorHref } from '~/server/router'
+import type { AuthorTranslation } from 'src/server/db/types'
+import { getAuthorHref } from 'src/server/router'
 
 export function getAuthorLinkParams(author: AuthorTranslation) {
   return {

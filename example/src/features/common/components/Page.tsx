@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
-import { getHomeHref, getPageLocale } from '~/server/router'
-import { getDictionary } from '~/server/utils/getDictionary'
+import { getHomeHref, getPageLocale } from 'src/server/router'
+import { getDictionary } from 'src/server/utils/getDictionary'
 
 type PageProps = { title: string; content: string; alternatives: ReactNode }
 

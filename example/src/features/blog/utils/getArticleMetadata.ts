@@ -1,11 +1,8 @@
 import type { Metadata } from 'next'
-import type { Article } from '~/server/db/types'
+import type { Article } from 'src/server/db/types'
 import { getArticleTranslation } from './getArticleTranslation'
 
-export function getArticleMetadata(
-  article: Article,
-  locale: string
-): Metadata {
+export function getArticleMetadata(article: Article, locale: string): Metadata {
   const articleTranslation = getArticleTranslation({ article, locale })
 
   return {

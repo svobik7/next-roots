@@ -3,9 +3,9 @@ import type { PropsWithChildren } from 'react'
 import { Nav } from './Nav'
 
 import Link from 'next/link'
-import '~/features/common/styles.css'
-import { getAboutHref, getHomeHref } from '~/server/router'
-import { getDictionary } from '~/server/utils/getDictionary'
+import 'src/features/common/styles.css'
+import { getAboutHref, getHomeHref } from 'src/server/router'
+import { getDictionary } from 'src/server/utils/getDictionary'
 import { Footer } from './Footer'
 
 type RootLayoutProps = PropsWithChildren<{ locale: RouteLocale }>

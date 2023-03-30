@@ -1,4 +1,4 @@
-import type { ArticleTranslation } from '~/server/db/types'
+import type { ArticleTranslation } from 'src/server/db/types'
 import { ArticlesListItem } from './ArticlesListItem'
 
 type ArticlesListProps = {

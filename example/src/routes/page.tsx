@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import type { GenerateMetadataProps, PageProps } from 'next-roots'
-import { ArticlesList } from '~/features/blog/components/ArticlesList'
-import { getArticleTranslationFactory } from '~/features/blog/utils/getArticleTranslation'
-import { fetchArticles } from '~/server/db'
-import { router } from '~/server/router'
-import { getDictionary } from '~/server/utils/getDictionary'
+import { ArticlesList } from 'src/features/blog/components/ArticlesList'
+import { getArticleTranslationFactory } from 'src/features/blog/utils/getArticleTranslation'
+import { fetchArticles } from 'src/server/db'
+import { router } from 'src/server/router'
+import { getDictionary } from 'src/server/utils/getDictionary'
 
 export default async function BlogPage({ pageHref }: PageProps<void>) {
   const pageLocale = router.getLocaleFromHref(pageHref)

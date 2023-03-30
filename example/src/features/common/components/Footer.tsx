@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getHomeHref } from '~/server/router'
+import { getHomeHref } from 'src/server/router'
 
 function getLocales() {
   return [

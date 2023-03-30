@@ -1,6 +1,6 @@
 import 'server-only'
 import { Router, schema } from 'next-roots'
-import type { ArticleTranslation, AuthorTranslation } from '~/server/db/types'
+import type { ArticleTranslation, AuthorTranslation } from 'src/server/db/types'
 
 export const router = new Router(schema)
 

@@ -5,19 +5,23 @@ import type {
   PageProps,
 } from 'next-roots'
 import { notFound } from 'next/navigation'
-import { AuthorDetail } from '~/features/blog/components/AuthorDetail'
-import { getArticleLinkParams } from '~/features/blog/utils/getArticleLinkParams'
-import { getArticleTranslationFactory } from '~/features/blog/utils/getArticleTranslation'
-import { getAuthorLinkParams } from '~/features/blog/utils/getAuthorLinkParams'
-import { getAuthorMetadata } from '~/features/blog/utils/getAuthorMetadata'
+import { AuthorDetail } from 'src/features/blog/components/AuthorDetail'
+import { getArticleLinkParams } from 'src/features/blog/utils/getArticleLinkParams'
+import { getArticleTranslationFactory } from 'src/features/blog/utils/getArticleTranslation'
+import { getAuthorLinkParams } from 'src/features/blog/utils/getAuthorLinkParams'
+import { getAuthorMetadata } from 'src/features/blog/utils/getAuthorMetadata'
 import {
   getAllAuthorTranslations,
   getAuthorTranslation,
-} from '~/features/blog/utils/getAuthorTranslation'
-import { Links } from '~/features/common/components/Links'
-import { fetchArticles, fetchAuthorByUsername, fetchAuthors } from '~/server/db'
-import { router } from '~/server/router'
-import { getDictionary } from '~/server/utils/getDictionary'
+} from 'src/features/blog/utils/getAuthorTranslation'
+import { Links } from 'src/features/common/components/Links'
+import {
+  fetchArticles,
+  fetchAuthorByUsername,
+  fetchAuthors,
+} from 'src/server/db'
+import { router } from 'src/server/router'
+import { getDictionary } from 'src/server/utils/getDictionary'
 
 type AuthorParams = { author: string }
 

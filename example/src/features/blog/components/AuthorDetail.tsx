@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
-import type { AuthorTranslation } from '~/server/db/types'
-import { getHomeHref } from '~/server/router'
-import { getDictionary } from '~/server/utils/getDictionary'
+import type { AuthorTranslation } from 'src/server/db/types'
+import { getHomeHref } from 'src/server/router'
+import { getDictionary } from 'src/server/utils/getDictionary'
 
 type AuthorDetailProps = {
   author: AuthorTranslation

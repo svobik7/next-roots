@@ -3,7 +3,7 @@
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/20/solid'
 import clsx from 'clsx'
 import Link from 'next/link'
-import { Disclosure } from '~/libs/headlessui/react'
+import { Disclosure } from 'src/libs/headlessui/react'
 
 import { usePathname } from 'next/navigation'
 
