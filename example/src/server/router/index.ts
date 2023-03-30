@@ -31,6 +31,10 @@ export function getAboutHref(locale: string = getPageLocale()) {
   return router.getHref('/about', { locale })
 }
 
+export function getContactsHref(locale: string = getPageLocale()) {
+  return router.getHref('/contact', { locale })
+}
+
 export function getHomeHref(locale: string = getPageLocale()) {
   return router.getHref('/', { locale })
 }
