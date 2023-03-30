@@ -4,7 +4,7 @@ import { Nav } from './Nav'
 
 import Link from 'next/link'
 import 'src/features/common/styles.css'
-import { getAboutHref, getHomeHref } from 'src/server/router'
+import { getAboutHref, getContactsHref, getHomeHref } from 'src/server/router'
 import { getDictionary } from 'src/server/utils/getDictionary'
 import { Footer } from './Footer'
 
@@ -15,6 +15,7 @@ async function getNavigation(locale: string) {
   return [
     { name: t('nav.Home'), href: getHomeHref(locale) },
     { name: t('nav.About'), href: getAboutHref(locale) },
+    { name: t('nav.Contacts'), href: getContactsHref(locale) },
   ]
 }
 
