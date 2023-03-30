@@ -29,6 +29,7 @@
   "devDependencies": {
     "@next/bundle-analyzer": "^13.1.6",
     "@tailwindcss/typography": "^0.5.9",
+    "@types/node": "^18.15.11",
     "@types/react": "^18.0.27",
     "autoprefixer": "^10.4.13",
     "cross-env": "^7.0.2",
