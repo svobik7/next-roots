@@ -33,6 +33,8 @@ export function ArticlesListItem({ article }: ArticlesListItemProps) {
             src={`${article.author.avatar}?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80`}
             alt={article.author.username}
             className="h-10 w-10 rounded-full bg-gray-50"
+            width={40}
+            height={40}
           />
           <div className="text-sm leading-6">
             <p className="font-semibold text-gray-900">
