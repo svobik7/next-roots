@@ -14,6 +14,42 @@ export const PATTERNS = getPatternsFromNames(
 export const tpl = `
 export type RouteLocale = ${PATTERNS.routeLocales};
 export type RouteNameStatic = ${PATTERNS.routeNamesStatic};
+export type RouteName = RouteNameStatic;
+export type Route = { name: RouteName; href: \`/\${string}\` };
+
+export type RouteParamsStatic<T extends object = object> = T & { locale?: string };
+
+export type RouterSchema = { defaultLocale: string, locales: string[], routes: Record<RouteLocale, Route[]> };
+
+export class Router {
+  constructor(schema: RouterSchema)
+  
+  static getPageHref(): string
+  static setPageHref(pageHref: string): void
+  
+  getHref<T extends RouteNameStatic>(name: T): string
+  getHref<T extends RouteNameStatic>(name: T, params: RouteParamsStatic): string
+
+  getLocaleFromHref(href: string): string
+  getRouteFromHref(href: string): Route | undefined
+}
+
+export const schema: RouterSchema;
+
+export function compileHref(href: string, params: Record<string, string>): string
+export function formatHref(href: string, params: Record<string, string>): string
+
+export type PageProps<TParams = void> = TParams extends void
+  ? { pageHref: string }
+  : { pageHref: string; params: TParams }
+export type LayoutProps<TParams = any> = { pageLocale: string, params: TParams }
+export type GenerateMetadataProps<TParams = any> = { pageHref: string, params: TParams }
+export type GenerateStaticParamsProps = { pageLocale: string }
+`
+
+export const tplWithDynamicRoutes = `
+export type RouteLocale = ${PATTERNS.routeLocales};
+export type RouteNameStatic = ${PATTERNS.routeNamesStatic};
 export type RouteNameDynamic = ${PATTERNS.routeNamesDynamic};
 export type RouteName = RouteNameStatic | RouteNameDynamic;
 export type Route = { name: RouteName; href: \`/\${string}\` };
@@ -127,5 +163,8 @@ export function compile(schema: RouterSchema) {
   const params = getCompileParams(schema)
 
   const compileTemplate = compileTemplateFactory()
-  return compileTemplate(tpl, params)
+  return compileTemplate(
+    params.routeNamesDynamic ? tplWithDynamicRoutes : tpl,
+    params
+  )
 }
