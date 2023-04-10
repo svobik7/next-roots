@@ -377,3 +377,7 @@ While it is not recommended it is still possible. In that case the whole schema 
 
 1. Did you run next-roots? If not run it again.
 2. Did you try to remove .next folder? Sometimes next.js caches previous schema and you need to delete its cache.
+
+### How to serve content from un-translated routes like "/robots.txt"?
+
+If you need to serve a content from un-translated routes like "/robots.txt" or others you can easily achieve that by placing those files/routes directly into "app" folder and set `localizedDir: path.resolve(__dirname, 'app/(routes)';` param in `roots.config.js`. Thanks to Next.js group routes the "(routes)" segment is ignored in browser URL. 
