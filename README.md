@@ -122,7 +122,7 @@ Generation is initiated by running `yarn next-roots` or just `yarn roots` in our
 │   │   ├── about
 │   │   │   └── page.js
 │   │   └── page.js
-├── roots,
+├── roots
 │   ├── about
 │   │   └── page.js
 │   └── page.js
@@ -144,7 +144,7 @@ Every URL path (slug) or even segment of the URL path can be translated or left 
 
 ```bash
 ├── app  // app folder stays untouched now
-├── roots,
+├── roots
 │   ├── about
 │   │   ├── i18n.js  // i18n.js file is added to the route that URL path needs to be translated
 │   │   └── page.js
@@ -176,7 +176,7 @@ Running `yarn roots` again will update `app` folder routes with translated paths
 │   │   ├── o-nas  // translated URL path
 │   │   │   └── page.js
 │   │   └── page.js
-├── roots,
+├── roots
 │   ├── about
 │   │   └── page.js
 │   └── page.js
@@ -380,4 +380,24 @@ While it is not recommended it is still possible. In that case the whole schema 
 
 ### How to serve content from un-translated routes like "/robots.txt"?
 
-If you need to serve a content from un-translated routes like "/robots.txt" or others you can easily achieve that by placing those files/routes directly into "app" folder and set `localizedDir: path.resolve(__dirname, 'app/(routes)';` param in `roots.config.js`. Thanks to Next.js group routes the "(routes)" segment is ignored in browser URL. 
+If you need to serve a content from un-translated routes like `/robots.txt` or others you can easily achieve that by placing those files/routes directly into "app" folder and set `localizedDir` target to nested group route. 
+
+```bash
+├── app
+│   ├── (routes)  // translated routes will be generated within this folder
+│   │   ├── en
+│   │   └── cs
+│   └── robots.txt
+├── roots
+│   ├── ...
+│   └── page.js
+└── ...
+```
+
+```js
+// roots.config.js
+module.exports = {
+  // ...
+  localizedDir: path.resolve(__dirname, 'app/(routes)',
+}
+```
