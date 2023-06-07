@@ -9,6 +9,10 @@ const inputRewrites: Rewrite[] = [
     localizedPath: '/en/(auth)/log-in/page.tsx',
   },
   {
+    originPath: '/@header/login/page.tsx',
+    localizedPath: '/en/@header/log-in/page.tsx',
+  },
+  {
     originPath: '/blog/[authorId]/[articleId]/page.ts',
     localizedPath: '/en/blog/[authorId]/[articleId]/page.ts',
   },
@@ -20,6 +24,10 @@ const expectedSchema: Array<Route | undefined> = [
   undefined,
   {
     name: '/(auth)/login',
+    href: '/en/log-in',
+  },
+  {
+    name: '/@header/login',
     href: '/en/log-in',
   },
   {

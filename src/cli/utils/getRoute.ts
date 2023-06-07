@@ -11,6 +11,10 @@ function removeGroupSegments(input: string) {
   return input.replace(/\/\([\w-]+\)/g, '')
 }
 
+function removeParallelSegments(input: string) {
+  return input.replace(/\/@[\w]+/g, '')
+}
+
 function formatDynamicSegments(input: string) {
   return input.replace(/\/\[(\w+)\]/g, '/:$1')
 }
@@ -24,6 +28,7 @@ function getRouteHref({ localizedPath }: Rewrite) {
   const formatRouteHref = pipe(
     removePageSegment,
     removeGroupSegments,
+    removeParallelSegments,
     formatDynamicSegments,
     asRootPath
   )

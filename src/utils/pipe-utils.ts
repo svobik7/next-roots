@@ -18,6 +18,13 @@ export function pipe<A, B, C, D, E>(
   fn3: (input: C) => D,
   fn4: (input: D) => E
 ): Fn<A, E>
+export function pipe<A, B, C, D, E, F>(
+  fn1: (input: A) => B,
+  fn2: (input: B) => C,
+  fn3: (input: C) => D,
+  fn4: (input: D) => E,
+  fn5: (input: E) => F
+): Fn<A, F>
 
 export function pipe(...fns: Fn[]): unknown {
   return (input: unknown) => fns.reduce((acc, fn) => fn(acc), input)
