@@ -3,6 +3,15 @@ import { asRootPath } from '~/utils/path-utils'
 import { pipe } from '~/utils/pipe-utils'
 import type { Rewrite } from '../types'
 
+function extractLocaleSegment(input: string) {
+  const localeSegment = input.match(/\/[(\w-)]+/)?.[0]
+  return localeSegment?.replace(/\/\([\w-]+\)/, '') || ''
+}
+
+function removeLocaleSegment(input: string) {
+  return input.replace(/\/[(\w-)]+/, '')
+}
+
 function removePageSegment(input: string) {
   return input.replace(/\/page\.([tj])sx?$/, '')
 }
@@ -12,7 +21,16 @@ function removeGroupSegments(input: string) {
 }
 
 function removeParallelSegments(input: string) {
-  return input.replace(/\/@[\w]+/g, '')
+  return input.replace(/\/@\w+/g, '')
+}
+
+function removeInterceptedSegments(input: string) {
+  let result = input.replace(/\(\.\)/g, '')
+  const twoDotsRegExp = /[[\w-\]]+\/\(\.{2}\)/g
+  while (twoDotsRegExp.test(result)) {
+    result = result.replace(twoDotsRegExp, '')
+  }
+  return result.replace(/.*\(\.{3}\)/g, '/')
 }
 
 function formatDynamicSegments(input: string) {
@@ -20,20 +38,26 @@ function formatDynamicSegments(input: string) {
 }
 
 function getRouteName({ originPath }: Rewrite) {
-  const formatRouteName = pipe(removePageSegment)
+  const formatRouteName = pipe(
+    removePageSegment,
+    removeGroupSegments,
+    removeParallelSegments,
+    removeInterceptedSegments
+  )
   return asRootPath(formatRouteName(originPath))
 }
 
 function getRouteHref({ localizedPath }: Rewrite) {
+  const localeSegment = extractLocaleSegment(localizedPath)
   const formatRouteHref = pipe(
+    removeLocaleSegment,
     removePageSegment,
     removeGroupSegments,
     removeParallelSegments,
-    formatDynamicSegments,
-    asRootPath
+    removeInterceptedSegments,
+    formatDynamicSegments
   )
-
-  return formatRouteHref(localizedPath)
+  return asRootPath(localeSegment, formatRouteHref(localizedPath))
 }
 
 function isRouteRewrite({ originPath }: Rewrite): boolean {
