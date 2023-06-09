@@ -49,7 +49,6 @@ export default async function AuthorArticlePage({
   const t = await getDictionary(pageLocale)
 
   return (
-    // @ts-expect-error Async Server Component
     <ArticleDetail
       article={currentArticleTranslation}
       alternatives={
