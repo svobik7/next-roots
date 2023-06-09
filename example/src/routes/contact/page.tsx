@@ -34,7 +34,6 @@ export default async function ContactPage({ pageHref }: PageProps) {
   const t = await getDictionary(pageLocale)
 
   return (
-    // @ts-expect-error Async Server Component
     <Page
       title={title}
       content={content}
