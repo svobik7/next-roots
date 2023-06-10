@@ -13,7 +13,7 @@ export function getPageLocale() {
 }
 
 export function getArticleHref(article: ArticleTranslation) {
-  return router.getHref('/[author]/[article]', {
+  return router.getHref('/blogs/[author]/[article]', {
     article: article.slug,
     author: article.author?.username || '#',
     locale: article.locale || getPageLocale(),
@@ -21,7 +21,7 @@ export function getArticleHref(article: ArticleTranslation) {
 }
 
 export function getAuthorHref(author: AuthorTranslation) {
-  return router.getHref('/[author]', {
+  return router.getHref('/blogs/[author]', {
     author: author.username,
     locale: author.locale || getPageLocale(),
   })

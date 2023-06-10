@@ -8,12 +8,14 @@ type AuthorDetailProps = {
   author: AuthorTranslation
   articles?: ReactNode
   alternatives?: ReactNode
+  buttonBack?: ReactNode
 }
 
 export async function AuthorDetail({
   author,
   articles,
   alternatives,
+  buttonBack,
 }: AuthorDetailProps) {
   const t = await getDictionary(author.locale)
   return (
@@ -28,15 +30,7 @@ export async function AuthorDetail({
               <p className="mt-4 text-xl leading-8 text-gray-700">
                 {author.about}
               </p>
-              <p className="mt-6">
-                <Link
-                  href={getHomeHref(author.locale)}
-                  role="button"
-                  className="rounded bg-indigo-600 px-4 py-2 text-base font-semibold leading-7 text-white"
-                >
-                  {t('author.BtnHome')}
-                </Link>
-              </p>
+              {buttonBack && <p className="mt-6">{buttonBack}</p>}
             </div>
           </div>
           <div className="mt-16 lg:mt-0">

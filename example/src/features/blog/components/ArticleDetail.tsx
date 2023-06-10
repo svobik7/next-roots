@@ -7,11 +7,13 @@ import { getDictionary } from 'src/server/utils/getDictionary'
 type ArticleDetailProps = {
   article: ArticleTranslation
   alternatives?: ReactNode
+  buttonBack?: ReactNode
 }
 
 export async function ArticleDetail({
   article,
   alternatives,
+  buttonBack,
 }: ArticleDetailProps) {
   const t = await getDictionary(article.locale)
   return (
@@ -38,15 +40,7 @@ export async function ArticleDetail({
               <p className="mt-2 text-xl leading-8 text-gray-700">
                 {article.content}
               </p>
-              <p className="mt-6">
-                <Link
-                  href={getHomeHref(article.locale)}
-                  role="button"
-                  className="rounded bg-indigo-600 px-4 py-2 text-base font-semibold leading-7 text-white"
-                >
-                  {t('article.BtnBack')}
-                </Link>
-              </p>
+              {buttonBack && <p className="mt-6">{buttonBack}</p>}
             </div>
           </div>
           {alternatives && <div className="mt-16 lg:mt-0 ">{alternatives}</div>}

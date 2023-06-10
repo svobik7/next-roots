@@ -16,7 +16,7 @@ export function Links({ header, items }: LinksProps) {
 
       <ul role="list" className="mt-4 text-indigo-600">
         {items.map((link) => (
-          <li key={link.locale} className="flex gap-x-1">
+          <li key={link.name} className="flex gap-x-1">
             <Link href={link.href}>{link.name}</Link>
           </li>
         ))}
