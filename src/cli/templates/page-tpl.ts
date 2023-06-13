@@ -6,6 +6,7 @@ import { getRoute } from '../utils/getRoute'
 import type { PATTERNS as GENERATE_STATIC_PARAMS_PATTERS } from './decorators/with-page-generate-static-params'
 import { withPageGenerateStaticParamsFactory } from './decorators/with-page-generate-static-params'
 import { withPageMetadataDecoratorFactory } from './decorators/with-page-metadata'
+import { withRouteSegmentConfigFactory } from './decorators/with-route-segment-config'
 import {
   type CompileParams,
   DecoratorParams,
@@ -86,7 +87,8 @@ export function compileFactory(config: Config) {
 
     const compileTemplate = compileTemplateFactory(
       withPageMetadataDecoratorFactory(decoratorParams),
-      withPageGenerateStaticParamsFactory(decoratorParams)
+      withPageGenerateStaticParamsFactory(decoratorParams),
+      withRouteSegmentConfigFactory(decoratorParams)
     )
 
     return compileTemplate(pageTpl, params)

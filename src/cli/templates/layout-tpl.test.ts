@@ -69,3 +69,42 @@ export default function AuthLoginLayout(props:any) {
   const output = compile(inputRewrite)
   expect(output).toBe(expectedOutput)
 })
+
+test('should create layout with route segment config', () => {
+  const expectedOutput = `
+import RouteSegmentConfigLayoutOrigin from '..'
+
+export default function RouteSegmentConfigLayout(props:any) {
+  {/* @ts-ignore */}
+  return <RouteSegmentConfigLayoutOrigin {...props} locale="cs" />
+}
+
+export const dynamic = 'auto'
+export const dynamicParams = true
+export const revalidate = false
+export const fetchCache = 'auto'
+export const runtime = 'nodejs'
+export const preferredRegion = 'auto'
+`
+  const inputRewrite = {
+    originPath: '/route-segment-config/layout.ts',
+    localizedPath: '/cs/route-segment-config/layout.ts',
+  }
+
+  const inputConfig: Config = {
+    ...defaultConfig,
+    getOriginContents: () =>
+      `
+export const dynamic = 'auto'
+export const dynamicParams = true
+export const revalidate = false
+export const fetchCache = 'auto'
+export const runtime = 'nodejs'
+export const preferredRegion = 'auto'
+`,
+  }
+
+  const compile = compileFactory(inputConfig)
+  const output = compile(inputRewrite)
+  expect(output).toBe(expectedOutput)
+})

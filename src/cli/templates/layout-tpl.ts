@@ -1,7 +1,12 @@
 import { getLocaleFactory } from '~/utils/locale-utils'
 import { isTypedRewrite } from '~/utils/rewrite-utils'
 import type { Config, Rewrite } from '../types'
-import { type CompileParams, removePropTypes } from './tpl-utils'
+import { withRouteSegmentConfigFactory } from './decorators/with-route-segment-config'
+import {
+  type CompileParams,
+  DecoratorParams,
+  removePropTypes,
+} from './tpl-utils'
 import {
   compileTemplateFactory,
   getOriginNameFactory,
@@ -47,7 +52,13 @@ export function compileFactory(config: Config) {
     const params = getParams(rewrite)
     const layoutTpl = isTypedRewrite(rewrite) ? tpl : removePropTypes(tpl)
 
-    const compileTemplate = compileTemplateFactory()
+    const originContents = config.getOriginContents(rewrite.originPath)
+    const decoratorParams = new DecoratorParams(rewrite, originContents)
+
+    const compileTemplate = compileTemplateFactory(
+      withRouteSegmentConfigFactory(decoratorParams)
+    )
+
     return compileTemplate(layoutTpl, params)
   }
 }
