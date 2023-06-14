@@ -16,6 +16,25 @@ const inputRewrites: Rewrite[] = [
     originPath: '/blog/[authorId]/[articleId]/page.ts',
     localizedPath: '/en/blog/[authorId]/[articleId]/page.ts',
   },
+  {
+    originPath: '/@modal/(.)blog/[authorId]/[articleId]/page.ts',
+    localizedPath: '/en/@modal/(.)blog/[authorId]/[articleId]/page.ts',
+  },
+  {
+    originPath: '/feed/@modal/(..)blog/[authorId]/[articleId]/page.ts',
+    localizedPath: '/en/feed/@modal/(..)blog/[authorId]/[articleId]/page.ts',
+  },
+  {
+    originPath:
+      '/feed/friends/@modal/(..)(..)blog/[authorId]/[articleId]/page.ts',
+    localizedPath:
+      '/en/feed/friends/@modal/(..)(..)blog/[authorId]/[articleId]/page.ts',
+  },
+  {
+    originPath: '/feed/friends/@modal/(...)blog/[authorId]/[articleId]/page.ts',
+    localizedPath:
+      '/en/feed/friends/@modal/(...)blog/[authorId]/[articleId]/page.ts',
+  },
   { originPath: '/page.js', localizedPath: '/en/page.js' },
   { originPath: '/page.js', localizedPath: '/(en)/page.js' },
 ]
@@ -23,12 +42,28 @@ const inputRewrites: Rewrite[] = [
 const expectedSchema: Array<Route | undefined> = [
   undefined,
   {
-    name: '/(auth)/login',
+    name: '/login',
     href: '/en/log-in',
   },
   {
-    name: '/@header/login',
+    name: '/login',
     href: '/en/log-in',
+  },
+  {
+    name: '/blog/[authorId]/[articleId]',
+    href: '/en/blog/:authorId/:articleId',
+  },
+  {
+    name: '/blog/[authorId]/[articleId]',
+    href: '/en/blog/:authorId/:articleId',
+  },
+  {
+    name: '/blog/[authorId]/[articleId]',
+    href: '/en/blog/:authorId/:articleId',
+  },
+  {
+    name: '/blog/[authorId]/[articleId]',
+    href: '/en/blog/:authorId/:articleId',
   },
   {
     name: '/blog/[authorId]/[articleId]',

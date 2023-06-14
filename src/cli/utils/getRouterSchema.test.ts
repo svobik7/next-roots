@@ -3,15 +3,19 @@ import { getRouterSchema } from './getRouterSchema'
 
 const inputRoutes: Route[] = [
   {
-    name: '/(auth)/login',
+    name: '/login',
     href: '/log-in',
   },
   {
-    name: '/(auth)/login',
+    name: '/login',
+    href: '/log-in',
+  },
+  {
+    name: '/login',
     href: '/cs/prihlaseni',
   },
   {
-    name: '/(auth)/login',
+    name: '/login',
     href: '/es/login',
   },
   {
@@ -34,7 +38,7 @@ const expectedSchema: RouterSchema = {
   routes: {
     en: [
       {
-        name: '/(auth)/login',
+        name: '/login',
         href: '/log-in',
       },
       {
@@ -44,7 +48,7 @@ const expectedSchema: RouterSchema = {
     ],
     es: [
       {
-        name: '/(auth)/login',
+        name: '/login',
         href: '/es/login',
       },
       {
@@ -54,7 +58,7 @@ const expectedSchema: RouterSchema = {
     ],
     cs: [
       {
-        name: '/(auth)/login',
+        name: '/login',
         href: '/cs/prihlaseni',
       },
       {

@@ -19,7 +19,8 @@ export function getRouterSchema({
     const locale = getLocale(route.href) || defaultLocale
 
     const existingRoutes = schema.routes[locale] || []
-    schema.routes[locale] = [...existingRoutes, route]
+    const routeExists = existingRoutes.some(({ name }) => route.name === name)
+    if (!routeExists) schema.routes[locale] = [...existingRoutes, route]
   })
 
   return schema
