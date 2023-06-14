@@ -208,3 +208,44 @@ export async function generateStaticParams() {
   const output = compile(inputRewrite)
   expect(output).toBe(expectedOutput)
 })
+
+test('should create page with route segment config', () => {
+  const expectedOutput = `
+import RouteSegmentConfigPageOrigin from '..'
+import { Router } from 'next-roots'
+
+export default function RouteSegmentConfigPage(props:any) {
+  Router.setPageHref("/cs/route-segment-config")
+  {/* @ts-ignore */}
+  return <RouteSegmentConfigPageOrigin {...props} pageHref={Router.getPageHref()} />
+}
+
+export const dynamic = 'auto'
+export const dynamicParams = true
+export const revalidate = false
+export const fetchCache = 'auto'
+export const runtime = 'nodejs'
+export const preferredRegion = 'auto'
+`
+  const inputRewrite = {
+    originPath: '/route-segment-config/page.ts',
+    localizedPath: '/cs/route-segment-config/page.ts',
+  }
+
+  const inputConfig: Config = {
+    ...defaultConfig,
+    getOriginContents: () =>
+      `
+export const dynamic = 'auto'
+export const dynamicParams = true
+export const revalidate = false
+export const fetchCache = 'auto'
+export const runtime = 'nodejs'
+export const preferredRegion = 'auto'
+`,
+  }
+
+  const compile = compileFactory(inputConfig)
+  const output = compile(inputRewrite)
+  expect(output).toBe(expectedOutput)
+})
