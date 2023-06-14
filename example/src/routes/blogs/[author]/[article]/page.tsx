@@ -4,6 +4,7 @@ import type {
   GenerateStaticParamsProps,
   PageProps,
 } from 'next-roots'
+import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
 import { ArticleDetail } from 'src/features/blog/components/ArticleDetail'
 import { getArticleLinkParams } from 'src/features/blog/utils/getArticleLinkParams'
@@ -14,7 +15,7 @@ import {
 } from 'src/features/blog/utils/getArticleTranslation'
 import { Links } from 'src/features/common/components/Links'
 import { fetchArticleBySlug, fetchArticles, fetchAuthors } from 'src/server/db'
-import { getArticleHref, router } from 'src/server/router'
+import { getArticleHref, getHomeHref, router } from 'src/server/router'
 import { getDictionary } from 'src/server/utils/getDictionary'
 
 type AuthorArticleParams = { author: string; article: string }
@@ -56,6 +57,15 @@ export default async function AuthorArticlePage({
           header={t('common.NotYourLanguage?')}
           items={allArticleTranslations.map(getArticleLinkParams)}
         />
+      }
+      buttonBack={
+        <Link
+          href={getHomeHref(currentArticleTranslation.locale)}
+          role="button"
+          className="rounded bg-indigo-600 px-4 py-2 text-base font-semibold leading-7 text-white"
+        >
+          {t('article.BtnBack')}
+        </Link>
       }
     />
   )

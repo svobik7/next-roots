@@ -1,20 +1,16 @@
-import type { Metadata } from 'next'
-import type {
-  GenerateMetadataProps,
-  GenerateStaticParamsProps,
-  PageProps,
-} from 'next-roots'
+import type { GenerateStaticParamsProps, PageProps } from 'next-roots'
 import { notFound } from 'next/navigation'
 import { AuthorDetail } from 'src/features/blog/components/AuthorDetail'
 import { getArticleLinkParams } from 'src/features/blog/utils/getArticleLinkParams'
 import { getArticleTranslationFactory } from 'src/features/blog/utils/getArticleTranslation'
 import { getAuthorLinkParams } from 'src/features/blog/utils/getAuthorLinkParams'
-import { getAuthorMetadata } from 'src/features/blog/utils/getAuthorMetadata'
 import {
   getAllAuthorTranslations,
   getAuthorTranslation,
 } from 'src/features/blog/utils/getAuthorTranslation'
+import BackButton from 'src/features/common/components/BackButton'
 import { Links } from 'src/features/common/components/Links'
+import Modal from 'src/features/common/components/Modal'
 import {
   fetchArticles,
   fetchAuthorByUsername,
@@ -57,36 +53,25 @@ export default async function AuthorPage({
   const t = await getDictionary(pageLocale)
 
   return (
-    <AuthorDetail
-      author={currentAuthorTranslation}
-      articles={
-        <Links
-          header={t('author.PublishedArticles')}
-          items={authorArticlesTranslations.map(getArticleLinkParams)}
-        />
-      }
-      alternatives={
-        <Links
-          header={t('common.NotYourLanguage?')}
-          items={allAuthorTranslations.map(getAuthorLinkParams)}
-        />
-      }
-    />
+    <Modal>
+      <AuthorDetail
+        author={currentAuthorTranslation}
+        articles={
+          <Links
+            header={t('author.PublishedArticles')}
+            items={authorArticlesTranslations.map(getArticleLinkParams)}
+          />
+        }
+        alternatives={
+          <Links
+            header={t('common.NotYourLanguage?')}
+            items={allAuthorTranslations.map(getAuthorLinkParams)}
+          />
+        }
+        buttonBack={<BackButton>{t('author.BtnHome')}</BackButton>}
+      />
+    </Modal>
   )
-}
-
-export async function generateMetadata({
-  pageHref,
-  params,
-}: GenerateMetadataProps<AuthorParams>): Promise<Metadata> {
-  const pageLocale = router.getLocaleFromHref(pageHref)
-  const author = await fetchAuthorByUsername(params.author)
-
-  if (!author) {
-    return {}
-  }
-
-  return getAuthorMetadata(author, pageLocale)
 }
 
 export async function generateStaticParams({

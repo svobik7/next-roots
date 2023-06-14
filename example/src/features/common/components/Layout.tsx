@@ -1,5 +1,5 @@
 import type { RouteLocale } from 'next-roots'
-import type { PropsWithChildren } from 'react'
+import type { PropsWithChildren, ReactNode } from 'react'
 import { Nav } from './Nav'
 
 import Link from 'next/link'
@@ -8,7 +8,10 @@ import { getAboutHref, getContactsHref, getHomeHref } from 'src/server/router'
 import { getDictionary } from 'src/server/utils/getDictionary'
 import { Footer } from './Footer'
 
-type RootLayoutProps = PropsWithChildren<{ locale: RouteLocale }>
+type RootLayoutProps = PropsWithChildren<{
+  locale: RouteLocale
+  modal: ReactNode
+}>
 
 async function getNavigation(locale: string) {
   const t = await getDictionary(locale)
@@ -26,7 +29,7 @@ async function getNavigation(locale: string) {
  * @param param0
  * @returns
  */
-export async function Layout({ children, locale }: RootLayoutProps) {
+export async function Layout({ children, modal, locale }: RootLayoutProps) {
   const navigation = await getNavigation(locale)
 
   return (
@@ -40,6 +43,7 @@ export async function Layout({ children, locale }: RootLayoutProps) {
           <footer className="py-6">
             <Footer />
           </footer>
+          {modal}
         </div>
       </body>
     </html>
