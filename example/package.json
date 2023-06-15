@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "roots": "yarn next-roots",
+    "roots": "node ../dist/cli.js",
     "dev": "yarn roots && next dev",
     "build": "yarn roots && next build",
     "start": "next start",
@@ -15,31 +15,31 @@
     "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.8",
-    "@heroicons/react": "^2.0.17",
+    "@headlessui/react": "^1.7.15",
+    "@heroicons/react": "^2.0.18",
     "@types/accept-language-parser": "^1.5.3",
     "accept-language-parser": "^1.5.0",
     "clsx": "^1.2.1",
-    "next": "^13.3.0",
-    "next-roots": "^3.1.0",
+    "next": "^13.4.5",
+    "next-roots": "link:../",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "server-only": "^0.0.1"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^13.3.0",
+    "@next/bundle-analyzer": "^13.4.5",
     "@tailwindcss/typography": "^0.5.9",
     "@types/node": "^20.2.5",
-    "@types/react": "^18.0.34",
+    "@types/react": "^18.2.12",
     "autoprefixer": "^10.4.13",
     "cross-env": "^7.0.2",
-    "esbuild": "^0.17.16",
-    "eslint": "^8.38.0",
-    "eslint-config-next": "^13.3.0",
-    "eslint-plugin-tailwindcss": "^3.11.0",
-    "postcss": "^8.4.21",
+    "esbuild": "^0.18.2",
+    "eslint": "^8.42.0",
+    "eslint-config-next": "^13.4.5",
+    "eslint-plugin-tailwindcss": "^3.12.1",
+    "postcss": "^8.4.24",
     "prettier-plugin-tailwindcss": "^0.3.0",
-    "tailwindcss": "^3.3.1",
-    "typescript": "^5.0.4"
+    "tailwindcss": "^3.3.2",
+    "typescript": "^5.1.3"
   }
 }
