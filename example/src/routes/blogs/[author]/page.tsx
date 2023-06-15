@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import type {
-  GenerateMetadataProps,
+  GeneratePageMetadataProps,
   GenerateStaticParamsProps,
   PageProps,
 } from 'next-roots'
@@ -88,7 +88,7 @@ export default async function AuthorPage({
 export async function generateMetadata({
   pageHref,
   params,
-}: GenerateMetadataProps<AuthorParams>): Promise<Metadata> {
+}: GeneratePageMetadataProps<AuthorParams>): Promise<Metadata> {
   const pageLocale = router.getLocaleFromHref(pageHref)
   const author = await fetchAuthorByUsername(params.author)
 

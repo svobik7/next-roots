@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import type { GenerateMetadataProps, PageProps } from 'next-roots'
+import type { GeneratePageMetadataProps, PageProps } from 'next-roots'
 import { Page } from 'src/features/common/components/Page'
 import { Links } from 'src/features/common/components/Links'
 import {
@@ -46,7 +46,7 @@ export default async function ContactPage({ pageHref }: PageProps) {
 
 export async function generateMetadata({
   pageHref,
-}: GenerateMetadataProps<void>): Promise<Metadata> {
+}: GeneratePageMetadataProps<void>): Promise<Metadata> {
   const pageLocale = router.getLocaleFromHref(pageHref)
   const { title, content } = await getData(pageLocale)
 
