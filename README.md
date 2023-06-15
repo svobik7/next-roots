@@ -248,7 +248,7 @@ Passing the `locale` parameter is not required. If you do not pass any `locale` 
 router.getHref('/about')
 ```
 
-This is possible thanks to Router internal static context value of current href. Whenever user visit a page Router will sets the the internal page href and determine the locale from that. If you look at generated page routes you can see that:
+This is possible thanks to Router internal static context value of current href. Whenever user visit a page Router will sets the internal page href and determine the locale from that. If you look at generated page routes you can see that:
 
 ```tsx
 // in "app/cs/o-nas/page.js
@@ -264,7 +264,13 @@ export default function AboutPage(props: any) {
 }
 ```
 
-Even you are allowed to change this static context down in the code by calling `Router.setPageHref` it is not recommended and can break the links.
+Even you are allowed to change this static context down in the code by calling `Router.setPageHref`. It is not recommended and can break the links.
+
+### GetHref in standalone mode
+
+When running Next.js as a standalone server for example in EC2 or docker container, the Router functionality breaks.
+Since Next.js is ran as a basic Node.js server in a standalone mode, the Router class is shared for each page generation. As so, the Router.getPageHref() can return wrong values in the generation phase of the page.
+in that case you always need to pass current `locale` param to `Router.getHref` function and do not use `Router.getPageHreg`. See more in https://github.com/svobik7/next-roots/issues/99.
 
 ### GetLocaleFromHref
 
