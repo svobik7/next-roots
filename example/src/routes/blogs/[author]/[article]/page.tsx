@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import type {
-  GenerateMetadataProps,
+  GeneratePageMetadataProps,
   GenerateStaticParamsProps,
   PageProps,
 } from 'next-roots'
@@ -74,7 +74,7 @@ export default async function AuthorArticlePage({
 export async function generateMetadata({
   pageHref,
   params,
-}: GenerateMetadataProps<AuthorArticleParams>): Promise<Metadata> {
+}: GeneratePageMetadataProps<AuthorArticleParams>): Promise<Metadata> {
   const pageLocale = router.getLocaleFromHref(pageHref)
   const article = await fetchArticleBySlug(params.article)
 
