@@ -309,8 +309,9 @@ Following types are available for props above and can be imported from next-root
 
 1. PageProps
 2. LayoutProps
-3. GenerateMetadataProps
-4. GenerateStaticParamsProps
+3. GenerateLayoutMetadataProps
+4. GeneratePageMetadataProps
+5. GenerateStaticParamsProps
 
 ## 4. Translation files
 
@@ -352,6 +353,29 @@ export async function generateRouteNames() {
 
 You don't need to specify translations for default locale. Routes inherit the path names from origin folders by default. If you specify the translation for default locale then it is used instead of origin folder name.
 
+### Translation of intercepting routes
+
+If you have intercepting route like `@modal/(.)blogs/[author]/[articleId]/page.js` with corresponding normal route equals to `blogs/[author]/[articleId]/page.js` and you already translated normal route by creating `blogs/i18n.js` file with following contents:
+
+```js
+module.exports.routeNames = [
+  { locale: 'en', path: 'blogs' },
+  { locale: 'cs', path: 'blogy' },
+  { locale: 'es', path: 'blogs' },
+]
+```
+
+then you need to translate even the intercepting route. Otherwise the intercepting route will be generated with untranslated path and interception will not work. I18n file placed in `@modal/(.)blogs/i18n.js` can be use for example above with following contents:
+
+```js
+module.exports.routeNames = [
+  { locale: 'en', path: '(.)blogs' },
+  { locale: 'cs', path: '(.)blogy' },
+  { locale: 'es', path: '(.)blogs' },
+]
+```
+
+````ts
 ## 5. Config params
 
 | name                  | type     | default                     | required | description                                                                                                                                       |
@@ -380,7 +404,7 @@ While it is not recommended it is still possible. In that case the whole schema 
 
 ### How to serve content from un-translated routes like "/robots.txt"?
 
-If you need to serve a content from un-translated routes like `/robots.txt` or others you can easily achieve that by placing those files/routes directly into "app" folder and set `localizedDir` target to nested group route. 
+If you need to serve a content from un-translated routes like `/robots.txt` or others you can easily achieve that by placing those files/routes directly into "app" folder and set `localizedDir` target to nested group route.
 
 ```bash
 ├── app
@@ -392,7 +416,7 @@ If you need to serve a content from un-translated routes like `/robots.txt` or o
 │   ├── ...
 │   └── page.js
 └── ...
-```
+````
 
 ```js
 // roots.config.js
