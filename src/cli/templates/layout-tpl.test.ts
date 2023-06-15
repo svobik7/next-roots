@@ -108,3 +108,60 @@ export const preferredRegion = 'auto'
   const output = compile(inputRewrite)
   expect(output).toBe(expectedOutput)
 })
+
+test('should create layout with static metadata object', () => {
+  const expectedOutput = `
+import StaticMetaDataLayoutOrigin from '..'
+
+export default function StaticMetaDataLayout(props:any) {
+  {/* @ts-ignore */}
+  return <StaticMetaDataLayoutOrigin {...props} locale="cs" />
+}
+
+export { metadata } from '..'
+`
+  const inputRewrite = {
+    originPath: '/static-meta-data/layout.ts',
+    localizedPath: '/cs/static-meta-data/layout.ts',
+  }
+
+  const inputConfig: Config = {
+    ...defaultConfig,
+    getOriginContents: () =>
+      `export const metadata = { title: "Static Title" }`,
+  }
+
+  const compile = compileFactory(inputConfig)
+  const output = compile(inputRewrite)
+  expect(output).toBe(expectedOutput)
+})
+
+test('should create layout with dynamic metadata object', () => {
+  const expectedOutput = `
+import DynamicMetaDataLayoutOrigin from '..'
+
+export default function DynamicMetaDataLayout(props) {
+  {/* @ts-ignore */}
+  return <DynamicMetaDataLayoutOrigin {...props} locale="cs" />
+}
+
+import {generateMetadata as generateMetadataOrigin} from '..'
+
+export async function generateMetadata(props) {
+  return generateMetadataOrigin({ ...props, locale: "cs" })
+}
+`
+  const inputRewrite = {
+    originPath: '/dynamic-meta-data/layout.js',
+    localizedPath: '/cs/dynamic-meta-data/layout.js',
+  }
+
+  const inputConfig: Config = {
+    ...defaultConfig,
+    getOriginContents: () => `export async function generateMetadata() {}`,
+  }
+
+  const compile = compileFactory(inputConfig)
+  const output = compile(inputRewrite)
+  expect(output).toBe(expectedOutput)
+})
