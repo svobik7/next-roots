@@ -375,7 +375,6 @@ module.exports.routeNames = [
 ]
 ```
 
-````ts
 ## 5. Config params
 
 | name                  | type     | default                     | required | description                                                                                                                                       |
@@ -416,7 +415,7 @@ If you need to serve a content from un-translated routes like `/robots.txt` or o
 │   ├── ...
 │   └── page.js
 └── ...
-````
+```
 
 ```js
 // roots.config.js
