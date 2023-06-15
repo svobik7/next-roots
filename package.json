@@ -23,6 +23,7 @@
     "prepare": "husky install",
     "clean": "rm -rf dist || true",
     "build": "yarn clean && yarn check:types && yarn test && node esbuild.mjs",
+    "build:no-test": "node ./esbuild.mjs",
     "build:coverage": "yarn clean && yarn check:types && yarn test && node esbuild.mjs",
     "format": "pretty-quick",
     "lint": "eslint --fix --ext .js,.ts,.tsx src/",

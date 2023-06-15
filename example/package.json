@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "roots": "node ../dist/cli.js",
+    "roots": "cd .. && yarn build:no-test && cd example && node ./../dist/cli.js",
     "dev": "yarn roots && next dev",
     "build": "yarn roots && next build",
     "start": "next start",
