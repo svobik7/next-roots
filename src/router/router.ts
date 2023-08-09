@@ -69,7 +69,18 @@ export class Router {
    * @returns
    */
   private getLocalizedRoutes(locale: string) {
-    return this.schema.routes[locale] || []
+    return (
+      this.schema.routes[locale]?.sort((a, b) => {
+        const hasSlugA = a.name.indexOf('[') !== -1
+        const hasSlugB = b.name.indexOf('[') !== -1
+
+        if (hasSlugA && hasSlugB) {
+          return 0
+        }
+
+        return hasSlugA ? 1 : -1
+      }) || []
+    )
   }
 
   /**
