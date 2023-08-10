@@ -71,14 +71,17 @@ export class Router {
   private getLocalizedRoutes(locale: string) {
     return (
       this.schema.routes[locale]?.sort((a, b) => {
-        const hasSlugA = a.name.indexOf('[') !== -1
-        const hasSlugB = b.name.indexOf('[') !== -1
+        const dynamicIndexA = a.name.indexOf('[')
+        const dynamicIndexB = b.name.indexOf('[')
 
-        if (hasSlugA && hasSlugB) {
-          return 0
+        const isDynamicA = dynamicIndexA !== -1
+        const isDynamicB = dynamicIndexB !== -1
+
+        if (isDynamicA && isDynamicB) {
+          return dynamicIndexB - dynamicIndexA
         }
 
-        return hasSlugA ? 1 : -1
+        return isDynamicA ? 1 : -1
       }) || []
     )
   }
