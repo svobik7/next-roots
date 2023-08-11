@@ -14,6 +14,14 @@ const inputSchema: RouterSchema = {
         name: '/blog/articles/[articleId]',
         href: '/es/blog/articulos/:articleId',
       },
+      {
+        name: '/[slug]',
+        href: '/es/:slug',
+      },
+      {
+        name: '/projects',
+        href: '/es/projects',
+      },
     ],
     cs: [
       {
@@ -23,6 +31,14 @@ const inputSchema: RouterSchema = {
       {
         name: '/blog/articles/[articleId]',
         href: '/cs/blog/clanky/:articleId',
+      },
+      {
+        name: '/[slug]',
+        href: '/cs/:slug',
+      },
+      {
+        name: '/projects',
+        href: '/cs/projects',
       },
     ],
   },
@@ -62,6 +78,10 @@ describe('getHref', () => {
       '',
       '/es/blog/articulos/:articleId',
     ],
+    ['/projects', undefined, '', '/es/projects'],
+    ['/projects', { locale: 'cs' }, '', '/cs/projects'],
+    ['/[slug]', undefined, '', '/es/:slug'],
+    ['/[slug]', { locale: 'cs' }, '', '/cs/:slug'],
   ] as const
 
   test.each(testCases)(
