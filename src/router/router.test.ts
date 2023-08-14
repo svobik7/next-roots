@@ -20,7 +20,7 @@ const inputSchema: RouterSchema = {
       },
       {
         name: '/projects',
-        href: '/es/projects',
+        href: '/es/proyectos',
       },
     ],
     cs: [
@@ -38,7 +38,7 @@ const inputSchema: RouterSchema = {
       },
       {
         name: '/projects',
-        href: '/cs/projects',
+        href: '/cs/projekty',
       },
     ],
   },
@@ -78,8 +78,8 @@ describe('getHref', () => {
       '',
       '/es/blog/articulos/:articleId',
     ],
-    ['/projects', undefined, '', '/es/projects'],
-    ['/projects', { locale: 'cs' }, '', '/cs/projects'],
+    ['/projects', undefined, '', '/es/proyectos'],
+    ['/projects', { locale: 'cs' }, '', '/cs/projekty'],
     ['/[slug]', undefined, '', '/es/:slug'],
     ['/[slug]', { locale: 'cs' }, '', '/cs/:slug'],
   ] as const
@@ -96,7 +96,7 @@ describe('getHref', () => {
   )
 })
 
-describe('getHrefLocale', () => {
+describe('getLocaleFromHref', () => {
   const router = new Router(inputSchema)
 
   const testCases = [
@@ -111,10 +111,14 @@ describe('getHrefLocale', () => {
   })
 })
 
-describe('getRouteByHref', () => {
+describe('getRouteFromHref', () => {
   const router = new Router(inputSchema)
 
   const testCases = [
+    ['/cs/projekty', { name: '/projects', href: '/cs/projekty' }],
+    ['/es/proyectos', { name: '/projects', href: '/es/proyectos' }],
+    ['/cs/aa-bb-cc', { name: '/[slug]', href: '/cs/:slug' }],
+    ['/es/aa-bb-cc', { name: '/[slug]', href: '/es/:slug' }],
     ['/cs/prihlaseni', { name: '/(auth)/login', href: '/cs/prihlaseni' }],
     ['/es/acceso', { name: '/(auth)/login', href: '/es/acceso' }],
     [
