@@ -22,6 +22,14 @@ const inputSchema: RouterSchema = {
         name: '/projects',
         href: '/es/proyectos',
       },
+      {
+        name: '/projects/[...slug]',
+        href: '/es/proyectos/:slug*',
+      },
+      {
+        name: '/admin/[[...slug]]',
+        href: '/es/admin/:slug*',
+      },
     ],
     cs: [
       {
@@ -39,6 +47,14 @@ const inputSchema: RouterSchema = {
       {
         name: '/projects',
         href: '/cs/projekty',
+      },
+      {
+        name: '/projects/[...slug]',
+        href: '/cs/projekty/:slug*',
+      },
+      {
+        name: '/admin/[[...slug]]',
+        href: '/cs/admin/:slug*',
       },
     ],
   },
@@ -82,6 +98,10 @@ describe('getHref', () => {
     ['/projects', { locale: 'cs' }, '', '/cs/projekty'],
     ['/[slug]', undefined, '', '/es/:slug'],
     ['/[slug]', { locale: 'cs' }, '', '/cs/:slug'],
+    ['/[slug]', { locale: 'cs', slug: '1' }, '', '/cs/1'],
+    ['/projects/[...slug]', { locale: 'cs', slug: '1' }, '', '/cs/projekty/1'],
+    ['/admin/[[...slug]]', { locale: 'cs' }, '', '/cs/admin'],
+    ['/admin/[[...slug]]', { locale: 'cs', slug: '1' }, '', '/cs/admin/1'],
   ] as const
 
   test.each(testCases)(
@@ -119,6 +139,24 @@ describe('getRouteFromHref', () => {
     ['/es/proyectos', { name: '/projects', href: '/es/proyectos' }],
     ['/cs/aa-bb-cc', { name: '/[slug]', href: '/cs/:slug' }],
     ['/es/aa-bb-cc', { name: '/[slug]', href: '/es/:slug' }],
+    [
+      '/cs/projekty/aa-bb-cc',
+      { name: '/projects/[...slug]', href: '/cs/projekty/:slug*' },
+    ],
+    [
+      '/es/proyectos/aa-bb-cc',
+      { name: '/projects/[...slug]', href: '/es/proyectos/:slug*' },
+    ],
+    ['/cs/admin', { name: '/admin/[[...slug]]', href: '/cs/admin/:slug*' }],
+    [
+      '/cs/admin/aa-bb-cc',
+      { name: '/admin/[[...slug]]', href: '/cs/admin/:slug*' },
+    ],
+    ['/es/admin', { name: '/admin/[[...slug]]', href: '/es/admin/:slug*' }],
+    [
+      '/es/admin/aa-bb-cc',
+      { name: '/admin/[[...slug]]', href: '/es/admin/:slug*' },
+    ],
     ['/cs/prihlaseni', { name: '/(auth)/login', href: '/cs/prihlaseni' }],
     ['/es/acceso', { name: '/(auth)/login', href: '/es/acceso' }],
     [
