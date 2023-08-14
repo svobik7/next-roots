@@ -22,7 +22,8 @@
   "scripts": {
     "prepare": "husky install",
     "clean": "rm -rf dist || true",
-    "build": "yarn clean && yarn check:types && yarn test && node esbuild.mjs",
+    "build": "yarn clean && yarn check:types && yarn test && node esbuild.mjs && yarn build:types",
+    "build:types": "yarn dts-bundle-generator --config ./dts.config.js",
     "build:no-test": "node esbuild.mjs",
     "build:coverage": "yarn clean && yarn check:types && yarn test && node esbuild.mjs",
     "format": "pretty-quick",
@@ -44,6 +45,7 @@
     "@vitest/coverage-istanbul": "^0.32.0",
     "arg": "^5.0.2",
     "colors": "^1.4.0",
+    "dts-bundle-generator": "^8.0.1",
     "esbuild": "^0.18.2",
     "esbuild-node-externals": "^1.7.0",
     "eslint": "^8.42.0",
