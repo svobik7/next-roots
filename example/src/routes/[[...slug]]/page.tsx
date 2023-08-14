@@ -11,6 +11,7 @@ export default async function BlogPage({
   params: { slug },
 }: PageProps<{ slug: string[] }>) {
   // this is an example of using catch all routes under each locale (/en/[[...slug]])
+  // if you do not need to use catch all routes, you move this file to /routes/page.tsx and remove slug checking
   if (slug && slug.length > 0) {
     return (
       <div>

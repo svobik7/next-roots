@@ -2,6 +2,8 @@ import 'server-only'
 import { Router, schema } from 'next-roots'
 import type { ArticleTranslation, AuthorTranslation } from 'src/server/db/types'
 
+const HOME_ROUTE_NAME = '/[[...slug]]'
+
 export const router = new Router(schema)
 
 export function getLocales() {
@@ -36,5 +38,5 @@ export function getContactsHref(locale: string = getPageLocale()) {
 }
 
 export function getHomeHref(locale: string = getPageLocale()) {
-  return router.getHref('/', { locale })
+  return router.getHref(HOME_ROUTE_NAME, { locale })
 }
