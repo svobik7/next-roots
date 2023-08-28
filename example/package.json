@@ -19,6 +19,7 @@
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
     "@types/accept-language-parser": "^1.5.3",
+    "accept-language": "^3.0.18",
     "accept-language-parser": "^1.5.0",
     "clsx": "^1.2.1",
     "next": "^13.4.5",
