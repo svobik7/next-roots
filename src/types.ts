@@ -8,3 +8,9 @@ export type RouterSchema = {
   locales: string[]
   defaultLocale: string
 }
+
+export type Middleware = {
+  href: string
+  path: string
+  originName: string
+}

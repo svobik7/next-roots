@@ -1,5 +1,6 @@
 import { copyFile, removeDir, writeFile } from '~/utils/fs-utils'
 import { compileFactory as compileLayoutFactory } from '../templates/layout-tpl'
+import { compileFactory as compileMiddlewareFactory } from '../templates/middleware-tpl'
 import { compileFactory as compileNotFoundFactory } from '../templates/not-found-tpl'
 import { compileFactory as compilePageFactory } from '../templates/page-tpl'
 import type { Config, Rewrite } from '../types'
@@ -10,6 +11,10 @@ function isPage(pathName: string) {
 
 function isLayout(pathName: string) {
   return pathName.match(/layout\.([tj]sx)?$/)
+}
+
+function isMiddleware(pathName: string) {
+  return pathName.match(/_middleware\.([tj]s)?$/)
 }
 
 function isNotFound(pathName: string) {
@@ -28,6 +33,10 @@ function getCompilerFactory(config: Config) {
 
     if (isNotFound(originPath)) {
       return compileNotFoundFactory(config)
+    }
+
+    if (isMiddleware(originPath)) {
+      return compileMiddlewareFactory(config)
     }
 
     return undefined

@@ -37,7 +37,7 @@ function formatDynamicSegments(input: string) {
   return input.replace(/\/\[(\w+)\]/g, '/:$1')
 }
 
-function getRouteName({ originPath }: Rewrite) {
+export function getRouteName({ originPath }: Rewrite) {
   const formatRouteName = pipe(
     removePageSegment,
     removeGroupSegments,
@@ -47,7 +47,7 @@ function getRouteName({ originPath }: Rewrite) {
   return asRootPath(formatRouteName(originPath))
 }
 
-function getRouteHref({ localizedPath }: Rewrite) {
+export function getRouteHref({ localizedPath }: Rewrite) {
   const localeSegment = extractLocaleSegment(localizedPath)
   const formatRouteHref = pipe(
     removeLocaleSegment,

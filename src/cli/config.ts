@@ -6,6 +6,8 @@ import { ConfigError } from './errors'
 export const PKG_NAME = 'next-roots'
 export const DEFAULT_ORIGIN_DIR = './roots'
 export const DEFAULT_LOCALIZE_DIR = './app'
+export const DEFAULT_ROOT_DIR = './app'
+export const DEFAULT_ROOT_ALIAS = './app'
 
 function getPathFactory(dirName: string) {
   return (fileName = '') => path.join(dirName, fileName)
@@ -37,6 +39,8 @@ export function getConfig(cliParams: CliParams): Config {
     )
   }
 
+  const getRootAliasPath = getPathFactory(cliParams.rootAlias)
+
   const getDistAbsolutePath = getPathFactory(distRoot)
   const getCacheAbsolutePath = getPathFactory(path.join(distRoot, 'cache'))
 
@@ -59,5 +63,6 @@ export function getConfig(cliParams: CliParams): Config {
     getDistAbsolutePath,
     getCacheAbsolutePath,
     getOriginContents,
+    getRootAliasPath,
   })
 }

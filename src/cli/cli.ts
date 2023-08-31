@@ -4,6 +4,7 @@ import { generateFactory } from './commands/generate'
 import {
   DEFAULT_LOCALIZE_DIR,
   DEFAULT_ORIGIN_DIR,
+  DEFAULT_ROOT_ALIAS,
   getConfig,
   PKG_NAME,
 } from './config'
@@ -19,6 +20,7 @@ const cliDefaultParams: CliParams = {
   locales: [],
   prefixDefaultLocale: true,
   packageDir: path.join(process.cwd(), `node_modules/${PKG_NAME}`),
+  rootAlias: DEFAULT_ROOT_ALIAS,
 }
 
 const cliFileParams = require(path.join(process.cwd(), configPath))

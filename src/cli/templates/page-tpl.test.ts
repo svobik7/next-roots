@@ -11,6 +11,7 @@ const defaultConfig: Config = {
   getLocalizedAbsolutePath: () => '',
   getOriginAbsolutePath: () => '',
   getOriginContents: () => '',
+  getRootAliasPath: () => '',
 }
 
 test('should create root page', () => {

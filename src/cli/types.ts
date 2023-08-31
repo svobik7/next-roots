@@ -5,6 +5,7 @@ export type CliParams = {
   defaultLocale: string
   prefixDefaultLocale: boolean
   packageDir: string
+  rootAlias: string
 }
 
 export type Config = {
@@ -16,6 +17,7 @@ export type Config = {
   getDistAbsolutePath: (fileName?: string) => string
   getCacheAbsolutePath: (fileName?: string) => string
   getOriginContents: (fileName: string) => string
+  getRootAliasPath: (fileName?: string) => string
 }
 
 export type Origin = {
