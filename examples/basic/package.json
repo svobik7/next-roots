@@ -6,10 +6,10 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "roots": "yarn build:lib && node ./../dist/cli.js",
+    "roots": "yarn build:lib && node ./../../dist/cli.js",
     "dev": "yarn roots && next dev",
     "build": "yarn roots && next build",
-    "build:lib": "node esbuild-lib.mjs",
+    "build:lib": "node ./../esbuild-lib.mjs",
     "start": "next start",
     "analyze": "cross-env ANALYZE=true next build",
     "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
@@ -18,11 +18,9 @@
   "dependencies": {
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
-    "@types/accept-language-parser": "^1.5.3",
-    "accept-language-parser": "^1.5.0",
     "clsx": "^1.2.1",
     "next": "^13.4.5",
-    "next-roots": "link:../",
+    "next-roots": "link:../../",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "server-only": "^0.0.1"

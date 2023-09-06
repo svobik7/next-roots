@@ -430,3 +430,10 @@ module.exports = {
   localizedDir: path.resolve(__dirname, 'app/(routes)',
 }
 ```
+
+### How to redirect users to their preferred language?
+
+There are two recommended way how to achieve this:
+
+1. By `[[...catchAll]]` route - see `examples/with-preferred-language-catchall` example
+2. By custom `middleware.ts` - see `examples/with-preferred-language-middleware` example
