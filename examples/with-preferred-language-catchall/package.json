@@ -6,10 +6,10 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "roots": "yarn build:lib && node ./../../dist/cli.js",
+    "preinstall": "yarn --cwd ../..",
+    "roots": "node ./../../dist/cli.js",
     "dev": "yarn roots && next dev",
     "build": "yarn roots && next build",
-    "build:lib": "node ./../esbuild-lib.mjs",
     "start": "next start",
     "analyze": "cross-env ANALYZE=true next build",
     "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
