@@ -1,3 +1,5 @@
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
 # Introduction
 
 NextRoots is i18n routes generator for the new Next.js APP directory. It is an alternative to [officially recommended way](https://beta.nextjs.org/docs/guides/internationalization#routing-overview) of handling i18n routes in Next.js app.
