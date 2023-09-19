@@ -17,7 +17,7 @@
     }
   },
   "bin": {
-    "next-roots": "./dist/cli.js"
+    "next-roots": "dist/cli.js"
   },
   "scripts": {
     "prepare": "husky install",
@@ -92,7 +92,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/svobik7/next-roots"
+    "url": "git+https://github.com/svobik7/next-roots.git"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
