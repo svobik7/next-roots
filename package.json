@@ -17,7 +17,7 @@
     }
   },
   "bin": {
-    "next-roots": "./dist/cli.js"
+    "next-roots": "dist/cli.js"
   },
   "scripts": {
     "prepare": "husky install",
@@ -33,18 +33,26 @@
     "test:coverage": "yarn test --coverage",
     "check:types": "yarn tsc --noEmit",
     "prepublish": "yarn build",
-    "publish:canary": "yarn publish --tag canary"
+    "publish:canary": "yarn publish --tag canary",
+    "semantic-release": "semantic-release"
   },
   "dependencies": {
     "path-to-regexp": "^6.2.1"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^11.0.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/npm": "^11.0.0",
+    "@semantic-release/release-notes-generator": "^12.0.0",
     "@types/mock-fs": "^4.13.1",
     "@typescript-eslint/eslint-plugin": "^5.59.11",
     "@typescript-eslint/parser": "^5.59.11",
     "@vitest/coverage-istanbul": "^0.32.0",
     "arg": "^5.0.2",
     "colors": "^1.4.0",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
     "dts-bundle-generator": "^8.0.1",
     "esbuild": "^0.18.2",
     "esbuild-node-externals": "^1.7.0",
@@ -60,6 +68,7 @@
     "mock-fs": "^5.2.0",
     "prettier": "^2.8.8",
     "pretty-quick": "^3.1.3",
+    "semantic-release": "^22.0.0",
     "typescript": "^5.1.3",
     "vitest": "^0.32.0"
   },
@@ -83,11 +92,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/svobik7/next-roots"
+    "url": "git+https://github.com/svobik7/next-roots.git"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
       "eslint --fix"
     ]
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "tag": "latest"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
