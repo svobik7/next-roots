@@ -394,6 +394,21 @@ module.exports.routeNames = [
 | `defaultLocale`       | string   | `''`                        | required | default locale that is specified in `locales`                                                                                                     |
 | `prefixDefaultLocale` | boolean  | `true`                      | optional | when default locale = en then TRUE means it will be served from "/en" and FALSE means it will be served without prefix on /                       |
 | `packageDir`          | string   | `./node_modules/next-roots` | optional | absolute path to the next-root package itself. Should be changed only when package is stored in different location than project root node_modules |
+| `afterGenerate`       | function | `undefined`                 | optional | custom function that will be called after files generation is done (see)                                                                          |
+
+### AfterGenerate callback
+
+If you need to do custom actions after the generation is done you can use `afterGenerate` callback. This callback is called with following params:
+
+```ts
+type AfterGenerateCallback = (params: {
+  config: Config
+  origins: Origin[]
+  rewrites: Rewrite[]
+  routes: Route[]
+  routerSchema: RouterSchema
+}) => Promise<void>
+```
 
 ## 6. FAQ
 
