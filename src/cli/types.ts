@@ -1,3 +1,13 @@
+import type { Route, RouterSchema } from '~/types'
+
+type AfterGenerateCallback = (params: {
+  config: Config
+  origins: Origin[]
+  rewrites: Rewrite[]
+  routes: Route[]
+  routerSchema: RouterSchema
+}) => Promise<void>
+
 export type CliParams = {
   originDir: string
   localizedDir: string
@@ -5,6 +15,7 @@ export type CliParams = {
   defaultLocale: string
   prefixDefaultLocale: boolean
   packageDir: string
+  afterGenerate?: AfterGenerateCallback
 }
 
 export type Config = {
@@ -16,6 +27,7 @@ export type Config = {
   getDistAbsolutePath: (fileName?: string) => string
   getCacheAbsolutePath: (fileName?: string) => string
   getOriginContents: (fileName: string) => string
+  afterGenerate?: AfterGenerateCallback
 }
 
 export type Origin = {

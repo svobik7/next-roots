@@ -28,7 +28,6 @@ export function generateFactory(config: Config) {
       dirName: getOriginAbsolutePath(),
     })
 
-
     const rewrites = origins.flatMap(getRewrites)
     const routes = rewrites.flatMap(getRoute).filter(isRoute)
 
@@ -38,6 +37,15 @@ export function generateFactory(config: Config) {
       () => generateLocalizedFiles(rewrites),
       () => generateDeclarationFile(routerSchema),
       () => generateRouterFile(routerSchema),
+      // keep this as last to make sure all files are written before calling
+      () =>
+        config.afterGenerate?.({
+          config,
+          origins,
+          rewrites,
+          routes,
+          routerSchema,
+        }),
       // eslint-disable-next-line no-console
       () => console.timeEnd(infoMessage)
     )

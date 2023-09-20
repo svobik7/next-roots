@@ -6,4 +6,8 @@ module.exports = {
   locales: ['en', 'cs', 'es'],
   defaultLocale: 'en',
   prefixDefaultLocale: false, // serves "en" locale on / instead of /en
+  afterGenerate: () => {
+    // this callback is triggered after app dir files are generated
+    console.log("I'm done!")
+  },
 }

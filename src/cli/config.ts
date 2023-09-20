@@ -59,5 +59,6 @@ export function getConfig(cliParams: CliParams): Config {
     getDistAbsolutePath,
     getCacheAbsolutePath,
     getOriginContents,
+    afterGenerate: cliParams.afterGenerate,
   })
 }
