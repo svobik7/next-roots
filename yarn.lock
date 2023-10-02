@@ -1332,9 +1332,9 @@
     eslint-visitor-keys "^3.3.0"
 
 "@vitest/coverage-istanbul@^0.34.5":
-  version "0.34.5"
-  resolved "https://registry.yarnpkg.com/@vitest/coverage-istanbul/-/coverage-istanbul-0.34.5.tgz#3560fab4ba3250cdef81403d409ed0bd4a1b00a2"
-  integrity sha512-t07VrdRSRKw7QgOZ20i1bmstv9seUm7Fay8wVtswKHBlMmAAW3K5x+0u18O50mLuVl208Lx21tH/6O7W4BWR9Q==
+  version "0.34.6"
+  resolved "https://registry.yarnpkg.com/@vitest/coverage-istanbul/-/coverage-istanbul-0.34.6.tgz#4fc91eac4d7cfc5b91850e9f82bcb986990b79a4"
+  integrity sha512-5KaBNZPDSk2ybavC3rZ1pWGniw7sJ5usuwVGRUYzJwiBfWvnLpuUer7bjw7qUCRGdKJXrBgb/Dsgif9rkwMX/A==
   dependencies:
     istanbul-lib-coverage "^3.2.0"
     istanbul-lib-instrument "^6.0.0"
