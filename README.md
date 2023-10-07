@@ -66,7 +66,8 @@ The requirement is to have English localization served from `/` and Czech from `
 ```json
 {
   "scripts": {
-    "roots": "yarn next-roots"
+    "roots": "yarn next-roots",
+    "roots:watch": "yarn next-roots -w"
   }
 }
 ```
