@@ -91,6 +91,8 @@ The project structure now looks like:
 └── ...
 ```
 
+Alternative approach can be to keep your routes inside app folder for leveraging RSCs. In that case your original routes can be placed in `app/_routes`.
+
 ### Configuring generator
 
 To tell NextRoots which locales we want to generate and where the roots files and app files can be found the `roots.config.js` file must be defined in project root.
