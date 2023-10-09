@@ -2430,9 +2430,9 @@ es-to-primitive@^1.2.1:
     is-symbol "^1.0.2"
 
 esbuild-node-externals@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/esbuild-node-externals/-/esbuild-node-externals-1.7.0.tgz#f6d755c577aec1ffa8548b0a648f13df27551805"
-  integrity sha512-nfY3hxtO2anCTZ87LgfzCTfBuyG6de+NyiCNMF1mgrBufS0NgoYlBwF77HHuOInsJLxsAJf0BfLeV6ekZ3hRuA==
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/esbuild-node-externals/-/esbuild-node-externals-1.9.0.tgz#b9d267cc506137731c2c19ac241182b9464c9cf5"
+  integrity sha512-WV6Ogvl+AZEX3vWAM0UGxqb08l3M73EUeymizKGccUC0iWlF1CwdpkZVu200bSqONamjSV0v22vf4YBahJXs8g==
   dependencies:
     find-up "^5.0.0"
     tslib "^2.4.1"
