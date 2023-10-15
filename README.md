@@ -3,18 +3,15 @@
 
 # Introduction
 
-NextRoots is i18n routes generator for the new Next.js APP directory. It is an alternative to [officially recommended way](https://beta.nextjs.org/docs/guides/internationalization#routing-overview) of handling i18n routes in Next.js app.
-
-The main idea behind is to generate all localized file-routes (slugs) in advance rather than putting everything into dynamic `[lang]` segment. Read more about [benefits of generated i18n routes](https://dev.to/svobik7/dont-use-dynamic-lang-segment-for-your-i18n-nextjs-routes-3k05).
+NextRoots is i18n routes generator for the new Next.js APP directory. It is an alternative to [officially recommended way](https://beta.nextjs.org/docs/guides/internationalization#routing-overview) of handling i18n routes in Next.js app. The main idea behind is to generate all localized file-routes (slugs) in advance rather than putting everything into dynamic `[lang]` segment. Read more about [benefits of generated i18n routes](https://dev.to/svobik7/dont-use-dynamic-lang-segment-for-your-i18n-nextjs-routes-3k05). Working demo site built on top of next-roots can be seen https://next-roots-svobik7.vercel.app
 
 > If you are using old Next.js pages directory check [next-roots@v2](https://github.com/svobik7/next-roots/tree/v2).
 
-Working demo site built on top of next-roots can be seen https://next-roots-svobik7.vercel.app
-
 ## Table of contents
 
+- [Terminology](#terminology)
+- [Installation](#installation)
 - [Getting started](#1-getting-started)
-  - [Installation](#installation)
   - [Migrating routes](#migrating-routes)
   - [Configuring generator](#configuring-generator)
   - [Generating routes](#generating-routes)
@@ -29,6 +26,105 @@ Working demo site built on top of next-roots can be seen https://next-roots-svob
   - [Dynamic translations](#dynamic-translations)
 - [Config params](#5-config-params)
 - [FAQ](#6-faq)
+
+
+## Terminology
+
+Next-roots i18n routes depends on keeping your un-translated routes in one place and generating translated routes in another. Therefore those terms are crucial to understand before going further:
+
+1. `originalDir`: place where to keep un-translated routes (editable route files)
+2. `localizedDir`: place where next-roots will generate translated routes (usually this folder is ignored by git and no manual changes are allowed)
+
+## Installation
+
+1. Add the package to your project dependencies
+
+`yarn add next-roots`
+
+2. Add esbuild for compiling i18n config files to your project devDependencies
+
+`yarn add --dev esbuild`
+
+3. Create configuration file in your project root
+
+`touch ./roots.config.js`
+
+4. (optional) Add generate script to your `package.json`
+
+```json
+{
+  "scripts": {
+    "roots": "yarn next-roots",
+    "roots:watch": "yarn next-roots -w"
+  }
+}
+```
+
+## Setup
+
+As default Next.js reads routes from the folder called `app` placed in your project root. Using NextRoots and generating i18n routes requires you to move your original routes files to different location known as `originalDir` and let next-roots package to generate localized routes in location known as `localizedDir`. Therefore you need to migrate your routes first.
+
+There are two ways where to migrate your routes:
+
+A. Outside APP folder with no RSC support (default)
+B. Inside APP folder with RSC support
+
+> Note that 'roots' or '_roots' folder names mentioned below is just a recommended naming but you are full in charge of picking your own naming.
+
+### A. Setup without RSC support (default)
+
+If you do not want to support RSC in your app you can keep your original routes outside the `app` folder. Therefore you can run following command from your project root:
+
+`mv ./app/ ./roots`
+
+and put the following rows into your `roots.config.js`:
+
+```js
+// roots.config.js
+const path = require('path')
+
+module.exports = {
+  originDir: path.resolve(__dirname, 'roots'),
+  localizedDir: path.resolve(__dirname, 'app'),
+}
+```
+
+Using this approach your project structure will look like:
+
+```bash
+├── app   // <- translated generated routes
+├── roots // <- un-translated routes
+└── ...
+```
+
+### B. Setup with RSC support
+
+To support RSC you have to keep you routes inside the `app` folder and therefore you need to run:
+
+`mv ./app/ ./app/_roots`
+
+and put the following rows into your `roots.config.js`:
+
+```js
+// roots.config.js
+const path = require('path')
+
+module.exports = {
+  originDir: path.resolve(__dirname, 'app/_roots'),
+  localizedDir: path.resolve(__dirname, 'app/(routes)'),
+}
+```
+
+Using this approach your project structure will look like:
+
+```bash
+├── app   
+│   ├── _roots    // <- un-translated routes
+│   └── (routes)  // <- translated generated routes
+└── ...
+```
+
+## Generating
 
 ## 1. Getting started
 
@@ -51,36 +147,7 @@ The requirement is to have English localization served from `/` and Czech from `
 
 > NextRoots supports both prefixed `/en` and un-prefixed `/` default locale.
 
-### Installation
-
-1. Add the package to your project dependencies
-
-`yarn add next-roots`
-
-2. Add esbuild for compiling i18n config files to your project devDependencies
-
-`yarn add --dev esbuild`
-
-2. (optional) Add generate script to your `package.json`
-
-```json
-{
-  "scripts": {
-    "roots": "yarn next-roots",
-    "roots:watch": "yarn next-roots -w"
-  }
-}
-```
-
-### Migrating routes
-
-As default Next.js reads routes from the folder called `app`. Using NextRoots and generating i18n routes requires you to move all your original routes into different folder called `roots` (name is customizable).
-
-Run following command from your project root:
-
-`mv ./app/ ./roots`
-
-This would be the new area where you are going to store your original routes, write your code and make changes. From now on you wont be editing the files under the `app` folder. The `app` folder will stands only as a keeper of localized routes and forwards everything to the original ones.
+### 1.1. Routes setup
 
 The project structure now looks like:
 
@@ -91,9 +158,6 @@ The project structure now looks like:
 │   └── page.js
 └── ...
 ```
-
-Alternative approach can be to keep your routes inside app folder for leveraging RSCs. In that case your original routes can be placed in `app/_routes`.
-
 ### Configuring generator
 
 To tell NextRoots which locales we want to generate and where the roots files and app files can be found the `roots.config.js` file must be defined in project root.
