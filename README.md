@@ -469,7 +469,7 @@ There are two recommended way how to achieve this:
 
 To support RSC you need to keep your routes inside app folder. In that case your original routes can be placed in `app/_roots` and translated routes into `app/(routes)`. your `roots.config.js` file would then look like this:
 
-
+```js
 module.exports = {
   originDir: path.resolve(__dirname, 'app/_roots'),
   localizedDir: path.resolve(__dirname, 'app/(routes)'),
