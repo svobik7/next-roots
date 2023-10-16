@@ -92,7 +92,7 @@ The project structure now looks like:
 └── ...
 ```
 
-Alternative approach can be to keep your routes inside app folder for leveraging RSCs. In that case your original routes can be placed in `app/_routes`.
+For RSC support see [this alternative configuration](#how-to-keep-original-routes-within-APP-folder-to-support-rsc) in FAQ section.
 
 ### Configuring generator
 
@@ -116,7 +116,13 @@ module.exports = {
 
 ### Generating routes
 
-Generation is initiated by running `yarn next-roots` or just `yarn roots` in our case (we added it to our package.json scripts) from the project root folder. The `app` folder is then generated and project structure is shaped like this:
+Generation is initiated by running following command from project root.
+
+`yarn next-roots` 
+
+IMPORTANT: Please be aware that `app` folder is wiped out during generation so be sure to have proper git or other backup in place.
+
+The `app` folder is now re-generated and project structure is shaped like this:
 
 ```bash
 ├── app
@@ -415,7 +421,7 @@ type AfterGenerateCallback = (params: {
 
 ## 6. FAQ
 
-### Why generated routes are better than recommended `[lang]` approach?
+### Why are generated routes better than recommended `[lang]` approach?
 
 The `[lang]` approach works well until you need to translate URL slugs. Read more about generated routes in https://dev.to/svobik7/dont-use-dynamic-lang-segment-for-your-i18n-nextjs-routes-3k05
 
@@ -458,3 +464,17 @@ There are two recommended way how to achieve this:
 
 1. By `[[...catchAll]]` route - see `examples/with-preferred-language-catchall` example
 2. By custom `middleware.ts` - see `examples/with-preferred-language-middleware` example
+
+### How to keep original routes within APP folder to support RSC?
+
+To support RSC you need to keep your routes inside app folder. In that case your original routes can be placed in `app/_roots` and translated routes into `app/(routes)`. your `roots.config.js` file would then look like this:
+
+
+module.exports = {
+  originDir: path.resolve(__dirname, 'app/_roots'),
+  localizedDir: path.resolve(__dirname, 'app/(routes)'),
+  // ... other config params
+}
+```
+
+Note that `_roots` and `(routes)` dir names are here just as example. you can choose your own naming.
