@@ -1,5 +1,6 @@
 import type { RouterSchema } from '~/types'
 import { Router } from './router'
+import { StaticRouter } from './static-route'
 
 const inputSchema: RouterSchema = {
   locales: ['es', 'cs'],
@@ -107,8 +108,8 @@ describe('getHref', () => {
   test.each(testCases)(
     'given %s as routeName and %o as params when pageHref is %s, returns %s',
     (routeName, params, pageHref, expectedResult) => {
-      Router.setPageHref(pageHref)
-      expect(Router.getPageHref()).toEqual(pageHref)
+      StaticRouter.setPageHref(pageHref)
+      expect(StaticRouter.getPageHref()).toEqual(pageHref)
 
       const result = router.getHref(routeName, params)
       expect(result).toEqual(expectedResult)
