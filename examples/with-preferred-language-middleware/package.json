@@ -20,7 +20,7 @@
     "@heroicons/react": "^2.0.18",
     "accept-language": "^3.0.18",
     "clsx": "^1.2.1",
-    "next": "^13.4.5",
+    "next": "^13.5.0",
     "next-roots": "link:../../",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
