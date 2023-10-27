@@ -1,6 +1,6 @@
 import type { RouterSchema } from '~/types'
 import { Router } from './router'
-import { StaticRouter } from './static-route'
+import { StaticRouter } from './static-router'
 
 const inputSchema: RouterSchema = {
   locales: ['es', 'cs'],

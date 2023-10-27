@@ -1,7 +1,7 @@
 import { compile, match } from 'path-to-regexp'
 import type { Route, RouterSchema } from '~/types'
 import { getLocaleFactory } from '~/utils/locale-utils'
-import { StaticRouter } from './static-route' // Importing separate static router
+import { StaticRouter } from './static-router' // Importing separate static router
 
 export class Router {
   private schema: RouterSchema
@@ -9,6 +9,10 @@ export class Router {
   constructor(schema: RouterSchema) {
     this.schema = schema
   }
+
+  /**
+   * Gets relevant page href
+   */
 
   public getHref(name: string, params: Record<string, string> = {}): string {
     const {
@@ -18,6 +22,8 @@ export class Router {
     const route = this.findRouteByLocaleAndName(locale, name)
     return formatHref(compileHref(route?.href || '', hrefParams))
   }
+
+  /** */
 
   public getLocaleFromHref(href: string): string {
     const getLocale = getLocaleFactory({
