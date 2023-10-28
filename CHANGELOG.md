@@ -1,3 +1,9 @@
+## [3.4.1](https://github.com/svobik7/next-roots/compare/v3.4.0...v3.4.1) (2023-10-28)
+
+### Bug Fixes
+
+- **deps:** bump @babel/traverse from 7.21.3 to 7.23.2 ([11f04ba](https://github.com/svobik7/next-roots/commit/11f04baa74295764b81d41f2f9befb38527b9a4d))
+
 # [3.4.0](https://github.com/svobik7/next-roots/compare/v3.3.0...v3.4.0) (2023-10-07)
 
 ### Features
