@@ -79,7 +79,7 @@ export function formatHref(href: string, params: Record<string, string>): string
 export type PageProps<TParams = void> = TParams extends void
   ? { pageHref: string }
   : { pageHref: string; params: TParams }
-export type LayoutProps<TParams = any> = { pageLocale: string, params: TParams }
+export type LayoutProps<TParams = any> = { locale: string, params: TParams }
 export type GeneratePageMetadataProps<TParams = any> = { pageHref: string, params: TParams }
 export type GenerateLayoutMetadataProps<TParams = any> = { locale: string, params: TParams }
 export type GenerateStaticParamsProps = { pageLocale: string }
@@ -150,7 +150,7 @@ export function formatHref(href: string, params: Record<string, string>): string
 export type PageProps<TParams = void> = TParams extends void
   ? { pageHref: string }
   : { pageHref: string; params: TParams }
-export type LayoutProps<TParams = any> = { pageLocale: string, params: TParams }
+export type LayoutProps<TParams = any> = { locale: string, params: TParams }
 export type GeneratePageMetadataProps<TParams = any> = { pageHref: string, params: TParams }
 export type GenerateLayoutMetadataProps<TParams = any> = { locale: string, params: TParams }
 export type GenerateStaticParamsProps = { pageLocale: string }
