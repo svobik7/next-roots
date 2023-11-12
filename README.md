@@ -333,7 +333,7 @@ Following types are available for props above and can be imported from next-root
 
 ## 4. Translation files
 
-Translation of URL paths is done in `i18n.js` of `i18n.ts` files by placing this file right next to the `page.js` of `page.ts` file and running `yarn roots`. There are two main ways how you can define the i18n file.
+Translation of URL paths is done in `i18n.js` or `i18n.ts` files by placing this file right next to the `page.js` of `page.ts` file and running `yarn roots`. There are two main ways how you can define the i18n file.
 
 ### Static translations
 
