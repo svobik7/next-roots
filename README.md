@@ -282,7 +282,7 @@ Even you are allowed to change this static context down in the code by calling `
 
 When running Next.js as a standalone server for example in EC2 or docker container, the Router functionality breaks.
 Since Next.js is ran as a basic Node.js server in a standalone mode, the Router class is shared for each page generation. As so, the Router.getPageHref() can return wrong values in the generation phase of the page.
-in that case you always need to pass current `locale` param to `Router.getHref` function and do not use `Router.getPageHreg`. See more in https://github.com/svobik7/next-roots/issues/99.
+in that case you always need to pass current `locale` param to `Router.getHref` function and do not use `Router.getPageHref`. See more in https://github.com/svobik7/next-roots/issues/99.
 
 ### GetLocaleFromHref
 
