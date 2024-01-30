@@ -2,6 +2,6 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 yarn test
-yarn check:types
-yarn lint-staged 
-yarn pretty-quick --staged
+yarn lint-staged
+yarn typecheck
+
