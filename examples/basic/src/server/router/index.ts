@@ -1,6 +1,10 @@
 import 'server-only'
 import { Router, schema } from 'next-roots'
-import type { ArticleTranslation, AuthorTranslation } from 'src/server/db/types'
+import type {
+  ArticleTranslation,
+  AuthorTranslation,
+  ProductTranslation,
+} from 'src/server/db/types'
 
 export const router = new Router(schema)
 
@@ -37,4 +41,16 @@ export function getContactsHref(locale: string = getPageLocale()) {
 
 export function getHomeHref(locale: string = getPageLocale()) {
   return router.getHref('/', { locale })
+}
+
+type GetProductsHrefProps = { locale: string } | { product: ProductTranslation }
+
+export function getProductsHref(input: GetProductsHrefProps) {
+  const locale = 'product' in input ? input.product.locale : input.locale
+  const product = 'product' in input ? input.product : undefined
+
+  return router.getHref('/products/[[...slugs]]', {
+    slugs: product?.slug,
+    locale: locale || getPageLocale(),
+  })
 }

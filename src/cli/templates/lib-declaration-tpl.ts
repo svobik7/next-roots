@@ -1,8 +1,10 @@
-import type { Key } from 'path-to-regexp'
-import { pathToRegexp } from 'path-to-regexp'
+import { type Key, pathToRegexp } from 'path-to-regexp'
 import type { Route, RouterSchema } from '~/types'
-import type { CompileParams } from './tpl-utils'
-import { compileTemplateFactory, getPatternsFromNames } from './tpl-utils'
+import {
+  type CompileParams,
+  compileTemplateFactory,
+  getPatternsFromNames,
+} from './tpl-utils'
 
 export const PATTERNS = getPatternsFromNames(
   'routeLocales',
@@ -110,8 +112,19 @@ function getRouteName(route: Route) {
   return route.name
 }
 
+function isDynamicOptionalCatchAllRoute(route: Route) {
+  return !!route.name.match(/\[\[\.\.\.\w+\]\]/g)
+}
+
+function isDynamicCatchAllRoute(route: Route) {
+  return (
+    !!route.name.match(/\[\.\.\.\w+\]/g) ||
+    isDynamicOptionalCatchAllRoute(route)
+  )
+}
+
 function isDynamicRoute(route: Route) {
-  return !!route.name.match(/\[\w+\]/g)
+  return !!route.name.match(/\[\w+\]/g) || isDynamicCatchAllRoute(route)
 }
 
 function getDefaultRoutes(schema: RouterSchema) {
@@ -136,8 +149,10 @@ function getDynamicRouteParams(schema: RouterSchema) {
       const params: Key[] = []
       pathToRegexp(item.href, params)
 
+      const nameSuffix = isDynamicOptionalCatchAllRoute(item) ? '?' : ''
+
       acc += `T extends '${item.name}' ? RouteParamsStatic<{${params.map(
-        (p) => `${p.name}:string`
+        (p) => `${p.name}${nameSuffix}:string`
       )}}> : `
 
       if (index === array.length - 1) {

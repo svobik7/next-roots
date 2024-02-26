@@ -104,6 +104,36 @@ export default function BlogAuthorIdPage({ params, ...otherProps }) {
   expect(output).toBe(expectedOutput)
 })
 
+test('should create page for [[...optionalCatchAll]] route', () => {
+  const expectedOutput = `
+import ProductsPageOrigin from '../../../../../roots/products/[[...slugs]]/page'
+import { Router, compileHref } from 'next-roots'
+
+export default function ProductsPage({ params, ...otherProps }) {
+  Router.setPageHref(compileHref('/cs/produkty/:slugs*', params))
+  {/* @ts-ignore */}
+  return <ProductsPageOrigin {...otherProps} params={params} pageHref={Router.getPageHref()} />
+}
+`
+  const inputRewrite = {
+    originPath: '/products/[[...slugs]]/page.js',
+    localizedPath: '/cs/produkty/[[...slugs]]/page.js',
+  }
+
+  const inputConfig = {
+    ...defaultConfig,
+    // resolves to = /src/app/cs/magazin/[authorId]/page.ts
+    getLocalizedAbsolutePath: (fileName = '') =>
+      path.join('/src/app', fileName),
+    // resolves to = /roots/magazin/[authorId]/page.ts
+    getOriginAbsolutePath: (fileName = '') => path.join('/roots', fileName),
+  }
+
+  const compile = compileFactory(inputConfig)
+  const output = compile(inputRewrite)
+  expect(output).toBe(expectedOutput)
+})
+
 test('should create page with static metadata object', () => {
   const expectedOutput = `
 import StaticMetaDataPageOrigin from '..'

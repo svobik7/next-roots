@@ -35,6 +35,10 @@ const inputRewrites: Rewrite[] = [
     localizedPath:
       '/en/feed/friends/@modal/(...)blog/[authorId]/[articleId]/page.ts',
   },
+  {
+    originPath: '/products/[[...slugs]]/page.ts',
+    localizedPath: '/en/products/[[...slugs]]/page.ts',
+  },
   { originPath: '/page.js', localizedPath: '/en/page.js' },
   { originPath: '/page.js', localizedPath: '/(en)/page.js' },
 ]
@@ -68,6 +72,10 @@ const expectedSchema: Array<Route | undefined> = [
   {
     name: '/blog/[authorId]/[articleId]',
     href: '/en/blog/:authorId/:articleId',
+  },
+  {
+    name: '/products/[[...slugs]]',
+    href: '/en/products/:slugs*',
   },
   {
     name: '/',

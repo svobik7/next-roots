@@ -2055,6 +2055,11 @@ parent-module@^1.0.0:
   dependencies:
     callsites "^3.0.0"
 
+parse-typed-args@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/parse-typed-args/-/parse-typed-args-0.2.0.tgz#34c5c101659435cf75e9bcfa475135a29afe03d5"
+  integrity sha512-xFLk7SuXQuOfXF9wim9Ti65WAEUqUWAL+QZvts/4MivXcESjvU74pKkp4rLj4hS63ZrvNAvpWLxvupE4wpqCWA==
+
 path-exists@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/path-exists/-/path-exists-4.0.0.tgz#513bdbe2d3b95d7762e8c1137efa195c6c61b5b3"

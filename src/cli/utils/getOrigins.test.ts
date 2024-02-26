@@ -100,6 +100,14 @@ const expectedOutput: Origin[] = [
     ],
   },
   {
+    path: '/products/[[...slugs]]/page.ts',
+    localizations: [
+      { locale: 'en', path: '/products/[[...slugs]]/page.ts' },
+      { locale: 'cs', path: '/produkty/[[...slugs]]/page.ts' },
+      { locale: 'es', path: '/productos/[[...slugs]]/page.ts' },
+    ],
+  },
+  {
     path: '/page.js',
     localizations: [
       { locale: 'en', path: '/page.js' },

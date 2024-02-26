@@ -1911,9 +1911,8 @@ natural-compare@^1.4.0:
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
 "next-roots@link:../..":
-  version "3.3.0"
-  dependencies:
-    path-to-regexp "^6.2.1"
+  version "0.0.0"
+  uid ""
 
 next@^13.4.5:
   version "13.4.19"
@@ -1943,6 +1942,11 @@ node-releases@^2.0.13:
   version "2.0.13"
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.13.tgz#d5ed1627c23e3461e819b02e57b75e4899b1c81d"
   integrity sha512-uYr7J37ae/ORWdZeQ1xxMJe3NtdmqMC/JZK+geofDrkLUApKRHPd18/TxtBOJ4A0/+uUIliorNrfYV6s1b02eQ==
+
+node-watch@^0.7.4:
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/node-watch/-/node-watch-0.7.4.tgz#34557106948cd4b8ddff9aa3d284774004548824"
+  integrity sha512-RinNxoz4W1cep1b928fuFhvAQ5ag/+1UlMDV7rbyGthBIgsiEouS4kvRayvvboxii4m8eolKOIBo3OjDqbc+uQ==
 
 normalize-path@^3.0.0, normalize-path@~3.0.0:
   version "3.0.0"
@@ -2073,6 +2077,11 @@ parent-module@^1.0.0:
   integrity sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==
   dependencies:
     callsites "^3.0.0"
+
+parse-typed-args@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/parse-typed-args/-/parse-typed-args-0.2.0.tgz#34c5c101659435cf75e9bcfa475135a29afe03d5"
+  integrity sha512-xFLk7SuXQuOfXF9wim9Ti65WAEUqUWAL+QZvts/4MivXcESjvU74pKkp4rLj4hS63ZrvNAvpWLxvupE4wpqCWA==
 
 path-exists@^4.0.0:
   version "4.0.0"

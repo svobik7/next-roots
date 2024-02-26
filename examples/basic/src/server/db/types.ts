@@ -25,6 +25,14 @@ export type Article = WithAuthor<{
   createdAt: string
 }>
 
+export type Product = {
+  id: number
+  title: Translation[]
+  slug: Translation[]
+  content: Translation[]
+  createdAt: string
+}
+
 export type AuthorTranslation = TranslationOf<Author, 'about'>
 
 export type WithAuthorTranslation<T> = Omit<T, 'author'> & {
@@ -33,6 +41,11 @@ export type WithAuthorTranslation<T> = Omit<T, 'author'> & {
 
 export type ArticleTranslation = WithAuthorTranslation<
   TranslationOf<Article, 'title' | 'slug' | 'content'>
+>
+
+export type ProductTranslation = TranslationOf<
+  Product,
+  'title' | 'slug' | 'content'
 >
 
 export type Join<K, P> = K extends string | number
@@ -46,9 +59,9 @@ export type Prev = [never, 0, 1, 2, 3, 4, ...0[]]
 export type Paths<T, D extends number = 10> = [D] extends [never]
   ? never
   : T extends object
-  ? {
-      [K in keyof T]-?: K extends string | number
-        ? `${K}` | Join<K, Paths<T[K], Prev[D]>>
-        : never
-    }[keyof T]
-  : ''
+    ? {
+        [K in keyof T]-?: K extends string | number
+          ? `${K}` | Join<K, Paths<T[K], Prev[D]>>
+          : never
+      }[keyof T]
+    : ''
