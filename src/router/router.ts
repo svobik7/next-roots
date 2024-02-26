@@ -150,6 +150,6 @@ export function formatHref(...hrefSegments: string[]): string {
     .join('/')
     .replace(/\/\/+/g, '/')
     .replace(/\/$/, '')
-    .replace('%2F', '/')
+    .replaceAll('%2F', '/')
   return href.startsWith('/') ? href : `/${href}`
 }
