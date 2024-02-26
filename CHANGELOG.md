@@ -1,3 +1,10 @@
+## [3.5.1](https://github.com/svobik7/next-roots/compare/v3.5.0...v3.5.1) (2024-02-26)
+
+
+### Bug Fixes
+
+* **deps:** bump ip from 2.0.0 to 2.0.1 ([e383c3f](https://github.com/svobik7/next-roots/commit/e383c3f9840cccc71ffca477e590dca13f074852))
+
 # [3.5.0](https://github.com/svobik7/next-roots/compare/v3.4.1...v3.5.0) (2024-02-26)
 
 
