@@ -34,7 +34,10 @@ function removeInterceptedSegments(input: string) {
 }
 
 function formatDynamicSegments(input: string) {
-  return input.replace(/\/\[(\w+)\]/g, '/:$1')
+  return input
+    .replace(/\/\[\[\.\.\.(\w+)\]\]/g, '/:$1*')
+    .replace(/\/\[\[(\w+)\]\]/g, '/:$1*')
+    .replace(/\/\[(\w+)\]/g, '/:$1')
 }
 
 function getRouteName({ originPath }: Rewrite) {

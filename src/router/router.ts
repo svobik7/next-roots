@@ -31,6 +31,13 @@ export class Router extends StaticRouter {
       locale = this.getLocaleFromHref(StaticRouter.getPageHref()),
       ...hrefParams
     } = params
+
+    Object.keys(hrefParams).forEach((key) => {
+      if (hrefParams[key] === '' || hrefParams[key] === null) {
+        delete hrefParams[key]
+      }
+    })
+
     const route = this.findRouteByLocaleAndName(locale, name)
     return formatHref(compileHref(route?.href || '', hrefParams))
   }
@@ -139,6 +146,10 @@ export function compileHref(
  */
 
 export function formatHref(...hrefSegments: string[]): string {
-  const href = hrefSegments.join('/').replace(/\/\/+/g, '/').replace(/\/$/, '')
+  const href = hrefSegments
+    .join('/')
+    .replace(/\/\/+/g, '/')
+    .replace(/\/$/, '')
+    .replaceAll('%2F', '/')
   return href.startsWith('/') ? href : `/${href}`
 }

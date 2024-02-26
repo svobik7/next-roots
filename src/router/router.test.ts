@@ -101,8 +101,10 @@ describe('getHref', () => {
     ['/[slug]', { locale: 'cs' }, '', '/cs/:slug'],
     ['/[slug]', { locale: 'cs', slug: '1' }, '', '/cs/1'],
     ['/projects/[...slug]', { locale: 'cs', slug: '1' }, '', '/cs/projekty/1'],
+    ['/admin/[[...slug]]', { locale: 'cs', slug: '' }, '', '/cs/admin'],
     ['/admin/[[...slug]]', { locale: 'cs' }, '', '/cs/admin'],
     ['/admin/[[...slug]]', { locale: 'cs', slug: '1' }, '', '/cs/admin/1'],
+    ['/admin/[[...slug]]', { locale: 'cs', slug: '1/2' }, '', '/cs/admin/1/2'],
   ] as const
 
   test.each(testCases)(

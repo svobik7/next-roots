@@ -31,7 +31,6 @@ export async function fetchAuthors(limit?: number): Promise<Author[]> {
 export async function fetchArticleBySlug(
   slug: string
 ): Promise<Article | undefined> {
-  console.log('fetchArticleBySlug', slug)
   const db = await loadDB()
   const withAuthor = await withAuthorFactory()
 

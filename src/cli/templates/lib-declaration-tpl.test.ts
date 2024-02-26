@@ -23,6 +23,14 @@ describe('with dynamic routes', () => {
           name: '/blog/authors/[authorId]',
           href: '/blog/autori/:authorId',
         },
+        {
+          name: '/products/[...slug]',
+          href: '/products-cs/:slug',
+        },
+        {
+          name: '/admin/[[...slug]]',
+          href: '/admin-cs/:slug*',
+        },
       ],
       es: [
         {
@@ -41,6 +49,14 @@ describe('with dynamic routes', () => {
           name: '/blog/authors/[authorId]',
           href: '/blog/authores/:authorId',
         },
+        {
+          name: '/products/[...slug]',
+          href: '/products-es/:slug',
+        },
+        {
+          name: '/admin/[[...slug]]',
+          href: '/admin-es/:slug*',
+        },
       ],
     },
   }
@@ -48,12 +64,12 @@ describe('with dynamic routes', () => {
   const expectedOutput = `
 export type RouteLocale = 'cs' | 'es';
 export type RouteNameStatic = '/account' | '/(auth)/login';
-export type RouteNameDynamic = '/blog/articles/[articleId]' | '/blog/authors/[authorId]';
+export type RouteNameDynamic = '/blog/articles/[articleId]' | '/blog/authors/[authorId]' | '/products/[...slug]' | '/admin/[[...slug]]';
 export type RouteName = RouteNameStatic | RouteNameDynamic;
 export type Route = { name: RouteName; href: \`/\${string}\` };
 
 export type RouteParamsStatic<T extends object = object> = T & { locale?: string };
-export type RouteParamsDynamic<T extends RouteName> = T extends '/blog/articles/[articleId]' ? RouteParamsStatic<{articleId:string}> : T extends '/blog/authors/[authorId]' ? RouteParamsStatic<{authorId:string}> : RouteParamsStatic;
+export type RouteParamsDynamic<T extends RouteName> = T extends '/blog/articles/[articleId]' ? RouteParamsStatic<{articleId:string}> : T extends '/blog/authors/[authorId]' ? RouteParamsStatic<{authorId:string}> : T extends '/products/[...slug]' ? RouteParamsStatic<{slug:string}> : T extends '/admin/[[...slug]]' ? RouteParamsStatic<{slug?:string}> : RouteParamsStatic;
 
 export type RouterSchema = { defaultLocale: string, locales: string[], routes: Record<RouteLocale, Route[]> };
 

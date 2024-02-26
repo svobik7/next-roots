@@ -3,20 +3,17 @@ import { isDynamicRewrite, isTypedRewrite } from '~/utils/rewrite-utils'
 import { CompileError } from '../errors'
 import type { Config, Rewrite } from '../types'
 import { getRoute } from '../utils/getRoute'
-import type { PATTERNS as GENERATE_STATIC_PARAMS_PATTERS } from './decorators/with-page-generate-static-params'
-import { withPageGenerateStaticParamsFactory } from './decorators/with-page-generate-static-params'
+import { withPageGenerateStaticParamsFactory ,type  PATTERNS as GENERATE_STATIC_PARAMS_PATTERS  } from './decorators/with-page-generate-static-params';
 import { withPageMetadataDecoratorFactory } from './decorators/with-page-metadata'
 import { withRouteSegmentConfigFactory } from './decorators/with-route-segment-config'
 import {
   type CompileParams,
-  DecoratorParams,
-  removePropTypes,
-} from './tpl-utils'
-import {
   compileTemplateFactory,
+  DecoratorParams,
   getOriginNameFactory,
   getOriginPathFactory,
   getPatternsFromNames,
+  removePropTypes,
 } from './tpl-utils'
 
 export const PATTERNS = getPatternsFromNames(
