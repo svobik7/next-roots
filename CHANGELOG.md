@@ -1,3 +1,15 @@
+# [3.5.0](https://github.com/svobik7/next-roots/compare/v3.4.1...v3.5.0) (2024-02-26)
+
+
+### Bug Fixes
+
+* **formathref:** fiexd replacing slashes ([d62de76](https://github.com/svobik7/next-roots/commit/d62de76b4eedf18860baeb2503671fa4ae5a9572))
+
+
+### Features
+
+* **routes:** add support for optional catch all routes ([1330cf4](https://github.com/svobik7/next-roots/commit/1330cf4f7bcf6deb18d8454c620837d7fc625612))
+
 ## [3.4.1](https://github.com/svobik7/next-roots/compare/v3.4.0...v3.4.1) (2023-10-28)
 
 ### Bug Fixes
