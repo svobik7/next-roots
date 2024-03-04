@@ -100,6 +100,22 @@ const expectedOutput: Origin[] = [
     ],
   },
   {
+    path: '/books/[...slugs]/page.ts',
+    localizations: [
+      { locale: 'en', path: '/books/[...slugs]/page.ts' },
+      { locale: 'cs', path: '/knihy/[...slugs]/page.ts' },
+      { locale: 'es', path: '/libros/[...slugs]/page.ts' },
+    ],
+  },
+  {
+    path: '/books/page.ts',
+    localizations: [
+      { locale: 'en', path: '/books/page.ts' },
+      { locale: 'cs', path: '/knihy/page.ts' },
+      { locale: 'es', path: '/libros/page.ts' },
+    ],
+  },
+  {
     path: '/products/[[...slugs]]/page.ts',
     localizations: [
       { locale: 'en', path: '/products/[[...slugs]]/page.ts' },
@@ -107,6 +123,7 @@ const expectedOutput: Origin[] = [
       { locale: 'es', path: '/productos/[[...slugs]]/page.ts' },
     ],
   },
+
   {
     path: '/page.js',
     localizations: [

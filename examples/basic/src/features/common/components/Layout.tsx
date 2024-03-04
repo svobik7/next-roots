@@ -5,6 +5,7 @@ import { Nav } from './Nav'
 import 'src/features/common/styles.css'
 import {
   getAboutHref,
+  getBooksHref,
   getContactsHref,
   getHomeHref,
   getProductsHref,
@@ -22,6 +23,7 @@ async function getNavigation(locale: string) {
   return [
     { name: t('nav.Home'), href: getHomeHref(locale) },
     { name: t('nav.Products'), href: getProductsHref({ locale }) },
+    { name: t('nav.Books'), href: getBooksHref(locale) },
     { name: t('nav.About'), href: getAboutHref(locale) },
     { name: t('nav.Contacts'), href: getContactsHref(locale) },
   ]

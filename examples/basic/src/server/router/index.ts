@@ -3,6 +3,7 @@ import { Router, schema } from 'next-roots'
 import type {
   ArticleTranslation,
   AuthorTranslation,
+  BookTranslation,
   ProductTranslation,
 } from 'src/server/db/types'
 
@@ -52,5 +53,16 @@ export function getProductsHref(input: GetProductsHrefProps) {
   return router.getHref('/products/[[...slugs]]', {
     slugs: product?.slug,
     locale: locale || getPageLocale(),
+  })
+}
+
+export function getBooksHref(locale: string) {
+  return router.getHref('/books', { locale })
+}
+
+export function getBooksDetailHref(book: BookTranslation) {
+  return router.getHref('/books/[...slugs]', {
+    slugs: book?.slug,
+    locale: book.locale || getPageLocale(),
   })
 }

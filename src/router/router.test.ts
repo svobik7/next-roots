@@ -20,16 +20,16 @@ const inputSchema: RouterSchema = {
         href: '/es/:slug',
       },
       {
-        name: '/projects',
-        href: '/es/proyectos',
+        name: '/books',
+        href: '/es/libros',
       },
       {
-        name: '/projects/[...slug]',
-        href: '/es/proyectos/:slug*',
+        name: '/books/[...slug]',
+        href: '/es/libros/:slug+',
       },
       {
-        name: '/admin/[[...slug]]',
-        href: '/es/admin/:slug*',
+        name: '/products/[[...slug]]',
+        href: '/es/productos/:slug*',
       },
     ],
     cs: [
@@ -46,16 +46,16 @@ const inputSchema: RouterSchema = {
         href: '/cs/:slug',
       },
       {
-        name: '/projects',
-        href: '/cs/projekty',
+        name: '/books',
+        href: '/cs/knihy',
       },
       {
-        name: '/projects/[...slug]',
-        href: '/cs/projekty/:slug*',
+        name: '/books/[...slug]',
+        href: '/cs/knihy/:slug+',
       },
       {
-        name: '/admin/[[...slug]]',
-        href: '/cs/admin/:slug*',
+        name: '/products/[[...slug]]',
+        href: '/cs/produkty/:slug*',
       },
     ],
   },
@@ -95,16 +95,26 @@ describe('getHref', () => {
       '',
       '/es/blog/articulos/:articleId',
     ],
-    ['/projects', undefined, '', '/es/proyectos'],
-    ['/projects', { locale: 'cs' }, '', '/cs/projekty'],
+    ['/books', undefined, '', '/es/libros'],
+    ['/books', { locale: 'cs' }, '', '/cs/knihy'],
+    ['/books/[...slug]', { locale: 'cs', slug: '1' }, '', '/cs/knihy/1'],
     ['/[slug]', undefined, '', '/es/:slug'],
     ['/[slug]', { locale: 'cs' }, '', '/cs/:slug'],
     ['/[slug]', { locale: 'cs', slug: '1' }, '', '/cs/1'],
-    ['/projects/[...slug]', { locale: 'cs', slug: '1' }, '', '/cs/projekty/1'],
-    ['/admin/[[...slug]]', { locale: 'cs', slug: '' }, '', '/cs/admin'],
-    ['/admin/[[...slug]]', { locale: 'cs' }, '', '/cs/admin'],
-    ['/admin/[[...slug]]', { locale: 'cs', slug: '1' }, '', '/cs/admin/1'],
-    ['/admin/[[...slug]]', { locale: 'cs', slug: '1/2' }, '', '/cs/admin/1/2'],
+    ['/products/[[...slug]]', { locale: 'cs', slug: '' }, '', '/cs/produkty'],
+    ['/products/[[...slug]]', { locale: 'cs' }, '', '/cs/produkty'],
+    [
+      '/products/[[...slug]]',
+      { locale: 'cs', slug: '1' },
+      '',
+      '/cs/produkty/1',
+    ],
+    [
+      '/products/[[...slug]]',
+      { locale: 'cs', slug: '1/2' },
+      '',
+      '/cs/produkty/1/2',
+    ],
   ] as const
 
   test.each(testCases)(
@@ -138,27 +148,33 @@ describe('getRouteFromHref', () => {
   const router = new Router(inputSchema)
 
   const testCases = [
-    ['/cs/projekty', { name: '/projects', href: '/cs/projekty' }],
-    ['/es/proyectos', { name: '/projects', href: '/es/proyectos' }],
+    ['/cs/knihy', { name: '/books', href: '/cs/knihy' }],
+    ['/es/libros', { name: '/books', href: '/es/libros' }],
     ['/cs/aa-bb-cc', { name: '/[slug]', href: '/cs/:slug' }],
     ['/es/aa-bb-cc', { name: '/[slug]', href: '/es/:slug' }],
     [
-      '/cs/projekty/aa-bb-cc',
-      { name: '/projects/[...slug]', href: '/cs/projekty/:slug*' },
+      '/cs/knihy/aa-bb-cc',
+      { name: '/books/[...slug]', href: '/cs/knihy/:slug+' },
     ],
     [
-      '/es/proyectos/aa-bb-cc',
-      { name: '/projects/[...slug]', href: '/es/proyectos/:slug*' },
+      '/es/libros/aa-bb-cc',
+      { name: '/books/[...slug]', href: '/es/libros/:slug+' },
     ],
-    ['/cs/admin', { name: '/admin/[[...slug]]', href: '/cs/admin/:slug*' }],
     [
-      '/cs/admin/aa-bb-cc',
-      { name: '/admin/[[...slug]]', href: '/cs/admin/:slug*' },
+      '/cs/produkty',
+      { name: '/products/[[...slug]]', href: '/cs/produkty/:slug*' },
     ],
-    ['/es/admin', { name: '/admin/[[...slug]]', href: '/es/admin/:slug*' }],
     [
-      '/es/admin/aa-bb-cc',
-      { name: '/admin/[[...slug]]', href: '/es/admin/:slug*' },
+      '/cs/produkty/aa-bb-cc',
+      { name: '/products/[[...slug]]', href: '/cs/produkty/:slug*' },
+    ],
+    [
+      '/es/productos',
+      { name: '/products/[[...slug]]', href: '/es/productos/:slug*' },
+    ],
+    [
+      '/es/productos/aa-bb-cc',
+      { name: '/products/[[...slug]]', href: '/es/productos/:slug*' },
     ],
     ['/cs/prihlaseni', { name: '/(auth)/login', href: '/cs/prihlaseni' }],
     ['/es/acceso', { name: '/(auth)/login', href: '/es/acceso' }],
