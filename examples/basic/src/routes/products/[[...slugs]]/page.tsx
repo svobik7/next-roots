@@ -13,9 +13,9 @@ import {
   getProductTranslation,
   getProductTranslationFactory,
 } from 'src/features/blog/utils/getProductTranslation'
+import { Detail } from 'src/features/common/components/Detail'
 import { Links } from 'src/features/common/components/Links'
-import { ProductDetail } from 'src/features/products/components/ProductDetail'
-import { ProductsList } from 'src/features/products/components/ProductsList'
+import { List } from 'src/features/common/components/List'
 import { fetchProductBySlug, fetchProducts } from 'src/server/db'
 import { Product } from 'src/server/db/types'
 import { getHomeHref, getProductsHref, router } from 'src/server/router'
@@ -39,24 +39,25 @@ async function ProductDetailPage({
   }
 
   const allProductTranslations = getAllProductTranslations(product)
-  const currentArticleTranslation = getProductTranslation({
+  const currentProductTranslation = getProductTranslation({
     product,
     locale: pageLocale,
   })
 
-  if (!currentArticleTranslation) {
+  if (!currentProductTranslation) {
     return notFound()
   }
 
-  const href = getProductsHref({ product: currentArticleTranslation })
+  const href = getProductsHref({ product: currentProductTranslation })
 
   if (pageHref !== href) {
     return redirect(href)
   }
 
   return (
-    <ProductDetail
-      product={currentArticleTranslation}
+    <Detail
+      title={currentProductTranslation.title}
+      content={currentProductTranslation.content}
       alternatives={
         <Links
           header={t('common.NotYourLanguage?')}
@@ -65,7 +66,7 @@ async function ProductDetailPage({
       }
       buttonBack={
         <Link
-          href={getHomeHref(currentArticleTranslation.locale)}
+          href={getHomeHref(currentProductTranslation.locale)}
           role="button"
           className="rounded bg-indigo-600 px-4 py-2 text-base font-semibold leading-7 text-white"
         >
@@ -97,7 +98,17 @@ export default async function ProductPage({
     )
   } else {
     const productsList = await fetchProducts()
-    return <ProductsList products={productsList.map(translateProduct)} />
+    return (
+      <List
+        items={productsList.map(translateProduct).map((product) => ({
+          id: product.id,
+          content: product.content,
+          title: product.title,
+          createdAt: product.createdAt,
+          href: getProductsHref({ product: product }),
+        }))}
+      />
+    )
   }
 }
 

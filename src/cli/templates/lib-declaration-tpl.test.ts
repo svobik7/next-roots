@@ -24,12 +24,16 @@ describe('with dynamic routes', () => {
           href: '/blog/autori/:authorId',
         },
         {
-          name: '/products/[...slug]',
-          href: '/products-cs/:slug',
+          name: '/books',
+          href: '/books-cs',
         },
         {
-          name: '/admin/[[...slug]]',
-          href: '/admin-cs/:slug*',
+          name: '/books/[...slug]',
+          href: '/books-cs/:slug+',
+        },
+        {
+          name: '/products/[[...slug]]',
+          href: '/products-cs/:slug*',
         },
       ],
       es: [
@@ -50,12 +54,16 @@ describe('with dynamic routes', () => {
           href: '/blog/authores/:authorId',
         },
         {
-          name: '/products/[...slug]',
-          href: '/products-es/:slug',
+          name: '/books',
+          href: '/books-es',
         },
         {
-          name: '/admin/[[...slug]]',
-          href: '/admin-es/:slug*',
+          name: '/books/[...slug]',
+          href: '/books-es/:slug+',
+        },
+        {
+          name: '/products/[[...slug]]',
+          href: '/products-es/:slug*',
         },
       ],
     },
@@ -63,13 +71,13 @@ describe('with dynamic routes', () => {
 
   const expectedOutput = `
 export type RouteLocale = 'cs' | 'es';
-export type RouteNameStatic = '/account' | '/(auth)/login';
-export type RouteNameDynamic = '/blog/articles/[articleId]' | '/blog/authors/[authorId]' | '/products/[...slug]' | '/admin/[[...slug]]';
+export type RouteNameStatic = '/account' | '/(auth)/login' | '/books';
+export type RouteNameDynamic = '/blog/articles/[articleId]' | '/blog/authors/[authorId]' | '/books/[...slug]' | '/products/[[...slug]]';
 export type RouteName = RouteNameStatic | RouteNameDynamic;
 export type Route = { name: RouteName; href: \`/\${string}\` };
 
 export type RouteParamsStatic<T extends object = object> = T & { locale?: string };
-export type RouteParamsDynamic<T extends RouteName> = T extends '/blog/articles/[articleId]' ? RouteParamsStatic<{articleId:string}> : T extends '/blog/authors/[authorId]' ? RouteParamsStatic<{authorId:string}> : T extends '/products/[...slug]' ? RouteParamsStatic<{slug:string}> : T extends '/admin/[[...slug]]' ? RouteParamsStatic<{slug?:string}> : RouteParamsStatic;
+export type RouteParamsDynamic<T extends RouteName> = T extends '/blog/articles/[articleId]' ? RouteParamsStatic<{articleId:string}> : T extends '/blog/authors/[authorId]' ? RouteParamsStatic<{authorId:string}> : T extends '/books/[...slug]' ? RouteParamsStatic<{slug:string}> : T extends '/products/[[...slug]]' ? RouteParamsStatic<{slug?:string}> : RouteParamsStatic;
 
 export type RouterSchema = { defaultLocale: string, locales: string[], routes: Record<RouteLocale, Route[]> };
 

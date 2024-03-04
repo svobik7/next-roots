@@ -1,19 +1,18 @@
 import type { ReactNode } from 'react'
-import type { ProductTranslation } from 'src/server/db/types'
-import { getDictionary } from 'src/server/utils/getDictionary'
 
-type ProductDetailProps = {
-  product: ProductTranslation
+type DetailProps = {
+  title: string
+  content: string
   alternatives?: ReactNode
   buttonBack?: ReactNode
 }
 
-export async function ProductDetail({
-  product,
+export async function Detail({
+  title,
+  content,
   alternatives,
   buttonBack,
-}: ProductDetailProps) {
-  const t = await getDictionary(product.locale)
+}: DetailProps) {
   return (
     <div className="relative isolate overflow-hidden bg-white p-6 sm:py-8 lg:px-0">
       <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start lg:gap-y-10">
@@ -21,12 +20,10 @@ export async function ProductDetail({
           <div className="lg:pr-4">
             <div className="lg:max-w-lg">
               <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                {product.title}
+                {title}
               </h1>
 
-              <p className="mt-2 text-xl leading-8 text-gray-700">
-                {product.content}
-              </p>
+              <p className="mt-2 text-xl leading-8 text-gray-700">{content}</p>
               {buttonBack && <p className="mt-6">{buttonBack}</p>}
             </div>
           </div>

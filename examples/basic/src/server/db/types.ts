@@ -33,6 +33,14 @@ export type Product = {
   createdAt: string
 }
 
+export type Book = {
+  id: number
+  title: Translation[]
+  slug: Translation[]
+  content: Translation[]
+  createdAt: string
+}
+
 export type AuthorTranslation = TranslationOf<Author, 'about'>
 
 export type WithAuthorTranslation<T> = Omit<T, 'author'> & {
@@ -47,6 +55,8 @@ export type ProductTranslation = TranslationOf<
   Product,
   'title' | 'slug' | 'content'
 >
+
+export type BookTranslation = TranslationOf<Book, 'title' | 'slug' | 'content'>
 
 export type Join<K, P> = K extends string | number
   ? P extends string | number

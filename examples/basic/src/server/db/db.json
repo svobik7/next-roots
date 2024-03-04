@@ -11,7 +11,8 @@
           "Home": "Home",
           "About": "About",
           "Contacts": "Contacts",
-          "Products": "Products"
+          "Products": "Products",
+          "Books": "Books"
         },
         "article": { "BtnBack": "Back", "Author:": "Author:" },
         "author": {
@@ -30,6 +31,10 @@
         "products": {
           "title": "Products",
           "content": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        "books": {
+          "title": "Books",
+          "content": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
         }
       }
     },
@@ -44,7 +49,8 @@
           "Home": "Domů",
           "About": "O Nás",
           "Contacts": "Kontakty",
-          "Products": "Produkty"
+          "Products": "Produkty",
+          "Books": "Knihy"
         },
         "article": { "BtnBack": "Zpět", "Author:": "Autor:" },
         "author": {
@@ -63,6 +69,10 @@
         "products": {
           "title": "Produkty",
           "content": "Lorem Ipsum je demonstrativní výplňový text používaný v tiskařském a knihařském průmyslu. Lorem Ipsum je považováno za standard v této oblasti už od začátku 16. století, kdy dnes neznámý tiskař vzal kusy textu a na jejich základě vytvořil speciální vzorovou knihu."
+        },
+        "books": {
+          "title": "Knihy",
+          "content": "Lorem Ipsum je demonstrativní výplňový text používaný v tiskařském a knihařském průmyslu. Lorem Ipsum je považováno za standard v této oblasti už od začátku 16. století, kdy dnes neznámý tiskař vzal kusy textu a na jejich základě vytvořil speciální vzorovou knihu."
         }
       }
     },
@@ -77,7 +87,8 @@
           "Home": "Hogar",
           "About": "Sobre",
           "Contacts": "Contactos",
-          "Products": "Productos"
+          "Products": "Productos",
+          "Books": "Libros"
         },
         "article": { "BtnBack": "Atrás", "Author:": "Autor:" },
         "author": {
@@ -96,6 +107,10 @@
         },
         "products": {
           "title": "Productos",
+          "content": "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen."
+        },
+        "books": {
+          "title": "Libros",
           "content": "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen."
         }
       }
@@ -340,6 +355,36 @@
         { "locale": "en", "value": "mac-book-pro-m3/space-black" },
         { "locale": "cs", "value": "mac-book-pro-m3/vesmirne-seda" },
         { "locale": "es", "value": "mac-book-pro-m3/negro-espacial" }
+      ],
+      "content": [
+        {
+          "locale": "en",
+          "value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "locale": "cs",
+          "value": "Lorem Ipsum je demonstrativní výplňový text používaný v tiskařském a knihařském průmyslu. Lorem Ipsum je považováno za standard v této oblasti už od začátku 16. století, kdy dnes neznámý tiskař vzal kusy textu a na jejich základě vytvořil speciální vzorovou knihu."
+        },
+        {
+          "locale": "es",
+          "value": "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen."
+        }
+      ],
+      "createdAt": "03/01/2023"
+    }
+  ],
+  "books": [
+    {
+      "id": 1,
+      "title": [
+        { "locale": "en", "value": "Arsene Lupin, Gentleman-Thief" },
+        { "locale": "cs", "value": "Arsene Lupin, Lupič gentleman" },
+        { "locale": "es", "value": "Arsene Lupin, Un caballero ladrón" }
+      ],
+      "slug": [
+        { "locale": "en", "value": "arsene-lupin-gentleman-thief" },
+        { "locale": "cs", "value": "arsene-lupin-lupic-gentleman" },
+        { "locale": "es", "value": "arsene-lupin-un-caballero-ladron" }
       ],
       "content": [
         {

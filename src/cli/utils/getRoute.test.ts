@@ -39,6 +39,10 @@ const inputRewrites: Rewrite[] = [
     originPath: '/products/[[...slugs]]/page.ts',
     localizedPath: '/en/products/[[...slugs]]/page.ts',
   },
+  {
+    originPath: '/books/[...slugs]/page.ts',
+    localizedPath: '/en/books/[...slugs]/page.ts',
+  },
   { originPath: '/page.js', localizedPath: '/en/page.js' },
   { originPath: '/page.js', localizedPath: '/(en)/page.js' },
 ]
@@ -76,6 +80,10 @@ const expectedSchema: Array<Route | undefined> = [
   {
     name: '/products/[[...slugs]]',
     href: '/en/products/:slugs*',
+  },
+  {
+    name: '/books/[...slugs]',
+    href: '/en/books/:slugs+',
   },
   {
     name: '/',
