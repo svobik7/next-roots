@@ -1,3 +1,10 @@
+# [3.6.0](https://github.com/svobik7/next-roots/compare/v3.5.1...v3.6.0) (2024-03-04)
+
+
+### Features
+
+* **routes:** added support for catch all non-optional routes ([57d800e](https://github.com/svobik7/next-roots/commit/57d800ecca77d37fd61c98a0d2a7df340bbf8bb3))
+
 ## [3.5.1](https://github.com/svobik7/next-roots/compare/v3.5.0...v3.5.1) (2024-02-26)
 
 
