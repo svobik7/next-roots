@@ -48,7 +48,7 @@
     "@semantic-release/github": "^9.2.1",
     "@semantic-release/npm": "^11.0.2",
     "@semantic-release/release-notes-generator": "^12.0.0",
-    "@typescript-eslint/eslint-plugin": "^6.20.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^6.20.0",
     "@vitest/coverage-istanbul": "^1.2.2",
     "arg": "^5.0.2",
