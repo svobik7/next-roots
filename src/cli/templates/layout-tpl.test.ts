@@ -148,6 +148,7 @@ export default function DynamicMetaDataLayout(props) {
 import {generateMetadata as generateMetadataOrigin} from '..'
 
 export async function generateMetadata(props) {
+  {/* @ts-ignore */}
   return generateMetadataOrigin({ ...props, locale: "cs" })
 }
 `

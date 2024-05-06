@@ -177,6 +177,7 @@ export default function StaticRouteWithDynamicMetaDataPage(props) {
 import {generateMetadata as generateMetadataOrigin} from '..'
 
 export async function generateMetadata(props) {
+  {/* @ts-ignore */}
   return generateMetadataOrigin({ ...props, pageHref: "/cs/static-route-with-dynamic-meta-data" })
 }
 `
@@ -209,6 +210,7 @@ export default function BlogAuthorIdPage({ params, ...otherProps }:any) {
 import {generateMetadata as generateMetadataOrigin} from '../../../../../roots/blog/[authorId]/page'
 
 export async function generateMetadata({ params, ...otherProps }:any) {
+  {/* @ts-ignore */}
   return generateMetadataOrigin({ ...otherProps, params, pageHref: compileHref('/cs/magazin/:authorId', params) })
 }
 

@@ -1,7 +1,11 @@
 import type { Rewrite } from '~/cli/types'
 import { isDynamicRewrite, isTypedRewrite } from '~/utils/rewrite-utils'
-import type { DecoratorParams, CompileFn } from '../tpl-utils'
-import { getPattern, removePropTypes } from '../tpl-utils'
+import {
+  getPattern,
+  removePropTypes,
+  type DecoratorParams,
+  type CompileFn,
+} from '../tpl-utils'
 
 export const PATTERNS = {
   originPath: getPattern('originPath'),
@@ -16,6 +20,7 @@ export const tplDynamicForStaticRoute = `
 import {generateMetadata as generateMetadataOrigin} from '${PATTERNS.originPath}'
 
 export async function generateMetadata(props:any) {
+  {/* @ts-ignore */}
   return generateMetadataOrigin({ ...props, pageHref: "${PATTERNS.pageHref}" })
 }
 `
@@ -24,6 +29,7 @@ export const tplDynamicForDynamicRoute = `
 import {generateMetadata as generateMetadataOrigin} from '${PATTERNS.originPath}'
 
 export async function generateMetadata({ params, ...otherProps }:any) {
+  {/* @ts-ignore */}
   return generateMetadataOrigin({ ...otherProps, params, pageHref: compileHref('${PATTERNS.pageHref}', params) })
 }
 `

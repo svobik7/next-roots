@@ -1,7 +1,11 @@
 import type { Rewrite } from '~/cli/types'
 import { isTypedRewrite } from '~/utils/rewrite-utils'
-import type { CompileFn, DecoratorParams } from '../tpl-utils'
-import { getPattern, removePropTypes } from '../tpl-utils'
+import {
+  getPattern,
+  removePropTypes,
+  type CompileFn,
+  type DecoratorParams,
+} from '../tpl-utils'
 
 export const PATTERNS = {
   originPath: getPattern('originPath'),
@@ -16,6 +20,7 @@ export const tplDynamic = `
 import {generateMetadata as generateMetadataOrigin} from '${PATTERNS.originPath}'
 
 export async function generateMetadata(props:any) {
+  {/* @ts-ignore */}
   return generateMetadataOrigin({ ...props, locale: "${PATTERNS.locale}" })
 }
 `
