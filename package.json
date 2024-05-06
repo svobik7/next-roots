@@ -70,7 +70,7 @@
     "prettier": "^3.2.4",
     "semantic-release": "^23.0.0",
     "typescript": "^5.3.3",
-    "vitest": "^0.34.6"
+    "vitest": "^1.6.0"
   },
   "license": "MIT",
   "keywords": [
