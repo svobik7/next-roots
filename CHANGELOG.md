@@ -1,3 +1,10 @@
+## [3.6.1](https://github.com/svobik7/next-roots/compare/v3.6.0...v3.6.1) (2024-05-06)
+
+
+### Bug Fixes
+
+* **deps:** bump tar from 6.2.0 to 6.2.1 ([eb6f8cc](https://github.com/svobik7/next-roots/commit/eb6f8cc0815e7944337e47f77e755062145c522c))
+
 # [3.6.0](https://github.com/svobik7/next-roots/compare/v3.5.1...v3.6.0) (2024-03-04)
 
 
