@@ -318,10 +318,10 @@ router.getRouteFromHref('/invalid-locale/o-nas')
 
 NextRoots pushes some additional props to your components and functions to be able to read current page href or locale directly.
 
-1. [Page](https://github.com/svobik7/next-roots/blob/master/example/src/routes/about/page.tsx#L22) - `pageHref`
+1. [Page](https://github.com/svobik7/next-roots/blob/master/examples/basic/src/routes/about/page.tsx#L22) - `pageHref`
 2. [Layout](https://github.com/svobik7/next-roots/blob/ccbc6a83c7a3309c9a88f5746ac5b479930816b0/example/src/features/common/components/Layout.tsx#L28) - `locale`
-3. [generateMetadata](https://github.com/svobik7/next-roots/blob/master/example/src/routes/about/page.tsx#L43) - `pageHref`
-4. [generateStaticParams](https://github.com/svobik7/next-roots/blob/master/example/src/routes/%5Bauthor%5D/page.tsx#L89) - `pageLocale`
+3. [generateMetadata](https://github.com/svobik7/next-roots/blob/master/examples/basic/src/routes/about/page.tsx#L43) - `pageHref`
+4. [generateStaticParams](https://github.com/svobik7/next-roots/blob/master/examples/basic/src/routes/blogs/%5Bauthor%5D/page.tsx#L103) - `pageLocale`
 
 Following types are available for props above and can be imported from next-roots:
 
