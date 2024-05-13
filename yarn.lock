@@ -1148,6 +1148,22 @@
     lodash-es "^4.17.21"
     read-pkg-up "^11.0.0"
 
+"@semantic-release/release-notes-generator@^13.0.0":
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/@semantic-release/release-notes-generator/-/release-notes-generator-13.0.0.tgz#9fb312c234742e2716c09d669d5d786a4daad465"
+  integrity sha512-LEeZWb340keMYuREMyxrODPXJJ0JOL8D/mCl74B4LdzbxhtXV2LrPN2QBEcGJrlQhoqLO0RhxQb6masHytKw+A==
+  dependencies:
+    conventional-changelog-angular "^7.0.0"
+    conventional-changelog-writer "^7.0.0"
+    conventional-commits-filter "^4.0.0"
+    conventional-commits-parser "^5.0.0"
+    debug "^4.0.0"
+    get-stream "^7.0.0"
+    import-from-esm "^1.0.3"
+    into-stream "^7.0.0"
+    lodash-es "^4.17.21"
+    read-pkg-up "^11.0.0"
+
 "@sigstore/bundle@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@sigstore/bundle/-/bundle-2.1.0.tgz#c6140ca97b68815edf7c4fb7bdbf58d656525c39"
