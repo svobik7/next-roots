@@ -1,20 +1,9 @@
 import { copyFile, removeDir, writeFile } from '~/utils/fs-utils'
+import { isLayout, isNotFound, isPage } from '~/utils/rewrite-utils'
 import { compileFactory as compileLayoutFactory } from '../templates/layout-tpl'
 import { compileFactory as compileNotFoundFactory } from '../templates/not-found-tpl'
 import { compileFactory as compilePageFactory } from '../templates/page-tpl'
 import type { Config, Rewrite } from '../types'
-
-function isPage(pathName: string) {
-  return pathName.match(/page\.([tj]sx)?$/)
-}
-
-function isLayout(pathName: string) {
-  return pathName.match(/layout\.([tj]sx)?$/)
-}
-
-function isNotFound(pathName: string) {
-  return pathName.match(/not-found\.([tj]sx)?$/)
-}
 
 function getCompilerFactory(config: Config) {
   return ({ originPath }: Rewrite) => {
@@ -56,7 +45,7 @@ function createLocalizedFileFactory(config: Config) {
 
 export function generateLocalizedFilesFactory(config: Config) {
   return (rewrites: Rewrite[]) => {
-    const { locales, getLocalizedAbsolutePath } = config
+    const { getLocalizedAbsolutePath } = config
 
     // delete old files
     const localizedDir = getLocalizedAbsolutePath()

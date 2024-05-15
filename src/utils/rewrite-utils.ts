@@ -1,5 +1,17 @@
 import type { Rewrite } from '~/cli/types'
 
+export function isPage(pathName: string) {
+  return Boolean(pathName.match(/page\.([tj]sx?)$/))
+}
+
+export function isLayout(pathName: string) {
+  return Boolean(pathName.match(/layout\.([tj]sx?)$/))
+}
+
+export function isNotFound(pathName: string) {
+  return Boolean(pathName.match(/not-found\.([tj]sx?)$/))
+}
+
 export function isDynamicOptionalCatchAllRewrite(rewrite: Rewrite) {
   return !!rewrite.originPath.match(/\[\[\.\.\.\w+\]\]/g)
 }
