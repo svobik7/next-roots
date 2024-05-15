@@ -18,9 +18,7 @@ export function generateFactory(config: Config) {
   const getRewrites = getRewritesFactory(config)
 
   return async () => {
-    const infoMessage = '\x1b[32mnext-roots\x1b[37m - generation done in'
-    // eslint-disable-next-line no-console
-    console.time(infoMessage)
+    const startTime = process.hrtime()
 
     const origins = await getOrigins({
       locales,
@@ -46,8 +44,16 @@ export function generateFactory(config: Config) {
           routes,
           routerSchema,
         }),
-      // eslint-disable-next-line no-console
-      () => console.timeEnd(infoMessage)
+
+      () => {
+        const endTime = process.hrtime(startTime)
+        const timeDiffInMs = (endTime[0] * 1e9 + endTime[1]) / 1e6 // Convert nanoseconds to milliseconds
+
+        // eslint-disable-next-line no-console
+        console.log(
+          `\x1b[32mnext-roots\x1b[37m - generated ${routes.length} localized routes in ${timeDiffInMs.toFixed(2)}ms`
+        )
+      }
     )
 
     return execute()
