@@ -1,3 +1,15 @@
+# [3.7.0](https://github.com/svobik7/next-roots/compare/v3.6.1...v3.7.0) (2024-05-15)
+
+
+### Bug Fixes
+
+* **cli:** fixed localisation of page.js ([07f477f](https://github.com/svobik7/next-roots/commit/07f477fb88e12bfad38b48151f3d8ece570a8828)), closes [#222](https://github.com/svobik7/next-roots/issues/222)
+
+
+### Features
+
+* **cli:** added number of generated routes into logs ([0a75138](https://github.com/svobik7/next-roots/commit/0a75138688434504b13b8a293a343df38ddd88be))
+
 ## [3.6.1](https://github.com/svobik7/next-roots/compare/v3.6.0...v3.6.1) (2024-05-06)
 
 
