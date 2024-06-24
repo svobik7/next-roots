@@ -39,7 +39,7 @@
   "dependencies": {
     "node-watch": "^0.7.4",
     "parse-typed-args": "^0.2.0",
-    "path-to-regexp": "^6.2.1"
+    "path-to-regexp": "^7.0.0"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
