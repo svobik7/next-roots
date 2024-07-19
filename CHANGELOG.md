@@ -1,3 +1,16 @@
+# [3.8.0](https://github.com/svobik7/next-roots/compare/v3.7.0...v3.8.0) (2024-07-19)
+
+
+### Bug Fixes
+
+* **basic-esm:** added esm option to script ([0e0419c](https://github.com/svobik7/next-roots/commit/0e0419c10f73c6f296946b4545ddef0a460347f3))
+* **examples:** update basic-esm to the latest next ([499ab83](https://github.com/svobik7/next-roots/commit/499ab83fbae7d148023485fb05a46691b42ac742))
+
+
+### Features
+
+* **esm:** allowed roots.config.cjs ([a107f9d](https://github.com/svobik7/next-roots/commit/a107f9d5ad32f69933dafc4155320a6fbe527a4f))
+
 # [3.7.0](https://github.com/svobik7/next-roots/compare/v3.6.1...v3.7.0) (2024-05-15)
 
 
