@@ -8,7 +8,7 @@
   "type": "module",
   "scripts": {
     "preinstall": "yarn --cwd ../..",
-    "roots": "node ./../../dist/cli.js -c ./roots.config.cjs",
+    "roots": "node ./../../dist/cli.js -c ./roots.config.cjs --esm",
     "dev": "yarn roots && next dev",
     "build": "yarn roots && next build",
     "start": "next start",
