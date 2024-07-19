@@ -1,4 +1,3 @@
-import 'server-only'
 import { getPropValue } from 'src/features/common/utils/getPropValue'
 import { fetchDictionary } from '../db'
 import type { Paths } from '../db/types'

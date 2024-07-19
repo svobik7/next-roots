@@ -8,7 +8,7 @@
   "type": "module",
   "scripts": {
     "preinstall": "yarn --cwd ../..",
-    "roots": "node ./../../dist/cli.js",
+    "roots": "node ./../../dist/cli.js -c ./roots.config.cjs",
     "dev": "yarn roots && next dev",
     "build": "yarn roots && next build",
     "start": "next start",
@@ -23,8 +23,7 @@
     "next": "^13.4.5",
     "next-roots": "link:../../",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "server-only": "^0.0.1"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^13.4.5",

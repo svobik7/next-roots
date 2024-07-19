@@ -1,4 +1,3 @@
-import 'server-only'
 import type { Article, Author, Book, Product, WithAuthor } from './types'
 
 async function loadDB() {
