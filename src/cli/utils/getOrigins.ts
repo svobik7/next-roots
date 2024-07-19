@@ -6,7 +6,7 @@ import { isDirectory, isFile, removeDir } from '~/utils/fs-utils'
 import { asRootPath } from '~/utils/path-utils'
 import type { Origin, RootTranslation } from '../types'
 
-const I18N_FILE_NAMES = ['i18n.ts', 'i18n.mjs', 'i18n.js']
+const I18N_FILE_NAMES = ['i18n.ts', 'i18n.mjs', 'i18n.cjs', 'i18n.js']
 const I18N_BUILD_DIR = '.next-roots'
 
 async function importI18nFile(fileName: string) {
@@ -25,18 +25,21 @@ async function importI18nFile(fileName: string) {
  * @returns
  */
 async function parseI18nFile(
-  fileName: string
+  fileName: string,
+  format: 'esm' | 'cjs'
 ): Promise<RootTranslation[] | undefined> {
   try {
     if (!isFile(fileName)) {
       return undefined
     }
 
-    fileName = await compileI18n(fileName, I18N_BUILD_DIR)
+    fileName = await compileI18n(fileName, I18N_BUILD_DIR, format)
 
     const { routeNames, generateRouteNames } = await importI18nFile(fileName)
     return generateRouteNames ? await generateRouteNames() : routeNames
   } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log({ fileName, err })
     return undefined
   }
 }
@@ -56,13 +59,14 @@ function getI18nFileNames(originFileName: string) {
  * @returns
  */
 async function getI18n(
-  originFileName: string
+  originFileName: string,
+  format: 'esm' | 'cjs'
 ): Promise<RootTranslation[] | undefined> {
   const i18nFileNames = getI18nFileNames(originFileName)
   let i18n = undefined as RootTranslation[] | undefined
 
   for (const fileName of i18nFileNames) {
-    i18n = i18n || (await parseI18nFile(fileName))
+    i18n = i18n || (await parseI18nFile(fileName, format))
   }
 
   return i18n
@@ -92,6 +96,7 @@ type GetOriginsParams = {
   locales: string[]
   defaultLocale: string
   parentOrigin?: Origin
+  format: 'esm' | 'cjs'
 }
 
 export async function getOrigins({
@@ -99,6 +104,7 @@ export async function getOrigins({
   locales,
   defaultLocale,
   parentOrigin,
+  format,
 }: GetOriginsParams) {
   const originFiles = getOriginFiles(dirName)
   const origins: Origin[] = []
@@ -118,7 +124,7 @@ export async function getOrigins({
     }
 
     if (isDirectory(originFileName)) {
-      const i18n = await getI18n(originFileName)
+      const i18n = await getI18n(originFileName, format)
 
       const children = await getOrigins({
         defaultLocale,
@@ -134,6 +140,7 @@ export async function getOrigins({
           })),
         },
         dirName: originFileName,
+        format,
       })
 
       origins.push(...children)

@@ -1,4 +1,3 @@
-import 'server-only'
 import { Router, schema } from 'next-roots'
 import type { ArticleTranslation, AuthorTranslation } from 'src/server/db/types'
 

@@ -36,11 +36,7 @@
     "publish:canary": "yarn publish --tag canary",
     "semantic-release": "semantic-release"
   },
-  "dependencies": {
-    "node-watch": "^0.7.4",
-    "parse-typed-args": "^0.2.0",
-    "path-to-regexp": "^6.2.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^11.0.0",
@@ -67,6 +63,9 @@
     "eslint-plugin-unused-imports": "^3.0.0",
     "husky": "^9.0.7",
     "lint-staged": "^13.2.2",
+    "node-watch": "^0.7.4",
+    "parse-typed-args": "^0.2.0",
+    "path-to-regexp": "^6.2.1",
     "prettier": "^3.2.4",
     "semantic-release": "^23.0.0",
     "typescript": "^5.3.3",
@@ -108,5 +107,6 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

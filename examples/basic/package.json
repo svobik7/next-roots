@@ -22,8 +22,7 @@
     "next": "^13.4.5",
     "next-roots": "link:../../",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "server-only": "^0.0.1"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^13.4.5",

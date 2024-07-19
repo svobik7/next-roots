@@ -23,10 +23,14 @@ const cliArgs = parseArgs({
       switch: true,
       short: 'w',
     },
+    esm: {
+      switch: true,
+      short: 'm',
+    },
   },
 })(process.argv)
 
-const { watch, cfgPath } = cliArgs.opts
+const { esm, watch, cfgPath } = cliArgs.opts
 
 const cliDefaultParams: CliParams = {
   localizedDir: path.resolve(DEFAULT_LOCALIZE_DIR),
@@ -50,7 +54,7 @@ async function main() {
   process.on('SIGTERM', () => process.exit(0))
   process.on('SIGINT', () => process.exit(0))
 
-  const generate = generateFactory(config)
+  const generate = generateFactory(config, esm)
   return generate()
 }
 

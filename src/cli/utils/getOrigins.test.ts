@@ -139,6 +139,7 @@ test('getOrigins', async () => {
     dirName: process.cwd() + '/src/__mocks__/roots',
     locales: ['en', 'cs', 'es'],
     defaultLocale: 'en',
+    format: 'cjs',
   })
 
   expect(files).toStrictEqual(expectedOutput)
