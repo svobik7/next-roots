@@ -8,7 +8,7 @@ import { getRewritesFactory } from '../utils/getRewrites'
 import { getRoute, isRoute } from '../utils/getRoute'
 import { getRouterSchema } from '../utils/getRouterSchema'
 
-export function generateFactory(config: Config) {
+export function generateFactory(config: Config, esm = false) {
   const { defaultLocale, locales, getOriginAbsolutePath } = config
 
   const generateLocalizedFiles = generateLocalizedFilesFactory(config)
@@ -24,6 +24,7 @@ export function generateFactory(config: Config) {
       locales,
       defaultLocale,
       dirName: getOriginAbsolutePath(),
+      format: esm ? 'esm' : 'cjs',
     })
 
     const rewrites = origins.flatMap(getRewrites)
