@@ -1,0 +1,46 @@
+{
+  "name": "next-roots-example",
+  "version": "1.0.0",
+  "description": "Example of using next-roots package",
+  "author": "Jirka Svoboda",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "preinstall": "yarn --cwd ../..",
+    "roots": "node ./../../dist/cli.js",
+    "dev": "yarn roots && next dev",
+    "build": "yarn roots && next build",
+    "start": "next start",
+    "analyze": "cross-env ANALYZE=true next build",
+    "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
+    "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build"
+  },
+  "dependencies": {
+    "@headlessui/react": "^1.7.15",
+    "@heroicons/react": "^2.0.18",
+    "clsx": "^1.2.1",
+    "next": "^13.4.5",
+    "next-roots": "link:../../",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "@next/bundle-analyzer": "^13.4.5",
+    "@tailwindcss/typography": "^0.5.9",
+    "@types/node": "^20.2.5",
+    "@types/react": "^18.2.12",
+    "autoprefixer": "^10.4.13",
+    "cross-env": "^7.0.2",
+    "esbuild": "^0.18.2",
+    "esbuild-node-externals": "^1.7.0",
+    "eslint": "^8.42.0",
+    "eslint-config-next": "^13.4.5",
+    "eslint-plugin-tailwindcss": "^3.12.1",
+    "postcss": "^8.4.31",
+    "prettier-plugin-tailwindcss": "^0.3.0",
+    "tailwindcss": "^3.3.2",
+    "typescript": "^5.1.3"
+  }
+}
