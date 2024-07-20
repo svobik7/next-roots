@@ -165,3 +165,40 @@ export async function generateMetadata(props) {
   const output = compile(inputRewrite)
   expect(output).toBe(expectedOutput)
 })
+
+test('should create layout with dynamic metadata object and generate static params', () => {
+  const expectedOutput = `
+import DynamicMetaDataLayoutOrigin from '..'
+
+export default function DynamicMetaDataLayout(props) {
+  {/* @ts-ignore */}
+  return <DynamicMetaDataLayoutOrigin {...props} locale="cs" />
+}
+
+import {generateMetadata as generateMetadataOrigin} from '..'
+
+export async function generateMetadata(props) {
+  return generateMetadataOrigin({ ...props, locale: "cs" })
+}
+
+import {generateStaticParams as generateStaticParamsOrigin} from '..'
+
+export async function generateStaticParams() {
+  return generateStaticParamsOrigin({ locale: "cs" })
+}
+`
+  const inputRewrite = {
+    originPath: '/dynamic-meta-data/layout.js',
+    localizedPath: '/cs/dynamic-meta-data/layout.js',
+  }
+
+  const inputConfig: Config = {
+    ...defaultConfig,
+    getOriginContents: () =>
+      `export async function generateMetadata() {};export async function generateStaticParams() {}`,
+  }
+
+  const compile = compileFactory(inputConfig)
+  const output = compile(inputRewrite)
+  expect(output).toBe(expectedOutput)
+})

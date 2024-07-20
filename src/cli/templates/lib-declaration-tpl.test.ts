@@ -106,7 +106,12 @@ export type PageProps<TParams = void> = TParams extends void
 export type LayoutProps<TParams = any> = { locale: string, params: TParams }
 export type GeneratePageMetadataProps<TParams = any> = { pageHref: string, params: TParams }
 export type GenerateLayoutMetadataProps<TParams = any> = { locale: string, params: TParams }
+/**
+ * @deprecated Use GeneratePageStaticParamsProps instead
+ */
 export type GenerateStaticParamsProps = { pageLocale: string }
+export type GeneratePageStaticParamsProps = { pageLocale: string }
+export type GenerateLayoutStaticParamsProps = { locale: string }
 `
 
   test('should create lib declaration', () => {
@@ -177,7 +182,12 @@ export type PageProps<TParams = void> = TParams extends void
 export type LayoutProps<TParams = any> = { locale: string, params: TParams }
 export type GeneratePageMetadataProps<TParams = any> = { pageHref: string, params: TParams }
 export type GenerateLayoutMetadataProps<TParams = any> = { locale: string, params: TParams }
+/**
+ * @deprecated Use GeneratePageStaticParamsProps instead
+ */
 export type GenerateStaticParamsProps = { pageLocale: string }
+export type GeneratePageStaticParamsProps = { pageLocale: string }
+export type GenerateLayoutStaticParamsProps = { locale: string }
 `
 
   test('should create lib declaration', () => {
