@@ -8,11 +8,11 @@ import {
   type CompileParams,
   DecoratorParams,
   removePropTypes,
-
   compileTemplateFactory,
   getOriginNameFactory,
   getOriginPathFactory,
-  getPatternsFromNames} from './tpl-utils'
+  getPatternsFromNames,
+} from './tpl-utils'
 
 export const PATTERNS = getPatternsFromNames(
   'originName',
