@@ -1,3 +1,10 @@
+# [3.9.0](https://github.com/svobik7/next-roots/compare/v3.8.0...v3.9.0) (2024-07-21)
+
+
+### Features
+
+* **templates:** include generateStaticParams Function in Generated layout.tsx ([070153c](https://github.com/svobik7/next-roots/commit/070153caa352d54dcf37b1983e356c1c8e8c6738)), closes [#245](https://github.com/svobik7/next-roots/issues/245)
+
 # [3.8.0](https://github.com/svobik7/next-roots/compare/v3.7.0...v3.8.0) (2024-07-19)
 
 
