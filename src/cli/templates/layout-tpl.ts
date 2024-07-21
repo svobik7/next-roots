@@ -2,13 +2,12 @@ import { getLocaleFactory } from '~/utils/locale-utils'
 import { isTypedRewrite } from '~/utils/rewrite-utils'
 import type { Config, Rewrite } from '../types'
 import { withLayoutMetadataDecoratorFactory } from './decorators/with-layout-metadata'
+import { withLayoutGenerateStaticParamsFactory } from './decorators/with-layout-generate-static-params'
 import { withRouteSegmentConfigFactory } from './decorators/with-route-segment-config'
 import {
   type CompileParams,
   DecoratorParams,
   removePropTypes,
-} from './tpl-utils'
-import {
   compileTemplateFactory,
   getOriginNameFactory,
   getOriginPathFactory,
@@ -58,7 +57,8 @@ export function compileFactory(config: Config) {
 
     const compileTemplate = compileTemplateFactory(
       withRouteSegmentConfigFactory(decoratorParams),
-      withLayoutMetadataDecoratorFactory(decoratorParams)
+      withLayoutMetadataDecoratorFactory(decoratorParams),
+      withLayoutGenerateStaticParamsFactory(decoratorParams)
     )
 
     return compileTemplate(layoutTpl, params)

@@ -165,3 +165,33 @@ export async function generateMetadata(props) {
   const output = compile(inputRewrite)
   expect(output).toBe(expectedOutput)
 })
+
+test('should create layout with generate static params', () => {
+  const expectedOutput = `
+import GenerateStaticParamsLayoutOrigin from '..'
+
+export default function GenerateStaticParamsLayout(props) {
+  {/* @ts-ignore */}
+  return <GenerateStaticParamsLayoutOrigin {...props} locale="cs" />
+}
+
+import {generateStaticParams as generateStaticParamsOrigin} from '..'
+
+export async function generateStaticParams() {
+  return generateStaticParamsOrigin({ locale: "cs" })
+}
+`
+  const inputRewrite = {
+    originPath: '/generate-static-params/layout.js',
+    localizedPath: '/cs/generate-static-params/layout.js',
+  }
+
+  const inputConfig: Config = {
+    ...defaultConfig,
+    getOriginContents: () => `export async function generateStaticParams() {}`,
+  }
+
+  const compile = compileFactory(inputConfig)
+  const output = compile(inputRewrite)
+  expect(output).toBe(expectedOutput)
+})
