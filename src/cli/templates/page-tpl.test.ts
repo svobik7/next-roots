@@ -214,8 +214,8 @@ export async function generateMetadata({ params, ...otherProps }:any) {
 
 import {generateStaticParams as generateStaticParamsOrigin} from '../../../../../roots/blog/[authorId]/page'
 
-export async function generateStaticParams() {
-  return generateStaticParamsOrigin({ pageLocale: "cs" })
+export async function generateStaticParams({ params, ...otherProps }:any) {
+  return generateStaticParamsOrigin({ ...otherProps, params, pageLocale: "cs" })
 }
 `
   const inputRewrite = {

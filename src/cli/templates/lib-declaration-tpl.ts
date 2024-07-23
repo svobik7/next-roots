@@ -51,8 +51,8 @@ export type GenerateLayoutMetadataProps<TParams = any> = { locale: string, param
  * @deprecated Use GeneratePageStaticParamsProps instead
  */
 export type GenerateStaticParamsProps = { pageLocale: string }
-export type GeneratePageStaticParamsProps = { pageLocale: string }
-export type GenerateLayoutStaticParamsProps = { locale: string }
+export type GeneratePageStaticParamsProps<TParams = any> = { pageLocale: string, params: TParams }
+export type GenerateLayoutStaticParamsProps<TParams = any> = { locale: string, params: TParams }
 `
 
 export const tplWithDynamicRoutes = `
@@ -96,8 +96,8 @@ export type GenerateLayoutMetadataProps<TParams = any> = { locale: string, param
  * @deprecated Use GeneratePageStaticParamsProps instead
  */
 export type GenerateStaticParamsProps = { pageLocale: string }
-export type GeneratePageStaticParamsProps = { pageLocale: string }
-export type GenerateLayoutStaticParamsProps = { locale: string }
+export type GeneratePageStaticParamsProps<TParams = any> = { pageLocale: string, params: TParams }
+export type GenerateLayoutStaticParamsProps<TParams = any> = { locale: string, params: TParams }
 `
 
 function not<T>(fn: (input: T) => boolean) {
