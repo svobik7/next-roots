@@ -1,5 +1,5 @@
 import { compile, match } from 'path-to-regexp'
-import type { Route, RouterSchema } from '~/types'
+import type { Route, RouterSchema, RouteWeightsMap } from '~/types'
 import { getLocaleFactory } from '~/utils/locale-utils'
 import { StaticRouter } from './static-router'
 
@@ -8,6 +8,7 @@ import { StaticRouter } from './static-router'
  */
 export class Router extends StaticRouter {
   private schema: RouterSchema
+  private routeWeightsMap: RouteWeightsMap
 
   /**
    * Constructor for the Router class
@@ -17,6 +18,7 @@ export class Router extends StaticRouter {
   constructor(schema: RouterSchema) {
     super()
     this.schema = schema
+    this.routeWeightsMap = createRouteWeightsMap(schema)
   }
 
   /**
@@ -76,14 +78,9 @@ export class Router extends StaticRouter {
   private getLocalizedRoutes(locale: string) {
     return (
       this.schema.routes[locale]?.sort((a, b) => {
-        const dynamicIndexA = a.name.indexOf('[')
-        const dynamicIndexB = b.name.indexOf('[')
-        const isDynamicA = dynamicIndexA !== -1
-        const isDynamicB = dynamicIndexB !== -1
-        if (isDynamicA && isDynamicB) {
-          return dynamicIndexB - dynamicIndexA
-        }
-        return isDynamicA ? 1 : -1
+        const weightA = this.routeWeightsMap[a.name]
+        const weightB = this.routeWeightsMap[b.name]
+        return weightA - weightB
       }) || []
     )
   }
@@ -152,4 +149,84 @@ export function formatHref(...hrefSegments: string[]): string {
     .replace(/\/$/, '')
     .replaceAll('%2F', '/')
   return href.startsWith('/') ? href : `/${href}`
+}
+
+/**
+ * Checks if given route segment is static
+ * @param {string} segment - The route segment
+ * @returns {boolean} - Whether the segment is static
+ */
+
+export function isStaticRouteSegment(segment: string): boolean {
+  return !segment.includes('[')
+}
+
+/**
+ * Checks if given route segment is catch-all
+ * @param {string} segment - The route segment
+ * @returns {boolean} - Whether the segment is catch-all
+ */
+
+export function isCatchAllRouteSegment(segment: string): boolean {
+  return segment.includes('...')
+}
+
+/**
+ * Checks if given route segment is dynamic
+ * @param {string} segment - The route segment
+ * @returns {boolean} - Whether the segment is dynamic
+ */
+
+export function isDynamicRouteSegment(segment: string): boolean {
+  return segment.includes('[') && !isCatchAllRouteSegment(segment)
+}
+
+/**
+ * Gets weight of a route segment based on its nature
+ * @param {string} segment - The route segment
+ * @returns {number} - The weight of the segment
+ */
+
+export function getRouteSegmentWeight(segment: string): number {
+  if (isStaticRouteSegment(segment)) {
+    return 1
+  } else if (isDynamicRouteSegment(segment)) {
+    return 2
+  } else if (isCatchAllRouteSegment(segment)) {
+    return 3
+  }
+  return 0
+}
+
+/**
+ * Computes weight of a route based on its segments nature
+ * @param {Route} route - The route to compute weight for
+ * @returns {number} - The weight of the route
+ */
+
+export function computeRouteWeight(route: Route): number {
+  const segments = route.name.split('/').filter((segment) => segment.length > 0) // filter out empty segments
+  let weight = '0.'
+  for (const segment of segments) {
+    const segmentWeight = getRouteSegmentWeight(segment)
+    weight += segmentWeight
+  }
+  return parseFloat(weight)
+}
+
+/**
+ * Creates a map of route weights based on the routing schema
+ * @param {RouterSchema} schema - The routing schema
+ * @returns {RouteWeightsMap} - The map of route weights
+ */
+
+export function createRouteWeightsMap(schema: RouterSchema): RouteWeightsMap {
+  const routeWeightsMap: RouteWeightsMap = {}
+  const routes = schema.routes[schema.defaultLocale] // No need to create a map for each locale as the names are the same
+  if (routes) {
+    for (const route of routes) {
+      routeWeightsMap[route.name] = computeRouteWeight(route)
+    }
+  }
+  return routeWeightsMap
 }

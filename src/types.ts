@@ -8,3 +8,5 @@ export type RouterSchema = {
   locales: string[]
   defaultLocale: string
 }
+
+export type RouteWeightsMap = Record<`/${string}`, number>
