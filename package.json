@@ -52,7 +52,7 @@
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
     "dts-bundle-generator": "^9.2.5",
-    "esbuild": "^0.20.0",
+    "esbuild": "^0.23.0",
     "esbuild-node-externals": "^1.7.0",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^9.1.0",
