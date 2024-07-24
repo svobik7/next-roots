@@ -9,4 +9,4 @@ export type RouterSchema = {
   defaultLocale: string
 }
 
-export type RouteWeightsMap = Record<`/${string}`, number>
+export type RoutesPrioritiesMap = Record<`/${string}`, number>
