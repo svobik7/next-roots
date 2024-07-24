@@ -1,3 +1,10 @@
+## [3.10.1](https://github.com/svobik7/next-roots/compare/v3.10.0...v3.10.1) (2024-07-24)
+
+
+### Bug Fixes
+
+* **router:** fix the sort function of the router ([9dc055c](https://github.com/svobik7/next-roots/commit/9dc055cd8b30bd4245422d2b0c3b8e8a88bc658e)), closes [#248](https://github.com/svobik7/next-roots/issues/248)
+
 # [3.10.0](https://github.com/svobik7/next-roots/compare/v3.9.0...v3.10.0) (2024-07-24)
 
 
