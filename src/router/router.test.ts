@@ -16,6 +16,10 @@ const inputSchema: RouterSchema = {
         href: '/es/blog/articulos/:articleId',
       },
       {
+        name: '/[...catchAll]',
+        href: '/es/:catchAll+',
+      },
+      {
         name: '/[slug]',
         href: '/es/:slug',
       },
@@ -40,6 +44,10 @@ const inputSchema: RouterSchema = {
       {
         name: '/blog/articles/[articleId]',
         href: '/cs/blog/clanky/:articleId',
+      },
+      {
+        name: '/[...catchAll]',
+        href: '/cs/:catchAll+',
       },
       {
         name: '/[slug]',

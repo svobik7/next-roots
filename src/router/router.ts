@@ -1,6 +1,7 @@
 import { compile, match } from 'path-to-regexp'
 import type { Route, RouterSchema } from '~/types'
 import { getLocaleFactory } from '~/utils/locale-utils'
+import { sanitizeSchema } from '~/utils/schema-utils'
 import { StaticRouter } from './static-router'
 
 /**
@@ -16,7 +17,7 @@ export class Router extends StaticRouter {
 
   constructor(schema: RouterSchema) {
     super()
-    this.schema = schema
+    this.schema = sanitizeSchema(schema)
   }
 
   /**
@@ -68,24 +69,13 @@ export class Router extends StaticRouter {
   }
 
   /**
-   * Gets all routes for a given locale, sorted by their dynamic nature
+   * Gets all routes for a given locale
    * @param {string} locale - The locale for which to get routes
    * @returns {Route[]} - The sorted array of routes
    */
 
   private getLocalizedRoutes(locale: string) {
-    return (
-      this.schema.routes[locale]?.sort((a, b) => {
-        const dynamicIndexA = a.name.indexOf('[')
-        const dynamicIndexB = b.name.indexOf('[')
-        const isDynamicA = dynamicIndexA !== -1
-        const isDynamicB = dynamicIndexB !== -1
-        if (isDynamicA && isDynamicB) {
-          return dynamicIndexB - dynamicIndexA
-        }
-        return isDynamicA ? 1 : -1
-      }) || []
-    )
+    return this.schema.routes[locale] || []
   }
 
   /**
