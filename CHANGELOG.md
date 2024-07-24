@@ -1,3 +1,10 @@
+# [3.10.0](https://github.com/svobik7/next-roots/compare/v3.9.0...v3.10.0) (2024-07-24)
+
+
+### Features
+
+* **templates:** support: passing the received params to the origin `generateStaticParams` function ([56cad89](https://github.com/svobik7/next-roots/commit/56cad89588bf5779c0b36254dd62d46d994f1cb5)), closes [#242](https://github.com/svobik7/next-roots/issues/242)
+
 # [3.9.0](https://github.com/svobik7/next-roots/compare/v3.8.0...v3.9.0) (2024-07-21)
 
 
