@@ -3,6 +3,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Router, schema } from 'next-roots'
 
 export function middleware(request: NextRequest) {
+  // skip all requests to /_next/* paths
+  if (request.nextUrl.pathname.startsWith('/_next')) {
+    return NextResponse.next()
+  }
+
   // Check if this is a new session
   const cookie = request.cookies.get('visitor')
 

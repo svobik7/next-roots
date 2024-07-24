@@ -1,4 +1,4 @@
-import type { Article, Author, WithAuthor } from './types'
+import type { Article, Author, Book, Product, WithAuthor } from './types'
 
 async function loadDB() {
   const rawData = await import('./db.json')
@@ -56,4 +56,36 @@ async function withAuthorFactory() {
       author: db.authors.find(({ id }) => id === article.authorId),
     }
   }
+}
+
+export async function fetchProducts(limit?: number): Promise<Product[]> {
+  const db = await loadDB()
+  return db.products.slice(0, limit ?? db.articles.length)
+}
+
+export async function fetchProductBySlug(
+  slug: string | string[]
+): Promise<Product | undefined> {
+  const productSlug = Array.isArray(slug) ? slug.join('/') : slug
+
+  const db = await loadDB()
+  return db.products.find((product) =>
+    product.slug.find((slug) => slug.value === productSlug)
+  )
+}
+
+export async function fetchBookBySlug(
+  slug: string | string[]
+): Promise<Book | undefined> {
+  const bookSlug = Array.isArray(slug) ? slug.join('/') : slug
+  const db = await loadDB()
+
+  return db.books.find((book) =>
+    book.slug.find((slug) => slug.value === bookSlug)
+  )
+}
+
+export async function fetchBooks(limit?: number): Promise<Book[]> {
+  const db = await loadDB()
+  return db.books.slice(0, limit ?? db.books.length)
 }
