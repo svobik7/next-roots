@@ -1,3 +1,10 @@
+## [3.10.2](https://github.com/svobik7/next-roots/compare/v3.10.1...v3.10.2) (2024-07-31)
+
+
+### Bug Fixes
+
+* **deps:** moved required deps to package dependencies ([14de3a4](https://github.com/svobik7/next-roots/commit/14de3a43babaed9e85dc79be0949c1bbf97bd0ee))
+
 ## [3.10.1](https://github.com/svobik7/next-roots/compare/v3.10.0...v3.10.1) (2024-07-24)
 
 
