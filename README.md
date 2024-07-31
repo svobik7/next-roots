@@ -53,13 +53,9 @@ The requirement is to have English localization served from `/` and Czech from `
 
 ### Installation
 
-1. Add the package to your project dependencies
+1. Add the package to your project dev dependencies
 
-`yarn add next-roots`
-
-2. Add esbuild and esbuild-node-externals for compiling i18n config files to your project devDependencies
-
-`yarn add --dev esbuild esbuild-node-externals`
+`yarn add -D next-roots`
 
 2. (optional) Add generate script to your `package.json`
 
