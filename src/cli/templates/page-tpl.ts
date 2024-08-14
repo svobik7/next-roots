@@ -3,8 +3,12 @@ import { isDynamicRewrite, isTypedRewrite } from '~/utils/rewrite-utils'
 import { CompileError } from '../errors'
 import type { Config, Rewrite } from '../types'
 import { getRoute } from '../utils/getRoute'
-import { withPageGenerateStaticParamsFactory ,type  PATTERNS as GENERATE_STATIC_PARAMS_PATTERS  } from './decorators/with-page-generate-static-params';
+import {
+  withPageGenerateStaticParamsFactory,
+  type PATTERNS as GENERATE_STATIC_PARAMS_PATTERS,
+} from './decorators/with-page-generate-static-params'
 import { withPageMetadataDecoratorFactory } from './decorators/with-page-metadata'
+import { withPageViewportDecoratorFactory } from './decorators/with-page-viewport'
 import { withRouteSegmentConfigFactory } from './decorators/with-route-segment-config'
 import {
   type CompileParams,
@@ -84,6 +88,7 @@ export function compileFactory(config: Config) {
 
     const compileTemplate = compileTemplateFactory(
       withPageMetadataDecoratorFactory(decoratorParams),
+      withPageViewportDecoratorFactory(decoratorParams),
       withPageGenerateStaticParamsFactory(decoratorParams),
       withRouteSegmentConfigFactory(decoratorParams)
     )

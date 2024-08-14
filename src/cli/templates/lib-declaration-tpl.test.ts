@@ -106,6 +106,8 @@ export type PageProps<TParams = void> = TParams extends void
 export type LayoutProps<TParams = any> = { locale: string, params: TParams }
 export type GeneratePageMetadataProps<TParams = any> = { pageHref: string, params: TParams }
 export type GenerateLayoutMetadataProps<TParams = any> = { locale: string, params: TParams }
+export type GeneratePageViewportProps<TParams = any, TSParams = any> = { pageHref: string, params: TParams, searchParams: TSParams }
+export type GenerateLayoutViewportProps<TParams = any, TSParams = any> = { locale: string, params: TParams, searchParams: TSParams }
 /**
  * @deprecated Use GeneratePageStaticParamsProps instead
  */
@@ -182,6 +184,8 @@ export type PageProps<TParams = void> = TParams extends void
 export type LayoutProps<TParams = any> = { locale: string, params: TParams }
 export type GeneratePageMetadataProps<TParams = any> = { pageHref: string, params: TParams }
 export type GenerateLayoutMetadataProps<TParams = any> = { locale: string, params: TParams }
+export type GeneratePageViewportProps<TSParams = any> = { pageHref: string, searchParams: TSParams }
+export type GenerateLayoutViewportProps<TSParams = any> = { locale: string, searchParams: TSParams }
 /**
  * @deprecated Use GeneratePageStaticParamsProps instead
  */
