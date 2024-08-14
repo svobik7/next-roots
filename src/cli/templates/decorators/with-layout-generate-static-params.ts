@@ -1,4 +1,4 @@
-import { getPattern ,type  CompileFn,type  DecoratorParams  } from '../tpl-utils';
+import { getPattern, type CompileFn, type DecoratorParams } from '../tpl-utils'
 
 export const PATTERNS = {
   originPath: getPattern('originPath'),
@@ -8,8 +8,8 @@ export const PATTERNS = {
 export const tpl = `
 import {generateStaticParams as generateStaticParamsOrigin} from '${PATTERNS.originPath}'
 
-export async function generateStaticParams() {
-  return generateStaticParamsOrigin({ locale: "${PATTERNS.locale}" })
+export async function generateStaticParams({ params, ...otherProps }:any) {
+  return generateStaticParamsOrigin({ ...otherProps, params, locale: "${PATTERNS.locale}" })
 }
 `
 

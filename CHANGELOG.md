@@ -1,3 +1,24 @@
+## [3.10.2](https://github.com/svobik7/next-roots/compare/v3.10.1...v3.10.2) (2024-07-31)
+
+
+### Bug Fixes
+
+* **deps:** moved required deps to package dependencies ([14de3a4](https://github.com/svobik7/next-roots/commit/14de3a43babaed9e85dc79be0949c1bbf97bd0ee))
+
+## [3.10.1](https://github.com/svobik7/next-roots/compare/v3.10.0...v3.10.1) (2024-07-24)
+
+
+### Bug Fixes
+
+* **router:** fix the sort function of the router ([9dc055c](https://github.com/svobik7/next-roots/commit/9dc055cd8b30bd4245422d2b0c3b8e8a88bc658e)), closes [#248](https://github.com/svobik7/next-roots/issues/248)
+
+# [3.10.0](https://github.com/svobik7/next-roots/compare/v3.9.0...v3.10.0) (2024-07-24)
+
+
+### Features
+
+* **templates:** support: passing the received params to the origin `generateStaticParams` function ([56cad89](https://github.com/svobik7/next-roots/commit/56cad89588bf5779c0b36254dd62d46d994f1cb5)), closes [#242](https://github.com/svobik7/next-roots/issues/242)
+
 # [3.9.0](https://github.com/svobik7/next-roots/compare/v3.8.0...v3.9.0) (2024-07-21)
 
 
