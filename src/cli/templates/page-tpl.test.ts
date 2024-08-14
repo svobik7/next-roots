@@ -195,6 +195,66 @@ export async function generateMetadata(props) {
   expect(output).toBe(expectedOutput)
 })
 
+test('should create page with static viewport object', () => {
+  const expectedOutput = `
+import StaticViewportPageOrigin from '..'
+import { Router } from 'next-roots'
+
+export default function StaticViewportPage(props:any) {
+  Router.setPageHref("/cs/static-viewport")
+  {/* @ts-ignore */}
+  return <StaticViewportPageOrigin {...props} pageHref={Router.getPageHref()} />
+}
+
+export { viewport } from '..'
+`
+  const inputRewrite = {
+    originPath: '/static-viewport/page.ts',
+    localizedPath: '/cs/static-viewport/page.ts',
+  }
+
+  const inputConfig: Config = {
+    ...defaultConfig,
+    getOriginContents: () => `export const viewport = { themeColor: 'black' }`,
+  }
+
+  const compile = compileFactory(inputConfig)
+  const output = compile(inputRewrite)
+  expect(output).toBe(expectedOutput)
+})
+
+test('should create page for static route but with dynamic viewport function', () => {
+  const expectedOutput = `
+import StaticRouteWithDynamicViewportPageOrigin from '..'
+import { Router } from 'next-roots'
+
+export default function StaticRouteWithDynamicViewportPage(props) {
+  Router.setPageHref("/cs/static-route-with-dynamic-viewport")
+  {/* @ts-ignore */}
+  return <StaticRouteWithDynamicViewportPageOrigin {...props} pageHref={Router.getPageHref()} />
+}
+
+import {generateViewport as generateViewportOrigin} from '..'
+
+export function generateViewport({ searchParams, ...otherProps }) {
+  return generateViewportOrigin({ ...otherProps, searchParams, pageHref: "/cs/static-route-with-dynamic-viewport" })
+}
+`
+  const inputRewrite = {
+    originPath: '/static-route-with-dynamic-viewport/page.js',
+    localizedPath: '/cs/static-route-with-dynamic-viewport/page.js',
+  }
+
+  const inputConfig: Config = {
+    ...defaultConfig,
+    getOriginContents: () => `export function generateViewport() {}`,
+  }
+
+  const compile = compileFactory(inputConfig)
+  const output = compile(inputRewrite)
+  expect(output).toBe(expectedOutput)
+})
+
 test('should create page for [dynamic] route with generate static params and generateMetadata functions', () => {
   const expectedOutput = `
 import BlogAuthorIdPageOrigin from '../../../../../roots/blog/[authorId]/page'

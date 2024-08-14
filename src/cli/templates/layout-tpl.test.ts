@@ -166,6 +166,62 @@ export async function generateMetadata(props) {
   expect(output).toBe(expectedOutput)
 })
 
+test('should create layout with static viewport object', () => {
+  const expectedOutput = `
+import StaticViewportLayoutOrigin from '..'
+
+export default function StaticViewportLayout(props:any) {
+  {/* @ts-ignore */}
+  return <StaticViewportLayoutOrigin {...props} locale="cs" />
+}
+
+export { viewport } from '..'
+`
+  const inputRewrite = {
+    originPath: '/static-viewport/layout.ts',
+    localizedPath: '/cs/static-viewport/layout.ts',
+  }
+
+  const inputConfig: Config = {
+    ...defaultConfig,
+    getOriginContents: () => `export const viewport = { themeColor: 'black' }`,
+  }
+
+  const compile = compileFactory(inputConfig)
+  const output = compile(inputRewrite)
+  expect(output).toBe(expectedOutput)
+})
+
+test('should create layout with dynamic viewport object', () => {
+  const expectedOutput = `
+import DynamicViewportLayoutOrigin from '..'
+
+export default function DynamicViewportLayout(props) {
+  {/* @ts-ignore */}
+  return <DynamicViewportLayoutOrigin {...props} locale="cs" />
+}
+
+import {generateViewport as generateViewportOrigin} from '..'
+
+export function generateViewport({ params, searchParams, ...otherProps }) {
+  return generateViewportOrigin({ ...otherProps, params, searchParams, locale: "cs" })
+}
+`
+  const inputRewrite = {
+    originPath: '/dynamic-viewport/layout.js',
+    localizedPath: '/cs/dynamic-viewport/layout.js',
+  }
+
+  const inputConfig: Config = {
+    ...defaultConfig,
+    getOriginContents: () => `export function generateViewport() {}`,
+  }
+
+  const compile = compileFactory(inputConfig)
+  const output = compile(inputRewrite)
+  expect(output).toBe(expectedOutput)
+})
+
 test('should create layout with generate static params', () => {
   const expectedOutput = `
 import GenerateStaticParamsLayoutOrigin from '..'
