@@ -1,3 +1,10 @@
+# [3.11.0](https://github.com/svobik7/next-roots/compare/v3.10.2...v3.11.0) (2024-08-14)
+
+
+### Features
+
+* **templates:** add support for viewport object and generateViewport function ([b0ce7df](https://github.com/svobik7/next-roots/commit/b0ce7dfbe78c674d01406131a1ee3af72054cde6)), closes [#271](https://github.com/svobik7/next-roots/issues/271)
+
 ## [3.10.2](https://github.com/svobik7/next-roots/compare/v3.10.1...v3.10.2) (2024-07-31)
 
 
