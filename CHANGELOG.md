@@ -1,3 +1,11 @@
+## [3.11.1](https://github.com/svobik7/next-roots/compare/v3.11.0...v3.11.1) (2024-09-21)
+
+
+### Bug Fixes
+
+* **deps:** bump esbuild from 0.23.0 to 0.23.1 ([b2a9767](https://github.com/svobik7/next-roots/commit/b2a9767dcfc3cb012785f9588243d76355ecf538))
+* **deps:** bump micromatch from 4.0.7 to 4.0.8 ([a30ccbc](https://github.com/svobik7/next-roots/commit/a30ccbcbbcbd60a628d319d837a908108ab5b587))
+
 # [3.11.0](https://github.com/svobik7/next-roots/compare/v3.10.2...v3.11.0) (2024-08-14)
 
 
