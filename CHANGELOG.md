@@ -1,3 +1,10 @@
+## [3.11.2](https://github.com/svobik7/next-roots/compare/v3.11.1...v3.11.2) (2024-09-21)
+
+
+### Bug Fixes
+
+* **deps:** bump path-to-regexp from 6.2.2 to 6.3.0 ([62e755b](https://github.com/svobik7/next-roots/commit/62e755b0918351f15c945398b9b3b50733e959be))
+
 ## [3.11.1](https://github.com/svobik7/next-roots/compare/v3.11.0...v3.11.1) (2024-09-21)
 
 
