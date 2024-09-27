@@ -1,3 +1,10 @@
+## [3.11.3](https://github.com/svobik7/next-roots/compare/v3.11.2...v3.11.3) (2024-09-27)
+
+
+### Bug Fixes
+
+* **deps:** bump rollup from 3.29.4 to 3.29.5 ([27ac13a](https://github.com/svobik7/next-roots/commit/27ac13a386bdd9cae8fac30b9e64962bb122ecad))
+
 ## [3.11.2](https://github.com/svobik7/next-roots/compare/v3.11.1...v3.11.2) (2024-09-21)
 
 
