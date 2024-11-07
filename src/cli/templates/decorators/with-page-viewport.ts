@@ -1,6 +1,11 @@
 import type { Rewrite } from '~/cli/types'
 import { isDynamicRewrite, isTypedRewrite } from '~/utils/rewrite-utils'
-import { getPattern, removePropTypes ,type  DecoratorParams,type  CompileFn  } from '../tpl-utils';
+import {
+  type CompileFn,
+  type DecoratorParams,
+  getPattern,
+  removePropTypes,
+} from '../tpl-utils'
 
 export const PATTERNS = {
   originPath: getPattern('originPath'),

@@ -1,7 +1,7 @@
 import { getLocaleFactory } from '~/utils/locale-utils'
 import type { Config, Rewrite } from '../types'
-import type { CompileParams } from './tpl-utils'
 import {
+  type CompileParams,
   compileTemplateFactory,
   getOriginNameFactory,
   getOriginPathFactory,

@@ -41,6 +41,7 @@ const cliDefaultParams: CliParams = {
   packageDir: path.join(process.cwd(), `node_modules/${PKG_NAME}`),
 }
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const cliFileParams = require(path.join(process.cwd(), cfgPath))
 const cliParams: CliParams = {
   ...cliDefaultParams,

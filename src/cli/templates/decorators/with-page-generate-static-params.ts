@@ -1,4 +1,4 @@
-import { getPattern ,type  CompileFn,type  DecoratorParams  } from '../tpl-utils';
+import { type CompileFn, type DecoratorParams, getPattern } from '../tpl-utils'
 
 export const PATTERNS = {
   originPath: getPattern('originPath'),

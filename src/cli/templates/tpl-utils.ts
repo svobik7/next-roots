@@ -1,8 +1,13 @@
 import path from 'path'
 import { getDiffPos } from '~/cli/utils/getDiffPos'
 import {
-  alphanumeric, capitalize,
-  asRootPath, trimExt, trimLeadingSlash, withUnixSeparators, joinSegments
+  alphanumeric,
+  asRootPath,
+  capitalize,
+  joinSegments,
+  trimExt,
+  trimLeadingSlash,
+  withUnixSeparators,
 } from '~/utils/path-utils'
 import { pipe } from '~/utils/pipe-utils'
 import type { Config, Rewrite } from '../types'
@@ -61,7 +66,7 @@ export function getOriginPathFactory({
 
     const hopUps = path
       .dirname(localizedRelativePath)
-      .split("/")
+      .split('/')
       .slice(1)
       .map(() => '..')
 
@@ -74,18 +79,16 @@ export function getOriginPathFactory({
 
 export function getOriginNameFactory(suffix = 'page') {
   return (rewrite: Rewrite) => {
-    const getSegmentName = pipe(
-      trimExt,
-      alphanumeric,
-      capitalize
-    )
+    const getSegmentName = pipe(trimExt, alphanumeric, capitalize)
 
-    const originPathName = rewrite.originPath.match(new RegExp(`^/${suffix}.([tj])sx?$`))
+    const originPathName = rewrite.originPath.match(
+      new RegExp(`^/${suffix}.([tj])sx?$`)
+    )
       ? `root/${suffix}`
       : rewrite.originPath
 
     // get origin path name segments split by / or - or _
-    return originPathName.split(/[-/_]/g).map(getSegmentName).join("")
+    return originPathName.split(/[-/_]/g).map(getSegmentName).join('')
   }
 }
 

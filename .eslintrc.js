@@ -14,6 +14,7 @@ module.exports = {
     browser: true,
     node: true,
   },
+  ignorePatterns: ['examples/*', 'dist/*'],
   parser: '@typescript-eslint/parser',
   plugins: [
     '@typescript-eslint',

@@ -1,5 +1,9 @@
-import type { CompileFn, DecoratorParams } from '../tpl-utils'
-import { getPattern, getPatternsFromNames } from '../tpl-utils'
+import {
+  type CompileFn,
+  type DecoratorParams,
+  getPattern,
+  getPatternsFromNames,
+} from '../tpl-utils'
 
 const PATTERNS = getPatternsFromNames(
   'dynamic',
@@ -37,10 +41,13 @@ const REG_EXPS: Record<ConfigVariable, RegExp> = {
 }
 
 function getCompileParams(input: string) {
-  return Object.entries(REG_EXPS).reduce((params, [variable, regExp]) => {
-    params[variable as ConfigVariable] = input.match(regExp)?.[1]
-    return params
-  }, {} as Record<ConfigVariable, string | undefined>)
+  return Object.entries(REG_EXPS).reduce(
+    (params, [variable, regExp]) => {
+      params[variable as ConfigVariable] = input.match(regExp)?.[1]
+      return params
+    },
+    {} as Record<ConfigVariable, string | undefined>
+  )
 }
 
 function compileConfigVariableTemplate(
