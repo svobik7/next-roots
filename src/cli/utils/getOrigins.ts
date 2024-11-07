@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { pathToFileURL } from 'url'
 import { compileI18n } from '~/cli/compilers/compileI18n'
-import { isDirectory, isFile, removeDir } from '~/utils/fs-utils'
+import { isDirectory, isFile } from '~/utils/fs-utils'
 import { asRootPath } from '~/utils/path-utils'
 import type { Origin, RootTranslation } from '../types'
 
@@ -10,13 +10,23 @@ const I18N_FILE_NAMES = ['i18n.ts', 'i18n.mjs', 'i18n.cjs', 'i18n.js']
 const I18N_BUILD_DIR = '.next-roots'
 
 async function importI18nFile(fileName: string) {
+  const safeImportFile = async (filePath: string) => {
+    return import(filePath)
+      .then((module) => (module.default ? module.default : module))
+      .catch(() => undefined)
+  }
+
   // filename needs to be converted to URL later on
   // as absolute paths on Windows  (c:\..) cannot be imported
   const fileUrl = pathToFileURL(fileName).toString()
+  const fileByUrl = await safeImportFile(fileUrl)
 
-  return import(fileUrl).then((module) =>
-    module.default ? module.default : module
-  )
+  if (fileByUrl) {
+    return fileByUrl
+  }
+
+  const fileByName = await safeImportFile(fileName)
+  return fileByName
 }
 
 /**
@@ -33,10 +43,12 @@ async function parseI18nFile(
       return undefined
     }
 
-    fileName = await compileI18n(fileName, I18N_BUILD_DIR, format)
+    const compiledFileName = await compileI18n(fileName, I18N_BUILD_DIR, format)
+    const file = await importI18nFile(compiledFileName)
 
-    const { routeNames, generateRouteNames } = await importI18nFile(fileName)
-    return generateRouteNames ? await generateRouteNames() : routeNames
+    return file.generateRouteNames
+      ? await file.generateRouteNames()
+      : file.routeNames
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log({ fileName, err })
@@ -149,6 +161,6 @@ export async function getOrigins({
     }
   }
 
-  removeDir(I18N_BUILD_DIR)
+  // removeDir(I18N_BUILD_DIR)
   return origins
 }

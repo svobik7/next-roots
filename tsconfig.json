@@ -13,13 +13,12 @@
     "jsx": "react",
     "module": "ESNext",
     "moduleResolution": "node",
-    "verbatimModuleSyntax": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
       "~/*": ["src/*"]
     },
-    "types": ["vitest/globals"]
+    "types": ["@types/jest", "@types/node"]
   },
   "include": ["src"],
   "exclude": ["**/node_modules", "dist"]
