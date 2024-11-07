@@ -110,7 +110,7 @@ import ProductsPageOrigin from '../../../../../roots/products/[[...slugs]]/page'
 import { Router, compileHref } from 'next-roots'
 
 export default function ProductsPage({ params, ...otherProps }) {
-  Router.setPageHref(compileHref('/cs/produkty/:slugs*', params))
+  Router.setPageHref(compileHref('/cs/produkty{/*slugs}', params))
   {/* @ts-ignore */}
   return <ProductsPageOrigin {...otherProps} params={params} pageHref={Router.getPageHref()} />
 }

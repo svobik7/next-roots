@@ -1,7 +1,7 @@
 import acceptLanguage from 'accept-language'
 import { type Route, type Router, type RouterSchema } from 'next-roots'
 import { headers } from 'next/headers'
-import { pathToRegexp, type Key } from 'path-to-regexp'
+import { pathToRegexp } from 'path-to-regexp'
 
 export function findLocalizedHrefFactory(router: Router, schema: RouterSchema) {
   return (url: string) => {
@@ -32,23 +32,26 @@ function getRouteMatchFactory(router: Router, schema: RouterSchema) {
   return (url: string): RouteMatch => {
     const pathWithoutLocale = removeLocalePrefix(url, schema.locales)
 
-    const matchedRoute = schema.locales.reduce((match, locale) => {
-      if (match) {
-        return match
-      }
+    const matchedRoute = schema.locales.reduce(
+      (match, locale) => {
+        if (match) {
+          return match
+        }
 
-      const localizedPath = `/${locale}/${pathWithoutLocale}`
-      const route = router.getRouteFromHref(localizedPath)
+        const localizedPath = `/${locale}/${pathWithoutLocale}`
+        const route = router.getRouteFromHref(localizedPath)
 
-      if (!route) {
-        return undefined
-      }
+        if (!route) {
+          return undefined
+        }
 
-      return {
-        route,
-        params: extractNamedParams(route.href, localizedPath),
-      }
-    }, undefined as undefined | RouteMatch)
+        return {
+          route,
+          params: extractNamedParams(route.href, localizedPath),
+        }
+      },
+      undefined as undefined | RouteMatch
+    )
 
     return matchedRoute
   }
@@ -58,9 +61,8 @@ function extractNamedParams(
   pathPattern: string,
   href: string
 ): Record<string, string> {
-  const keys: Key[] = []
-  const pattern = pathToRegexp(pathPattern, keys)
-  const match = pattern.exec(href)
+  const { keys = [], regexp } = pathToRegexp(pathPattern)
+  const match = regexp.exec(href)
 
   if (!match) {
     return {}

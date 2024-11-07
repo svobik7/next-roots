@@ -35,10 +35,10 @@ function removeInterceptedSegments(input: string) {
 
 function formatDynamicSegments(input: string) {
   return input
-    .replace(/\/\[\[\.\.\.(\w+)\]\]/g, '/:$1*') // [[...slug]] -> :slug*
-    .replace(/\/\[\[(\w+)\]\]/g, '/:$1*') // [[slug]] -> :slug*
-    .replace(/\/\[\.\.\.(\w+)\]/g, '/:$1+') // [...slug] -> :slug+
-    .replace(/\/\[(\w+)\]/g, '/:$1') // [slug] -> :slug
+    .replace(/\/\[\[\.\.\.(\w+)\]\]/g, '{/*$1}') // /[[...slug]] -> {/*slug}
+    .replace(/\/\[\[(\w+)\]\]/g, '{/:$1}') // /[[slug]] -> {/:slug}
+    .replace(/\/\[\.\.\.(\w+)\]/g, '/*$1') // /[...slug] -> /*slug
+    .replace(/\/\[(\w+)\]/g, '/:$1') // /[slug] -> /:slug
 }
 
 function getRouteName({ originPath }: Rewrite) {

@@ -3,6 +3,8 @@ export type Route = {
   href: `/${string}`
 }
 
+export type RouteParams = Record<string, string | string[]>
+
 export type RouterSchema = {
   routes: Record<string, Route[]>
   locales: string[]

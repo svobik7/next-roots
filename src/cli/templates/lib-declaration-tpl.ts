@@ -1,4 +1,4 @@
-import { type Key, pathToRegexp } from 'path-to-regexp'
+import { pathToRegexp } from 'path-to-regexp'
 import type { Route, RouterSchema } from '~/types'
 import {
   type CompileParams,
@@ -137,8 +137,17 @@ function isDynamicCatchAllRoute(route: Route) {
   )
 }
 
+function isDynamicOptionalRoute(route: Route) {
+  return !!route.name.match(/\[\[\w+\]\]/g)
+}
+
 function isDynamicRoute(route: Route) {
-  return !!route.name.match(/\[\w+\]/g) || isDynamicCatchAllRoute(route)
+  return (
+    !!route.name.match(/\[\w+\]/g) ||
+    isDynamicOptionalRoute(route) ||
+    isDynamicCatchAllRoute(route) ||
+    isDynamicOptionalCatchAllRoute(route)
+  )
 }
 
 function getDefaultRoutes(schema: RouterSchema) {
@@ -160,13 +169,19 @@ function getDynamicRouteParams(schema: RouterSchema) {
 
   return dynamicRoutes.reduce(
     (acc: string, item: Route, index: number, array: Route[]) => {
-      const params: Key[] = []
-      pathToRegexp(item.href, params)
+      const { keys = [] } = pathToRegexp(item.href)
+      const nameSuffix =
+        isDynamicOptionalRoute(item) || isDynamicOptionalCatchAllRoute(item)
+          ? '?'
+          : ''
 
-      const nameSuffix = isDynamicOptionalCatchAllRoute(item) ? '?' : ''
+      const paramType =
+        isDynamicCatchAllRoute(item) || isDynamicOptionalCatchAllRoute(item)
+          ? 'string[]'
+          : 'string'
 
-      acc += `T extends '${item.name}' ? RouteParamsStatic<{${params.map(
-        (p) => `${p.name}${nameSuffix}:string`
+      acc += `T extends '${item.name}' ? RouteParamsStatic<{${keys.map(
+        (p) => `${p.name}${nameSuffix}:${paramType}`
       )}}> : `
 
       if (index === array.length - 1) {
