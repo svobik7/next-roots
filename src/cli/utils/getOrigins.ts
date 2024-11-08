@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { pathToFileURL } from 'url'
 import { compileI18n } from '~/cli/compilers/compileI18n'
-import { isDirectory, isFile } from '~/utils/fs-utils'
+import { isDirectory, isFile, removeDir } from '~/utils/fs-utils'
 import { asRootPath } from '~/utils/path-utils'
 import type { Origin, RootTranslation } from '../types'
 
@@ -38,12 +38,14 @@ async function parseI18nFile(
   fileName: string,
   format: 'esm' | 'cjs'
 ): Promise<RootTranslation[] | undefined> {
+  let compiledFileName = undefined as string | undefined
+
   try {
     if (!isFile(fileName)) {
       return undefined
     }
 
-    const compiledFileName = await compileI18n(fileName, I18N_BUILD_DIR, format)
+    compiledFileName = await compileI18n(fileName, I18N_BUILD_DIR, format)
     const file = await importI18nFile(compiledFileName)
 
     return file.generateRouteNames
@@ -51,7 +53,11 @@ async function parseI18nFile(
       : file.routeNames
   } catch (err) {
     // eslint-disable-next-line no-console
-    console.log({ fileName, err })
+    console.log('Error during parsing i18n file', {
+      fileName,
+      compiledFileName,
+      err,
+    })
     return undefined
   }
 }
@@ -78,7 +84,7 @@ async function getI18n(
   let i18n = undefined as RootTranslation[] | undefined
 
   for (const fileName of i18nFileNames) {
-    i18n = i18n || (await parseI18nFile(fileName, format))
+    i18n ||= await parseI18nFile(fileName, format)
   }
 
   return i18n
@@ -161,6 +167,6 @@ export async function getOrigins({
     }
   }
 
-  // removeDir(I18N_BUILD_DIR)
+  removeDir(I18N_BUILD_DIR)
   return origins
 }

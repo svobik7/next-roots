@@ -13,7 +13,9 @@
     "start": "next start",
     "analyze": "cross-env ANALYZE=true next build",
     "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
-    "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build"
+    "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build",
+    "e2e": "start-server-and-test dev http://localhost:3000 \"cypress open --e2e\"",
+    "e2e:headless": "start-server-and-test dev http://localhost:3000 \"cypress run --e2e\""
   },
   "dependencies": {
     "@headlessui/react": "^2.1.2",
@@ -31,6 +33,7 @@
     "@types/react": "^18.3.3",
     "autoprefixer": "^10.4.19",
     "cross-env": "^7.0.2",
+    "cypress": "^13.15.2",
     "esbuild": "^0.23.0",
     "esbuild-node-externals": "^1.14.0",
     "eslint": "^8.42.0",
@@ -38,6 +41,7 @@
     "eslint-plugin-tailwindcss": "^3.12.1",
     "postcss": "^8.4.39",
     "prettier-plugin-tailwindcss": "^0.6.5",
+    "start-server-and-test": "^2.0.8",
     "tailwindcss": "^3.4.6",
     "typescript": "^5.5.4"
   }

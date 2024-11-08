@@ -37,6 +37,7 @@ export default function Modal({ children }: { children: ReactNode }) {
       ref={overlay}
       className="fixed inset-0 z-10 mx-auto overflow-y-auto bg-black/60"
       onClick={onClick}
+      data-testid="modal"
     >
       <div
         ref={wrapper}

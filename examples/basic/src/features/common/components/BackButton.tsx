@@ -10,6 +10,7 @@ export function BackButton({ children }: { children: ReactNode }) {
     <button
       onClick={router.back}
       className="rounded bg-indigo-600 px-4 py-2 text-base font-semibold leading-7 text-white"
+      data-testid="back-button"
     >
       {children}
     </button>
