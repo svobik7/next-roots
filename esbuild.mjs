@@ -10,7 +10,7 @@ build({
   treeShaking: true,
   platform: 'node',
   format: 'cjs',
-  target: 'node14',
+  target: 'node18',
   sourcemap: true,
   color: true,
   drop: ['debugger'],

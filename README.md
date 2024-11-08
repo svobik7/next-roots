@@ -354,7 +354,7 @@ module.exports.routeNames = [
 Useful when you want to store the translations in DB or other async storage:
 
 ```ts
-export async function generateRouteNames() {
+async function generateRouteNames() {
   // "getTranslation" is custom async function that loads translated paths from DB
   const { enPath, csPath } = await getTranslations('/about')
 
@@ -363,6 +363,9 @@ export async function generateRouteNames() {
     { locale: 'cs', path: csPath },
   ]
 }
+
+// needs to be exported in cjs syntax
+module.exports.generateRouteNames = generateRouteNames
 ```
 
 You don't need to specify translations for default locale. Routes inherit the path names from origin folders by default. If you specify the translation for default locale then it is used instead of origin folder name.
