@@ -10,6 +10,7 @@ import {
 export const PATTERNS = {
   originPath: getPattern('originPath'),
   pageHref: getPattern('pageHref'),
+  pageLocale: getPattern('pageLocale'),
 }
 
 export const tplStatic = `
@@ -20,7 +21,8 @@ export const tplDynamicForStaticRoute = `
 import {generateMetadata as generateMetadataOrigin} from '${PATTERNS.originPath}'
 
 export async function generateMetadata(props:any) {
-  return generateMetadataOrigin({ ...props, pageHref: "${PATTERNS.pageHref}" })
+  const getPageHref = () => "${PATTERNS.pageHref}"
+  return generateMetadataOrigin({ ...props, locale: "${PATTERNS.pageLocale}", getPageHref })
 }
 `
 
@@ -28,7 +30,8 @@ export const tplDynamicForDynamicRoute = `
 import {generateMetadata as generateMetadataOrigin} from '${PATTERNS.originPath}'
 
 export async function generateMetadata({ params, ...otherProps }:any) {
-  return generateMetadataOrigin({ ...otherProps, params, pageHref: compileHref('${PATTERNS.pageHref}', params) })
+  const getPageHref = async () => compileHref('${PATTERNS.pageHref}', await params)
+  return generateMetadataOrigin({ ...otherProps, params, locale: "${PATTERNS.pageLocale}", getPageHref })
 }
 `
 

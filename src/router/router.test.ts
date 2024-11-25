@@ -127,9 +127,10 @@ describe('getHref', () => {
 
   test.each(testCases)(
     'given %s as routeName and %o as params when pageHref is %s, returns %s',
-    (routeName, params, pageHref, expectedResult) => {
+    async (routeName, params, pageHref, expectedResult) => {
+      StaticRouter.setLocale(router.getLocaleFromHref(pageHref))
       StaticRouter.setPageHref(pageHref)
-      expect(StaticRouter.getPageHref()).toEqual(pageHref)
+      expect(await StaticRouter.getPageHref()).toEqual(pageHref)
 
       const result = router.getHref(routeName, params)
       expect(result).toEqual(expectedResult)
