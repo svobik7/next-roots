@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import type {
   GeneratePageMetadataProps,
-  GenerateStaticParamsProps,
+  GeneratePageStaticParamsProps,
   PageProps,
 } from 'next-roots'
 import Link from 'next/link'
@@ -18,17 +18,15 @@ import { Links } from 'src/features/common/components/Links'
 import { List } from 'src/features/common/components/List'
 import { fetchProductBySlug, fetchProducts } from 'src/server/db'
 import { Product } from 'src/server/db/types'
-import { getHomeHref, getProductsHref, router } from 'src/server/router'
+import { getHomeHref, getPageHref, getProductsHref } from 'src/server/router'
 import { getDictionary } from 'src/server/utils/getDictionary'
 
 type ProductDetailPageProps = {
-  pageHref: string
   pageLocale: string
   product?: Product
 }
 
 async function ProductDetailPage({
-  pageHref,
   pageLocale,
   product,
 }: ProductDetailPageProps) {
@@ -49,6 +47,8 @@ async function ProductDetailPage({
   }
 
   const href = getProductsHref({ product: currentProductTranslation })
+
+  const pageHref = await getPageHref()
 
   if (pageHref !== href) {
     return redirect(href)
@@ -77,25 +77,19 @@ async function ProductDetailPage({
   )
 }
 
-type ProductParams = { slugs: string }
+type ProductParams = Promise<{ slugs: string }>
 
 export default async function ProductPage({
   params,
-  pageHref,
+  locale,
 }: PageProps<ProductParams>) {
-  const pageLocale = router.getLocaleFromHref(pageHref)
-  const t = await getDictionary(pageLocale)
-  const translateProduct = getProductTranslationFactory(pageLocale)
+  const translateProduct = getProductTranslationFactory(locale)
 
-  if (params.slugs) {
-    const product = await fetchProductBySlug(params.slugs)
-    return (
-      <ProductDetailPage
-        product={product}
-        pageHref={pageHref}
-        pageLocale={pageLocale}
-      />
-    )
+  const awaitedParams = await params
+
+  if (awaitedParams.slugs) {
+    const product = await fetchProductBySlug(awaitedParams.slugs)
+    return <ProductDetailPage product={product} pageLocale={locale} />
   } else {
     const productsList = await fetchProducts()
     return (
@@ -113,16 +107,15 @@ export default async function ProductPage({
 }
 
 export async function generateMetadata({
-  pageHref,
+  locale,
   params,
 }: GeneratePageMetadataProps<ProductParams>): Promise<Metadata> {
-  const pageLocale = router.getLocaleFromHref(pageHref)
-  const t = await getDictionary(pageLocale)
+  const t = await getDictionary(locale)
 
-  const product = await fetchProductBySlug(params.slugs)
+  const product = await fetchProductBySlug((await params).slugs)
 
   if (product) {
-    return getProductMetadata(product, pageLocale)
+    return getProductMetadata(product, locale)
   }
 
   return { title: t('products.title'), description: t('products.content') }
@@ -130,7 +123,7 @@ export async function generateMetadata({
 
 export async function generateStaticParams({
   pageLocale,
-}: GenerateStaticParamsProps) {
+}: GeneratePageStaticParamsProps) {
   const products = await fetchProducts()
 
   return products

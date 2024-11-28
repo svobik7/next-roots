@@ -13,7 +13,11 @@ export function getLocales() {
 }
 
 export function getPageLocale() {
-  return router.getLocaleFromHref(Router.getPageHref())
+  return Router.getLocale()
+}
+
+export function getPageHref() {
+  return Router.getPageHref()
 }
 
 export function getArticleHref(article: ArticleTranslation) {
