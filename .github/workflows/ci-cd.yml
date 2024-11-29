@@ -21,10 +21,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
-      - name: Install dependencies
+      - name: Enable Corepack
+        run: corepack enable
+      - name: (PACKAGE) Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: (PACKAGE) Build package
+        run: yarn build
+      - name: (EXAMPLE) Install dependencies
         run: yarn install --frozen-lockfile
         working-directory: examples/basic
-      - name: Run tests
+      - name: (EXAMPLE) Run tests
         run: yarn e2e:headless
         working-directory: examples/basic
   Release:
@@ -46,6 +52,8 @@ jobs:
         uses: actions/setup-node@v
         with:
           node-version: 'lts/*'
+      - name: Enable Corepack
+        run: corepack enable
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies

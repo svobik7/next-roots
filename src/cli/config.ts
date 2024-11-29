@@ -21,8 +21,12 @@ export function getConfig(cliParams: CliParams): Config {
   const getOriginAbsolutePath = getPathFactory(cliParams.originDir)
   const getLocalizedAbsolutePath = getPathFactory(cliParams.localizedDir)
 
-  if (!isDirectory(getOriginAbsolutePath())) {
-    throw new ConfigError('Invalid "originDir" path. Directory does not exist.')
+  const originDir = getOriginAbsolutePath()
+
+  if (!isDirectory(originDir)) {
+    throw new ConfigError(
+      `Invalid "originDir" path. Directory "${originDir}" does not exist.`
+    )
   }
 
   const localizedDir = getLocalizedAbsolutePath()
@@ -31,9 +35,9 @@ export function getConfig(cliParams: CliParams): Config {
     makeDir(localizedDir)
   }
 
-  if (!isDirectory(getLocalizedAbsolutePath())) {
+  if (!isDirectory(localizedDir)) {
     throw new ConfigError(
-      'Invalid "localizedDir" path. Directory neither exists nor be created.'
+      `Invalid "localizedDir" path. Directory "${localizedDir}" neither exists nor be created.`
     )
   }
 
