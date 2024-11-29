@@ -12,13 +12,13 @@
     "skipLibCheck": true,
     "jsx": "react",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
       "~/*": ["src/*"]
     },
-    "types": ["@types/jest", "@types/node"]
+    "types": ["vitest/globals", "@types/node"]
   },
   "include": ["src"],
   "exclude": ["**/node_modules", "dist"]

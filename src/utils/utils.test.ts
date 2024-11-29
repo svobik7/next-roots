@@ -1,5 +1,6 @@
 import type { RouterSchema } from '~/types'
 import { trimLeadingSlash } from './path-utils'
+import { queue } from './queue-utils'
 import { isLayout, isNotFound, isPage } from './rewrite-utils'
 import {
   computeRoutePriority,
@@ -209,5 +210,17 @@ describe('schema-utils', () => {
     }
 
     expect(sanitizeSchema(inputSchema)).toEqual(expectedResult)
+  })
+})
+
+describe('queue-utils', () => {
+  test('queue', () => {
+    const executeQueue = queue<void>(
+      () => 1,
+      () => 2,
+      () => 3
+    )
+
+    expect(executeQueue()).toEqual([1, 2, 3])
   })
 })
