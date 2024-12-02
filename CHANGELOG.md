@@ -1,3 +1,10 @@
+## [4.0.1](https://github.com/svobik7/next-roots/compare/v4.0.0...v4.0.1) (2024-12-02)
+
+
+### Bug Fixes
+
+* **deps:** bump cross-spawn from 7.0.3 to 7.0.6 ([697b683](https://github.com/svobik7/next-roots/commit/697b6839dd76da6b6bbc204e9798bc039e7cc768))
+
 # [4.0.0](https://github.com/svobik7/next-roots/compare/v3.11.3...v4.0.0) (2024-12-02)
 
 
