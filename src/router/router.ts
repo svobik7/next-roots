@@ -1,5 +1,5 @@
 import { compile, match } from 'path-to-regexp'
-import type { Route, RouterSchema } from '~/types'
+import type { Route, RouteParams, RouterSchema } from '~/types'
 import { getLocaleFactory } from '~/utils/locale-utils'
 import { sanitizeSchema } from '~/utils/schema-utils'
 import { StaticRouter } from './static-router'
@@ -23,15 +23,12 @@ export class Router extends StaticRouter {
   /**
    * Creates href by finding route by given name and compiles its href with given params
    * @param {string} name - The name of the route
-   * @param {Record<string, string>} params - Parameters for the route
+   * @param {RouteParams} params - Parameters for the route
    * @returns {string} - The compiled href
    */
 
-  public getHref(name: string, params: Record<string, string> = {}): string {
-    const {
-      locale = this.getLocaleFromHref(StaticRouter.getPageHref()),
-      ...hrefParams
-    } = params
+  public getHref(name: string, params: RouteParams = {}): string {
+    const { locale = StaticRouter.getLocale(), ...hrefParams } = params
 
     Object.keys(hrefParams).forEach((key) => {
       if (hrefParams[key] === '' || hrefParams[key] === null) {
@@ -39,7 +36,10 @@ export class Router extends StaticRouter {
       }
     })
 
-    const route = this.findRouteByLocaleAndName(locale, name)
+    const route = this.findRouteByLocaleAndName(
+      Array.isArray(locale) ? locale.join('_') : locale,
+      name
+    )
     return formatHref(compileHref(route?.href || '', hrefParams))
   }
 
@@ -109,14 +109,11 @@ export class Router extends StaticRouter {
 /**
  * Puts given params to their appropriate places in given href
  * @param {string} href - The href template
- * @param {Record<string, string>} params - The parameters to insert into href
+ * @param {RouteParams} params - The parameters to insert into href
  * @returns {string} - The compiled href
  */
 
-export function compileHref(
-  href: string,
-  params: Record<string, string>
-): string {
+export function compileHref(href: string, params: RouteParams): string {
   let compiledHref = ''
   try {
     const getHref = compile(href, {

@@ -4,15 +4,13 @@ export function capitalize(input: string) {
   return input.charAt(0).toUpperCase() + input.slice(1)
 }
 
-
 export function alphanumeric(pathName: string): string {
   return pathName.replace(/[^a-zA-Z0-9]/gi, '')
 }
 
 export function trimExt(pathName: string): string {
-  return pathName.replace(/\.[^/.]+$/, "")
+  return pathName.replace(/\.[^/.]+$/, '')
 }
-
 
 export function trimLeadingSlash(pathName: string): string {
   return pathName.startsWith('/') ? pathName.slice(1) : pathName

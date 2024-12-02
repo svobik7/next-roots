@@ -19,7 +19,7 @@ export async function compileI18n(
     treeShaking: true,
     platform: 'node',
     format: format,
-    target: 'node14',
+    target: 'node18',
     drop: ['debugger'],
     conditions: ['react-server', 'next-roots-mock'],
     plugins: [nodeExternalsPlugin()],

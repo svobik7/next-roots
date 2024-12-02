@@ -8,6 +8,7 @@ const schema: RouterSchema = {
 }
 
 try {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const config = require(resolve(process.cwd(), 'roots.config.js'))
 
   schema.defaultLocale = config.defaultLocale

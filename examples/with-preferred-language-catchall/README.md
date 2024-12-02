@@ -1,5 +1,7 @@
 # Default prefix with preferred language
 
+> This example is currently locked on v3 but should be the same on v4.
+
 This example demonstrates how to use `next-roots` library with enabled default locale prefix and custom solution to redirect users to their preferred language when accessing url without locale prefix.
 
 # Prerequisites

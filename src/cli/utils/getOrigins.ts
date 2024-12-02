@@ -10,13 +10,23 @@ const I18N_FILE_NAMES = ['i18n.ts', 'i18n.mjs', 'i18n.cjs', 'i18n.js']
 const I18N_BUILD_DIR = '.next-roots'
 
 async function importI18nFile(fileName: string) {
+  const safeImportFile = async (filePath: string) => {
+    return import(filePath)
+      .then((module) => (module.default ? module.default : module))
+      .catch(() => undefined)
+  }
+
   // filename needs to be converted to URL later on
   // as absolute paths on Windows  (c:\..) cannot be imported
   const fileUrl = pathToFileURL(fileName).toString()
+  const fileByUrl = await safeImportFile(fileUrl)
 
-  return import(fileUrl).then((module) =>
-    module.default ? module.default : module
-  )
+  if (fileByUrl) {
+    return fileByUrl
+  }
+
+  const fileByName = await safeImportFile(fileName)
+  return fileByName
 }
 
 /**
@@ -28,18 +38,26 @@ async function parseI18nFile(
   fileName: string,
   format: 'esm' | 'cjs'
 ): Promise<RootTranslation[] | undefined> {
+  let compiledFileName = undefined as string | undefined
+
   try {
     if (!isFile(fileName)) {
       return undefined
     }
 
-    fileName = await compileI18n(fileName, I18N_BUILD_DIR, format)
+    compiledFileName = await compileI18n(fileName, I18N_BUILD_DIR, format)
+    const file = await importI18nFile(compiledFileName)
 
-    const { routeNames, generateRouteNames } = await importI18nFile(fileName)
-    return generateRouteNames ? await generateRouteNames() : routeNames
+    return file.generateRouteNames
+      ? await file.generateRouteNames()
+      : file.routeNames
   } catch (err) {
     // eslint-disable-next-line no-console
-    console.log({ fileName, err })
+    console.log('Error during parsing i18n file', {
+      fileName,
+      compiledFileName,
+      err,
+    })
     return undefined
   }
 }
@@ -66,7 +84,7 @@ async function getI18n(
   let i18n = undefined as RootTranslation[] | undefined
 
   for (const fileName of i18nFileNames) {
-    i18n = i18n || (await parseI18nFile(fileName, format))
+    i18n ||= await parseI18nFile(fileName, format)
   }
 
   return i18n

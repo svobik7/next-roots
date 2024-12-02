@@ -1,0 +1,65 @@
+name: CI/CD
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read # for checkout
+
+jobs:
+  Test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+      - name: Enable Corepack
+        run: corepack enable
+      - name: (PACKAGE) Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: (PACKAGE) Build package
+        run: yarn build
+      - name: (EXAMPLE) Install dependencies
+        run: yarn install --frozen-lockfile
+        working-directory: examples/basic
+      - name: (EXAMPLE) Run tests
+        run: yarn e2e:headless
+        working-directory: examples/basic
+  Release:
+    name: Release
+    needs: Test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master' # only release on pushes to master
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC for npm provenance
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node.js
+        uses: actions/setup-node@v
+        with:
+          node-version: 'lts/*'
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+        run: npm audit signatures
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: HUSKY=0 npx semantic-release

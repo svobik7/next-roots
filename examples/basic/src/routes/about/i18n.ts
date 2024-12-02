@@ -1,9 +1,9 @@
-import { getDictionary } from 'src/server/utils/getDictionary'
+import { getDictionaryByLocale } from 'src/server/utils/getDictionaryByLocale'
 
 export async function generateRouteNames() {
-  const tEN = await getDictionary('en')
-  const tCS = await getDictionary('cs')
-  const tES = await getDictionary('es')
+  const tEN = await getDictionaryByLocale('en')
+  const tCS = await getDictionaryByLocale('cs')
+  const tES = await getDictionaryByLocale('es')
 
   return [
     { locale: 'en', path: tEN('about.slug') },

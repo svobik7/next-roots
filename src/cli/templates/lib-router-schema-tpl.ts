@@ -1,6 +1,9 @@
 import type { RouterSchema } from '~/types'
-import type { CompileParams } from './tpl-utils'
-import { compileTemplateFactory, getPatternsFromNames } from './tpl-utils'
+import {
+  type CompileParams,
+  compileTemplateFactory,
+  getPatternsFromNames,
+} from './tpl-utils'
 
 export const PATTERNS = getPatternsFromNames('schema')
 

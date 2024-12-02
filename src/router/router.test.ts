@@ -1,4 +1,4 @@
-import type { RouterSchema } from '~/types'
+import type { RouteParams, RouterSchema } from '~/types'
 import { Router } from './router'
 import { StaticRouter } from './static-router'
 
@@ -17,7 +17,7 @@ const inputSchema: RouterSchema = {
       },
       {
         name: '/[...catchAll]',
-        href: '/es/:catchAll+',
+        href: '/es/*catchAll',
       },
       {
         name: '/[slug]',
@@ -29,11 +29,11 @@ const inputSchema: RouterSchema = {
       },
       {
         name: '/books/[...slug]',
-        href: '/es/libros/:slug+',
+        href: '/es/libros/*slug',
       },
       {
         name: '/products/[[...slug]]',
-        href: '/es/productos/:slug*',
+        href: '/es/productos{/*slug}',
       },
     ],
     cs: [
@@ -47,7 +47,7 @@ const inputSchema: RouterSchema = {
       },
       {
         name: '/[...catchAll]',
-        href: '/cs/:catchAll+',
+        href: '/cs/*catchAll',
       },
       {
         name: '/[slug]',
@@ -59,11 +59,11 @@ const inputSchema: RouterSchema = {
       },
       {
         name: '/books/[...slug]',
-        href: '/cs/knihy/:slug+',
+        href: '/cs/knihy/*slug',
       },
       {
         name: '/products/[[...slug]]',
-        href: '/cs/produkty/:slug*',
+        href: '/cs/produkty{/*slug}',
       },
     ],
   },
@@ -105,7 +105,7 @@ describe('getHref', () => {
     ],
     ['/books', undefined, '', '/es/libros'],
     ['/books', { locale: 'cs' }, '', '/cs/knihy'],
-    ['/books/[...slug]', { locale: 'cs', slug: '1' }, '', '/cs/knihy/1'],
+    ['/books/[...slug]', { locale: 'cs', slug: ['1'] }, '', '/cs/knihy/1'],
     ['/[slug]', undefined, '', '/es/:slug'],
     ['/[slug]', { locale: 'cs' }, '', '/cs/:slug'],
     ['/[slug]', { locale: 'cs', slug: '1' }, '', '/cs/1'],
@@ -113,23 +113,24 @@ describe('getHref', () => {
     ['/products/[[...slug]]', { locale: 'cs' }, '', '/cs/produkty'],
     [
       '/products/[[...slug]]',
-      { locale: 'cs', slug: '1' },
+      { locale: 'cs', slug: ['1'] },
       '',
       '/cs/produkty/1',
     ],
     [
       '/products/[[...slug]]',
-      { locale: 'cs', slug: '1/2' },
+      { locale: 'cs', slug: ['1', '2'] },
       '',
       '/cs/produkty/1/2',
     ],
-  ] as const
+  ] satisfies Array<[string, RouteParams | undefined, string, string]>
 
   test.each(testCases)(
     'given %s as routeName and %o as params when pageHref is %s, returns %s',
-    (routeName, params, pageHref, expectedResult) => {
+    async (routeName, params, pageHref, expectedResult) => {
+      StaticRouter.setLocale(router.getLocaleFromHref(pageHref))
       StaticRouter.setPageHref(pageHref)
-      expect(StaticRouter.getPageHref()).toEqual(pageHref)
+      expect(await StaticRouter.getPageHref()).toEqual(pageHref)
 
       const result = router.getHref(routeName, params)
       expect(result).toEqual(expectedResult)
@@ -162,27 +163,27 @@ describe('getRouteFromHref', () => {
     ['/es/aa-bb-cc', { name: '/[slug]', href: '/es/:slug' }],
     [
       '/cs/knihy/aa-bb-cc',
-      { name: '/books/[...slug]', href: '/cs/knihy/:slug+' },
+      { name: '/books/[...slug]', href: '/cs/knihy/*slug' },
     ],
     [
       '/es/libros/aa-bb-cc',
-      { name: '/books/[...slug]', href: '/es/libros/:slug+' },
+      { name: '/books/[...slug]', href: '/es/libros/*slug' },
     ],
     [
       '/cs/produkty',
-      { name: '/products/[[...slug]]', href: '/cs/produkty/:slug*' },
+      { name: '/products/[[...slug]]', href: '/cs/produkty{/*slug}' },
     ],
     [
       '/cs/produkty/aa-bb-cc',
-      { name: '/products/[[...slug]]', href: '/cs/produkty/:slug*' },
+      { name: '/products/[[...slug]]', href: '/cs/produkty{/*slug}' },
     ],
     [
       '/es/productos',
-      { name: '/products/[[...slug]]', href: '/es/productos/:slug*' },
+      { name: '/products/[[...slug]]', href: '/es/productos{/*slug}' },
     ],
     [
       '/es/productos/aa-bb-cc',
-      { name: '/products/[[...slug]]', href: '/es/productos/:slug*' },
+      { name: '/products/[[...slug]]', href: '/es/productos{/*slug}' },
     ],
     ['/cs/prihlaseni', { name: '/(auth)/login', href: '/cs/prihlaseni' }],
     ['/es/acceso', { name: '/(auth)/login', href: '/es/acceso' }],

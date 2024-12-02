@@ -3,12 +3,11 @@ import type { GeneratePageMetadataProps, PageProps } from 'next-roots'
 import { getBookTranslationFactory } from 'src/features/blog/utils/getBookTranslation'
 import { List } from 'src/features/common/components/List'
 import { fetchBooks } from 'src/server/db'
-import { getBooksDetailHref, router } from 'src/server/router'
+import { getBooksDetailHref } from 'src/server/router'
 import { getDictionary } from 'src/server/utils/getDictionary'
 
-export default async function BooksPage({ pageHref }: PageProps) {
-  const pageLocale = router.getLocaleFromHref(pageHref)
-  const translateBook = getBookTranslationFactory(pageLocale)
+export default async function BooksPage({ locale }: PageProps) {
+  const translateBook = getBookTranslationFactory(locale)
 
   const books = await fetchBooks()
 
@@ -26,10 +25,9 @@ export default async function BooksPage({ pageHref }: PageProps) {
 }
 
 export async function generateMetadata({
-  pageHref,
+  locale,
 }: GeneratePageMetadataProps): Promise<Metadata> {
-  const pageLocale = router.getLocaleFromHref(pageHref)
-  const t = await getDictionary(pageLocale)
+  const t = await getDictionary(locale)
 
   return { title: t('books.title'), description: t('books.content') }
 }

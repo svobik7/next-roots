@@ -29,11 +29,15 @@ describe('with dynamic routes', () => {
         },
         {
           name: '/books/[...slug]',
-          href: '/books-cs/:slug+',
+          href: '/books-cs/*slug',
         },
         {
           name: '/products/[[...slug]]',
-          href: '/products-cs/:slug*',
+          href: '/products-cs{/*slug}',
+        },
+        {
+          name: '/products/[[slug]]',
+          href: '/products-cs{/:slug}',
         },
       ],
       es: [
@@ -59,11 +63,15 @@ describe('with dynamic routes', () => {
         },
         {
           name: '/books/[...slug]',
-          href: '/books-es/:slug+',
+          href: '/books-es/*slug',
         },
         {
           name: '/products/[[...slug]]',
-          href: '/products-es/:slug*',
+          href: '/products-es{/*slug}',
+        },
+        {
+          name: '/products/[[slug]]',
+          href: '/products-es{/:slug}',
         },
       ],
     },
@@ -72,20 +80,23 @@ describe('with dynamic routes', () => {
   const expectedOutput = `
 export type RouteLocale = 'cs' | 'es';
 export type RouteNameStatic = '/account' | '/(auth)/login' | '/books';
-export type RouteNameDynamic = '/blog/articles/[articleId]' | '/blog/authors/[authorId]' | '/books/[...slug]' | '/products/[[...slug]]';
+export type RouteNameDynamic = '/blog/articles/[articleId]' | '/blog/authors/[authorId]' | '/books/[...slug]' | '/products/[[...slug]]' | '/products/[[slug]]';
 export type RouteName = RouteNameStatic | RouteNameDynamic;
 export type Route = { name: RouteName; href: \`/\${string}\` };
 
 export type RouteParamsStatic<T extends object = object> = T & { locale?: string };
-export type RouteParamsDynamic<T extends RouteName> = T extends '/blog/articles/[articleId]' ? RouteParamsStatic<{articleId:string}> : T extends '/blog/authors/[authorId]' ? RouteParamsStatic<{authorId:string}> : T extends '/books/[...slug]' ? RouteParamsStatic<{slug:string}> : T extends '/products/[[...slug]]' ? RouteParamsStatic<{slug?:string}> : RouteParamsStatic;
+export type RouteParamsDynamic<T extends RouteName> = T extends '/blog/articles/[articleId]' ? RouteParamsStatic<{articleId:string}> : T extends '/blog/authors/[authorId]' ? RouteParamsStatic<{authorId:string}> : T extends '/books/[...slug]' ? RouteParamsStatic<{slug:string[]}> : T extends '/products/[[...slug]]' ? RouteParamsStatic<{slug?:string[]}> : T extends '/products/[[slug]]' ? RouteParamsStatic<{slug?:string}> : RouteParamsStatic;
 
 export type RouterSchema = { defaultLocale: string, locales: string[], routes: Record<RouteLocale, Route[]> };
 
 export class Router {
   constructor(schema: RouterSchema)
   
-  static getPageHref(): string
+  static getLocale(): RouteLocale
+  static setLocale(locale: string): void 
+  static getPageHref(): Promise<string>
   static setPageHref(pageHref: string): void
+  static setParams(params: Promise<Record<string, string>>): void
   
   getHref<T extends RouteNameDynamic>(name: T, params: RouteParamsDynamic<T>): string
   getHref<T extends RouteNameStatic>(name: T): string
@@ -101,12 +112,12 @@ export function compileHref(href: string, params: Record<string, string>): strin
 export function formatHref(href: string, params: Record<string, string>): string
 
 export type PageProps<TParams = void> = TParams extends void
-  ? { pageHref: string }
-  : { pageHref: string; params: TParams }
+  ? { locale: RouteLocale }
+  : { locale: RouteLocale; params: TParams }
 export type LayoutProps<TParams = any> = { locale: string, params: TParams }
-export type GeneratePageMetadataProps<TParams = any> = { pageHref: string, params: TParams }
+export type GeneratePageMetadataProps<TParams = any> = { locale: RouteLocale, getPageHref: () => Promise<string>, params: TParams }
 export type GenerateLayoutMetadataProps<TParams = any> = { locale: string, params: TParams }
-export type GeneratePageViewportProps<TParams = any, TSParams = any> = { pageHref: string, params: TParams, searchParams: TSParams }
+export type GeneratePageViewportProps<TParams = any, TSParams = any> = { locale: RouteLocale, getPageHref: () => Promise<string>, params: TParams, searchParams: TSParams }
 export type GenerateLayoutViewportProps<TParams = any, TSParams = any> = { locale: string, params: TParams, searchParams: TSParams }
 /**
  * @deprecated Use GeneratePageStaticParamsProps instead
@@ -179,12 +190,12 @@ export function compileHref(href: string, params: Record<string, string>): strin
 export function formatHref(href: string, params: Record<string, string>): string
 
 export type PageProps<TParams = void> = TParams extends void
-  ? { pageHref: string }
-  : { pageHref: string; params: TParams }
+  ? { locale: RouteLocale }
+  : { locale: RouteLocale; params: TParams }
 export type LayoutProps<TParams = any> = { locale: string, params: TParams }
-export type GeneratePageMetadataProps<TParams = any> = { pageHref: string, params: TParams }
+export type GeneratePageMetadataProps<TParams = any> = { locale: RouteLocale, getPageHref: () => string, params: TParams }
 export type GenerateLayoutMetadataProps<TParams = any> = { locale: string, params: TParams }
-export type GeneratePageViewportProps<TSParams = any> = { pageHref: string, searchParams: TSParams }
+export type GeneratePageViewportProps<TSParams = any> = { locale: RouteLocale, getPageHref: () => string, searchParams: TSParams }
 export type GenerateLayoutViewportProps<TSParams = any> = { locale: string, searchParams: TSParams }
 /**
  * @deprecated Use GeneratePageStaticParamsProps instead

@@ -13,7 +13,11 @@ export function getLocales() {
 }
 
 export function getPageLocale() {
-  return router.getLocaleFromHref(Router.getPageHref())
+  return Router.getLocale()
+}
+
+export function getPageHref() {
+  return Router.getPageHref()
 }
 
 export function getArticleHref(article: ArticleTranslation) {
@@ -50,7 +54,7 @@ export function getProductsHref(input: GetProductsHrefProps) {
   const product = 'product' in input ? input.product : undefined
 
   return router.getHref('/products/[[...slugs]]', {
-    slugs: product?.slug,
+    slugs: product?.slug ? [product?.slug] : undefined,
     locale: locale || getPageLocale(),
   })
 }
@@ -61,7 +65,7 @@ export function getBooksHref(locale: string) {
 
 export function getBooksDetailHref(book: BookTranslation) {
   return router.getHref('/books/[...slugs]', {
-    slugs: book?.slug,
+    slugs: [book?.slug],
     locale: book.locale || getPageLocale(),
   })
 }

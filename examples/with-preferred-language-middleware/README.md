@@ -1,5 +1,7 @@
 # Usign a middleware to redirect new users to their preferred language
 
+> This example is currently locked on v3 but should be the same on v4.
+
 This example demonstrates how to use a middleware and `next-roots` to redirect users arriving on your site to their preferred language when accessing an url form another locale.
 
 This suits better when `prefixDefaultLocale` is set to `false` in `roots.config.js` file. If you rather use prefixed locales for all languages then we recommend you to check this example : [with-preferred-language-catchall](../with-preferred-language-catchall).
