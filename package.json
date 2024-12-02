@@ -1,6 +1,6 @@
 {
   "name": "next-roots",
-  "version": "3.11.3",
+  "version": "4.0.0-canary.0",
   "description": "Utility to handle internationalized routing for Next.js app folder.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -42,6 +42,7 @@
     "esbuild-node-externals": "^1.15.0",
     "node-watch": "^0.7.4",
     "parse-typed-args": "^0.2.0",
+    "patch-package": "^8.0.0",
     "path-to-regexp": "^8.2.0"
   },
   "devDependencies": {
@@ -69,7 +70,6 @@
     "eslint-plugin-unused-imports": "^4.1.4",
     "husky": "^9.1.7",
     "lint-staged": "^15.2.10",
-    "patch-package": "^8.0.0",
     "prettier": "^3.4.1",
     "semantic-release": "^24.2.0",
     "typescript": "^5.7.2",
