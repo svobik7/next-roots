@@ -7,8 +7,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "preinstall": "yarn --cwd ../..",
-    "roots": "node ./../../dist/cli.js -c ./roots.config.cjs --esm",
+    "roots": "next-roots -c ./roots.config.cjs --esm",
     "dev": "yarn roots && next dev",
     "build": "yarn roots && next build",
     "start": "next start",
@@ -21,7 +20,7 @@
     "@heroicons/react": "^2.1.5",
     "clsx": "^2.1.1",
     "next": "^14.2.5",
-    "next-roots": "link:../../",
+    "next-roots": "^3.11.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

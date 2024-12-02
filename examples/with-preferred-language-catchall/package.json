@@ -6,8 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "preinstall": "yarn --cwd ../..",
-    "roots": "node ./../../dist/cli.js",
+    "roots": "next-roots",
     "dev": "yarn roots && next dev",
     "build": "yarn roots && next build",
     "start": "next start",
@@ -23,7 +22,7 @@
     "accept-language-parser": "^1.5.0",
     "clsx": "^2.1.1",
     "next": "^14.2.5",
-    "next-roots": "link:../../",
+    "next-roots": "^3.11.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
