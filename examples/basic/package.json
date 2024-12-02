@@ -9,7 +9,7 @@
     "preinstall": "yarn --cwd ../..",
     "roots": "node ./../../dist/cli.js",
     "dev": "yarn roots && next dev",
-    "build": "next build",
+    "build": "yarn roots && next build",
     "start": "next start",
     "analyze": "cross-env ANALYZE=true next build",
     "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
