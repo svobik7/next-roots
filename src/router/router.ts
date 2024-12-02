@@ -28,10 +28,7 @@ export class Router extends StaticRouter {
    */
 
   public getHref(name: string, params: RouteParams = {}): string {
-    const { locale: localeParam, ...hrefParams } = params
-
-    const locale =
-      localeParam ?? this.getLocaleFromHref(StaticRouter.getPageHref())
+    const { locale = StaticRouter.getLocale(), ...hrefParams } = params
 
     Object.keys(hrefParams).forEach((key) => {
       if (hrefParams[key] === '' || hrefParams[key] === null) {

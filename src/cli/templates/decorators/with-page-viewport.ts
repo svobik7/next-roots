@@ -10,6 +10,7 @@ import {
 export const PATTERNS = {
   originPath: getPattern('originPath'),
   pageHref: getPattern('pageHref'),
+  pageLocale: getPattern('pageLocale'),
 }
 
 export const tplStatic = `
@@ -20,7 +21,8 @@ export const tplDynamicForStaticRoute = `
 import {generateViewport as generateViewportOrigin} from '${PATTERNS.originPath}'
 
 export function generateViewport({ searchParams, ...otherProps }:any) {
-  return generateViewportOrigin({ ...otherProps, searchParams, pageHref: "${PATTERNS.pageHref}" })
+  const getPageHref = () => "${PATTERNS.pageHref}"
+  return generateViewportOrigin({ ...otherProps, searchParams, locale: "${PATTERNS.pageLocale}", getPageHref })
 }
 `
 
@@ -28,7 +30,8 @@ export const tplDynamicForDynamicRoute = `
 import {generateViewport as generateViewportOrigin} from '${PATTERNS.originPath}'
 
 export function generateViewport({ params, searchParams, ...otherProps }:any) {
-  return generateViewportOrigin({ ...otherProps, params, searchParams, pageHref: compileHref('${PATTERNS.pageHref}') })
+  const getPageHref = async () => compileHref('${PATTERNS.pageHref}', await params)
+  return generateViewportOrigin({ ...otherProps, params, searchParams, locale: "${PATTERNS.pageLocale}", getPageHref })
 }
 `
 
