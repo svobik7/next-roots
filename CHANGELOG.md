@@ -1,3 +1,30 @@
+# [4.0.0](https://github.com/svobik7/next-roots/compare/v3.11.3...v4.0.0) (2024-12-02)
+
+
+### Bug Fixes
+
+* **deps:** adds support for path-to-regexp v8 ([5f21593](https://github.com/svobik7/next-roots/commit/5f215935084b0297dbf9d61429eb3cc43cfa06bc)), closes [#294](https://github.com/svobik7/next-roots/issues/294)
+* **deps:** fixed package missing deps ([f6ae2fa](https://github.com/svobik7/next-roots/commit/f6ae2fa77fcede5ca462de285d24a51c92983c6d))
+* **deps:** switched to jest because latest version of vitest did break dts-bundle-generator ([537cecb](https://github.com/svobik7/next-roots/commit/537cecbfca940fbea6ad6d08f9527a3af560a315))
+* **example:** fixed example basic build step ([2e8c25e](https://github.com/svobik7/next-roots/commit/2e8c25ebf203199cca99f9515ed6d319a861a90b))
+* **examples-basic:** remove code that is dependent of the package itself from i18n file ([d83d26f](https://github.com/svobik7/next-roots/commit/d83d26fe1255729ccaa486c86d618e262d547085))
+* **i18n:** updated compilation on i18.ts files ([b09ee9b](https://github.com/svobik7/next-roots/commit/b09ee9bf90e790e0f3c7e46a6b439ff4ada11648))
+
+
+### Features
+
+* add support for Next.js 15 async params ([1c76871](https://github.com/svobik7/next-roots/commit/1c768710e39e73152c6b7b42cd1d01e9a08dab74)), closes [#302](https://github.com/svobik7/next-roots/issues/302)
+
+
+### BREAKING CHANGES
+
+* StaticRouter.getPageHref() returns a promised string instead of a string
+* Function generateMetadata and generateViewPort will be passed an async getPageHref function and locale as a string instead of a compiled pageHref
+* **i18n:** export async function generateRouteNames is no longer supported. Must be defined as
+module.exports.generateRouteNames = generateRouteNames
+* **deps:** Catch all params like [...slug] must now be provided as array of strings e.g.
+["first", "second"]. Passing them as a string like "first/second" is not supported anymore
+
 ## [3.11.3](https://github.com/svobik7/next-roots/compare/v3.11.2...v3.11.3) (2024-09-27)
 
 
