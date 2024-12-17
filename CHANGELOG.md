@@ -1,3 +1,10 @@
+## [4.0.2](https://github.com/svobik7/next-roots/compare/v4.0.1...v4.0.2) (2024-12-17)
+
+
+### Bug Fixes
+
+* **templates:** removed unused compileHref from page template and fixed generateViewport function ([ebc5e0f](https://github.com/svobik7/next-roots/commit/ebc5e0fa5c5d4c2c060aba5542f8dac5bd90ba11)), closes [#320](https://github.com/svobik7/next-roots/issues/320)
+
 ## [4.0.1](https://github.com/svobik7/next-roots/compare/v4.0.0...v4.0.1) (2024-12-02)
 
 
