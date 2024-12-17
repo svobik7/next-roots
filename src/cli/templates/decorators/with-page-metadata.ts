@@ -27,6 +27,7 @@ export async function generateMetadata(props:any) {
 `
 
 export const tplDynamicForDynamicRoute = `
+import { compileHref } from 'next-roots'
 import {generateMetadata as generateMetadataOrigin} from '${PATTERNS.originPath}'
 
 export async function generateMetadata({ params, ...otherProps }:any) {
