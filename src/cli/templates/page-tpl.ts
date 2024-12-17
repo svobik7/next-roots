@@ -41,7 +41,7 @@ export default function ${PATTERNS.originName}(props:any) {
 
 export const tplDynamic = `
 import ${PATTERNS.originName}Origin from '${PATTERNS.originPath}'
-import { Router, compileHref } from 'next-roots'
+import { Router } from 'next-roots'
 
 export default function ${PATTERNS.originName}({ params, ...otherProps }:any) {
   Router.setLocale('${PATTERNS.pageLocale}')

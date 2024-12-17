@@ -27,6 +27,7 @@ export function generateViewport({ searchParams, ...otherProps }:any) {
 `
 
 export const tplDynamicForDynamicRoute = `
+import { compileHref } from 'next-roots'
 import {generateViewport as generateViewportOrigin} from '${PATTERNS.originPath}'
 
 export function generateViewport({ params, searchParams, ...otherProps }:any) {
@@ -35,11 +36,11 @@ export function generateViewport({ params, searchParams, ...otherProps }:any) {
 }
 `
 
-export function withPageStaticMetaData(input: string) {
+export function withPageStaticViewport(input: string) {
   return `${input}${tplStatic}`
 }
 
-export function withPageDynamicMetaDataFactory(rewrite: Rewrite) {
+export function withPageDynamicViewportFactory(rewrite: Rewrite) {
   return (input: string) => {
     let output = `${input}${
       isDynamicRewrite(rewrite)
@@ -59,11 +60,11 @@ export function withPageViewportDecoratorFactory(
   params: DecoratorParams
 ): CompileFn {
   if (params.getOriginContents().match(/export function generateViewport/g)) {
-    return withPageDynamicMetaDataFactory(params.getRewrite())
+    return withPageDynamicViewportFactory(params.getRewrite())
   }
 
   if (params.getOriginContents().match(/export const viewport/g)) {
-    return withPageStaticMetaData
+    return withPageStaticViewport
   }
 
   return (i: string) => i

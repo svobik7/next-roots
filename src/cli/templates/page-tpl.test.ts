@@ -79,7 +79,7 @@ export default function AuthLoginPage(props:any) {
 test('should create page for [dynamic] route', () => {
   const expectedOutput = `
 import BlogAuthorIdPageOrigin from '../../../../../roots/blog/[authorId]/page'
-import { Router, compileHref } from 'next-roots'
+import { Router } from 'next-roots'
 
 export default function BlogAuthorIdPage({ params, ...otherProps }) {
   Router.setLocale('cs')
@@ -111,7 +111,7 @@ export default function BlogAuthorIdPage({ params, ...otherProps }) {
 test('should create page for [[...optionalCatchAll]] route', () => {
   const expectedOutput = `
 import ProductsPageOrigin from '../../../../../roots/products/[[...slugs]]/page'
-import { Router, compileHref } from 'next-roots'
+import { Router } from 'next-roots'
 
 export default function ProductsPage({ params, ...otherProps }) {
   Router.setLocale('cs')
@@ -204,6 +204,54 @@ export async function generateMetadata(props) {
   expect(output).toBe(expectedOutput)
 })
 
+test('should create page for [dynamic] route with generate static params and generateMetadata function', () => {
+  const expectedOutput = `
+import BlogAuthorIdPageOrigin from '../../../../../roots/blog/[authorId]/page'
+import { Router } from 'next-roots'
+
+export default function BlogAuthorIdPage({ params, ...otherProps }:any) {
+  Router.setLocale('cs')
+  Router.setPageHref('/cs/magazin/:authorId')
+  Router.setParams(params)
+  {/* @ts-ignore */}
+  return <BlogAuthorIdPageOrigin {...otherProps} params={params} locale={"cs"} />
+}
+
+import { compileHref } from 'next-roots'
+import {generateMetadata as generateMetadataOrigin} from '../../../../../roots/blog/[authorId]/page'
+
+export async function generateMetadata({ params, ...otherProps }:any) {
+  const getPageHref = async () => compileHref('/cs/magazin/:authorId', await params)
+  return generateMetadataOrigin({ ...otherProps, params, locale: "cs", getPageHref })
+}
+
+import {generateStaticParams as generateStaticParamsOrigin} from '../../../../../roots/blog/[authorId]/page'
+
+export async function generateStaticParams({ params, ...otherProps }:any) {
+  return generateStaticParamsOrigin({ ...otherProps, params, pageLocale: "cs" })
+}
+`
+  const inputRewrite = {
+    originPath: '/blog/[authorId]/page.ts',
+    localizedPath: '/cs/magazin/[authorId]/page.ts',
+  }
+
+  const inputConfig = {
+    ...defaultConfig,
+    // resolves to = /src/app/cs/magazin/[authorId]/page.ts
+    getLocalizedAbsolutePath: (fileName = '') =>
+      path.join('/src/app', fileName),
+    // resolves to = /roots/magazin/[authorId]/page.ts
+    getOriginAbsolutePath: (fileName = '') => path.join('/roots', fileName),
+    getOriginContents: () =>
+      `export async function generateMetadata() {};export async function generateStaticParams() {}`,
+  }
+
+  const compile = compileFactory(inputConfig)
+  const output = compile(inputRewrite)
+  expect(output).toBe(expectedOutput)
+})
+
 test('should create page with static viewport object', () => {
   const expectedOutput = `
 import StaticViewportPageOrigin from '..'
@@ -267,10 +315,10 @@ export function generateViewport({ searchParams, ...otherProps }) {
   expect(output).toBe(expectedOutput)
 })
 
-test('should create page for [dynamic] route with generate static params and generateMetadata functions', () => {
+test('should create page for [dynamic] route with generate static params and generateViewport function', () => {
   const expectedOutput = `
 import BlogAuthorIdPageOrigin from '../../../../../roots/blog/[authorId]/page'
-import { Router, compileHref } from 'next-roots'
+import { Router } from 'next-roots'
 
 export default function BlogAuthorIdPage({ params, ...otherProps }:any) {
   Router.setLocale('cs')
@@ -280,11 +328,12 @@ export default function BlogAuthorIdPage({ params, ...otherProps }:any) {
   return <BlogAuthorIdPageOrigin {...otherProps} params={params} locale={"cs"} />
 }
 
-import {generateMetadata as generateMetadataOrigin} from '../../../../../roots/blog/[authorId]/page'
+import { compileHref } from 'next-roots'
+import {generateViewport as generateViewportOrigin} from '../../../../../roots/blog/[authorId]/page'
 
-export async function generateMetadata({ params, ...otherProps }:any) {
+export function generateViewport({ params, searchParams, ...otherProps }:any) {
   const getPageHref = async () => compileHref('/cs/magazin/:authorId', await params)
-  return generateMetadataOrigin({ ...otherProps, params, locale: "cs", getPageHref })
+  return generateViewportOrigin({ ...otherProps, params, searchParams, locale: "cs", getPageHref })
 }
 
 import {generateStaticParams as generateStaticParamsOrigin} from '../../../../../roots/blog/[authorId]/page'
@@ -306,7 +355,7 @@ export async function generateStaticParams({ params, ...otherProps }:any) {
     // resolves to = /roots/magazin/[authorId]/page.ts
     getOriginAbsolutePath: (fileName = '') => path.join('/roots', fileName),
     getOriginContents: () =>
-      `export async function generateMetadata() {};export async function generateStaticParams() {}`,
+      `export function generateViewport() {};export async function generateStaticParams() {}`,
   }
 
   const compile = compileFactory(inputConfig)
