@@ -21,7 +21,7 @@
   },
   "scripts": {
     "prepare": "husky",
-    "postinstall": "yarn patch-package",
+    "postinstall": "patch-package",
     "clean": "rm -rf dist || true",
     "build": "yarn clean && yarn typecheck && yarn test && node esbuild.mjs && yarn build:types && yarn lint",
     "build:types": "yarn dts-bundle-generator --config ./dts.config.js",
