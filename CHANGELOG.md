@@ -1,3 +1,10 @@
+## [4.0.3](https://github.com/svobik7/next-roots/compare/v4.0.2...v4.0.3) (2024-12-30)
+
+
+### Bug Fixes
+
+* **pkg:** removes yarn from postinstall ([4a678fe](https://github.com/svobik7/next-roots/commit/4a678feacc0820b2e4b95b82483e3b04844db0e3)), closes [#336](https://github.com/svobik7/next-roots/issues/336)
+
 ## [4.0.2](https://github.com/svobik7/next-roots/compare/v4.0.1...v4.0.2) (2024-12-17)
 
 
