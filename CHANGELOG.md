@@ -1,3 +1,10 @@
+## [4.0.5](https://github.com/svobik7/next-roots/compare/v4.0.4...v4.0.5) (2025-01-13)
+
+
+### Bug Fixes
+
+* **deps:** bump esbuild-node-externals from 1.15.0 to 1.16.0 ([431b526](https://github.com/svobik7/next-roots/commit/431b526258e56498a471b091ecb2a7c8a6b7e313))
+
 ## [4.0.4](https://github.com/svobik7/next-roots/compare/v4.0.3...v4.0.4) (2025-01-13)
 
 
