@@ -1,3 +1,10 @@
+## [4.0.4](https://github.com/svobik7/next-roots/compare/v4.0.3...v4.0.4) (2025-01-13)
+
+
+### Bug Fixes
+
+* **deps:** bump esbuild from 0.24.0 to 0.24.2 ([9b349d6](https://github.com/svobik7/next-roots/commit/9b349d6394417f1ae08ab6e09adefe6f6bfc0b39))
+
 ## [4.0.3](https://github.com/svobik7/next-roots/compare/v4.0.2...v4.0.3) (2024-12-30)
 
 
