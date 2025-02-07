@@ -1,3 +1,10 @@
+## [4.0.6](https://github.com/svobik7/next-roots/compare/v4.0.5...v4.0.6) (2025-02-07)
+
+
+### Bug Fixes
+
+* **types:** fixed types generation for static routes ([49a5726](https://github.com/svobik7/next-roots/commit/49a5726a81ee4e4c2e6846f7ebf270a83c281824))
+
 ## [4.0.5](https://github.com/svobik7/next-roots/compare/v4.0.4...v4.0.5) (2025-01-13)
 
 
