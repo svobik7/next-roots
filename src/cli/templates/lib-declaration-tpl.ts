@@ -13,98 +13,61 @@ export const PATTERNS = getPatternsFromNames(
   'routeParamsDynamic'
 )
 
-export const tpl = `
-export type RouteLocale = ${PATTERNS.routeLocales};
-export type RouteNameStatic = ${PATTERNS.routeNamesStatic};
-export type RouteName = RouteNameStatic;
-export type Route = { name: RouteName; href: \`/\${string}\` };
-
-export type RouteParamsStatic<T extends object = object> = T & { locale?: string };
-
-export type RouterSchema = { defaultLocale: string, locales: string[], routes: Record<RouteLocale, Route[]> };
-
-export class Router {
-  constructor(schema: RouterSchema)
-  
-  static getPageHref(): string
-  static setPageHref(pageHref: string): void
-  
-  getHref<T extends RouteNameStatic>(name: T): string
-  getHref<T extends RouteNameStatic>(name: T, params: RouteParamsStatic): string
-
-  getLocaleFromHref(href: string): string
-  getRouteFromHref(href: string): Route | undefined
+type GetTplProps = {
+  isDynamic?: boolean
 }
 
-export const schema: RouterSchema;
-
-export function compileHref(href: string, params: Record<string, string>): string
-export function formatHref(href: string, params: Record<string, string>): string
-
-export type PageProps<TParams = void> = TParams extends void
-  ? { locale: RouteLocale }
-  : { locale: RouteLocale; params: TParams }
-export type LayoutProps<TParams = any> = { locale: string, params: TParams }
-export type GeneratePageMetadataProps<TParams = any> = { locale: RouteLocale, getPageHref: () => string, params: TParams }
-export type GenerateLayoutMetadataProps<TParams = any> = { locale: string, params: TParams }
-export type GeneratePageViewportProps<TSParams = any> = { locale: RouteLocale, getPageHref: () => string, searchParams: TSParams }
-export type GenerateLayoutViewportProps<TSParams = any> = { locale: string, searchParams: TSParams }
-/**
- * @deprecated Use GeneratePageStaticParamsProps instead
- */
-export type GenerateStaticParamsProps = { pageLocale: string }
-export type GeneratePageStaticParamsProps<TParams = any> = { pageLocale: string, params: TParams }
-export type GenerateLayoutStaticParamsProps<TParams = any> = { locale: string, params: TParams }
-`
-
-export const tplWithDynamicRoutes = `
+export const getTpl = ({ isDynamic = false }: GetTplProps) => `
 export type RouteLocale = ${PATTERNS.routeLocales};
 export type RouteNameStatic = ${PATTERNS.routeNamesStatic};
-export type RouteNameDynamic = ${PATTERNS.routeNamesDynamic};
-export type RouteName = RouteNameStatic | RouteNameDynamic;
+export type RouteNameDynamic = ${isDynamic ? PATTERNS.routeNamesDynamic : 'never'};
+
+export type RouteName = ${isDynamic ? 'RouteNameStatic | RouteNameDynamic' : 'RouteNameStatic'};
 export type Route = { name: RouteName; href: \`/\${string}\` };
 
 export type RouteParamsStatic<T extends object = object> = T & { locale?: string };
-export type RouteParamsDynamic<T extends RouteName> = ${PATTERNS.routeParamsDynamic};
+export type RouteParamsDynamic<T extends RouteName> = ${isDynamic ? PATTERNS.routeParamsDynamic : 'RouteParamsStatic'};
 
 export type RouterSchema = { defaultLocale: string, locales: string[], routes: Record<RouteLocale, Route[]> };
+export const schema: RouterSchema;
 
 export class Router {
   constructor(schema: RouterSchema)
   
   static getLocale(): RouteLocale
-  static setLocale(locale: string): void 
+  static setLocale(locale: string): void
+  
   static getPageHref(): Promise<string>
   static setPageHref(pageHref: string): void
+  
   static setParams(params: Promise<Record<string, string>>): void
   
-  getHref<T extends RouteNameDynamic>(name: T, params: RouteParamsDynamic<T>): string
   getHref<T extends RouteNameStatic>(name: T): string
   getHref<T extends RouteNameStatic>(name: T, params: RouteParamsStatic): string
+  ${isDynamic ? 'getHref<T extends RouteNameDynamic>(name: T, params: RouteParamsDynamic<T>): string' : ''}
 
   getLocaleFromHref(href: string): string
   getRouteFromHref(href: string): Route | undefined
 }
 
-export const schema: RouterSchema;
-
 export function compileHref(href: string, params: Record<string, string>): string
 export function formatHref(href: string, params: Record<string, string>): string
 
-export type PageProps<TParams = void> = TParams extends void
-  ? { locale: RouteLocale }
-  : { locale: RouteLocale; params: TParams }
+export type PageProps<TParams = any, TSearchParams = any> = { locale: RouteLocale; params: TParams, searchParams: TSearchParams }
 export type LayoutProps<TParams = any> = { locale: string, params: TParams }
-export type GeneratePageMetadataProps<TParams = any> = { locale: RouteLocale, getPageHref: () => Promise<string>, params: TParams }
+
+export type GeneratePageStaticParamsProps<TParams = any, TSearchParams = any> = { pageLocale: string, params: TParams, searchParams: TSearchParams }
+export type GeneratePageMetadataProps<TParams = any, TSearchParams = any> = { locale: RouteLocale, getPageHref: () => Promise<string>, params: TParams, searchParams: TSearchParams }
+export type GeneratePageViewportProps<TParams = any, TSearchParams = any> = { locale: RouteLocale, getPageHref: () => Promise<string>, params: TParams, searchParams: TSearchParams }
+
+export type GenerateLayoutStaticParamsProps<TParams = any> = { locale: string, params: TParams }
 export type GenerateLayoutMetadataProps<TParams = any> = { locale: string, params: TParams }
-export type GeneratePageViewportProps<TParams = any, TSParams = any> = { locale: RouteLocale, getPageHref: () => Promise<string>, params: TParams, searchParams: TSParams }
-export type GenerateLayoutViewportProps<TParams = any, TSParams = any> = { locale: string, params: TParams, searchParams: TSParams }
+export type GenerateLayoutViewportProps<TParams = any> = { locale: string, params: TParams }
+
 /**
  * @deprecated Use GeneratePageStaticParamsProps instead
  */
 export type GenerateStaticParamsProps = { pageLocale: string }
-export type GeneratePageStaticParamsProps<TParams = any> = { pageLocale: string, params: TParams }
-export type GenerateLayoutStaticParamsProps<TParams = any> = { locale: string, params: TParams }
 `
 
 function not<T>(fn: (input: T) => boolean) {
@@ -213,7 +176,7 @@ export function compile(schema: RouterSchema) {
 
   const compileTemplate = compileTemplateFactory()
   return compileTemplate(
-    params.routeNamesDynamic ? tplWithDynamicRoutes : tpl,
+    getTpl({ isDynamic: !!params.routeNamesDynamic }),
     params
   )
 }

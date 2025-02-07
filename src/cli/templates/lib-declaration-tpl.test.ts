@@ -81,6 +81,7 @@ describe('with dynamic routes', () => {
 export type RouteLocale = 'cs' | 'es';
 export type RouteNameStatic = '/account' | '/(auth)/login' | '/books';
 export type RouteNameDynamic = '/blog/articles/[articleId]' | '/blog/authors/[authorId]' | '/books/[...slug]' | '/products/[[...slug]]' | '/products/[[slug]]';
+
 export type RouteName = RouteNameStatic | RouteNameDynamic;
 export type Route = { name: RouteName; href: \`/\${string}\` };
 
@@ -88,43 +89,45 @@ export type RouteParamsStatic<T extends object = object> = T & { locale?: string
 export type RouteParamsDynamic<T extends RouteName> = T extends '/blog/articles/[articleId]' ? RouteParamsStatic<{articleId:string}> : T extends '/blog/authors/[authorId]' ? RouteParamsStatic<{authorId:string}> : T extends '/books/[...slug]' ? RouteParamsStatic<{slug:string[]}> : T extends '/products/[[...slug]]' ? RouteParamsStatic<{slug?:string[]}> : T extends '/products/[[slug]]' ? RouteParamsStatic<{slug?:string}> : RouteParamsStatic;
 
 export type RouterSchema = { defaultLocale: string, locales: string[], routes: Record<RouteLocale, Route[]> };
+export const schema: RouterSchema;
 
 export class Router {
   constructor(schema: RouterSchema)
   
   static getLocale(): RouteLocale
-  static setLocale(locale: string): void 
+  static setLocale(locale: string): void
+  
   static getPageHref(): Promise<string>
   static setPageHref(pageHref: string): void
+  
   static setParams(params: Promise<Record<string, string>>): void
   
-  getHref<T extends RouteNameDynamic>(name: T, params: RouteParamsDynamic<T>): string
   getHref<T extends RouteNameStatic>(name: T): string
   getHref<T extends RouteNameStatic>(name: T, params: RouteParamsStatic): string
+  getHref<T extends RouteNameDynamic>(name: T, params: RouteParamsDynamic<T>): string
 
   getLocaleFromHref(href: string): string
   getRouteFromHref(href: string): Route | undefined
 }
 
-export const schema: RouterSchema;
-
 export function compileHref(href: string, params: Record<string, string>): string
 export function formatHref(href: string, params: Record<string, string>): string
 
-export type PageProps<TParams = void> = TParams extends void
-  ? { locale: RouteLocale }
-  : { locale: RouteLocale; params: TParams }
+export type PageProps<TParams = any, TSearchParams = any> = { locale: RouteLocale; params: TParams, searchParams: TSearchParams }
 export type LayoutProps<TParams = any> = { locale: string, params: TParams }
-export type GeneratePageMetadataProps<TParams = any> = { locale: RouteLocale, getPageHref: () => Promise<string>, params: TParams }
+
+export type GeneratePageStaticParamsProps<TParams = any, TSearchParams = any> = { pageLocale: string, params: TParams, searchParams: TSearchParams }
+export type GeneratePageMetadataProps<TParams = any, TSearchParams = any> = { locale: RouteLocale, getPageHref: () => Promise<string>, params: TParams, searchParams: TSearchParams }
+export type GeneratePageViewportProps<TParams = any, TSearchParams = any> = { locale: RouteLocale, getPageHref: () => Promise<string>, params: TParams, searchParams: TSearchParams }
+
+export type GenerateLayoutStaticParamsProps<TParams = any> = { locale: string, params: TParams }
 export type GenerateLayoutMetadataProps<TParams = any> = { locale: string, params: TParams }
-export type GeneratePageViewportProps<TParams = any, TSParams = any> = { locale: RouteLocale, getPageHref: () => Promise<string>, params: TParams, searchParams: TSParams }
-export type GenerateLayoutViewportProps<TParams = any, TSParams = any> = { locale: string, params: TParams, searchParams: TSParams }
+export type GenerateLayoutViewportProps<TParams = any> = { locale: string, params: TParams }
+
 /**
  * @deprecated Use GeneratePageStaticParamsProps instead
  */
 export type GenerateStaticParamsProps = { pageLocale: string }
-export type GeneratePageStaticParamsProps<TParams = any> = { pageLocale: string, params: TParams }
-export type GenerateLayoutStaticParamsProps<TParams = any> = { locale: string, params: TParams }
 `
 
   test('should create lib declaration', () => {
@@ -164,45 +167,54 @@ describe('only static routes', () => {
   const expectedOutput = `
 export type RouteLocale = 'cs' | 'es';
 export type RouteNameStatic = '/account' | '/(auth)/login';
+export type RouteNameDynamic = never;
+
 export type RouteName = RouteNameStatic;
 export type Route = { name: RouteName; href: \`/\${string}\` };
 
 export type RouteParamsStatic<T extends object = object> = T & { locale?: string };
+export type RouteParamsDynamic<T extends RouteName> = RouteParamsStatic;
 
 export type RouterSchema = { defaultLocale: string, locales: string[], routes: Record<RouteLocale, Route[]> };
+export const schema: RouterSchema;
 
 export class Router {
   constructor(schema: RouterSchema)
   
-  static getPageHref(): string
+  static getLocale(): RouteLocale
+  static setLocale(locale: string): void
+  
+  static getPageHref(): Promise<string>
   static setPageHref(pageHref: string): void
+  
+  static setParams(params: Promise<Record<string, string>>): void
   
   getHref<T extends RouteNameStatic>(name: T): string
   getHref<T extends RouteNameStatic>(name: T, params: RouteParamsStatic): string
+  
 
   getLocaleFromHref(href: string): string
   getRouteFromHref(href: string): Route | undefined
 }
 
-export const schema: RouterSchema;
-
 export function compileHref(href: string, params: Record<string, string>): string
 export function formatHref(href: string, params: Record<string, string>): string
 
-export type PageProps<TParams = void> = TParams extends void
-  ? { locale: RouteLocale }
-  : { locale: RouteLocale; params: TParams }
+export type PageProps<TParams = any, TSearchParams = any> = { locale: RouteLocale; params: TParams, searchParams: TSearchParams }
 export type LayoutProps<TParams = any> = { locale: string, params: TParams }
-export type GeneratePageMetadataProps<TParams = any> = { locale: RouteLocale, getPageHref: () => string, params: TParams }
+
+export type GeneratePageStaticParamsProps<TParams = any, TSearchParams = any> = { pageLocale: string, params: TParams, searchParams: TSearchParams }
+export type GeneratePageMetadataProps<TParams = any, TSearchParams = any> = { locale: RouteLocale, getPageHref: () => Promise<string>, params: TParams, searchParams: TSearchParams }
+export type GeneratePageViewportProps<TParams = any, TSearchParams = any> = { locale: RouteLocale, getPageHref: () => Promise<string>, params: TParams, searchParams: TSearchParams }
+
+export type GenerateLayoutStaticParamsProps<TParams = any> = { locale: string, params: TParams }
 export type GenerateLayoutMetadataProps<TParams = any> = { locale: string, params: TParams }
-export type GeneratePageViewportProps<TSParams = any> = { locale: RouteLocale, getPageHref: () => string, searchParams: TSParams }
-export type GenerateLayoutViewportProps<TSParams = any> = { locale: string, searchParams: TSParams }
+export type GenerateLayoutViewportProps<TParams = any> = { locale: string, params: TParams }
+
 /**
  * @deprecated Use GeneratePageStaticParamsProps instead
  */
 export type GenerateStaticParamsProps = { pageLocale: string }
-export type GeneratePageStaticParamsProps<TParams = any> = { pageLocale: string, params: TParams }
-export type GenerateLayoutStaticParamsProps<TParams = any> = { locale: string, params: TParams }
 `
 
   test('should create lib declaration', () => {
