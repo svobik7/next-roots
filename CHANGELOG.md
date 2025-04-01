@@ -1,3 +1,10 @@
+## [4.0.8](https://github.com/svobik7/next-roots/compare/v4.0.7...v4.0.8) (2025-04-01)
+
+
+### Bug Fixes
+
+* **deps:** bump @octokit/request from 9.1.3 to 9.2.2 ([486be48](https://github.com/svobik7/next-roots/commit/486be48116dcef035a5dbd4b8cb34a47728523d2))
+
 ## [4.0.7](https://github.com/svobik7/next-roots/compare/v4.0.6...v4.0.7) (2025-04-01)
 
 
