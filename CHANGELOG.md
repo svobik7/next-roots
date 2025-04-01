@@ -1,3 +1,13 @@
+## [4.0.7](https://github.com/svobik7/next-roots/compare/v4.0.6...v4.0.7) (2025-04-01)
+
+
+### Bug Fixes
+
+* **deps:** bump @octokit/plugin-paginate-rest from 11.3.6 to 11.4.3 ([8c81e69](https://github.com/svobik7/next-roots/commit/8c81e69bbda0ebf501c8cbb7a718648cb0305d4e))
+* **deps:** bump @octokit/request-error from 6.1.5 to 6.1.7 ([48688a5](https://github.com/svobik7/next-roots/commit/48688a567b94238cf50aa769590bd42863aa046b))
+* **deps:** bump esbuild from 0.24.2 to 0.25.0 ([570f9eb](https://github.com/svobik7/next-roots/commit/570f9ebd0de9d0f507ec646dd7dcf06333705c40))
+* **deps:** bump vite from 6.2.0 to 6.2.4 ([5fb6312](https://github.com/svobik7/next-roots/commit/5fb631217551cc18e732af8cf7d802bae497adce))
+
 ## [4.0.6](https://github.com/svobik7/next-roots/compare/v4.0.5...v4.0.6) (2025-02-07)
 
 
