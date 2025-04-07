@@ -1,3 +1,12 @@
+## [4.0.9](https://github.com/svobik7/next-roots/compare/v4.0.8...v4.0.9) (2025-04-07)
+
+
+### Bug Fixes
+
+* **deps:** bump vite from 6.2.4 to 6.2.5 ([c5571b8](https://github.com/svobik7/next-roots/commit/c5571b8c091745015f251ae6fe3a1ec2684553c0))
+* **deps:** deps update [#1](https://github.com/svobik7/next-roots/issues/1) ([c5b7c58](https://github.com/svobik7/next-roots/commit/c5b7c58e1185cc773b937c4ee23dc9d3cbbd644e))
+* **deps:** deps update [#2](https://github.com/svobik7/next-roots/issues/2) ([ab10460](https://github.com/svobik7/next-roots/commit/ab10460af964e379e6cfad27b0b9adbba48295c6))
+
 ## [4.0.8](https://github.com/svobik7/next-roots/compare/v4.0.7...v4.0.8) (2025-04-01)
 
 
