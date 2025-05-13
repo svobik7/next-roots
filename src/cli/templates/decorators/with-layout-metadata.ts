@@ -44,12 +44,12 @@ export function withLayoutMetadataDecoratorFactory(
   params: DecoratorParams
 ): CompileFn {
   if (
-    params.getOriginContents().match(/export async function generateMetadata/g)
+    params.getOriginContents().match(/export .+ generateMetadata/g)
   ) {
     return withLayoutDynamicMetaDataFactory(params.getRewrite())
   }
 
-  if (params.getOriginContents().match(/export const metadata/g)) {
+  if (params.getOriginContents().match(/export .+ metadata/g)) {
     return withLayoutStaticMetaData
   }
 

@@ -59,11 +59,11 @@ export function withPageDynamicViewportFactory(rewrite: Rewrite) {
 export function withPageViewportDecoratorFactory(
   params: DecoratorParams
 ): CompileFn {
-  if (params.getOriginContents().match(/export function generateViewport/g)) {
+  if (params.getOriginContents().match(/export .+ generateViewport/g)) {
     return withPageDynamicViewportFactory(params.getRewrite())
   }
 
-  if (params.getOriginContents().match(/export const viewport/g)) {
+  if (params.getOriginContents().match(/export .+ viewport/g)) {
     return withPageStaticViewport
   }
 
