@@ -1,3 +1,10 @@
+# [4.1.0](https://github.com/svobik7/next-roots/compare/v4.0.9...v4.1.0) (2025-05-13)
+
+
+### Features
+
+* **routes:** support all types of exports ([01c59a3](https://github.com/svobik7/next-roots/commit/01c59a30705f1b13ac8f8db5d910edc914713f20)), closes [#398](https://github.com/svobik7/next-roots/issues/398)
+
 ## [4.0.9](https://github.com/svobik7/next-roots/compare/v4.0.8...v4.0.9) (2025-04-07)
 
 
