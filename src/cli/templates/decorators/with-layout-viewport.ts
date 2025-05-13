@@ -43,11 +43,11 @@ export function withLayoutDynamicViewportFactory(rewrite: Rewrite) {
 export function withLayoutViewportDecoratorFactory(
   params: DecoratorParams
 ): CompileFn {
-  if (params.getOriginContents().match(/export function generateViewport/g)) {
+  if (params.getOriginContents().match(/export .+ generateViewport/g)) {
     return withLayoutDynamicViewportFactory(params.getRewrite())
   }
 
-  if (params.getOriginContents().match(/export const viewport/g)) {
+  if (params.getOriginContents().match(/export .+ viewport/g)) {
     return withLayoutStaticViewport
   }
 

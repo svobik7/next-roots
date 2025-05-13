@@ -23,7 +23,7 @@ export function withLayoutGenerateStaticParamsFactory(
   if (
     params
       .getOriginContents()
-      .match(/export async function generateStaticParams/g)
+      .match(/export .+ generateStaticParams/g)
   ) {
     return withLayoutGenerateStaticParams
   }
