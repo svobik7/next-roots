@@ -759,12 +759,17 @@
   resolved "https://registry.yarnpkg.com/@octokit/openapi-types/-/openapi-types-24.2.0.tgz#3d55c32eac0d38da1a7083a9c3b0cca77924f7d3"
   integrity sha512-9sIH3nSUttelJSXUrmGzl7QUBFul0/mB8HRYl3fOlgHbIWG+WnYDXU3v/2zMtAvuzZ/ed00Ei6on975FhBfzrg==
 
-"@octokit/plugin-paginate-rest@^11.0.0":
-  version "11.6.0"
-  resolved "https://registry.yarnpkg.com/@octokit/plugin-paginate-rest/-/plugin-paginate-rest-11.6.0.tgz#e5e9ff3530e867c3837fdbff94ce15a2468a1f37"
-  integrity sha512-n5KPteiF7pWKgBIBJSk8qzoZWcUkza2O6A0za97pMGVrGfPdltxrfmfF5GucHYvHGZD8BdaZmmHGz5cX/3gdpw==
+"@octokit/openapi-types@^25.0.0":
+  version "25.0.0"
+  resolved "https://registry.yarnpkg.com/@octokit/openapi-types/-/openapi-types-25.0.0.tgz#adeead36992abf966e89dcd53518d8b0dc910e0d"
+  integrity sha512-FZvktFu7HfOIJf2BScLKIEYjDsw6RKc7rBJCdvCTfKsVnx2GEB/Nbzjr29DUdb7vQhlzS/j8qDzdditP0OC6aw==
+
+"@octokit/plugin-paginate-rest@^12.0.0":
+  version "12.0.0"
+  resolved "https://registry.yarnpkg.com/@octokit/plugin-paginate-rest/-/plugin-paginate-rest-12.0.0.tgz#4f3c1caefd6f85abb4e95c1c0a38af4568cb4dae"
+  integrity sha512-MPd6WK1VtZ52lFrgZ0R2FlaoiWllzgqFHaSZxvp72NmoDeZ0m8GeJdg4oB6ctqMTYyrnDYp592Xma21mrgiyDA==
   dependencies:
-    "@octokit/types" "^13.10.0"
+    "@octokit/types" "^14.0.0"
 
 "@octokit/plugin-retry@^7.0.0":
   version "7.2.0"
@@ -775,12 +780,12 @@
     "@octokit/types" "^13.6.2"
     bottleneck "^2.15.3"
 
-"@octokit/plugin-throttling@^9.0.0":
-  version "9.6.1"
-  resolved "https://registry.yarnpkg.com/@octokit/plugin-throttling/-/plugin-throttling-9.6.1.tgz#96304433b65474595bd87bb60d27b60b9efed681"
-  integrity sha512-bt3EBUkeKUzDQXRCcFrR9SWVqlLFRRqcCrr6uAorWt6NXTyjMKqcGrFmXqJy9NCbnKgiIZ2OXWq04theFc76Jg==
+"@octokit/plugin-throttling@^10.0.0":
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/@octokit/plugin-throttling/-/plugin-throttling-10.0.0.tgz#3ca3c2d3b6e1deb263462f5d35ce6727527116ef"
+  integrity sha512-Kuq5/qs0DVYTHZuBAzCZStCzo2nKvVRo/TDNhCcpC2TKiOGz/DisXMCvjt3/b5kr6SCI1Y8eeeJTHBxxpFvZEg==
   dependencies:
-    "@octokit/types" "^13.7.0"
+    "@octokit/types" "^14.0.0"
     bottleneck "^2.15.3"
 
 "@octokit/request-error@^6.1.7":
@@ -801,12 +806,19 @@
     fast-content-type-parse "^2.0.0"
     universal-user-agent "^7.0.2"
 
-"@octokit/types@^13.10.0", "@octokit/types@^13.6.2", "@octokit/types@^13.7.0", "@octokit/types@^13.8.0":
+"@octokit/types@^13.6.2", "@octokit/types@^13.8.0":
   version "13.10.0"
   resolved "https://registry.yarnpkg.com/@octokit/types/-/types-13.10.0.tgz#3e7c6b19c0236c270656e4ea666148c2b51fd1a3"
   integrity sha512-ifLaO34EbbPj0Xgro4G5lP5asESjwHracYJvVaPIyXMuiuXLlhic3S47cBdTb+jfODkTE5YtGCLt3Ay3+J97sA==
   dependencies:
     "@octokit/openapi-types" "^24.2.0"
+
+"@octokit/types@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@octokit/types/-/types-14.0.0.tgz#bbd1d31e2269940789ef143b1c37918aae09adc4"
+  integrity sha512-VVmZP0lEhbo2O1pdq63gZFiGCKkm8PPp8AUOijlwPO6hojEVjspA0MWKP7E4hbvGxzFKNqKr6p0IYtOH/Wf/zA==
+  dependencies:
+    "@octokit/openapi-types" "^25.0.0"
 
 "@pkgjs/parseargs@^0.11.0":
   version "0.11.0"
@@ -998,14 +1010,14 @@
     p-reduce "^2.0.0"
 
 "@semantic-release/github@^11.0.0", "@semantic-release/github@^11.0.1":
-  version "11.0.1"
-  resolved "https://registry.yarnpkg.com/@semantic-release/github/-/github-11.0.1.tgz#127579aa77ddd8586de6f4f57d0e66db3453a876"
-  integrity sha512-Z9cr0LgU/zgucbT9cksH0/pX9zmVda9hkDPcgIE0uvjMQ8w/mElDivGjx1w1pEQ+MuQJ5CBq3VCF16S6G4VH3A==
+  version "11.0.2"
+  resolved "https://registry.yarnpkg.com/@semantic-release/github/-/github-11.0.2.tgz#92326cad57c4209c123a0f59fb1c5f042c068ac8"
+  integrity sha512-EhHimj3/eOSPu0OflgDzwgrawoGJIn8XLOkNS6WzwuTr8ebxyX976Y4mCqJ8MlkdQpV5+8T+49sy8xXlcm6uCg==
   dependencies:
     "@octokit/core" "^6.0.0"
-    "@octokit/plugin-paginate-rest" "^11.0.0"
+    "@octokit/plugin-paginate-rest" "^12.0.0"
     "@octokit/plugin-retry" "^7.0.0"
-    "@octokit/plugin-throttling" "^9.0.0"
+    "@octokit/plugin-throttling" "^10.0.0"
     "@semantic-release/error" "^4.0.0"
     aggregate-error "^5.0.0"
     debug "^4.3.4"
