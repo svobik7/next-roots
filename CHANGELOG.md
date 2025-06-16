@@ -1,3 +1,10 @@
+## [4.1.2](https://github.com/svobik7/next-roots/compare/v4.1.1...v4.1.2) (2025-06-16)
+
+
+### Bug Fixes
+
+* **templates:** prefix origin with 'Origin' and export with 'Localized' for valid naming ([bc647a5](https://github.com/svobik7/next-roots/commit/bc647a50e7fea280418d75172a990513a95a263a)), closes [#413](https://github.com/svobik7/next-roots/issues/413)
+
 ## [4.1.1](https://github.com/svobik7/next-roots/compare/v4.1.0...v4.1.1) (2025-05-18)
 
 
