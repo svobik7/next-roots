@@ -49,6 +49,21 @@ const inputRewrites: Rewrite[] = [
   },
   { originPath: '/page.js', localizedPath: '/en/page.js' },
   { originPath: '/page.js', localizedPath: '/(en)/page.js' },
+  {
+    originPath: '/skip/page.js',
+    localizedPath: '/en/skip/page.js',
+    skip: true,
+  },
+  {
+    originPath: '/skip/page/page.js',
+    localizedPath: '/en/skip/page/page.js',
+    skip: { page: true },
+  },
+  {
+    originPath: '/dontskip/layout/page.js',
+    localizedPath: '/en/dontskip/layout/page.js',
+    skip: { layout: true },
+  },
 ]
 
 const expectedSchema: Array<Route | undefined> = [
@@ -100,6 +115,12 @@ const expectedSchema: Array<Route | undefined> = [
   {
     name: '/',
     href: '/',
+  },
+  undefined,
+  undefined,
+  {
+    name: '/dontskip/layout',
+    href: '/en/dontskip/layout',
   },
 ]
 

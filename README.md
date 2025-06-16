@@ -400,6 +400,30 @@ module.exports.routeNames = [
 ]
 ```
 
+### Skipping Translation
+
+You can skip the generation of page, layout and/or template for a given local using the `skip` option.
+If you want to skip all those files for a given local at a given path, just add `skip: true` for taht locale:
+
+```js
+module.exports.routeNames = [
+  { locale: 'en', path: 'blogs' },
+  { locale: 'cs', path: 'blogy' },
+  { locale: 'es', path: 'blogs', skip: true },
+]
+```
+
+If you want to skip just some files, you can do it by passing an object to `skip` ( `{ page?: boolean; layout?: boolean; template?: boolean }` ):
+
+```js
+module.exports.routeNames = [
+  { locale: 'en', path: 'blogs' },
+  { locale: 'cs', path: 'blogy', skip: { layout: true, template: true } },
+  { locale: 'es', path: 'blogs', skip: { page: true } },
+]
+```
+
+
 ## 5. Config params
 
 | name                  | type     | default                     | required | description                                                                                                                                       |

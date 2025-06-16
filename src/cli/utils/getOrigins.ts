@@ -138,6 +138,9 @@ export async function getOrigins({
           parentOrigin?.localizations.find((t) => t.locale === tl)?.path || '',
           fileName
         ),
+        skip:
+          parentOrigin?.localizations.find((t) => t.locale === tl)?.skip ||
+          false,
       })),
     }
 
@@ -155,6 +158,8 @@ export async function getOrigins({
               fileName,
               i18n?.find(({ locale }) => t.locale === locale)?.path || fileName
             ),
+            skip:
+              i18n?.find(({ locale }) => t.locale === locale)?.skip || false,
           })),
         },
         dirName: originFileName,
