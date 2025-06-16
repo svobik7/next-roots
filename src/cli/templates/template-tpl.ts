@@ -17,11 +17,11 @@ export const PATTERNS = getPatternsFromNames(
 )
 
 export const tpl = `
-import ${PATTERNS.originName}Origin from '${PATTERNS.originPath}'
+import Origin${PATTERNS.originName} from '${PATTERNS.originPath}'
 
-export default function ${PATTERNS.originName}(props:any) {
+export default function Localized${PATTERNS.originName}(props:any) {
   {/* @ts-ignore */}
-  return <${PATTERNS.originName}Origin {...props} locale="${PATTERNS.locale}" />
+  return <Origin${PATTERNS.originName} {...props} locale="${PATTERNS.locale}" />
 }
 `
 

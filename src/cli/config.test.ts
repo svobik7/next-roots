@@ -1,3 +1,4 @@
+import path from 'path'
 import { getConfig } from './config'
 import { type CliParams } from './types'
 
@@ -19,13 +20,13 @@ describe('getConfig', () => {
     expect(config.prefixDefaultLocale).toStrictEqual(true)
     expect(config.afterGenerate).toStrictEqual(undefined)
     expect(config.getOriginAbsolutePath('page.ts')).toStrictEqual(
-      'src/__mocks__/roots/page.ts'
+      path.join('src', '__mocks__', 'roots', 'page.ts')
     )
     expect(config.getLocalizedAbsolutePath('page.ts')).toStrictEqual(
-      'src/__mocks__/app/page.ts'
+      path.join('src', '__mocks__', 'app', 'page.ts')
     )
     expect(config.getDistAbsolutePath('index.js')).toStrictEqual(
-      'dist/index.js'
+      path.join('dist', 'index.js')
     )
   })
 })

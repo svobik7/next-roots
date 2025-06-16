@@ -15,11 +15,11 @@ const defaultConfig: Config = {
 
 test('should create root layout', () => {
   const expectedOutput = `
-import RootLayoutOrigin from '../../roots/layout'
+import OriginRootLayout from '../../roots/layout'
 
-export default function RootLayout(props) {
+export default function LocalizedRootLayout(props) {
   {/* @ts-ignore */}
-  return <RootLayoutOrigin {...props} locale="cs" />
+  return <OriginRootLayout {...props} locale="cs" />
 }
 `
   const inputRewrite = {
@@ -44,11 +44,11 @@ export default function RootLayout(props) {
 
 test('should create nested layout', () => {
   const expectedOutput = `
-import AuthLoginLayoutOrigin from '../../../../src/roots/(auth)/login/layout'
+import OriginAuthLoginLayout from '../../../../src/roots/(auth)/login/layout'
 
-export default function AuthLoginLayout(props:any) {
+export default function LocalizedAuthLoginLayout(props:any) {
   {/* @ts-ignore */}
-  return <AuthLoginLayoutOrigin {...props} locale="cs" />
+  return <OriginAuthLoginLayout {...props} locale="cs" />
 }
 `
 
@@ -72,11 +72,11 @@ export default function AuthLoginLayout(props:any) {
 
 test('should create layout with route segment config', () => {
   const expectedOutput = `
-import RouteSegmentConfigLayoutOrigin from '..'
+import OriginRouteSegmentConfigLayout from '..'
 
-export default function RouteSegmentConfigLayout(props:any) {
+export default function LocalizedRouteSegmentConfigLayout(props:any) {
   {/* @ts-ignore */}
-  return <RouteSegmentConfigLayoutOrigin {...props} locale="cs" />
+  return <OriginRouteSegmentConfigLayout {...props} locale="cs" />
 }
 
 export const dynamic = 'auto'
@@ -111,11 +111,11 @@ export const preferredRegion = 'auto'
 
 test('should create layout with static metadata object', () => {
   const expectedOutput = `
-import StaticMetaDataLayoutOrigin from '..'
+import OriginStaticMetaDataLayout from '..'
 
-export default function StaticMetaDataLayout(props:any) {
+export default function LocalizedStaticMetaDataLayout(props:any) {
   {/* @ts-ignore */}
-  return <StaticMetaDataLayoutOrigin {...props} locale="cs" />
+  return <OriginStaticMetaDataLayout {...props} locale="cs" />
 }
 
 export { metadata } from '..'
@@ -138,11 +138,11 @@ export { metadata } from '..'
 
 test('should create layout with dynamic metadata object', () => {
   const expectedOutput = `
-import DynamicMetaDataLayoutOrigin from '..'
+import OriginDynamicMetaDataLayout from '..'
 
-export default function DynamicMetaDataLayout(props) {
+export default function LocalizedDynamicMetaDataLayout(props) {
   {/* @ts-ignore */}
-  return <DynamicMetaDataLayoutOrigin {...props} locale="cs" />
+  return <OriginDynamicMetaDataLayout {...props} locale="cs" />
 }
 
 import {generateMetadata as generateMetadataOrigin} from '..'
@@ -168,11 +168,11 @@ export async function generateMetadata(props) {
 
 test('should create layout with static viewport object', () => {
   const expectedOutput = `
-import StaticViewportLayoutOrigin from '..'
+import OriginStaticViewportLayout from '..'
 
-export default function StaticViewportLayout(props:any) {
+export default function LocalizedStaticViewportLayout(props:any) {
   {/* @ts-ignore */}
-  return <StaticViewportLayoutOrigin {...props} locale="cs" />
+  return <OriginStaticViewportLayout {...props} locale="cs" />
 }
 
 export { viewport } from '..'
@@ -194,11 +194,11 @@ export { viewport } from '..'
 
 test('should create layout with dynamic viewport object', () => {
   const expectedOutput = `
-import DynamicViewportLayoutOrigin from '..'
+import OriginDynamicViewportLayout from '..'
 
-export default function DynamicViewportLayout(props) {
+export default function LocalizedDynamicViewportLayout(props) {
   {/* @ts-ignore */}
-  return <DynamicViewportLayoutOrigin {...props} locale="cs" />
+  return <OriginDynamicViewportLayout {...props} locale="cs" />
 }
 
 import {generateViewport as generateViewportOrigin} from '..'
@@ -224,11 +224,11 @@ export function generateViewport({ params, searchParams, ...otherProps }) {
 
 test('should create layout with generate static params', () => {
   const expectedOutput = `
-import GenerateStaticParamsLayoutOrigin from '..'
+import OriginGenerateStaticParamsLayout from '..'
 
-export default function GenerateStaticParamsLayout(props) {
+export default function LocalizedGenerateStaticParamsLayout(props) {
   {/* @ts-ignore */}
-  return <GenerateStaticParamsLayoutOrigin {...props} locale="cs" />
+  return <OriginGenerateStaticParamsLayout {...props} locale="cs" />
 }
 
 import {generateStaticParams as generateStaticParamsOrigin} from '..'
