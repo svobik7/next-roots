@@ -1,3 +1,10 @@
+# [4.2.0](https://github.com/svobik7/next-roots/compare/v4.1.2...v4.2.0) (2025-06-16)
+
+
+### Features
+
+* **i18n files:** add the capability to skip the generation of files for given locale/path ([dc977aa](https://github.com/svobik7/next-roots/commit/dc977aab4d0951a53db5400564034d1bcbe3cfb3)), closes [#215](https://github.com/svobik7/next-roots/issues/215)
+
 ## [4.1.2](https://github.com/svobik7/next-roots/compare/v4.1.1...v4.1.2) (2025-06-16)
 
 
