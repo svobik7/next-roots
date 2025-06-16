@@ -35,14 +35,20 @@ export type Origin = {
   localizations: OriginLocalization[]
 }
 
+export type SkipOption =
+  | boolean
+  | { page?: boolean; layout?: boolean; template?: boolean }
+
 export type OriginLocalization = {
   locale: string
   path: string
+  skip?: SkipOption
 }
 
 export type Rewrite = {
   originPath: string
   localizedPath: string
+  skip?: SkipOption
 }
 
 export type Root = {
@@ -53,4 +59,5 @@ export type Root = {
 export type RootTranslation = {
   locale: string
   path: string
+  skip?: SkipOption
 }

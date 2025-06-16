@@ -8,6 +8,10 @@ export function isLayout(pathName: string) {
   return Boolean(pathName.match(/layout\.([tj]sx?)$/))
 }
 
+export function isTemplate(pathName: string) {
+  return Boolean(pathName.match(/template\.([tj]sx?)$/))
+}
+
 export function isNotFound(pathName: string) {
   return Boolean(pathName.match(/not-found\.([tj]sx?)$/))
 }

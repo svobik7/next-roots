@@ -1,5 +1,5 @@
 import { copyFile, removeDir, writeFile } from '~/utils/fs-utils'
-import { isLayout, isNotFound, isPage } from '~/utils/rewrite-utils'
+import { isLayout, isNotFound, isPage, isTemplate } from '~/utils/rewrite-utils'
 import { compileFactory as compileLayoutFactory } from '../templates/layout-tpl'
 import { compileFactory as compileNotFoundFactory } from '../templates/not-found-tpl'
 import { compileFactory as compilePageFactory } from '../templates/page-tpl'
@@ -23,6 +23,23 @@ function getCompilerFactory(config: Config) {
   }
 }
 
+function getShouldSkip(rewrite: Rewrite): boolean {
+  const { skip } = rewrite
+  if (typeof skip === 'boolean') {
+    return skip
+  }
+  if (isPage(rewrite.originPath) && skip?.page) {
+    return true
+  }
+  if (isLayout(rewrite.originPath) && skip?.layout) {
+    return true
+  }
+  if (isTemplate(rewrite.originPath) && skip?.template) {
+    return true
+  }
+  return false
+}
+
 function createLocalizedFileFactory(config: Config) {
   return (rewrite: Rewrite) => {
     const { getOriginAbsolutePath, getLocalizedAbsolutePath } = config
@@ -33,6 +50,11 @@ function createLocalizedFileFactory(config: Config) {
 
     const getCompiler = getCompilerFactory(config)
     const compile = getCompiler(rewrite)
+    const shouldSkip = getShouldSkip(rewrite)
+
+    if (shouldSkip) {
+      return
+    }
 
     if (compile) {
       const content = compile(rewrite)
@@ -53,6 +75,6 @@ export function generateLocalizedFilesFactory(config: Config) {
 
     // create new files
     const createLocalizedFile = createLocalizedFileFactory(config)
-    rewrites.map(createLocalizedFile)
+    rewrites.map(createLocalizedFile).filter(Boolean)
   }
 }

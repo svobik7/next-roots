@@ -64,8 +64,11 @@ function getRouteHref({ localizedPath }: Rewrite) {
   return asRootPath(localeSegment, formatRouteHref(localizedPath))
 }
 
-function isRouteRewrite({ originPath }: Rewrite): boolean {
-  return Boolean(originPath.match(/\/page\.([tj])sx?$/)) || originPath === '/'
+function isRouteRewrite({ originPath, skip }: Rewrite): boolean {
+  return (
+    Boolean(originPath.match(/\/page\.([tj])sx?$/) || originPath === '/') &&
+    (!skip || (typeof skip === 'object' && !skip.page))
+  )
 }
 
 export function isRoute(input: unknown): input is Route {
