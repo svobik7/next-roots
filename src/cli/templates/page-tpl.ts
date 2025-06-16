@@ -28,27 +28,27 @@ export const PATTERNS = getPatternsFromNames(
 )
 
 export const tplStatic = `
-import ${PATTERNS.originName}Origin from '${PATTERNS.originPath}'
+import Origin${PATTERNS.originName} from '${PATTERNS.originPath}'
 import { Router } from 'next-roots'
 
-export default function ${PATTERNS.originName}(props:any) {
+export default function Localized${PATTERNS.originName}(props:any) {
   Router.setLocale("${PATTERNS.pageLocale}")
   Router.setPageHref("${PATTERNS.pageHref}")
   {/* @ts-ignore */}
-  return <${PATTERNS.originName}Origin {...props} locale={"${PATTERNS.pageLocale}"} />
+  return <Origin${PATTERNS.originName} {...props} locale={"${PATTERNS.pageLocale}"} />
 }
 `
 
 export const tplDynamic = `
-import ${PATTERNS.originName}Origin from '${PATTERNS.originPath}'
+import Origin${PATTERNS.originName} from '${PATTERNS.originPath}'
 import { Router } from 'next-roots'
 
-export default function ${PATTERNS.originName}({ params, ...otherProps }:any) {
+export default function Localized${PATTERNS.originName}({ params, ...otherProps }:any) {
   Router.setLocale('${PATTERNS.pageLocale}')
   Router.setPageHref('${PATTERNS.pageHref}')
   Router.setParams(params)
   {/* @ts-ignore */}
-  return <${PATTERNS.originName}Origin {...otherProps} params={params} locale={"${PATTERNS.pageLocale}"} />
+  return <Origin${PATTERNS.originName} {...otherProps} params={params} locale={"${PATTERNS.pageLocale}"} />
 }
 `
 

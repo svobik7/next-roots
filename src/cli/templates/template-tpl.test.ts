@@ -15,11 +15,11 @@ const defaultConfig: Config = {
 
 test('should create root template', () => {
   const expectedOutput = `
-import RootTemplateOrigin from '../../roots/template'
+import OriginRootTemplate from '../../roots/template'
 
-export default function RootTemplate(props) {
+export default function LocalizedRootTemplate(props) {
   {/* @ts-ignore */}
-  return <RootTemplateOrigin {...props} locale="cs" />
+  return <OriginRootTemplate {...props} locale="cs" />
 }
 `
   const inputRewrite = {
@@ -42,11 +42,11 @@ export default function RootTemplate(props) {
 
 test('should create nested template', () => {
   const expectedOutput = `
-import AuthLoginTemplateOrigin from '../../../../src/roots/(auth)/login/template'
+import OriginAuthLoginTemplate from '../../../../src/roots/(auth)/login/template'
 
-export default function AuthLoginTemplate(props:any) {
+export default function LocalizedAuthLoginTemplate(props:any) {
   {/* @ts-ignore */}
-  return <AuthLoginTemplateOrigin {...props} locale="cs" />
+  return <OriginAuthLoginTemplate {...props} locale="cs" />
 }
 `
 

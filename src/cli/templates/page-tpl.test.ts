@@ -15,14 +15,14 @@ const defaultConfig: Config = {
 
 test('should create root page', () => {
   const expectedOutput = `
-import RootPageOrigin from '../../roots/page'
+import OriginRootPage from '../../roots/page'
 import { Router } from 'next-roots'
 
-export default function RootPage(props) {
+export default function LocalizedRootPage(props) {
   Router.setLocale("cs")
   Router.setPageHref("/cs")
   {/* @ts-ignore */}
-  return <RootPageOrigin {...props} locale={"cs"} />
+  return <OriginRootPage {...props} locale={"cs"} />
 }
 `
   const inputRewrite = {
@@ -47,14 +47,14 @@ export default function RootPage(props) {
 
 test('should create page for (group) route', () => {
   const expectedOutput = `
-import AuthLoginPageOrigin from '../../../../src/roots/(auth)/login/page'
+import OriginAuthLoginPage from '../../../../src/roots/(auth)/login/page'
 import { Router } from 'next-roots'
 
-export default function AuthLoginPage(props:any) {
+export default function LocalizedAuthLoginPage(props:any) {
   Router.setLocale("cs")
   Router.setPageHref("/cs/prihlaseni")
   {/* @ts-ignore */}
-  return <AuthLoginPageOrigin {...props} locale={"cs"} />
+  return <OriginAuthLoginPage {...props} locale={"cs"} />
 }
 `
 
@@ -78,15 +78,15 @@ export default function AuthLoginPage(props:any) {
 
 test('should create page for [dynamic] route', () => {
   const expectedOutput = `
-import BlogAuthorIdPageOrigin from '../../../../../roots/blog/[authorId]/page'
+import OriginBlogAuthorIdPage from '../../../../../roots/blog/[authorId]/page'
 import { Router } from 'next-roots'
 
-export default function BlogAuthorIdPage({ params, ...otherProps }) {
+export default function LocalizedBlogAuthorIdPage({ params, ...otherProps }) {
   Router.setLocale('cs')
   Router.setPageHref('/cs/magazin/:authorId')
   Router.setParams(params)
   {/* @ts-ignore */}
-  return <BlogAuthorIdPageOrigin {...otherProps} params={params} locale={"cs"} />
+  return <OriginBlogAuthorIdPage {...otherProps} params={params} locale={"cs"} />
 }
 `
   const inputRewrite = {
@@ -110,15 +110,15 @@ export default function BlogAuthorIdPage({ params, ...otherProps }) {
 
 test('should create page for [[...optionalCatchAll]] route', () => {
   const expectedOutput = `
-import ProductsPageOrigin from '../../../../../roots/products/[[...slugs]]/page'
+import OriginProductsPage from '../../../../../roots/products/[[...slugs]]/page'
 import { Router } from 'next-roots'
 
-export default function ProductsPage({ params, ...otherProps }) {
+export default function LocalizedProductsPage({ params, ...otherProps }) {
   Router.setLocale('cs')
   Router.setPageHref('/cs/produkty{/*slugs}')
   Router.setParams(params)
   {/* @ts-ignore */}
-  return <ProductsPageOrigin {...otherProps} params={params} locale={"cs"} />
+  return <OriginProductsPage {...otherProps} params={params} locale={"cs"} />
 }
 `
   const inputRewrite = {
@@ -142,14 +142,14 @@ export default function ProductsPage({ params, ...otherProps }) {
 
 test('should create page with static metadata object', () => {
   const expectedOutput = `
-import StaticMetaDataPageOrigin from '..'
+import OriginStaticMetaDataPage from '..'
 import { Router } from 'next-roots'
 
-export default function StaticMetaDataPage(props:any) {
+export default function LocalizedStaticMetaDataPage(props:any) {
   Router.setLocale("cs")
   Router.setPageHref("/cs/static-meta-data")
   {/* @ts-ignore */}
-  return <StaticMetaDataPageOrigin {...props} locale={"cs"} />
+  return <OriginStaticMetaDataPage {...props} locale={"cs"} />
 }
 
 export { metadata } from '..'
@@ -172,14 +172,14 @@ export { metadata } from '..'
 
 test('should create page for static route but with dynamic metadata function', () => {
   const expectedOutput = `
-import StaticRouteWithDynamicMetaDataPageOrigin from '..'
+import OriginStaticRouteWithDynamicMetaDataPage from '..'
 import { Router } from 'next-roots'
 
-export default function StaticRouteWithDynamicMetaDataPage(props) {
+export default function LocalizedStaticRouteWithDynamicMetaDataPage(props) {
   Router.setLocale("cs")
   Router.setPageHref("/cs/static-route-with-dynamic-meta-data")
   {/* @ts-ignore */}
-  return <StaticRouteWithDynamicMetaDataPageOrigin {...props} locale={"cs"} />
+  return <OriginStaticRouteWithDynamicMetaDataPage {...props} locale={"cs"} />
 }
 
 import {generateMetadata as generateMetadataOrigin} from '..'
@@ -206,15 +206,15 @@ export async function generateMetadata(props) {
 
 test('should create page for [dynamic] route with generate static params and generateMetadata function', () => {
   const expectedOutput = `
-import BlogAuthorIdPageOrigin from '../../../../../roots/blog/[authorId]/page'
+import OriginBlogAuthorIdPage from '../../../../../roots/blog/[authorId]/page'
 import { Router } from 'next-roots'
 
-export default function BlogAuthorIdPage({ params, ...otherProps }:any) {
+export default function LocalizedBlogAuthorIdPage({ params, ...otherProps }:any) {
   Router.setLocale('cs')
   Router.setPageHref('/cs/magazin/:authorId')
   Router.setParams(params)
   {/* @ts-ignore */}
-  return <BlogAuthorIdPageOrigin {...otherProps} params={params} locale={"cs"} />
+  return <OriginBlogAuthorIdPage {...otherProps} params={params} locale={"cs"} />
 }
 
 import { compileHref } from 'next-roots'
@@ -254,14 +254,14 @@ export async function generateStaticParams({ params, ...otherProps }:any) {
 
 test('should create page with static viewport object', () => {
   const expectedOutput = `
-import StaticViewportPageOrigin from '..'
+import OriginStaticViewportPage from '..'
 import { Router } from 'next-roots'
 
-export default function StaticViewportPage(props:any) {
+export default function LocalizedStaticViewportPage(props:any) {
   Router.setLocale("cs")
   Router.setPageHref("/cs/static-viewport")
   {/* @ts-ignore */}
-  return <StaticViewportPageOrigin {...props} locale={"cs"} />
+  return <OriginStaticViewportPage {...props} locale={"cs"} />
 }
 
 export { viewport } from '..'
@@ -283,14 +283,14 @@ export { viewport } from '..'
 
 test('should create page for static route but with dynamic viewport function', () => {
   const expectedOutput = `
-import StaticRouteWithDynamicViewportPageOrigin from '..'
+import OriginStaticRouteWithDynamicViewportPage from '..'
 import { Router } from 'next-roots'
 
-export default function StaticRouteWithDynamicViewportPage(props) {
+export default function LocalizedStaticRouteWithDynamicViewportPage(props) {
   Router.setLocale("cs")
   Router.setPageHref("/cs/static-route-with-dynamic-viewport")
   {/* @ts-ignore */}
-  return <StaticRouteWithDynamicViewportPageOrigin {...props} locale={"cs"} />
+  return <OriginStaticRouteWithDynamicViewportPage {...props} locale={"cs"} />
 }
 
 import {generateViewport as generateViewportOrigin} from '..'
@@ -317,15 +317,15 @@ export function generateViewport({ searchParams, ...otherProps }) {
 
 test('should create page for [dynamic] route with generate static params and generateViewport function', () => {
   const expectedOutput = `
-import BlogAuthorIdPageOrigin from '../../../../../roots/blog/[authorId]/page'
+import OriginBlogAuthorIdPage from '../../../../../roots/blog/[authorId]/page'
 import { Router } from 'next-roots'
 
-export default function BlogAuthorIdPage({ params, ...otherProps }:any) {
+export default function LocalizedBlogAuthorIdPage({ params, ...otherProps }:any) {
   Router.setLocale('cs')
   Router.setPageHref('/cs/magazin/:authorId')
   Router.setParams(params)
   {/* @ts-ignore */}
-  return <BlogAuthorIdPageOrigin {...otherProps} params={params} locale={"cs"} />
+  return <OriginBlogAuthorIdPage {...otherProps} params={params} locale={"cs"} />
 }
 
 import { compileHref } from 'next-roots'
@@ -365,14 +365,14 @@ export async function generateStaticParams({ params, ...otherProps }:any) {
 
 test('should create page with route segment config', () => {
   const expectedOutput = `
-import RouteSegmentConfigPageOrigin from '..'
+import OriginRouteSegmentConfigPage from '..'
 import { Router } from 'next-roots'
 
-export default function RouteSegmentConfigPage(props:any) {
+export default function LocalizedRouteSegmentConfigPage(props:any) {
   Router.setLocale("cs")
   Router.setPageHref("/cs/route-segment-config")
   {/* @ts-ignore */}
-  return <RouteSegmentConfigPageOrigin {...props} locale={"cs"} />
+  return <OriginRouteSegmentConfigPage {...props} locale={"cs"} />
 }
 
 export const dynamic = 'auto'
