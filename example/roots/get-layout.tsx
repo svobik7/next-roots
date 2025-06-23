@@ -5,6 +5,6 @@ function GetLayoutPage() {
   return <GetLayout />
 }
 
-GetLayoutPage.getLayout = (page) => <div className={styles.layout}>admkakasdkmsad{page}</div>
+GetLayoutPage.getLayout = (page) => <div className={styles.layout}>{page}</div>
 
 export default GetLayoutPage
