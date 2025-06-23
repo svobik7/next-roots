@@ -141,5 +141,15 @@ module.exports = {
       ],
       metaData: [{ locale: '*', data: { background: 'cyan' } }],
     },
+
+    {
+      root: 'get-layout',
+      pages: [
+        { locale: 'en', path: 'get-layout' },
+        { locale: 'cs', path: 'ziskej-rozvrzeni' },
+        { locale: 'es', path: 'obtener-el-diseno' },
+      ],
+      metaData: [{ locale: '*', data: { background: 'pink' } }],
+    },
   ],
 }

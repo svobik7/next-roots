@@ -69,6 +69,11 @@ export default function LayoutMain({ children }) {
             <a>Detail - Article</a>
           </RootLink>
         </li>
+        <li>
+          <RootLink href="get-layout">
+            <a>Get Layout</a>
+          </RootLink>
+        </li>
       </ol>
 
       <h2>Mutations</h2>
