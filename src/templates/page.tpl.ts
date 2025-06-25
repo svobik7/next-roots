@@ -12,6 +12,7 @@ export type PageTemplateProps = {
   hasGetServerSideProps?: boolean
   hasGetInitialProps?: boolean
   useTypings?: boolean
+  hasGetLayout?: boolean
 }
 
 export default function pageTemplate(props: PageTemplateProps) {
@@ -29,6 +30,7 @@ export default function pageTemplate(props: PageTemplateProps) {
     hasGetServerSideProps = false,
     hasGetInitialProps = false,
     useTypings = true,
+    hasGetLayout = false
   } = props
 
   // const pageMeta = meta?.find(m => m);
@@ -149,6 +151,11 @@ export default function pageTemplate(props: PageTemplateProps) {
 
     tpl +=
       `export const ${methodName} = async () => __root.getStaticPaths()` + `\n`
+  }
+
+  if (hasGetLayout) {
+    tpl += `\n`
+    tpl += `${pageName}Page.getLayout = ${pageName}Root.getLayout` + `\n`
   }
 
   tpl += `\n`

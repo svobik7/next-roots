@@ -229,6 +229,7 @@ function createPageContent(
   )
   const hasGetStaticPaths = hasSpecialMethod(rootContent, 'getStaticPaths')
   const hasGetStaticProps = hasSpecialMethod(rootContent, 'getStaticProps')
+  const hasGetLayout = hasSpecialMethod(rootContent, 'getLayout');
 
   // parse page rule
   const [pageRoot, pageLocale = ''] = decodeSchemaRuleKey(pageRule.key)
@@ -261,6 +262,7 @@ function createPageContent(
     hasGetServerSideProps,
     hasGetStaticPaths,
     hasGetStaticProps,
+    hasGetLayout,
     useTypings: cfg.useTypings,
   })
 }
@@ -272,12 +274,9 @@ function createPageContent(
  * @param name
  */
 function hasSpecialMethod(content: string, name: string): boolean {
-  return (
-    null !==
-    content.match(
-      new RegExp(`export (const|var|let|async function|function) ${name}`)
-    )
-  )
+  const exportPattern = new RegExp(`export\\s+(const|var|let|async function|function)\\s+${name}`);
+  const assignmentPattern = new RegExp(`\\.${name}\\s*=`);
+  return exportPattern.test(content) || assignmentPattern.test(content);
 }
 
 /**

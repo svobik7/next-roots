@@ -29,6 +29,7 @@ yarn-error.log*
 
 .vscode/*
 *.code-workspace
+.idea
 
 # Local History for Visual Studio Code
 .history/
@@ -36,7 +37,7 @@ yarn-error.log*
 # example yarn.lock
 /example/yarn.lock
 
-# automatically generated files & folders 
+# automatically generated files & folders
 /example/pages
 /example/roots.schema.js
 /example/roots.schema.*.js
