@@ -6,4 +6,7 @@ module.exports = {
       noCheck: false,
     },
   ],
+  compilationOptions: {
+    preferredConfigPath: './tsconfig.dts.json',
+  },
 }
