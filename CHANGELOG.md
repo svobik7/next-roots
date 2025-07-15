@@ -1,3 +1,10 @@
+# [4.3.0](https://github.com/svobik7/next-roots/compare/v4.2.1...v4.3.0) (2025-07-15)
+
+
+### Features
+
+* **git status:** q ([5293cbe](https://github.com/svobik7/next-roots/commit/5293cbedf4f5e7086c11e9fc259a86e1adfc83b5))
+
 ## [4.2.1](https://github.com/svobik7/next-roots/compare/v4.2.0...v4.2.1) (2025-07-14)
 
 
