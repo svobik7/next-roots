@@ -1385,13 +1385,13 @@
   resolved "https://registry.yarnpkg.com/@unrs/resolver-binding-win32-x64-msvc/-/resolver-binding-win32-x64-msvc-1.9.0.tgz#708b957d5d66543c45240b4c6b45ee63ed59b6b7"
   integrity sha512-k59o9ZyeyS0hAlcaKFezYSH2agQeRFEB7KoQLXl3Nb3rgkqT1NY9Vwy+SqODiLmYnEjxWJVRE/yq2jFVqdIxZw==
 
-"@vitest/coverage-istanbul@^3.0.7":
-  version "3.1.1"
-  resolved "https://registry.npmjs.org/@vitest/coverage-istanbul/-/coverage-istanbul-3.1.1.tgz"
-  integrity sha512-uSoMeVcF5fMGcjWJOeG28nBPO2OuCNMRr+BcpF71gc1r/+EQnU7EeRM1hihs3EsSAOcjgw9w+TCMv/2lVvB4RA==
+"@vitest/coverage-istanbul@^3.2.4":
+  version "3.2.4"
+  resolved "https://registry.yarnpkg.com/@vitest/coverage-istanbul/-/coverage-istanbul-3.2.4.tgz#a622802975935a2357d890b367fffd0dfd7a5a99"
+  integrity sha512-IDlpuFJiWU9rhcKLkpzj8mFu/lpe64gVgnV15ZOrYx1iFzxxrxCzbExiUEKtwwXRvEiEMUS6iZeYgnMxgbqbxQ==
   dependencies:
     "@istanbuljs/schema" "^0.1.3"
-    debug "^4.4.0"
+    debug "^4.4.1"
     istanbul-lib-coverage "^3.2.2"
     istanbul-lib-instrument "^6.0.3"
     istanbul-lib-report "^3.0.1"
@@ -2359,6 +2359,11 @@ encoding@^0.1.13:
   dependencies:
     iconv-lite "^0.6.2"
 
+entities@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/entities/-/entities-4.5.0.tgz#5d268ea5e7113ec74c4d033b79ea5a35a488fb48"
+  integrity sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==
+
 env-ci@^11.0.0:
   version "11.1.0"
   resolved "https://registry.npmjs.org/env-ci/-/env-ci-11.1.0.tgz"
@@ -3276,6 +3281,15 @@ handlebars@^4.7.7:
     wordwrap "^1.0.0"
   optionalDependencies:
     uglify-js "^3.1.4"
+
+happy-dom@^15.11.6:
+  version "15.11.7"
+  resolved "https://registry.yarnpkg.com/happy-dom/-/happy-dom-15.11.7.tgz#db9854f11e5dd3fd4ab20cbbcfdf7bd9e17cd971"
+  integrity sha512-KyrFvnl+J9US63TEzwoiJOQzZBJY7KgBushJA8X61DMbNsH+2ONkDuLDnCnwUiPTF42tLoEmrPyoqbenVA5zrg==
+  dependencies:
+    entities "^4.5.0"
+    webidl-conversions "^7.0.0"
+    whatwg-mimetype "^3.0.0"
 
 has-bigints@^1.0.1, has-bigints@^1.0.2:
   version "1.0.2"
@@ -6523,7 +6537,7 @@ vite-node@3.2.4:
   optionalDependencies:
     fsevents "~2.3.3"
 
-vitest@^3.0.7:
+vitest@^3.2.4:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/vitest/-/vitest-3.2.4.tgz#0637b903ad79d1539a25bc34c0ed54b5c67702ea"
   integrity sha512-LUCP5ev3GURDysTWiP47wRRUpLKMOfPh+yKTx3kVIEiu5KOMeqzpnYNsKyOoVrULivR8tLcks4+lga33Whn90A==
@@ -6563,6 +6577,16 @@ wcwidth@^1.0.1:
   integrity sha512-XHPEwS0q6TaxcvG85+8EYkbiCux2XtWG2mkc47Ng2A77BQu9+DqIOJldST4HgPkuea7dvKSj5VgX3P1d4rW8Tg==
   dependencies:
     defaults "^1.0.3"
+
+webidl-conversions@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-7.0.0.tgz#256b4e1882be7debbf01d05f0aa2039778ea080a"
+  integrity sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==
+
+whatwg-mimetype@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/whatwg-mimetype/-/whatwg-mimetype-3.0.0.tgz#5fa1a7623867ff1af6ca3dc72ad6b8a4208beba7"
+  integrity sha512-nt+N2dzIutVRxARx1nghPKGv1xHikU7HKdfafKkLNLindmPU/ch3U31NOCGGA/dmPcmb1VlofO0vnKAcsm0o/Q==
 
 which-boxed-primitive@^1.0.2:
   version "1.0.2"
