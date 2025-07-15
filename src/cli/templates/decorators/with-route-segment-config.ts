@@ -11,7 +11,9 @@ const PATTERNS = getPatternsFromNames(
   'revalidate',
   'fetchCache',
   'runtime',
-  'preferredRegion'
+  'preferredRegion',
+  'experimental_ppr',
+  'maxDuration'
 )
 
 type ConfigVariable = keyof typeof PATTERNS
@@ -29,6 +31,10 @@ const TEMPLATES: Record<ConfigVariable, string> = {
 `,
   preferredRegion: `export const preferredRegion = ${PATTERNS.preferredRegion}
 `,
+  experimental_ppr: `export const experimental_ppr = ${PATTERNS.experimental_ppr}
+`,
+  maxDuration: `export const maxDuration = ${PATTERNS.maxDuration}
+`,
 }
 
 const REG_EXPS: Record<ConfigVariable, RegExp> = {
@@ -38,6 +44,8 @@ const REG_EXPS: Record<ConfigVariable, RegExp> = {
   fetchCache: /export const fetchCache = (.*)/,
   runtime: /export const runtime = (.*)/,
   preferredRegion: /export const preferredRegion = (.*)/,
+  experimental_ppr: /export const experimental_ppr = (.*)/,
+  maxDuration: /export const maxDuration = (.*)/,
 }
 
 function getCompileParams(input: string) {
