@@ -511,3 +511,35 @@ This is false positive error as your origin page.tsx files are not real entry po
 ### How to use next-roots with type=module in package.json?
 
 You can create `roots.config.cjs` and run next-roots command like this `yarn next-roots -c ./roots.config.cjs --esm`. For more details see `examples/basic-esm`.
+
+## Contributing
+
+We welcome contributions to next-roots! To ensure code quality and maintain a clean git history, this repository enforces the following workflow:
+
+### Development Workflow
+
+1. **All changes must go through pull requests** - Direct pushes to the `master` branch are not allowed
+2. **Required status checks** - All tests must pass before merging
+3. **Code review required** - At least one approving review is needed before merging
+4. **Conventional commits** - We use [conventional commits](https://www.conventionalcommits.org/) for automated release management
+
+### Getting Started
+
+1. Fork the repository
+2. Create a feature branch from `master`
+3. Make your changes and add tests
+4. Run the test suite: `yarn test`
+5. Run the build: `yarn build`
+6. Commit your changes using conventional commit format
+7. Open a pull request against `master`
+
+### PR Rules and Automation
+
+This repository uses automated branch protection rules that:
+- Require pull requests for all changes to `master`
+- Block merging until all CI checks pass
+- Automatically handle releases via semantic-release
+
+The automated release process works seamlessly with these rules, as GitHub Actions has the necessary permissions to bypass PR requirements when publishing releases.
+
+For detailed information about setting up similar rules, see [docs/PR_RULES_SETUP.md](docs/PR_RULES_SETUP.md).
