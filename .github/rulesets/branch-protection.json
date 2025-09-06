@@ -1,0 +1,55 @@
+{
+  "name": "Protect master branch",
+  "target": "branch",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "include": ["refs/heads/master"],
+      "exclude": []
+    }
+  },
+  "rules": [
+    {
+      "type": "pull_request",
+      "parameters": {
+        "dismiss_stale_reviews_on_push": true,
+        "require_code_owner_review": false,
+        "require_last_push_approval": false,
+        "required_approving_review_count": 1,
+        "required_review_thread_resolution": false
+      }
+    },
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "required_status_checks": [
+          {
+            "context": "Test",
+            "integration_id": null
+          }
+        ],
+        "strict_required_status_checks_policy": true
+      }
+    },
+    {
+      "type": "non_fast_forward",
+      "parameters": {}
+    },
+    {
+      "type": "deletion",
+      "parameters": {}
+    }
+  ],
+  "bypass_actors": [
+    {
+      "actor_id": 1,
+      "actor_type": "Integration",
+      "bypass_mode": "always"
+    },
+    {
+      "actor_id": 1,
+      "actor_type": "RepositoryRole",
+      "bypass_mode": "always"
+    }
+  ]
+}

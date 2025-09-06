@@ -1,3 +1,11 @@
+# CI/CD Pipeline
+# 
+# This workflow runs tests on all pull requests and releases on pushes to master.
+# It's designed to work with branch protection rules that require:
+# - Pull requests for all changes to master
+# - The "Test" job to pass before merging
+# - GitHub Actions to bypass PR requirements for semantic-release
+
 name: CI/CD
 on:
   pull_request:
@@ -14,6 +22,7 @@ jobs:
   Test:
     name: Test
     runs-on: ubuntu-latest
+    # This job is configured as a required status check in branch protection rules
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,8 +47,9 @@ jobs:
     needs: Test
     if: github.event_name == 'push' && github.ref == 'refs/heads/master' # only release on pushes to master
     runs-on: ubuntu-latest
+    # This job has elevated permissions to allow semantic-release to bypass PR rules
     permissions:
-      contents: write # to be able to publish a GitHub release
+      contents: write # to be able to publish a GitHub release and commit back to repo
       issues: write # to be able to comment on released issues
       pull-requests: write # to be able to comment on released pull requests
       id-token: write # to enable use of OIDC for npm provenance
