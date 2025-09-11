@@ -375,7 +375,12 @@ export default function LocalizedRouteSegmentConfigPage(props:any) {
   return <OriginRouteSegmentConfigPage {...props} locale={"cs"} />
 }
 
-export { dynamic, dynamicParams, revalidate, fetchCache, runtime, preferredRegion } from '..'
+export const dynamic = 'auto'
+export const dynamicParams = true
+export const revalidate = false
+export const fetchCache = 'auto'
+export const runtime = 'nodejs'
+export const preferredRegion = 'auto'
 `
   const inputRewrite = {
     originPath: '/route-segment-config/page.ts',

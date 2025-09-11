@@ -79,7 +79,12 @@ export default function LocalizedRouteSegmentConfigLayout(props:any) {
   return <OriginRouteSegmentConfigLayout {...props} locale="cs" />
 }
 
-export { dynamic, dynamicParams, revalidate, fetchCache, runtime, preferredRegion } from '..'
+export const dynamic = 'auto'
+export const dynamicParams = true
+export const revalidate = false
+export const fetchCache = 'auto'
+export const runtime = 'nodejs'
+export const preferredRegion = 'auto'
 `
   const inputRewrite = {
     originPath: '/route-segment-config/layout.ts',
