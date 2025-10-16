@@ -1,12 +1,13 @@
 import { compile } from 'path-to-regexp'
+import type { RouteParams } from '~/types'
 
 /**
  * Puts given params to their appropriate places in given href
  * @param {string} href - The href template
- * @param {Record<string, any>} params - The parameters to insert into href
+ * @param {RouteParams} params - The parameters to insert into href
  * @returns {string} - The compiled href
  */
-export function compileHref(href: string, params: Record<string, any>): string {
+export function compileHref(href: string, params: RouteParams): string {
   let compiledHref = ''
   try {
     const getHref = compile(href, {

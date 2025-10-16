@@ -1,10 +1,11 @@
 import { AsyncLocalStorage } from 'async_hooks'
+import type { RouteParams } from '~/types'
 import { compileHref } from './href-utils'
 
 interface RouterContext {
   locale: string
   pageHref: string
-  params?: Promise<Record<string, string>>
+  params?: Promise<RouteParams>
 }
 
 const asyncLocalStorage = new AsyncLocalStorage<RouterContext>()
@@ -13,7 +14,7 @@ export class StaticRouter {
   // Fallback static properties for backward compatibility
   private static LOCALE = ''
   private static PAGE_HREF = '/'
-  private static PARAMS: Promise<Record<string, string>> | undefined
+  private static PARAMS: Promise<RouteParams> | undefined
 
   /**
    * Runs a function with isolated router context
@@ -84,7 +85,7 @@ export class StaticRouter {
    * Sets relevant page params
    * @param params
    */
-  public static setParams(params: Promise<Record<string, string>>): void {
+  public static setParams(params: Promise<RouteParams>): void {
     const context = StaticRouter.getContext()
     if (context) {
       context.params = params
