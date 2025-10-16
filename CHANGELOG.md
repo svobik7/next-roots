@@ -1,3 +1,10 @@
+## [4.3.1](https://github.com/svobik7/next-roots/compare/v4.3.0...v4.3.1) (2025-10-16)
+
+
+### Bug Fixes
+
+* **deps:** bump vite from 7.0.4 to 7.1.10 ([7bc4fda](https://github.com/svobik7/next-roots/commit/7bc4fda5a8e5ad970a70cb503360388b2ab93350))
+
 # [4.3.0](https://github.com/svobik7/next-roots/compare/v4.2.1...v4.3.0) (2025-07-15)
 
 
