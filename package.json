@@ -42,8 +42,8 @@
     "esbuild-node-externals": "^1.15.0",
     "node-watch": "^0.7.4",
     "parse-typed-args": "^0.2.0",
-    "patch-package": "^8.0.0",
-    "path-to-regexp": "^8.2.0"
+    "patch-package": "^8.0.1",
+    "path-to-regexp": "^8.3.0"
   },
   "devDependencies": {
     "@eslint/compat": "^1.2.8",
@@ -55,7 +55,7 @@
     "@semantic-release/release-notes-generator": "^14.0.1",
     "@types/node": "^24.3.1",
     "@typescript-eslint/eslint-plugin": "^8.16.0",
-    "@typescript-eslint/parser": "^8.16.0",
+    "@typescript-eslint/parser": "^8.46.1",
     "@vitest/coverage-istanbul": "^3.2.4",
     "arg": "^5.0.2",
     "colors": "^1.4.0",
@@ -72,7 +72,7 @@
     "happy-dom": "^20.0.2",
     "husky": "^9.1.7",
     "lint-staged": "^15.2.10",
-    "prettier": "^3.4.1",
+    "prettier": "^3.6.2",
     "semantic-release": "^24.2.0",
     "typescript": "^5.7.2",
     "vitest": "^3.2.4"
@@ -115,6 +115,9 @@
     }
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+  "resolutions": {
+    "vite": "7.1.11"
+  },
   "pnpm": {
     "patchedDependencies": {
       "dts-bundle-generator": "patches/dts-bundle-generator.patch"
