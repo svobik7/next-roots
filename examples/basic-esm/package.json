@@ -7,7 +7,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "roots": "next-roots -c ./roots.config.cjs --esm",
+    "preinstall": "yarn --cwd ../..",
+    "roots": "node ./../../dist/cli.js -c ./roots.config.cjs --esm",
     "dev": "yarn roots && next dev",
     "build": "yarn roots && next build",
     "start": "next start",
@@ -19,13 +20,13 @@
     "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.5",
     "clsx": "^2.1.1",
-    "next": "^14.2.5",
-    "next-roots": "^3.11.3",
+    "next": "^15.0.3",
+    "next-roots": "link:../../",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^14.2.5",
+    "@next/bundle-analyzer": "^15.0.3",
     "@tailwindcss/typography": "^0.5.13",
     "@types/node": "^20.14.12",
     "@types/react": "^18.3.3",
