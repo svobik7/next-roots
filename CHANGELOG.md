@@ -1,3 +1,11 @@
+## [4.3.2](https://github.com/svobik7/next-roots/compare/v4.3.1...v4.3.2) (2025-11-19)
+
+
+### Bug Fixes
+
+* **deps:** bump esbuild from 0.25.6 to 0.25.12 ([aa1ecf8](https://github.com/svobik7/next-roots/commit/aa1ecf8e4820c4b7e286dd306a3e3ca8f13ba67b))
+* **deps:** bump js-yaml from 4.1.0 to 4.1.1 ([8554e26](https://github.com/svobik7/next-roots/commit/8554e26c90174c575299bbda43be73b99632ef19))
+
 ## [4.3.1](https://github.com/svobik7/next-roots/compare/v4.3.0...v4.3.1) (2025-10-16)
 
 
