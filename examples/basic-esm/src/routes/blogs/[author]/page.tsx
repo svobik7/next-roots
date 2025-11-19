@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import type {
   GeneratePageMetadataProps,
-  GenerateStaticParamsProps,
+  GeneratePageStaticParamsProps,
   PageProps,
 } from 'next-roots'
 import Link from 'next/link'
@@ -21,17 +21,16 @@ import {
   fetchAuthorByUsername,
   fetchAuthors,
 } from 'src/server/db'
-import { getHomeHref, router } from 'src/server/router'
+import { getHomeHref } from 'src/server/router'
 import { getDictionary } from 'src/server/utils/getDictionary'
 
-type AuthorParams = { author: string }
+type AuthorParams = Promise<{ author: string }>
 
 export default async function AuthorPage({
   params,
-  pageHref,
+  locale,
 }: PageProps<AuthorParams>) {
-  const pageLocale = router.getLocaleFromHref(pageHref)
-  const author = await fetchAuthorByUsername(params.author)
+  const author = await fetchAuthorByUsername((await params).author)
 
   if (!author) {
     return notFound()
@@ -40,7 +39,7 @@ export default async function AuthorPage({
   const allAuthorTranslations = getAllAuthorTranslations(author)
   const currentAuthorTranslation = getAuthorTranslation({
     author,
-    locale: pageLocale,
+    locale,
   })
 
   if (!currentAuthorTranslation) {
@@ -52,10 +51,10 @@ export default async function AuthorPage({
     ({ authorId }) => authorId === author.id
   )
 
-  const getArticleTranslation = getArticleTranslationFactory(pageLocale)
+  const getArticleTranslation = getArticleTranslationFactory(locale)
   const authorArticlesTranslations = authorArticles.map(getArticleTranslation)
 
-  const t = await getDictionary(pageLocale)
+  const t = await getDictionary(locale)
 
   return (
     <AuthorDetail
@@ -86,22 +85,21 @@ export default async function AuthorPage({
 }
 
 export async function generateMetadata({
-  pageHref,
+  locale,
   params,
 }: GeneratePageMetadataProps<AuthorParams>): Promise<Metadata> {
-  const pageLocale = router.getLocaleFromHref(pageHref)
-  const author = await fetchAuthorByUsername(params.author)
+  const author = await fetchAuthorByUsername((await params).author)
 
   if (!author) {
     return {}
   }
 
-  return getAuthorMetadata(author, pageLocale)
+  return getAuthorMetadata(author, locale)
 }
 
 export async function generateStaticParams({
   pageLocale,
-}: GenerateStaticParamsProps) {
+}: GeneratePageStaticParamsProps) {
   const authors = await fetchAuthors()
   return authors.map((a) => ({
     author: a.username,

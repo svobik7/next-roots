@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import type {
   GeneratePageMetadataProps,
-  GenerateStaticParamsProps,
+  GeneratePageStaticParamsProps,
   PageProps,
 } from 'next-roots'
 import Link from 'next/link'
@@ -15,17 +15,21 @@ import {
 } from 'src/features/blog/utils/getArticleTranslation'
 import { Links } from 'src/features/common/components/Links'
 import { fetchArticleBySlug, fetchArticles, fetchAuthors } from 'src/server/db'
-import { getArticleHref, getHomeHref, router } from 'src/server/router'
+import {
+  getArticleHref,
+  getHomeHref,
+  getPageHref,
+  router,
+} from 'src/server/router'
 import { getDictionary } from 'src/server/utils/getDictionary'
 
-type AuthorArticleParams = { author: string; article: string }
+type AuthorArticleParams = Promise<{ author: string; article: string }>
 
 export default async function AuthorArticlePage({
   params,
-  pageHref,
+  locale,
 }: PageProps<AuthorArticleParams>) {
-  const pageLocale = router.getLocaleFromHref(pageHref)
-  const article = await fetchArticleBySlug(params.article)
+  const article = await fetchArticleBySlug((await params).article)
 
   if (!article) {
     return notFound()
@@ -34,7 +38,7 @@ export default async function AuthorArticlePage({
   const allArticleTranslations = getAllArticleTranslations(article)
   const currentArticleTranslation = getArticleTranslation({
     article,
-    locale: pageLocale,
+    locale,
   })
 
   if (!currentArticleTranslation) {
@@ -43,11 +47,13 @@ export default async function AuthorArticlePage({
 
   const href = getArticleHref(currentArticleTranslation)
 
+  const pageHref = await getPageHref()
+
   if (pageHref !== href) {
     return redirect(href)
   }
 
-  const t = await getDictionary(pageLocale)
+  const t = await getDictionary(locale)
 
   return (
     <ArticleDetail
@@ -72,11 +78,11 @@ export default async function AuthorArticlePage({
 }
 
 export async function generateMetadata({
-  pageHref,
+  locale,
   params,
 }: GeneratePageMetadataProps<AuthorArticleParams>): Promise<Metadata> {
-  const pageLocale = router.getLocaleFromHref(pageHref)
-  const article = await fetchArticleBySlug(params.article)
+  const pageLocale = router.getLocaleFromHref(locale)
+  const article = await fetchArticleBySlug((await params).article)
 
   if (!article) {
     return {}
@@ -87,7 +93,7 @@ export async function generateMetadata({
 
 export async function generateStaticParams({
   pageLocale,
-}: GenerateStaticParamsProps) {
+}: GeneratePageStaticParamsProps) {
   const authors = await fetchAuthors()
   const articles = await fetchArticles()
 

@@ -1,13 +1,8 @@
 import type { Metadata } from 'next'
 import type { GeneratePageMetadataProps, PageProps } from 'next-roots'
-import { Page } from 'src/features/common/components/Page'
 import { Links } from 'src/features/common/components/Links'
-import {
-  getAboutHref,
-  getContactsHref,
-  getLocales,
-  router,
-} from 'src/server/router'
+import { Page } from 'src/features/common/components/Page'
+import { getContactsHref, getLocales } from 'src/server/router'
 import { getDictionary } from 'src/server/utils/getDictionary'
 
 async function getData(locale: string) {
@@ -24,14 +19,13 @@ async function getAlternativeLink(locale: string) {
   return { locale, name: title, href }
 }
 
-export default async function ContactPage({ pageHref }: PageProps) {
-  const pageLocale = router.getLocaleFromHref(pageHref)
+export default async function ContactPage({ locale }: PageProps) {
   const alternativeLinks = await Promise.all(
     getLocales().map(getAlternativeLink)
   )
 
-  const { title, content } = await getData(pageLocale)
-  const t = await getDictionary(pageLocale)
+  const { title, content } = await getData(locale)
+  const t = await getDictionary(locale)
 
   return (
     <Page
@@ -45,10 +39,9 @@ export default async function ContactPage({ pageHref }: PageProps) {
 }
 
 export async function generateMetadata({
-  pageHref,
+  locale,
 }: GeneratePageMetadataProps<void>): Promise<Metadata> {
-  const pageLocale = router.getLocaleFromHref(pageHref)
-  const { title, content } = await getData(pageLocale)
+  const { title, content } = await getData(locale)
 
   return { title, description: content }
 }

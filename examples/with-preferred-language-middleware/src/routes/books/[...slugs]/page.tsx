@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import type {
   GeneratePageMetadataProps,
-  GenerateStaticParamsProps,
+  GeneratePageStaticParamsProps,
   PageProps,
 } from 'next-roots'
 import Link from 'next/link'
@@ -15,19 +15,18 @@ import {
 import { Detail } from 'src/features/common/components/Detail'
 import { Links } from 'src/features/common/components/Links'
 import { fetchBookBySlug, fetchBooks, fetchProductBySlug } from 'src/server/db'
-import { getBooksDetailHref, getHomeHref, router } from 'src/server/router'
+import { getBooksDetailHref, getHomeHref, getPageHref } from 'src/server/router'
 import { getDictionary } from 'src/server/utils/getDictionary'
 
-type BookParam = { slugs: string[] }
+type BookParam = Promise<{ slugs: string[] }>
 
 export default async function BookPage({
   params,
-  pageHref,
+  locale,
 }: PageProps<BookParam>) {
-  const pageLocale = router.getLocaleFromHref(pageHref)
-  const t = await getDictionary(pageLocale)
+  const t = await getDictionary(locale)
 
-  const book = await fetchBookBySlug(params.slugs)
+  const book = await fetchBookBySlug((await params).slugs)
 
   if (!book) {
     return notFound()
@@ -36,7 +35,7 @@ export default async function BookPage({
   const allBookTranslations = getAllBookTranslations(book)
   const currentBookTranslation = getBookTranslation({
     book,
-    locale: pageLocale,
+    locale,
   })
 
   if (!currentBookTranslation) {
@@ -44,6 +43,8 @@ export default async function BookPage({
   }
 
   const href = getBooksDetailHref(currentBookTranslation)
+
+  const pageHref = await getPageHref()
 
   if (pageHref !== href) {
     return redirect(href)
@@ -73,24 +74,23 @@ export default async function BookPage({
 }
 
 export async function generateMetadata({
-  pageHref,
+  locale,
   params,
 }: GeneratePageMetadataProps<BookParam>): Promise<Metadata> {
-  const pageLocale = router.getLocaleFromHref(pageHref)
-  const t = await getDictionary(pageLocale)
+  const t = await getDictionary(locale)
 
-  const book = await fetchProductBySlug(params.slugs)
+  const book = await fetchProductBySlug((await params).slugs)
 
   if (!book) {
     return {}
   }
 
-  return getBookMetadata(book, pageLocale)
+  return getBookMetadata(book, locale)
 }
 
 export async function generateStaticParams({
   pageLocale,
-}: GenerateStaticParamsProps) {
+}: GeneratePageStaticParamsProps) {
   const books = await fetchBooks()
 
   return books

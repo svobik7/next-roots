@@ -1,4 +1,4 @@
-import type { GenerateStaticParamsProps, PageProps } from 'next-roots'
+import type { GeneratePageStaticParamsProps, PageProps } from 'next-roots'
 import { notFound, redirect } from 'next/navigation'
 import { ArticleDetail } from 'src/features/blog/components/ArticleDetail'
 import { getArticleLinkParams } from 'src/features/blog/utils/getArticleLinkParams'
@@ -10,17 +10,16 @@ import BackButton from 'src/features/common/components/BackButton'
 import { Links } from 'src/features/common/components/Links'
 import Modal from 'src/features/common/components/Modal'
 import { fetchArticleBySlug, fetchArticles, fetchAuthors } from 'src/server/db'
-import { getArticleHref, router } from 'src/server/router'
+import { getArticleHref, getPageHref } from 'src/server/router'
 import { getDictionary } from 'src/server/utils/getDictionary'
 
-type AuthorArticleParams = { author: string; article: string }
+type AuthorArticleParams = Promise<{ author: string; article: string }>
 
 export default async function AuthorArticlePage({
   params,
-  pageHref,
+  locale,
 }: PageProps<AuthorArticleParams>) {
-  const pageLocale = router.getLocaleFromHref(pageHref)
-  const article = await fetchArticleBySlug(params.article)
+  const article = await fetchArticleBySlug((await params).article)
 
   if (!article) {
     return notFound()
@@ -29,7 +28,7 @@ export default async function AuthorArticlePage({
   const allArticleTranslations = getAllArticleTranslations(article)
   const currentArticleTranslation = getArticleTranslation({
     article,
-    locale: pageLocale,
+    locale,
   })
 
   if (!currentArticleTranslation) {
@@ -38,11 +37,13 @@ export default async function AuthorArticlePage({
 
   const href = getArticleHref(currentArticleTranslation)
 
+  const pageHref = await getPageHref()
+
   if (pageHref !== href) {
     return redirect(href)
   }
 
-  const t = await getDictionary(pageLocale)
+  const t = await getDictionary(locale)
 
   return (
     <Modal>
@@ -62,7 +63,7 @@ export default async function AuthorArticlePage({
 
 export async function generateStaticParams({
   pageLocale,
-}: GenerateStaticParamsProps) {
+}: GeneratePageStaticParamsProps) {
   const authors = await fetchAuthors()
   const articles = await fetchArticles()
 
