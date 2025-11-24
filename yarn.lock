@@ -1145,9 +1145,9 @@
     url-join "^5.0.0"
 
 "@semantic-release/npm@^13.1.1":
-  version "13.1.1"
-  resolved "https://registry.yarnpkg.com/@semantic-release/npm/-/npm-13.1.1.tgz#7d4e8a6ae4ebf556463871e41fdd63499b6675fd"
-  integrity sha512-c4tlp3STYaTYORmMcLjiTaI8SLoxJ0Uf7IXkem8EyihuOM624wnaGuH4OuY2HHcsHDerNAQNzZ8VO6d4PMHSzA==
+  version "13.1.2"
+  resolved "https://registry.yarnpkg.com/@semantic-release/npm/-/npm-13.1.2.tgz#f19ad4275e487e5b633e42e6b7dc41d499ce0280"
+  integrity sha512-9rtshDTNlzYrC7uSBtB1vHqFzFZaNHigqkkCH5Ls4N/BSlVOenN5vtwHYxjAR4jf1hNvWSVwL4eIFTHONYckkw==
   dependencies:
     "@actions/core" "^1.11.1"
     "@semantic-release/error" "^4.0.0"
@@ -1160,7 +1160,7 @@
     normalize-url "^8.0.0"
     npm "^11.6.2"
     rc "^1.2.8"
-    read-pkg "^9.0.0"
+    read-pkg "^10.0.0"
     registry-auth-token "^5.0.0"
     semver "^7.1.2"
     tempy "^3.0.0"
