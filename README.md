@@ -62,15 +62,15 @@ The requirement is to have English localization served from `/` and Czech from `
 
 1. Add the package to your project dev dependencies
 
-`yarn add -D next-roots`
+`pnpm add -D next-roots`
 
 2. (optional) Add generate script to your `package.json`
 
 ```json
 {
   "scripts": {
-    "roots": "yarn next-roots",
-    "roots:watch": "yarn next-roots -w"
+    "roots": "pnpm next-roots",
+    "roots:watch": "pnpm next-roots -w"
   }
 }
 ```
@@ -121,7 +121,7 @@ module.exports = {
 
 Generation is initiated by running following command from project root.
 
-`yarn next-roots`
+`pnpm next-roots`
 
 IMPORTANT: Please be aware that `app` folder is wiped out during generation so be sure to have proper git or other backup in place.
 
@@ -179,7 +179,7 @@ module.exports.routeNames = [
 
 > For describing translations in promise-like way see [Translation files](#4-translation-files)
 
-Running `yarn roots` again will update `app` folder routes with translated paths. The project structure now looks like:
+Running `pnpm roots` again will update `app` folder routes with translated paths. The project structure now looks like:
 
 ```bash
 ├── app
@@ -198,7 +198,7 @@ Running `yarn roots` again will update `app` folder routes with translated paths
 └── ...
 ```
 
-Finally our project is served on URLs that match perfectly the initial requirements. If you need to change your routes or translation do not forget to run `yarn roots` again.
+Finally our project is served on URLs that match perfectly the initial requirements. If you need to change your routes or translation do not forget to run `pnpm roots` again.
 
 ## 2. Router and Links
 
@@ -338,7 +338,7 @@ Following types are available for props above and can be imported from next-root
 
 ## 4. Translation files
 
-Translation of URL paths is done in `i18n.js` or `i18n.ts` files by placing this file right next to the `page.js` of `page.ts` file and running `yarn roots`. There are two main ways how you can define the i18n file.
+Translation of URL paths is done in `i18n.js` or `i18n.ts` files by placing this file right next to the `page.js` of `page.ts` file and running `pnpm roots`. There are two main ways how you can define the i18n file.
 
 ### Static translations
 
@@ -515,4 +515,4 @@ This is false positive error as your origin page.tsx files are not real entry po
 
 ### How to use next-roots with type=module in package.json?
 
-You can create `roots.config.cjs` and run next-roots command like this `yarn next-roots -c ./roots.config.cjs --esm`. For more details see `examples/basic-esm`.
+You can create `roots.config.cjs` and run next-roots command like this `pnpm next-roots -c ./roots.config.cjs --esm`.
