@@ -3,6 +3,7 @@ import { isDynamicRewrite, isTypedRewrite } from '~/utils/rewrite-utils'
 import { CompileError } from '../errors'
 import type { Config, Rewrite } from '../types'
 import { getRoute } from '../utils/getRoute'
+import { withDirectivesDecoratorFactory } from './decorators/with-directives'
 import {
   type PATTERNS as GENERATE_STATIC_PARAMS_PATTERS,
   withPageGenerateStaticParamsFactory,
@@ -10,7 +11,6 @@ import {
 import { withPageMetadataDecoratorFactory } from './decorators/with-page-metadata'
 import { withPageViewportDecoratorFactory } from './decorators/with-page-viewport'
 import { withRouteSegmentConfigFactory } from './decorators/with-route-segment-config'
-import { withDirectivesDecoratorFactory } from './decorators/with-directives'
 import {
   type CompileParams,
   compileTemplateFactory,
