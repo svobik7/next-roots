@@ -1,4 +1,4 @@
-yarn test
-yarn lint-staged
-yarn typecheck
+pnpm test
+pnpm lint-staged
+pnpm typecheck
 

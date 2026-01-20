@@ -12,9 +12,11 @@ const withBundleAnalyzer = bundleAnalyzer({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = withBundleAnalyzer({
-  transpilePackages: ['next-roots'],
+  // transpilePackages: ['next-roots'],
   turbopack: {
-    root: path.resolve(__dirname, '.'),
+    // Point Turbopack at the monorepo root so it can resolve `next`
+    // when running from the app directory.
+    root: path.resolve(__dirname, '../..'),
   },
   images: {
     remotePatterns: [
