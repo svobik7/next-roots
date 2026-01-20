@@ -10,6 +10,7 @@ import {
 import { withPageMetadataDecoratorFactory } from './decorators/with-page-metadata'
 import { withPageViewportDecoratorFactory } from './decorators/with-page-viewport'
 import { withRouteSegmentConfigFactory } from './decorators/with-route-segment-config'
+import { withDirectivesDecoratorFactory } from './decorators/with-directives'
 import {
   type CompileParams,
   compileTemplateFactory,
@@ -91,6 +92,7 @@ export function compileFactory(config: Config) {
     const decoratorParams = new DecoratorParams(rewrite, originContents)
 
     const compileTemplate = compileTemplateFactory(
+      withDirectivesDecoratorFactory(decoratorParams),
       withPageMetadataDecoratorFactory(decoratorParams),
       withPageViewportDecoratorFactory(decoratorParams),
       withPageGenerateStaticParamsFactory(decoratorParams),

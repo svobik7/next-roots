@@ -5,6 +5,7 @@ import { withLayoutGenerateStaticParamsFactory } from './decorators/with-layout-
 import { withLayoutMetadataDecoratorFactory } from './decorators/with-layout-metadata'
 import { withLayoutViewportDecoratorFactory } from './decorators/with-layout-viewport'
 import { withRouteSegmentConfigFactory } from './decorators/with-route-segment-config'
+import { withDirectivesDecoratorFactory } from './decorators/with-directives'
 import {
   type CompileParams,
   compileTemplateFactory,
@@ -57,6 +58,7 @@ export function compileFactory(config: Config) {
     const decoratorParams = new DecoratorParams(rewrite, originContents)
 
     const compileTemplate = compileTemplateFactory(
+      withDirectivesDecoratorFactory(decoratorParams),
       withRouteSegmentConfigFactory(decoratorParams),
       withLayoutMetadataDecoratorFactory(decoratorParams),
       withLayoutViewportDecoratorFactory(decoratorParams),

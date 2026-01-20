@@ -170,6 +170,41 @@ export { metadata } from '..'
   expect(output).toBe(expectedOutput)
 })
 
+test('should propagate file-level directives from origin to generated page', () => {
+  const expectedOutput = `'use cache'
+'use client'
+
+import OriginStaticMetaDataPage from '..'
+import { Router } from 'next-roots'
+
+export default function LocalizedStaticMetaDataPage(props:any) {
+  Router.setLocale("cs")
+  Router.setPageHref("/cs/static-meta-data")
+  {/* @ts-ignore */}
+  return <OriginStaticMetaDataPage {...props} locale={"cs"} />
+}
+
+export { metadata } from '..'
+`
+  const inputRewrite = {
+    originPath: '/static-meta-data/page.ts',
+    localizedPath: '/cs/static-meta-data/page.ts',
+  }
+
+  const inputConfig: Config = {
+    ...defaultConfig,
+    getOriginContents: () =>
+      `'use cache'
+'use client'
+
+export const metadata = { title: "Static Title" }`,
+  }
+
+  const compile = compileFactory(inputConfig)
+  const output = compile(inputRewrite)
+  expect(output).toBe(expectedOutput)
+})
+
 test('should create page for static route but with dynamic metadata function', () => {
   const expectedOutput = `
 import OriginStaticRouteWithDynamicMetaDataPage from '..'

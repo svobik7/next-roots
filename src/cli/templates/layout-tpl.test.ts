@@ -136,6 +136,38 @@ export { metadata } from '..'
   expect(output).toBe(expectedOutput)
 })
 
+test('should propagate file-level directives from origin to generated layout', () => {
+  const expectedOutput = `'use cache'
+'use client'
+
+import OriginStaticMetaDataLayout from '..'
+
+export default function LocalizedStaticMetaDataLayout(props:any) {
+  {/* @ts-ignore */}
+  return <OriginStaticMetaDataLayout {...props} locale="cs" />
+}
+
+export { metadata } from '..'
+`
+  const inputRewrite = {
+    originPath: '/static-meta-data/layout.ts',
+    localizedPath: '/cs/static-meta-data/layout.ts',
+  }
+
+  const inputConfig: Config = {
+    ...defaultConfig,
+    getOriginContents: () =>
+      `'use cache'
+'use client'
+
+export const metadata = { title: "Static Title" }`,
+  }
+
+  const compile = compileFactory(inputConfig)
+  const output = compile(inputRewrite)
+  expect(output).toBe(expectedOutput)
+})
+
 test('should create layout with dynamic metadata object', () => {
   const expectedOutput = `
 import OriginDynamicMetaDataLayout from '..'

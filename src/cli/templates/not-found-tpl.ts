@@ -1,8 +1,10 @@
 import { getLocaleFactory } from '~/utils/locale-utils'
 import type { Config, Rewrite } from '../types'
+import { withDirectivesDecoratorFactory } from './decorators/with-directives'
 import {
   type CompileParams,
   compileTemplateFactory,
+  DecoratorParams,
   getOriginNameFactory,
   getOriginPathFactory,
   getPatternsFromNames,
@@ -45,7 +47,12 @@ export function compileFactory(config: Config) {
   return (rewrite: Rewrite) => {
     const params = getParams(rewrite)
 
-    const compileTemplate = compileTemplateFactory()
+    const originContents = config.getOriginContents(rewrite.originPath)
+    const decoratorParams = new DecoratorParams(rewrite, originContents)
+
+    const compileTemplate = compileTemplateFactory(
+      withDirectivesDecoratorFactory(decoratorParams)
+    )
 
     return compileTemplate(tpl, params)
   }
