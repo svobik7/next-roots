@@ -1,7 +1,7 @@
-diff --git a/node_modules/dts-bundle-generator/dist/types-usage-evaluator.js b/node_modules/dts-bundle-generator/dist/types-usage-evaluator.js
-index a09f141..9f25078 100644
---- a/node_modules/dts-bundle-generator/dist/types-usage-evaluator.js
-+++ b/node_modules/dts-bundle-generator/dist/types-usage-evaluator.js
+diff --git a/dist/types-usage-evaluator.js b/dist/types-usage-evaluator.js
+index a09f141f087b152c34ad9c88e66ed516f8294865..9f25078598677e232346f3193df16e8c4bc0fb85 100644
+--- a/dist/types-usage-evaluator.js
++++ b/dist/types-usage-evaluator.js
 @@ -111,6 +111,9 @@ class TypesUsageEvaluator {
          if (ts.isExportDeclaration(node) && node.exportClause !== undefined && ts.isNamedExports(node.exportClause)) {
              for (const exportElement of node.exportClause.elements) {

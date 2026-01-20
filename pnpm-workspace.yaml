@@ -1,0 +1,11 @@
+packages:
+  - examples/*
+
+onlyBuiltDependencies:
+  - cypress
+  - esbuild
+  - sharp
+  - unrs-resolver
+
+patchedDependencies:
+  dts-bundle-generator: patches/dts-bundle-generator.patch

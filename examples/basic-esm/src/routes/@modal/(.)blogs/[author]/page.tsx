@@ -19,14 +19,14 @@ import {
 import { router } from 'src/server/router'
 import { getDictionary } from 'src/server/utils/getDictionary'
 
-type AuthorParams = { author: string }
+type AuthorParams = Promise<{ author: string }>
 
 export default async function AuthorPage({
   params,
   pageHref,
 }: PageProps<AuthorParams>) {
   const pageLocale = router.getLocaleFromHref(pageHref)
-  const author = await fetchAuthorByUsername(params.author)
+  const author = await fetchAuthorByUsername((await params).author)
 
   if (!author) {
     return notFound()
