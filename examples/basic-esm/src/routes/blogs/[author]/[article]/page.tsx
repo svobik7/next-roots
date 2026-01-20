@@ -18,14 +18,14 @@ import { fetchArticleBySlug, fetchArticles, fetchAuthors } from 'src/server/db'
 import { getArticleHref, getHomeHref, router } from 'src/server/router'
 import { getDictionary } from 'src/server/utils/getDictionary'
 
-type AuthorArticleParams = { author: string; article: string }
+type AuthorArticleParams = Promise<{ author: string; article: string }>
 
 export default async function AuthorArticlePage({
   params,
   pageHref,
 }: PageProps<AuthorArticleParams>) {
   const pageLocale = router.getLocaleFromHref(pageHref)
-  const article = await fetchArticleBySlug(params.article)
+  const article = await fetchArticleBySlug((await params).article)
 
   if (!article) {
     return notFound()
@@ -76,7 +76,7 @@ export async function generateMetadata({
   params,
 }: GeneratePageMetadataProps<AuthorArticleParams>): Promise<Metadata> {
   const pageLocale = router.getLocaleFromHref(pageHref)
-  const article = await fetchArticleBySlug(params.article)
+  const article = await fetchArticleBySlug((await params).article)
 
   if (!article) {
     return {}

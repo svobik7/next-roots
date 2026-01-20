@@ -77,7 +77,7 @@ async function ProductDetailPage({
   )
 }
 
-type ProductParams = { slugs: string }
+type ProductParams = Promise<{ slugs: string }>
 
 export default async function ProductPage({
   params,
@@ -87,8 +87,10 @@ export default async function ProductPage({
   const t = await getDictionary(pageLocale)
   const translateProduct = getProductTranslationFactory(pageLocale)
 
-  if (params.slugs) {
-    const product = await fetchProductBySlug(params.slugs)
+  const awaitedParams = await params
+
+  if (awaitedParams.slugs) {
+    const product = await fetchProductBySlug(awaitedParams.slugs)
     return (
       <ProductDetailPage
         product={product}
@@ -119,7 +121,7 @@ export async function generateMetadata({
   const pageLocale = router.getLocaleFromHref(pageHref)
   const t = await getDictionary(pageLocale)
 
-  const product = await fetchProductBySlug(params.slugs)
+  const product = await fetchProductBySlug((await params).slugs)
 
   if (product) {
     return getProductMetadata(product, pageLocale)

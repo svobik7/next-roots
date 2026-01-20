@@ -18,7 +18,7 @@ import { fetchBookBySlug, fetchBooks, fetchProductBySlug } from 'src/server/db'
 import { getBooksDetailHref, getHomeHref, router } from 'src/server/router'
 import { getDictionary } from 'src/server/utils/getDictionary'
 
-type BookParam = { slugs: string[] }
+type BookParam = Promise<{ slugs: string[] }>
 
 export default async function BookPage({
   params,
@@ -27,7 +27,7 @@ export default async function BookPage({
   const pageLocale = router.getLocaleFromHref(pageHref)
   const t = await getDictionary(pageLocale)
 
-  const book = await fetchBookBySlug(params.slugs)
+  const book = await fetchBookBySlug((await params).slugs)
 
   if (!book) {
     return notFound()
@@ -79,7 +79,7 @@ export async function generateMetadata({
   const pageLocale = router.getLocaleFromHref(pageHref)
   const t = await getDictionary(pageLocale)
 
-  const book = await fetchProductBySlug(params.slugs)
+  const book = await fetchProductBySlug((await params).slugs)
 
   if (!book) {
     return {}

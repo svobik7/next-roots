@@ -13,7 +13,8 @@ Working demo site built on top of next-roots can be seen https://next-roots-svob
 
 Current version requires Next.js version to be at least 15 and used with APP router. If you use older versions of next see the list bellow
 
-- [next-roots@latest](https://github.com/svobik7/next-roots/): Next.js >=15 (latest version)
+- [next-roots@latest](https://github.com/svobik7/next-roots/): Next.js >=16 (latest version)
+- [next-roots@v4](https://github.com/svobik7/next-roots/tree/v4): Next.js >=15 && <16
 - [next-roots@v3](https://github.com/svobik7/next-roots/tree/v3): Next.js >=10 && <=14
 - [next-roots@v2](https://github.com/svobik7/next-roots/tree/v2): Next.js <10
 
