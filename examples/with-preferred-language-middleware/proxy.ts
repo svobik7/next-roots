@@ -2,7 +2,7 @@ import acceptLanguage from 'accept-language'
 import { NextRequest, NextResponse } from 'next/server'
 import { Router, schema } from 'next-roots'
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   // skip all requests to /_next/* paths
   if (request.nextUrl.pathname.startsWith('/_next')) {
     return NextResponse.next()
