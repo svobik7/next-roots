@@ -65,3 +65,35 @@ export default function AuthLoginNotFound() {
   const output = compile(inputRewrite)
   expect(output).toBe(expectedOutput)
 })
+
+test('should propagate file-level directives from origin to generated not-found', () => {
+  const expectedOutput = `'use cache'
+
+import RootNotFoundOrigin from '../../roots/not-found'
+
+export default function RootNotFound() {
+  {/* @ts-ignore */}
+  return <RootNotFoundOrigin locale="cs" />
+}
+`
+  const inputRewrite = {
+    originPath: '/not-found.js',
+    localizedPath: '/cs/not-found.js',
+  }
+
+  const inputConfig: Config = {
+    ...defaultConfig,
+    getLocalizedAbsolutePath: (fileName = '') =>
+      path.join('/AbsolutePathHead/app', fileName),
+    getOriginAbsolutePath: (fileName = '') =>
+      path.join('/AbsolutePathHead/roots', fileName),
+    getOriginContents: () =>
+      `'use cache'
+
+export default function RootNotFound() {}`,
+  }
+
+  const compile = compileFactory(inputConfig)
+  const output = compile(inputRewrite)
+  expect(output).toBe(expectedOutput)
+})

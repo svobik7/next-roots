@@ -500,6 +500,10 @@ There are two recommended way how to achieve this:
 
 👉 You do not need to do anything as Next.js treats your components as server components by default unless you tell it not to by "use client" directive.
 
+### How are Next.js directives like `use client` or `use cache` handled?
+
+When you use Next.js file-level directives such as `use client` or `use cache` at the top of your origin `roots` files, next-roots automatically copies these directives to the top of the generated localized files in the `app` directory (before any imports). This allows you to continue using Next.js directives in your route files while still benefiting from generated i18n routes.
+
 ### How to fix Next.js typechecks during build?
 
 As next-roots package generates localised page.tsx within yourapp folder and passes down additional props (like locale) to your origin page.tsx it might trigger an error during Next.js typecheck if you place your origin files in the app folder.
