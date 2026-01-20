@@ -1,11 +1,11 @@
 import { getLocaleFactory } from '~/utils/locale-utils'
 import { isTypedRewrite } from '~/utils/rewrite-utils'
 import type { Config, Rewrite } from '../types'
+import { withDirectivesDecoratorFactory } from './decorators/with-directives'
 import { withLayoutGenerateStaticParamsFactory } from './decorators/with-layout-generate-static-params'
 import { withLayoutMetadataDecoratorFactory } from './decorators/with-layout-metadata'
 import { withLayoutViewportDecoratorFactory } from './decorators/with-layout-viewport'
 import { withRouteSegmentConfigFactory } from './decorators/with-route-segment-config'
-import { withDirectivesDecoratorFactory } from './decorators/with-directives'
 import {
   type CompileParams,
   compileTemplateFactory,
