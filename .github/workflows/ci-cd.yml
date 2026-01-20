@@ -24,14 +24,14 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
       - name: (PACKAGE) Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
       - name: (PACKAGE) Build package
-        run: yarn build
+        run: pnpm build
       - name: (EXAMPLE) Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
         working-directory: examples/basic
       - name: (EXAMPLE) Run tests
-        run: yarn e2e:headless
+        run: pnpm e2e:headless
         working-directory: examples/basic
   Release:
     name: Release
@@ -55,7 +55,7 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
         run: npm audit signatures
       - name: Release
