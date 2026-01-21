@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "preinstall": "pnpm -w build",
+    "preinstall": "pnpm -w build:no-test",
     "roots": "node ./../../dist/cli.js",
     "dev": "pnpm roots && next dev",
     "build": "pnpm roots && next build",
