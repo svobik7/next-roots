@@ -38,3 +38,5 @@ yarn-error.log*
 __deprecated__
 forks
 .next-roots
+.vercel
+.env*.local
