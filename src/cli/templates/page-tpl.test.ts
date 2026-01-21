@@ -191,10 +191,13 @@ import OriginStaticMetaDataPage from '..'
 import { Router } from 'next-roots'
 
 export default function LocalizedStaticMetaDataPage(props:any) {
-  Router.setLocale("cs")
-  Router.setPageHref("/cs/static-meta-data")
-  {/* @ts-ignore */}
-  return <OriginStaticMetaDataPage {...props} locale={"cs"} />
+  return Router.runWithContext(
+    { locale: "cs", pageHref: "/cs/static-meta-data" },
+    () => {
+      {/* @ts-ignore */}
+      return <OriginStaticMetaDataPage {...props} locale={"cs"} />
+    }
+  )
 }
 
 export { metadata } from '..'
