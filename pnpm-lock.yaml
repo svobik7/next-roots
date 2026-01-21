@@ -7,6 +7,11 @@ settings:
 overrides:
   vite: 7.1.11
 
+patchedDependencies:
+  dts-bundle-generator:
+    hash: f22411cef6c1929a5414deebbf6aa0a2aa77e5b9cf3fee68df18e7bf3a37c830
+    path: patches/dts-bundle-generator.patch
+
 importers:
 
   .:
@@ -80,7 +85,7 @@ importers:
         version: 3.3.0(@types/node@25.0.9)(typescript@5.9.3)
       dts-bundle-generator:
         specifier: ^9.5.1
-        version: 9.5.1
+        version: 9.5.1(patch_hash=f22411cef6c1929a5414deebbf6aa0a2aa77e5b9cf3fee68df18e7bf3a37c830)
       eslint:
         specifier: ^9.39.2
         version: 9.39.2(jiti@2.6.1)
@@ -7133,7 +7138,7 @@ snapshots:
     dependencies:
       is-obj: 2.0.0
 
-  dts-bundle-generator@9.5.1:
+  dts-bundle-generator@9.5.1(patch_hash=f22411cef6c1929a5414deebbf6aa0a2aa77e5b9cf3fee68df18e7bf3a37c830):
     dependencies:
       typescript: 5.9.3
       yargs: 17.7.2
