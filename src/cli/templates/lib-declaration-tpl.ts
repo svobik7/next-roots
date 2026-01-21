@@ -40,7 +40,9 @@ export class Router {
   static getPageHref(): Promise<string>
   static setPageHref(pageHref: string): void
   
-  static setParams(params: Promise<Record<string, string>>): void
+  static setParams(params: Promise<Record<string, string | string[]>>): void
+  
+  static runWithContext<T>(context: { locale: string; pageHref: string; params?: Promise<Record<string, string | string[]>> }, fn: () => T): T
   
   getHref<T extends RouteNameStatic>(name: T): string
   getHref<T extends RouteNameStatic>(name: T, params: RouteParamsStatic): string

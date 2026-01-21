@@ -33,10 +33,13 @@ import Origin${PATTERNS.originName} from '${PATTERNS.originPath}'
 import { Router } from 'next-roots'
 
 export default function Localized${PATTERNS.originName}(props:any) {
-  Router.setLocale("${PATTERNS.pageLocale}")
-  Router.setPageHref("${PATTERNS.pageHref}")
-  {/* @ts-ignore */}
-  return <Origin${PATTERNS.originName} {...props} locale={"${PATTERNS.pageLocale}"} />
+  return Router.runWithContext(
+    { locale: "${PATTERNS.pageLocale}", pageHref: "${PATTERNS.pageHref}" },
+    () => {
+      {/* @ts-ignore */}
+      return <Origin${PATTERNS.originName} {...props} locale={"${PATTERNS.pageLocale}"} />
+    }
+  )
 }
 `
 
@@ -45,11 +48,13 @@ import Origin${PATTERNS.originName} from '${PATTERNS.originPath}'
 import { Router } from 'next-roots'
 
 export default function Localized${PATTERNS.originName}({ params, ...otherProps }:any) {
-  Router.setLocale('${PATTERNS.pageLocale}')
-  Router.setPageHref('${PATTERNS.pageHref}')
-  Router.setParams(params)
-  {/* @ts-ignore */}
-  return <Origin${PATTERNS.originName} {...otherProps} params={params} locale={"${PATTERNS.pageLocale}"} />
+  return Router.runWithContext(
+    { locale: '${PATTERNS.pageLocale}', pageHref: '${PATTERNS.pageHref}', params },
+    () => {
+      {/* @ts-ignore */}
+      return <Origin${PATTERNS.originName} {...otherProps} params={params} locale={"${PATTERNS.pageLocale}"} />
+    }
+  )
 }
 `
 
