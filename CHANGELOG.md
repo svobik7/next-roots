@@ -1,3 +1,39 @@
+# [5.0.0](https://github.com/svobik7/next-roots/compare/v4.3.2...v5.0.0) (2026-01-21)
+
+
+### Bug Fixes
+
+* added package manager info to example ([ede7f14](https://github.com/svobik7/next-roots/commit/ede7f14b9d6e83d9778297f0b4f9a74aeb98caf2))
+* example build fixed ([f4d3666](https://github.com/svobik7/next-roots/commit/f4d3666ea9eb771222d61fb8c68f2f69b0090639))
+* fixed eslint config ([b7d8e8f](https://github.com/svobik7/next-roots/commit/b7d8e8f86d831b00c54ba3cc54298c3a566736e8))
+* fixed patched deps ([1d07032](https://github.com/svobik7/next-roots/commit/1d0703253cd990bb74fe3a9911184881ae133347))
+* fixed pathced deps ([688716c](https://github.com/svobik7/next-roots/commit/688716c292ebcd27fb6e3919f6db8fbac11ec928))
+* fixed preinstall script in examples ([44bb8b3](https://github.com/svobik7/next-roots/commit/44bb8b34813d948046180baabbaec1bb8901e611))
+* patched dependencies ([75c4d7e](https://github.com/svobik7/next-roots/commit/75c4d7ef3f80a8b0246990bd03c81764dfffa21d))
+* simplified package json in examples ([ebc018b](https://github.com/svobik7/next-roots/commit/ebc018b2087b89d5c86d9072de2bc6f9f6f2dfae))
+
+
+### Continuous Integration
+
+* migrated to pnpm in ci cd ([2b3af65](https://github.com/svobik7/next-roots/commit/2b3af657db70a780ced7df63c9a124e50d81a22d))
+
+
+### Features
+
+* add use cache, use client directives support ([d31129e](https://github.com/svobik7/next-roots/commit/d31129ea2dc88b7cf590b4961800b6be9812f9bf))
+* **deps:** updated deps ([05b7a1d](https://github.com/svobik7/next-roots/commit/05b7a1dd6e3f2c2333196f9fcc5a42890a51217f))
+* migrated basic example to next 16 ([3290042](https://github.com/svobik7/next-roots/commit/32900423eba1823a9ced75a05e6aaca78c4dd1b3))
+* moved from yarn to pnpm ([5adcc0b](https://github.com/svobik7/next-roots/commit/5adcc0b5d19b2876fb850a62c614465e7743aece))
+* updated catch all route example ([d898990](https://github.com/svobik7/next-roots/commit/d898990bdb8e46d1bd12e356c781162cfe5b5827))
+* updated example with preferred language middleware ([5599654](https://github.com/svobik7/next-roots/commit/5599654dd449ed2f812441cf27134e45d6fe9415))
+* version bump ([900755b](https://github.com/svobik7/next-roots/commit/900755b36143b53d48f663d9100539e725b7ba08))
+
+
+### BREAKING CHANGES
+
+* no breaking changes
+* no breaking changes in terms of integration
+
 ## [4.3.2](https://github.com/svobik7/next-roots/compare/v4.3.1...v4.3.2) (2025-11-19)
 
 
