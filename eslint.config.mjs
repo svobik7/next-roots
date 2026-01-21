@@ -20,7 +20,7 @@ const compat = new FlatCompat({
 })
 
 export default defineConfig([
-  globalIgnores(['examples/*', 'dist/*', 'coverage/*']),
+  globalIgnores(['examples/*', 'dist/*', 'coverage/*', '.next/*', '.vercel/*']),
   {
     extends: fixupConfigRules(
       compat.extends(
