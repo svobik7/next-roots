@@ -51,8 +51,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          # Trusted publishing requires Node >= 22.14.0.
-          node-version: '24'
+          # semantic-release 26 requires Node >= 26.13.
+          # npm trusted publishing requires Node >= 22.14.0.
+          node-version: '26'
       - name: Install npm CLI for trusted publishing
         # npm >= 11.5.1 exchanges the OIDC token. dist-tag over OIDC needs >= 11.21.0.
         # Do not set registry-url here: setup-node would write an .npmrc that
