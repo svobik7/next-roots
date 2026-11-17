@@ -114,16 +114,14 @@ export class Router extends StaticRouter {
  */
 
 export function compileHref(href: string, params: RouteParams): string {
-  let compiledHref = ''
   try {
     const getHref = compile(href, {
       encode: encodeURIComponent,
     })
-    compiledHref = getHref(params)
+    return getHref(params)
   } catch {
-    compiledHref = href
+    return href
   }
-  return compiledHref
 }
 
 /**
