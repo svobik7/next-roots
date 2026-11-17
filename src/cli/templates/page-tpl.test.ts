@@ -108,6 +108,36 @@ export default function LocalizedBlogAuthorIdPage({ params, ...otherProps }) {
   expect(output).toBe(expectedOutput)
 })
 
+test('should create page for [product-id] route', () => {
+  const expectedOutput = `
+import OriginProductsProductIdPage from '../../../../../roots/products/[product-id]/page'
+import { Router } from 'next-roots'
+
+export default function LocalizedProductsProductIdPage({ params, ...otherProps }) {
+  Router.setLocale('cs')
+  Router.setPageHref('/cs/produkty/:"product-id"')
+  Router.setParams(params)
+  {/* @ts-ignore */}
+  return <OriginProductsProductIdPage {...otherProps} params={params} locale={"cs"} />
+}
+`
+  const inputRewrite = {
+    originPath: '/products/[product-id]/page.js',
+    localizedPath: '/cs/produkty/[product-id]/page.js',
+  }
+
+  const inputConfig = {
+    ...defaultConfig,
+    getLocalizedAbsolutePath: (fileName = '') =>
+      path.join('/src/app', fileName),
+    getOriginAbsolutePath: (fileName = '') => path.join('/roots', fileName),
+  }
+
+  const compile = compileFactory(inputConfig)
+  const output = compile(inputRewrite)
+  expect(output).toBe(expectedOutput)
+})
+
 test('should create page for [[...optionalCatchAll]] route', () => {
   const expectedOutput = `
 import OriginProductsPage from '../../../../../roots/products/[[...slugs]]/page'

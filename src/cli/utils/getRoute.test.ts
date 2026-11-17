@@ -47,6 +47,26 @@ const inputRewrites: Rewrite[] = [
     originPath: '/books/[[slug]]/page.ts',
     localizedPath: '/en/books/[[slug]]/page.ts',
   },
+  {
+    originPath: '/products/[product-id]/page.ts',
+    localizedPath: '/cs/produkty/[product-id]/page.ts',
+  },
+  {
+    originPath: '/shop/[category-id]/[product-id]/page.ts',
+    localizedPath: '/en/shop/[category-id]/[product-id]/page.ts',
+  },
+  {
+    originPath: '/catalog/[...product-id]/page.ts',
+    localizedPath: '/en/catalog/[...product-id]/page.ts',
+  },
+  {
+    originPath: '/filters/[[...filter-id]]/page.ts',
+    localizedPath: '/en/filters/[[...filter-id]]/page.ts',
+  },
+  {
+    originPath: '/items/[[item-id]]/page.ts',
+    localizedPath: '/en/items/[[item-id]]/page.ts',
+  },
   { originPath: '/page.js', localizedPath: '/en/page.js' },
   { originPath: '/page.js', localizedPath: '/(en)/page.js' },
   {
@@ -107,6 +127,26 @@ const expectedSchema: Array<Route | undefined> = [
   {
     name: '/books/[[slug]]',
     href: '/en/books{/:slug}',
+  },
+  {
+    name: '/products/[product-id]',
+    href: '/cs/produkty/:"product-id"',
+  },
+  {
+    name: '/shop/[category-id]/[product-id]',
+    href: '/en/shop/:"category-id"/:"product-id"',
+  },
+  {
+    name: '/catalog/[...product-id]',
+    href: '/en/catalog/*"product-id"',
+  },
+  {
+    name: '/filters/[[...filter-id]]',
+    href: '/en/filters{/*"filter-id"}',
+  },
+  {
+    name: '/items/[[item-id]]',
+    href: '/en/items{/:"item-id"}',
   },
   {
     name: '/',

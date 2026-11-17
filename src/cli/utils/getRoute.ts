@@ -1,4 +1,5 @@
 import type { Route } from '~/types'
+import { formatDynamicSegments } from '~/utils/dynamic-segment'
 import { asRootPath } from '~/utils/path-utils'
 import { pipe } from '~/utils/pipe-utils'
 import type { Rewrite } from '../types'
@@ -31,14 +32,6 @@ function removeInterceptedSegments(input: string) {
     result = result.replace(twoDotsRegExp, '')
   }
   return result.replace(/.*\(\.{3}\)/g, '/')
-}
-
-function formatDynamicSegments(input: string) {
-  return input
-    .replace(/\/\[\[\.\.\.(\w+)\]\]/g, '{/*$1}') // /[[...slug]] -> {/*slug}
-    .replace(/\/\[\[(\w+)\]\]/g, '{/:$1}') // /[[slug]] -> {/:slug}
-    .replace(/\/\[\.\.\.(\w+)\]/g, '/*$1') // /[...slug] -> /*slug
-    .replace(/\/\[(\w+)\]/g, '/:$1') // /[slug] -> /:slug
 }
 
 function getRouteName({ originPath }: Rewrite) {

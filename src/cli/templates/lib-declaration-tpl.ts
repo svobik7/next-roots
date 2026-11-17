@@ -1,6 +1,13 @@
 import { pathToRegexp } from 'path-to-regexp'
 import type { Route, RouterSchema } from '~/types'
 import {
+  formatParamName,
+  hasCatchAllSegment,
+  hasDynamicSegment,
+  hasOptionalCatchAllSegment,
+  hasOptionalSegment,
+} from '~/utils/dynamic-segment'
+import {
   type CompileParams,
   compileTemplateFactory,
   getPatternsFromNames,
@@ -93,23 +100,20 @@ function getRouteName(route: Route) {
 }
 
 function isDynamicOptionalCatchAllRoute(route: Route) {
-  return !!route.name.match(/\[\[\.\.\.\w+\]\]/g)
+  return hasOptionalCatchAllSegment(route.name)
 }
 
 function isDynamicCatchAllRoute(route: Route) {
-  return (
-    !!route.name.match(/\[\.\.\.\w+\]/g) ||
-    isDynamicOptionalCatchAllRoute(route)
-  )
+  return hasCatchAllSegment(route.name) || isDynamicOptionalCatchAllRoute(route)
 }
 
 function isDynamicOptionalRoute(route: Route) {
-  return !!route.name.match(/\[\[\w+\]\]/g)
+  return hasOptionalSegment(route.name)
 }
 
 function isDynamicRoute(route: Route) {
   return (
-    !!route.name.match(/\[\w+\]/g) ||
+    hasDynamicSegment(route.name) ||
     isDynamicOptionalRoute(route) ||
     isDynamicCatchAllRoute(route) ||
     isDynamicOptionalCatchAllRoute(route)
@@ -147,7 +151,7 @@ function getDynamicRouteParams(schema: RouterSchema) {
           : 'string'
 
       acc += `T extends '${item.name}' ? RouteParamsStatic<{${keys.map(
-        (p) => `${p.name}${nameSuffix}:${paramType}`
+        (p) => `${formatParamName(p.name)}${nameSuffix}:${paramType}`
       )}}> : `
 
       if (index === array.length - 1) {
