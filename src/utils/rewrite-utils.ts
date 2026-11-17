@@ -1,4 +1,9 @@
 import type { Rewrite } from '~/cli/types'
+import {
+  hasCatchAllSegment,
+  hasDynamicSegment,
+  hasOptionalCatchAllSegment,
+} from '~/utils/dynamic-segment'
 
 export function isPage(pathName: string) {
   return Boolean(pathName.match(/page\.([tj]sx?)$/))
@@ -17,16 +22,16 @@ export function isNotFound(pathName: string) {
 }
 
 export function isDynamicOptionalCatchAllRewrite(rewrite: Rewrite) {
-  return !!rewrite.originPath.match(/\[\[\.\.\.\w+\]\]/g)
+  return hasOptionalCatchAllSegment(rewrite.originPath)
 }
 
 export function isDynamicCatchAllRewrite(rewrite: Rewrite) {
-  return !!rewrite.originPath.match(/\[\.\.\.\w+\]/g)
+  return hasCatchAllSegment(rewrite.originPath)
 }
 
 export function isDynamicRewrite(rewrite: Rewrite) {
   return (
-    !!rewrite.originPath.match(/\[\w+\]/g) ||
+    hasDynamicSegment(rewrite.originPath) ||
     isDynamicCatchAllRewrite(rewrite) ||
     isDynamicOptionalCatchAllRewrite(rewrite)
   )

@@ -213,3 +213,54 @@ describe('getRouteFromHref', () => {
     }
   )
 })
+
+describe('hyphenated dynamic segments', () => {
+  const schema: RouterSchema = {
+    locales: ['en', 'cs'],
+    defaultLocale: 'en',
+    routes: {
+      en: [
+        {
+          name: '/products/[product-id]',
+          href: '/products/:"product-id"',
+        },
+        {
+          name: '/shop/[[...filters]]',
+          href: '/shop{/*filters}',
+        },
+      ],
+      cs: [
+        {
+          name: '/products/[product-id]',
+          href: '/cs/produkty/:"product-id"',
+        },
+        {
+          name: '/shop/[[...filters]]',
+          href: '/cs/obchod{/*filters}',
+        },
+      ],
+    },
+  }
+
+  const router = new Router(schema)
+
+  test('compiles a quoted parameter name into the href', () => {
+    expect(
+      router.getHref('/products/[product-id]', {
+        'product-id': '5',
+        locale: 'cs',
+      })
+    ).toBe('/cs/produkty/5')
+  })
+
+  test('matches the hyphenated route and later routes', () => {
+    expect(router.getRouteFromHref('/cs/produkty/5')).toEqual({
+      name: '/products/[product-id]',
+      href: '/cs/produkty/:"product-id"',
+    })
+    expect(router.getRouteFromHref('/shop/red')).toEqual({
+      name: '/shop/[[...filters]]',
+      href: '/shop{/*filters}',
+    })
+  })
+})
