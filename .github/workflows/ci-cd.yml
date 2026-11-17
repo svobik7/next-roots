@@ -56,6 +56,12 @@ jobs:
         run: corepack enable
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      # pnpm leaves devDependencies of dependencies uninstalled. npm audit
+      # signatures still parses those specs, and an alias such as
+      # "source-map": "npm:source-map-js@latest" is resolved against a
+      # different package already on disk (source-map@0.6.1).
+      - name: Drop uninstalled npm alias devDependencies
+        run: node scripts/strip-uninstalled-alias-dev-dependencies.mjs
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
         run: npm audit signatures
       - name: Release
