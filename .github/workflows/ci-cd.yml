@@ -42,7 +42,7 @@ jobs:
       contents: write # to be able to publish a GitHub release
       issues: write # to be able to comment on released issues
       pull-requests: write # to be able to comment on released pull requests
-      id-token: write # to enable use of OIDC for npm provenance
+      id-token: write # OIDC token for npm trusted publishing
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -51,7 +51,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
+          # Trusted publishing requires Node >= 22.14.0.
+          node-version: '24'
+      - name: Install npm CLI for trusted publishing
+        # npm >= 11.5.1 exchanges the OIDC token. dist-tag over OIDC needs >= 11.21.0.
+        # Do not set registry-url here: setup-node would write an .npmrc that
+        # conflicts with semantic-release authentication.
+        run: npm install -g npm@11.21.2
       - name: Enable Corepack
         run: corepack enable
       - name: Install dependencies
@@ -64,8 +70,20 @@ jobs:
         run: node scripts/strip-uninstalled-alias-dev-dependencies.mjs
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
         run: npm audit signatures
+      # Publishes with the GitHub Actions OIDC identity. Do not pass NPM_TOKEN:
+      # @semantic-release/npm uses a token when one is set and skips trusted publishing.
+      # Before the first release from this workflow, add a trusted publisher at
+      # https://www.npmjs.com/package/next-roots/access
+      #   Organization or user: svobik7
+      #   Repository: next-roots
+      #   Workflow filename: ci-cd.yml
+      #   Environment name: leave empty
+      #   Allowed actions: npm publish and npm dist-tag
+      # Publishers created after 3 Sep 2026 allow only `npm stage publish` until
+      # those actions are selected. semantic-release calls `npm publish` and,
+      # on maintenance branches, `npm dist-tag`. The first publish must succeed
+      # within 2 days of creating the publisher, or the configuration expires.
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: HUSKY=0 npx semantic-release
