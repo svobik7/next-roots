@@ -1,3 +1,13 @@
+## [5.0.1](https://github.com/svobik7/next-roots/compare/v5.0.0...v5.0.1) (2026-11-17)
+
+
+### Bug Fixes
+
+* **ci:** ignore uninstalled npm alias devDependencies during release audit ([8be3d52](https://github.com/svobik7/next-roots/commit/8be3d52424051e3f1dabdbe3d7223e39f4ac9281))
+* **ci:** run the release job on Node 26 ([55cc0b6](https://github.com/svobik7/next-roots/commit/55cc0b6bfaf4748c550f6353c99c2dcce1d03884))
+* **deps:** bump next from 16.1.4 to 16.2.3 ([0505f82](https://github.com/svobik7/next-roots/commit/0505f827a943077e6924b3ba818e9b1d0ade5a12))
+* quote hyphenated dynamic segment names for path-to-regexp ([ac13d3f](https://github.com/svobik7/next-roots/commit/ac13d3f6a7e60c3975a89c6d98609a5a0dde0491))
+
 # [5.0.0](https://github.com/svobik7/next-roots/compare/v4.3.2...v5.0.0) (2026-01-21)
 
 
