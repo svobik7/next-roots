@@ -19,10 +19,13 @@ import OriginRootPage from '../../roots/page'
 import { Router } from 'next-roots'
 
 export default function LocalizedRootPage(props) {
-  Router.setLocale("cs")
-  Router.setPageHref("/cs")
-  {/* @ts-ignore */}
-  return <OriginRootPage {...props} locale={"cs"} />
+  return Router.runWithContext(
+    { locale: "cs", pageHref: "/cs" },
+    () => {
+      {/* @ts-ignore */}
+      return <OriginRootPage {...props} locale={"cs"} />
+    }
+  )
 }
 `
   const inputRewrite = {
@@ -51,10 +54,13 @@ import OriginAuthLoginPage from '../../../../src/roots/(auth)/login/page'
 import { Router } from 'next-roots'
 
 export default function LocalizedAuthLoginPage(props:any) {
-  Router.setLocale("cs")
-  Router.setPageHref("/cs/prihlaseni")
-  {/* @ts-ignore */}
-  return <OriginAuthLoginPage {...props} locale={"cs"} />
+  return Router.runWithContext(
+    { locale: "cs", pageHref: "/cs/prihlaseni" },
+    () => {
+      {/* @ts-ignore */}
+      return <OriginAuthLoginPage {...props} locale={"cs"} />
+    }
+  )
 }
 `
 
@@ -82,11 +88,13 @@ import OriginBlogAuthorIdPage from '../../../../../roots/blog/[authorId]/page'
 import { Router } from 'next-roots'
 
 export default function LocalizedBlogAuthorIdPage({ params, ...otherProps }) {
-  Router.setLocale('cs')
-  Router.setPageHref('/cs/magazin/:authorId')
-  Router.setParams(params)
-  {/* @ts-ignore */}
-  return <OriginBlogAuthorIdPage {...otherProps} params={params} locale={"cs"} />
+  return Router.runWithContext(
+    { locale: 'cs', pageHref: '/cs/magazin/:authorId', params },
+    () => {
+      {/* @ts-ignore */}
+      return <OriginBlogAuthorIdPage {...otherProps} params={params} locale={"cs"} />
+    }
+  )
 }
 `
   const inputRewrite = {
@@ -114,11 +122,13 @@ import OriginProductsPage from '../../../../../roots/products/[[...slugs]]/page'
 import { Router } from 'next-roots'
 
 export default function LocalizedProductsPage({ params, ...otherProps }) {
-  Router.setLocale('cs')
-  Router.setPageHref('/cs/produkty{/*slugs}')
-  Router.setParams(params)
-  {/* @ts-ignore */}
-  return <OriginProductsPage {...otherProps} params={params} locale={"cs"} />
+  return Router.runWithContext(
+    { locale: 'cs', pageHref: '/cs/produkty{/*slugs}', params },
+    () => {
+      {/* @ts-ignore */}
+      return <OriginProductsPage {...otherProps} params={params} locale={"cs"} />
+    }
+  )
 }
 `
   const inputRewrite = {
@@ -146,10 +156,13 @@ import OriginStaticMetaDataPage from '..'
 import { Router } from 'next-roots'
 
 export default function LocalizedStaticMetaDataPage(props:any) {
-  Router.setLocale("cs")
-  Router.setPageHref("/cs/static-meta-data")
-  {/* @ts-ignore */}
-  return <OriginStaticMetaDataPage {...props} locale={"cs"} />
+  return Router.runWithContext(
+    { locale: "cs", pageHref: "/cs/static-meta-data" },
+    () => {
+      {/* @ts-ignore */}
+      return <OriginStaticMetaDataPage {...props} locale={"cs"} />
+    }
+  )
 }
 
 export { metadata } from '..'
@@ -178,10 +191,13 @@ import OriginStaticMetaDataPage from '..'
 import { Router } from 'next-roots'
 
 export default function LocalizedStaticMetaDataPage(props:any) {
-  Router.setLocale("cs")
-  Router.setPageHref("/cs/static-meta-data")
-  {/* @ts-ignore */}
-  return <OriginStaticMetaDataPage {...props} locale={"cs"} />
+  return Router.runWithContext(
+    { locale: "cs", pageHref: "/cs/static-meta-data" },
+    () => {
+      {/* @ts-ignore */}
+      return <OriginStaticMetaDataPage {...props} locale={"cs"} />
+    }
+  )
 }
 
 export { metadata } from '..'
@@ -211,10 +227,13 @@ import OriginStaticRouteWithDynamicMetaDataPage from '..'
 import { Router } from 'next-roots'
 
 export default function LocalizedStaticRouteWithDynamicMetaDataPage(props) {
-  Router.setLocale("cs")
-  Router.setPageHref("/cs/static-route-with-dynamic-meta-data")
-  {/* @ts-ignore */}
-  return <OriginStaticRouteWithDynamicMetaDataPage {...props} locale={"cs"} />
+  return Router.runWithContext(
+    { locale: "cs", pageHref: "/cs/static-route-with-dynamic-meta-data" },
+    () => {
+      {/* @ts-ignore */}
+      return <OriginStaticRouteWithDynamicMetaDataPage {...props} locale={"cs"} />
+    }
+  )
 }
 
 import {generateMetadata as generateMetadataOrigin} from '..'
@@ -245,11 +264,13 @@ import OriginBlogAuthorIdPage from '../../../../../roots/blog/[authorId]/page'
 import { Router } from 'next-roots'
 
 export default function LocalizedBlogAuthorIdPage({ params, ...otherProps }:any) {
-  Router.setLocale('cs')
-  Router.setPageHref('/cs/magazin/:authorId')
-  Router.setParams(params)
-  {/* @ts-ignore */}
-  return <OriginBlogAuthorIdPage {...otherProps} params={params} locale={"cs"} />
+  return Router.runWithContext(
+    { locale: 'cs', pageHref: '/cs/magazin/:authorId', params },
+    () => {
+      {/* @ts-ignore */}
+      return <OriginBlogAuthorIdPage {...otherProps} params={params} locale={"cs"} />
+    }
+  )
 }
 
 import { compileHref } from 'next-roots'
@@ -293,10 +314,13 @@ import OriginStaticViewportPage from '..'
 import { Router } from 'next-roots'
 
 export default function LocalizedStaticViewportPage(props:any) {
-  Router.setLocale("cs")
-  Router.setPageHref("/cs/static-viewport")
-  {/* @ts-ignore */}
-  return <OriginStaticViewportPage {...props} locale={"cs"} />
+  return Router.runWithContext(
+    { locale: "cs", pageHref: "/cs/static-viewport" },
+    () => {
+      {/* @ts-ignore */}
+      return <OriginStaticViewportPage {...props} locale={"cs"} />
+    }
+  )
 }
 
 export { viewport } from '..'
@@ -322,10 +346,13 @@ import OriginStaticRouteWithDynamicViewportPage from '..'
 import { Router } from 'next-roots'
 
 export default function LocalizedStaticRouteWithDynamicViewportPage(props) {
-  Router.setLocale("cs")
-  Router.setPageHref("/cs/static-route-with-dynamic-viewport")
-  {/* @ts-ignore */}
-  return <OriginStaticRouteWithDynamicViewportPage {...props} locale={"cs"} />
+  return Router.runWithContext(
+    { locale: "cs", pageHref: "/cs/static-route-with-dynamic-viewport" },
+    () => {
+      {/* @ts-ignore */}
+      return <OriginStaticRouteWithDynamicViewportPage {...props} locale={"cs"} />
+    }
+  )
 }
 
 import {generateViewport as generateViewportOrigin} from '..'
@@ -356,11 +383,13 @@ import OriginBlogAuthorIdPage from '../../../../../roots/blog/[authorId]/page'
 import { Router } from 'next-roots'
 
 export default function LocalizedBlogAuthorIdPage({ params, ...otherProps }:any) {
-  Router.setLocale('cs')
-  Router.setPageHref('/cs/magazin/:authorId')
-  Router.setParams(params)
-  {/* @ts-ignore */}
-  return <OriginBlogAuthorIdPage {...otherProps} params={params} locale={"cs"} />
+  return Router.runWithContext(
+    { locale: 'cs', pageHref: '/cs/magazin/:authorId', params },
+    () => {
+      {/* @ts-ignore */}
+      return <OriginBlogAuthorIdPage {...otherProps} params={params} locale={"cs"} />
+    }
+  )
 }
 
 import { compileHref } from 'next-roots'
@@ -404,10 +433,13 @@ import OriginRouteSegmentConfigPage from '..'
 import { Router } from 'next-roots'
 
 export default function LocalizedRouteSegmentConfigPage(props:any) {
-  Router.setLocale("cs")
-  Router.setPageHref("/cs/route-segment-config")
-  {/* @ts-ignore */}
-  return <OriginRouteSegmentConfigPage {...props} locale={"cs"} />
+  return Router.runWithContext(
+    { locale: "cs", pageHref: "/cs/route-segment-config" },
+    () => {
+      {/* @ts-ignore */}
+      return <OriginRouteSegmentConfigPage {...props} locale={"cs"} />
+    }
+  )
 }
 
 export const dynamic = 'auto'
