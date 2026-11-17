@@ -1,14 +1,14 @@
 diff --git a/dist/types-usage-evaluator.js b/dist/types-usage-evaluator.js
-index a09f141f087b152c34ad9c88e66ed516f8294865..9f25078598677e232346f3193df16e8c4bc0fb85 100644
+index 815a798a15080fa59e5de2f00f7ce8d1b81ac6cf..fe143bb0ead514d916fa2fa0609b1d1ee4a00260 100644
 --- a/dist/types-usage-evaluator.js
 +++ b/dist/types-usage-evaluator.js
-@@ -111,6 +111,9 @@ class TypesUsageEvaluator {
+@@ -152,6 +152,9 @@ export class TypesUsageEvaluator {
          if (ts.isExportDeclaration(node) && node.exportClause !== undefined && ts.isNamedExports(node.exportClause)) {
              for (const exportElement of node.exportClause.elements) {
-                 const exportElementSymbol = (0, typescript_1.getImportExportReferencedSymbol)(exportElement, this.typeChecker);
-+                if(exportElementSymbol === undefined) {
+                 const exportElementSymbol = getImportExportReferencedSymbol(exportElement, this.typeChecker);
++                if (exportElementSymbol === undefined) {
 +                    continue;
 +                }
                  // i.e. `import * as NS from './local-module'`
-                 const namespaceImportForElement = (0, typescript_1.getDeclarationsForSymbol)(exportElementSymbol).find(ts.isNamespaceImport);
+                 const namespaceImportForElement = getDeclarationsForSymbol(exportElementSymbol).find(ts.isNamespaceImport);
                  if (namespaceImportForElement !== undefined) {

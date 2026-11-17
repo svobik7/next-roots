@@ -8,4 +8,4 @@ onlyBuiltDependencies:
   - unrs-resolver
 
 patchedDependencies:
-  dts-bundle-generator: patches/dts-bundle-generator.patch
+  dts-bundle-generator@10.0.0: patches/dts-bundle-generator@10.0.0.patch
